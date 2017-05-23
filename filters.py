@@ -10,6 +10,8 @@ Authorship information:
     __status__ = "debug"
 TODO:
     Debug and Test
+    Implement checks for input types 
+    mmtf.utils.constants decode_chain_list bytes -> list of strings
 '''
 
 class rWork(object):
@@ -121,10 +123,11 @@ class experimentalMethods(object):
 
     Attributes: 
         experimental_methods (list(string)): A list of experimental methods to check
-    NOTE: 
-        - Should we give error statements for incorrect input?
-        - Convert to all caps?
     ''' 
+    #NOTE: 
+    #    - Should we give error statements for incorrect input?
+    #    - Convert to all caps?
+
     def __init__(self, *experimentalMethods):
         '''
         Args:
@@ -146,6 +149,7 @@ class experimentalMethods(object):
         return methods == self.experimental_methods
         
 import re
+#TODO NEED Debug/Testing
 class containsSequenceRegex(object):
     '''This filter returns true if the polymer sequence motif matches the specified regular expression.
 	Sequence motifs support the following one-letter codes:
@@ -160,7 +164,8 @@ class containsSequenceRegex(object):
 	Examples
 	Short sequence fragment	
 	NPPTP
-	The motif search supports wildcard queries by placing a '.' at the variable residue position. A query for an SH3 domains using the consequence sequence -X-P-P-X-P (where X is a variable residue and P is Proline) can be expressed as:
+	The motif search supports wildcard queries by placing a '.' at the variable residue position.
+        A query for an SH3 domains using the consequence sequence -X-P-P-X-P (where X is a variable residue and P is Proline),can be expressed as:
 	.PP.P
 	
 	Ranges of variable residues are specified by the {n} notation, where n is the number of variable residues. To query a motif with seven variables between residues W and G and twenty variable residues between G and L use the following notation:
@@ -200,3 +205,225 @@ class containsSequenceRegex(object):
                 if len(re.findall(self.regex,entity)) > 0 :
                     return True
         return False
+
+#Double check with peter/ test 
+class ContainsGroup(object):
+    '''This filter returns entries that contain specified groups (residues).
+    Groups are specified by their one, two, or three-letter codes, e.g. "F", "MG", "ATP", as definedin the wwPDB Chemical Component Dictionary (https://www.wwpdb.org/data/ccd).
+
+    Attributes: 
+        groupQuery (list[str]): list of group names
+    '''
+    def __init__(self, groups):
+        '''This constructor accepts a comma separated list of group names, e.g., "ATP","ADP"
+        
+        Args:
+            groups (list[str]): list of group names
+        '''
+        if not isinstance(groups, list):
+            raise TypeError
+        self.groupQuery = set(groups)
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args: 
+            t (SparkRDD): The RDD for PDB protein database
+        Returns: 
+            bool: True if RDD contains all groups listed, else False
+        '''
+        for group in t[1].group_type_list:
+            if group not in self.groupQuery:
+                return False 
+        return True
+
+class ContainsPolymerType(object):
+    '''This filter returns entries that contain chains made of the specified 
+    monomer types. The default constructor returns entries that contain at least
+    one chain that matches the conditions. If the "exclusive" flag is set to true 
+    in the constructor, all chains must match the conditions. For a multi-model 
+    structure, this filter only checks the first model.
+
+
+    Attributes: 
+    
+    '''
+    #default argument has to follow non-default argument
+    def __init__(self, entity_Types, exclusive = False):
+        '''The class 
+        
+        Args:
+        
+        '''
+        self.exclusive = exclusive
+        self.entity_types = entity_Types
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args: 
+        
+        Returns: 
+        
+        '''
+        contrains_polymer = False
+        global_match = False
+        num_chains = #get number of chains in first model, nessary? 
+        for chain_type in #Get chain types from Chain ID: #TODO#
+            match = True
+            polymer = chain_type == "polymer"
+            if polymer:
+                contains_polymer = True
+            else:
+                match = False
+            for group_type in #Get group types for chain: #TODO#
+                if match and polymer: #Why is this inside???
+                    match = "group_type" in entity_types
+            if (polymer and match and not exclusive):
+                return True
+            if (polymer and not match and exclusive):
+                return False
+            if match: 
+                global_match = True
+        return global_match && contains_polymer
+
+class containsDProteinChain(object):
+    '''This filter
+
+    Attributes: 
+    
+    '''
+    def __init__(self, exclusive = False):
+        '''The class 
+        
+        Args:
+        
+    '''
+        self.filter = containsPolymerType(exclusive, "D-PEPTIDE LINKING", "PEPTIDE LINKING")
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args: 
+        
+        Returns: 
+        
+        '''
+        return self.filter.call(t) 
+
+class containsLProteinChain(object):
+    '''This filter
+
+    Attributes: 
+    
+    '''
+    def __init__(self, exclusive = False):
+        '''The class 
+        
+        Args:
+        
+    '''
+        self.filter = containsPolymerType(exclusive, "L-PEPTIDE LINKING", "PEPTIDE LINKING")
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args: 
+        
+        Returns: 
+        
+        '''
+        return self.filter.call(t) 
+
+
+class containsRnaChain(object):
+    '''This filter
+
+    Attributes: 
+    
+    '''
+    def __init__(self, exclusive = False):
+        '''The class 
+        
+        Args:
+        
+    '''
+        self.filter = containsPolymerType(exclusive, "RNA LINKING")
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args: 
+        
+        Returns: 
+        
+        '''
+        return self.filter.call(t) 
+
+
+class containsDnaChain(object):
+    '''This filter
+
+    Attributes: 
+    
+    '''
+    def __init__(self, exclusive = False):
+        '''The class 
+        
+        Args:
+        
+    '''
+        self.filter = containsPolymerType(exclusive, "DNA LINKING")
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args: 
+        
+        Returns: 
+        
+        '''
+        return self.filter.call(t) 
+
+class containsDSaccharide(object):
+    '''This filter
+
+    Attributes: 
+    
+    '''
+    def __init__(self, exclusive = False):
+        '''The class 
+        
+        Args:
+        
+    '''
+        self.filter = containsPolymerType(exclusive,"D-SACCHARIDE", "SACCHARIDE",\
+                "D-SACCHARIDE 1,4 AND 1,4 LINKING","D-SACCHARIDE 1,4 AND 1,6 LINKING")
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args: 
+        
+        Returns: 
+        
+        '''
+        return self.filter.call(t) 
+
+
+#Check if works
+class notFilter(object):
+    '''This filter
+
+    Attributes: 
+        Filter (function)
+    '''
+    #Filter is keywork
+    def __init__(self, filter_function):
+        '''The class initalizer that assigns the argumentss to the attributes
+        
+        Args:
+        '''
+        self.filter = filter_function
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args: 
+            t (SparkRDD): The RDD for PDB protein database
+        Returns: 
+            bool: True for within range, False if MMTFDecoder doesn't have resolution or out of range 
+        '''
+        return not self.filter.call(t)
