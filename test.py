@@ -7,7 +7,7 @@ Authorship information:
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
-TODO: 
+TODO:
     Change to main funciton instead of test.py
 '''
 from pyspark import SparkConf, SparkContext
@@ -18,7 +18,7 @@ import sys
 
 #Create variables
 APP_NAME = "MMTF_Spark"
-path = "/Users/marshuang/PDB/data/full"
+path = "~/PDB/full"
 text = "org.apache.hadoop.io.Text"
 byteWritable = "org.apache.hadoop.io.BytesWritable"
 
@@ -40,7 +40,7 @@ def main(argv):
             path = arg
     #Mmtf sequence file reader
     pdb = read(path,sc)
-    
+
     #for testing
     print("----------------------")
     #print(pdb.filter(Rworkfilter))
@@ -52,3 +52,4 @@ def main(argv):
 if __name__ == "__main__":
     #Execute Main functionality
     main(sys.argv[1:])
+
