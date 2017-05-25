@@ -8,11 +8,17 @@ Authorship information:
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
-TODO: 
+TODO:
 '''
 from mmtf.api.mmtf_reader import MMTFDecoder
 from mmtf.api import default_api
 import msgpack
+
+# TODO Docstring
+# TODO Update with:
+#       - Download from internet instead of local
+#       - Generate fraction of files
+#       - More info (Spark/IO/MMTFReader)
 
 #Create variables
 text = "org.apache.hadoop.io.Text"
@@ -26,7 +32,7 @@ def call(t):
     return (str(t[0]),decoder)
 
 def read(path,sc):
-    infiles = sc.sequenceFile(path, text, byteWritable) 
+    infiles = sc.sequenceFile(path, text, byteWritable)
     return infiles.map(call)
 
 #Another read function that takes list of pdb as input

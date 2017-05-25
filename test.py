@@ -12,17 +12,20 @@ TODO:
 '''
 from pyspark import SparkConf, SparkContext
 from MmtfSequenceFileReader import read
-from filters import containsSequenceRegex
+from filters import rFree
+from filters import notFilter
+from filters import *
 import getopt
 import sys
 
-#Create variables
+# Create variables
 APP_NAME = "MMTF_Spark"
 path = "~/PDB/full"
 text = "org.apache.hadoop.io.Text"
 byteWritable = "org.apache.hadoop.io.BytesWritable"
 
 def main(argv):
+
     #Configure Spark
     conf = SparkConf().setAppName(APP_NAME)
     conf = conf.setMaster("local[*]")
@@ -38,15 +41,17 @@ def main(argv):
     for opt,arg in opts:
         if opt in ["-p","--path"]:
             path = arg
+
     #Mmtf sequence file reader
     pdb = read(path,sc)
 
-    #for testing
-    print("----------------------")
+    # for testing
+    print("---------------------")
     #print(pdb.filter(Rworkfilter))
-    print(pdb.filter(containsSequenceRegex(".P.")).collect()[:5])
+    print(pdb.filter(containsDnaChain).collect())
     #print(pdb = Rworkfilter(pdb,0,0.2))
     print("----------------------")
+
     return pdb
 
 if __name__ == "__main__":

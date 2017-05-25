@@ -10,30 +10,9 @@ Authorship information:
     __status__ = "debug"
 TODO:
     Debug and Test
-    Implement checks for input types
-    mmtf.utils.constants decode_chain_list bytes -> list of strings
+    Doc String
 '''
-
-class test(object):
-    '''This filter return true if the r_work value for this structure is within the specified range.
-
-    Attributes:
-        min_Rwork (float): The lower bound r_work value
-        max_Rwork (float): The upper bound r_work value
-    '''
-    def __init__(self):
-        '''The class initalizer that assigns the argumentss to the attributes
-
-        Args:
-            minRwork (float): The lower bound r_work value
-            maxRwork (float): The upper bound r_work value
-        '''
-        #self.min_Rwork = minRwork
-        #self.max_Rwork = maxRwork
-    def __call__(self,t):
-        print(t[1].entity_list)
-        return False
-
+import re
 
 class rWork(object):
     '''This filter return true if the r_work value for this structure is within the specified range.
@@ -169,8 +148,8 @@ class experimentalMethods(object):
         methods = sorted([b.decode().upper() for b in structure.experimental_methods])
         return methods == self.experimental_methods
 
-import re
-#TODO NEED Debug/Testing
+
+# TODO NEED Debug/Testing, Not Sure if it is Working
 class containsSequenceRegex(object):
     '''This filter returns true if the polymer sequence motif matches the specified regular expression.
 	Sequence motifs support the following one-letter codes:
@@ -228,23 +207,23 @@ class containsSequenceRegex(object):
         return False
 
 #Double check with peter/ test
-class ContainsGroup(object):
+
+
+# TODO Can't Find getGroupNames : Double check with Peter if it is in group_list
+class containsGroup(object):
     '''This filter returns entries that contain specified groups (residues).
     Groups are specified by their one, two, or three-letter codes, e.g. "F", "MG", "ATP", as definedin the wwPDB Chemical Component Dictionary (https://www.wwpdb.org/data/ccd).
 
     Attributes:
         groupQuery (list[str]): list of group names
     '''
-    def __init__(self, groups):
+    def __init__(self, *args):
         '''This constructor accepts a comma separated list of group names, e.g., "ATP","ADP"
 
         Args:
             groups (list[str]): list of group names
         '''
-        #TODO Variable arguments instead of list
-        #TODO Check contains
-        if not isinstance(groups, list):
-            raise TypeError
+        groups = [a for a in args]
         self.groupQuery = set(groups)
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
@@ -254,12 +233,16 @@ class ContainsGroup(object):
         Returns:
             bool: True if RDD contains all groups listed, else False
         '''
-        for group in t[1].group_type_list:
-            if group not in self.groupQuery:
+        #TODO can't find getGroupName
+        groups = [t[1].getGroupName(idx) for idx in t[1].group_type_list]
+        for group in self.groupQuery:
+            if group not in t[1].group_type_list:
                 return False
         return True
 
-class ContainsPolymerType(object):
+
+# TODO Clarify on group_counter
+class containsPolymerChainType(object):
     '''This filter returns entries that contain chains made of the specified
     monomer types. The default constructor returns entries that contain at least
     one chain that matches the conditions. If the "exclusive" flag is set to true
@@ -285,33 +268,37 @@ class ContainsPolymerType(object):
         Args:
 
         Returns:
-
-
+        '''
+        structure = t[1]
         contrains_polymer = False
         global_match = False
-        *chians_per_model
-        num_chains = #get number of chains in first model, nessary?
-        chain types in entity as key, enetity from entity_list
-
-        for chain_type in #Get chain types from Chain ID: #TODO#
+        num_chains = structure.chains_per_model[0] #get number of chains in first model, nessary?
+        #chain types in entity as key, enetity from entity_list
+        # TODO clarify on group_counter
+        for i in range(num_chains):
+            group_counter = 0
             match = True
+            chain_type = structure.entity_list[i]['type']
             polymer = chain_type == "polymer"
             if polymer:
                 contains_polymer = True
             else:
                 match = False
             group_type_list
-            for group_type in #Get group types for chain: #TODO
+            for j in range(structure.groups_per_chain[0]):
                 if match and polymer:
-                    match = "group_type" in entity_types
+                    group_idx = structure.group_type_list[group_counter]
+                    group_type = structure.group_list[group_idx]['chemCompType']
+                    match = "group_type" in self.entity_types
+                group_counter += 1
             if (polymer and match and not exclusive):
                 return True
             if (polymer and not match and exclusive):
                 return False
             if match:
                 global_match = True
-        '''
         return global_match and contains_polymer
+
 
 class containsDProteinChain(object):
     '''This filter
@@ -335,6 +322,7 @@ class containsDProteinChain(object):
 
         '''
         return self.filter.call(t)
+
 
 class containsLProteinChain(object):
     '''This filter
@@ -407,6 +395,7 @@ class containsDnaChain(object):
         '''
         return self.filter.call(t)
 
+
 class containsDSaccharide(object):
     '''This filter
 
@@ -416,9 +405,8 @@ class containsDSaccharide(object):
     def __init__(self, exclusive = False):
         '''The class
 
-        Args:
-
-    '''
+            Args:
+        '''
         self.filter = containsPolymerType(exclusive,"D-SACCHARIDE", "SACCHARIDE",\
                 "D-SACCHARIDE 1,4 AND 1,4 LINKING","D-SACCHARIDE 1,4 AND 1,6 LINKING")
     def __call__(self,t):
@@ -432,14 +420,56 @@ class containsDSaccharide(object):
         return self.filter.call(t)
 
 
-#Check if works
+# TODO Make DsspSecondaryStucture class (Spark/utils/DsspSecondaryStructures)
+class secondaryStructure(object):
+    '''This Filter
+
+    Attrbutes:
+    '''
+    def __init__(self,_):
+        self.helixFractionMax = 1.0
+        self.helixFractionMin = 0.0
+        self.sheetFractionMax = 1.0
+        self.sheetFractionMin = 0.0
+        self.coilFractionMax = 1.0
+        self.coilFractionMin = 0.0
+    def __call__(self,t):
+        structure = t[1]
+        if len(structure.entity_list) == 1:
+            if structure.sec_struct_list == 0 :
+                return False
+            helix = 0.0
+            sheet = 0.0
+            coil = 0.0
+            #TODO Peter uses switch case, might have to do with getQ3Code
+            #TODO Not sure how to DsspSecondaryStructure.getQ3Code
+            #TODO double check break is for switchcase
+            for code in structure.sec_struct_list:
+                if code == "ALPHA_HELIX":
+                    helix += 1
+                if code == "EXTENDED":
+                    sheet += 1
+                if code == "COIL":
+                    coil += 1
+                else:
+                    continue
+            length = len(structure.sec_struct_list)
+            helix /= length
+            sheet /= length
+            coil /= length
+            return helix >= self.helixFractionMin and helix <= \
+            self.helixFractionMax and sheet >= self.sheetFractionMin and sheet \
+            <= self.sheetFractionMax and coil >= self.coilFractionMin and coil \
+            <= self.coilFractionMax
+        return False
+
+
 class notFilter(object):
     '''This filter
 
     Attributes:
         Filter (function)
     '''
-    #Filter is keywork
     def __init__(self, filter_function):
         '''The class initalizer that assigns the argumentss to the attributes
 
@@ -454,4 +484,4 @@ class notFilter(object):
         Returns:
             bool: True for within range, False if MMTFDecoder doesn't have resolution or out of range
         '''
-        return not self.filter.call(t)
+        return not self.filter(t)
