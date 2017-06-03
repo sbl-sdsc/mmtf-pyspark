@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from pyspark import SparkConf, SparkContext
-from MmtfSequenceFileReader import read
+from MmtfReader import read
 from filters import rFree
 # Create variables
 APP_NAME = "MMTF_Spark"

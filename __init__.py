@@ -1,2 +1,2 @@
-from . import MmtfSequenceFileReader
-from . import filters 
+from . import MmtfReader
+from . import filters

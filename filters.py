@@ -241,7 +241,6 @@ class containsGroup(object):
         return True
 
 
-# TODO Clarify on group_counter
 class containsPolymerChainType(object):
     '''This filter returns entries that contain chains made of the specified
     monomer types. The default constructor returns entries that contain at least
@@ -274,9 +273,8 @@ class containsPolymerChainType(object):
         global_match = False
         num_chains = structure.chains_per_model[0] #get number of chains in first model, nessary?
         #chain types in entity as key, enetity from entity_list
-        # TODO clarify on group_counter
+        group_counter = 0
         for i in range(num_chains):
-            group_counter = 0
             match = True
             chain_type = structure.entity_list[i]['type']
             polymer = chain_type == "polymer"
@@ -312,7 +310,7 @@ class containsDProteinChain(object):
         Args:
 
     '''
-        self.filter = containsPolymerType(exclusive, "D-PEPTIDE LINKING", "PEPTIDE LINKING")
+        self.filter = containsPolymerChainType(exclusive, "D-PEPTIDE LINKING", "PEPTIDE LINKING")
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -336,7 +334,7 @@ class containsLProteinChain(object):
         Args:
 
     '''
-        self.filter = containsPolymerType(exclusive, "L-PEPTIDE LINKING", "PEPTIDE LINKING")
+        self.filter = containsPolymerChainType(exclusive, "L-PEPTIDE LINKING", "PEPTIDE LINKING")
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -360,7 +358,7 @@ class containsRnaChain(object):
         Args:
 
     '''
-        self.filter = containsPolymerType(exclusive, "RNA LINKING")
+        self.filter = containsPolymerChainType(exclusive, "RNA LINKING")
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -384,7 +382,7 @@ class containsDnaChain(object):
         Args:
 
     '''
-        self.filter = containsPolymerType(exclusive, "DNA LINKING")
+        self.filter = containsPolymerChainType(exclusive, "DNA LINKING")
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -407,7 +405,7 @@ class containsDSaccharide(object):
 
             Args:
         '''
-        self.filter = containsPolymerType(exclusive,"D-SACCHARIDE", "SACCHARIDE",\
+        self.filter = containsPolymerChainType(exclusive,"D-SACCHARIDE", "SACCHARIDE",\
                 "D-SACCHARIDE 1,4 AND 1,4 LINKING","D-SACCHARIDE 1,4 AND 1,6 LINKING")
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
@@ -420,7 +418,7 @@ class containsDSaccharide(object):
         return self.filter.call(t)
 
 
-# TODO Make DsspSecondaryStucture class (Spark/utils/DsspSecondaryStructures)
+# TODO On hold: Make DsspSecondaryStucture class (Spark/utils/DsspSecondaryStructures)
 class secondaryStructure(object):
     '''This Filter
 
