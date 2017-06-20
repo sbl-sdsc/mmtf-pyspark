@@ -124,9 +124,21 @@ class experimentalMethods(object):
     Attributes:
         experimental_methods (list(string)): A list of experimental methods to check
     '''
-    #NOTE:
-    #    - Should we give error statements for incorrect input?
-    #    - Convert to all caps?
+
+    # constants to be used as arguments to the Experimental Methods filter
+    ELECTRON_CRYSTALLOGRAPHY = "ELECTRON CRYSTALLOGRAPHY"
+    ELECTRON_MICROSCOPY = "ELECTRON MICROSCOPY"
+    ERP = "EPR"
+    FIBER_DIFFRACTION = "FIBER DIFFRACTION"
+    FLUORESCENCE_TRANSFER = "FLUORESCENCE TRANSFER"
+    INFRARED_SPECTROSCOPY = "INFRARED SPECTROSCOPY"
+    NEUTRON_DIFFRACTION = "NEUTRON DIFFRACTION"
+    POWDER_DIFFRACTION = "POWDER DIFFRACTION"
+    SOLID_STATE_NMR = "SOLID-STATE NMR"
+    SOLUTION_NMR = "SOLUTION NMR"
+    SOLUTION_SCATTERING = "SOLUTION SCATTERING"
+    THEORETICAL_MODEL = "THEORETICAL MODEL"
+    X_RAY_DIFFRACTION = "X-RAY DIFFRACTION"
 
     def __init__(self, *experimentalMethods):
         '''
@@ -346,7 +358,8 @@ class containsLProteinChain(object):
         Args:
 
     '''
-        self.filter = containsPolymerChainType(exclusive, "L-PEPTIDE LINKING", "PEPTIDE LINKING")
+        self.filter = containsPolymerChainType(["L-PEPTIDE LINKING", "PEPTIDE LINKING"], exclusive)
+
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -355,7 +368,7 @@ class containsLProteinChain(object):
         Returns:
 
         '''
-        return self.filter.call(t)
+        return self.filter(t)
 
 
 class containsRnaChain(object):
@@ -370,7 +383,7 @@ class containsRnaChain(object):
         Args:
 
     '''
-        self.filter = containsPolymerChainType(exclusive, "RNA LINKING")
+        self.filter = containsPolymerChainType("RNA LINKING",exclusive)
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -379,7 +392,7 @@ class containsRnaChain(object):
         Returns:
 
         '''
-        return self.filter.call(t)
+        return self.filter(t)
 
 
 class containsDnaChain(object):
