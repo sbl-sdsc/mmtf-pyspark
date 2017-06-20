@@ -225,6 +225,8 @@ class containsGroup(object):
         '''
         groups = [a for a in args]
         self.groupQuery = set(groups)
+
+
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -234,9 +236,9 @@ class containsGroup(object):
             bool: True if RDD contains all groups listed, else False
         '''
         #TODO can't find getGroupName
-        groups = [t[1].getGroupName(idx) for idx in t[1].group_type_list]
+        groups = [t[1].group_list[idx]['groupName'] for idx in t[1].group_type_list]
         for group in self.groupQuery:
-            if group not in t[1].group_type_list:
+            if group not in groups:
                 return False
         return True
 
@@ -261,6 +263,7 @@ class containsPolymerChainType(object):
         '''
         self.exclusive = exclusive
         self.entity_types = entity_Types
+
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -274,27 +277,35 @@ class containsPolymerChainType(object):
         num_chains = structure.chains_per_model[0] #get number of chains in first model, nessary?
         #chain types in entity as key, enetity from entity_list
         group_counter = 0
+
         for i in range(num_chains):
             match = True
-            chain_type = structure.entity_list[i]['type']
+            chain_type = [chain['type'] for chain in structure.entity_list
+                         if i in chain['chainIndexList']][0]
             polymer = chain_type == "polymer"
+
             if polymer:
                 contains_polymer = True
             else:
                 match = False
-            group_type_list
-            for j in range(structure.groups_per_chain[0]):
+            #group_type_list
+
+            for j in range(structure.groups_per_chain[i]):
                 if match and polymer:
                     group_idx = structure.group_type_list[group_counter]
                     group_type = structure.group_list[group_idx]['chemCompType']
-                    match = "group_type" in self.entity_types
+                    match = (group_type in self.entity_types)
                 group_counter += 1
-            if (polymer and match and not exclusive):
+
+            if (polymer and match and not self.exclusive):
                 return True
-            if (polymer and not match and exclusive):
+
+            if (polymer and not match and self.exclusive):
                 return False
+
             if match:
                 global_match = True
+
         return global_match and contains_polymer
 
 
@@ -310,7 +321,8 @@ class containsDProteinChain(object):
         Args:
 
     '''
-        self.filter = containsPolymerChainType(exclusive, "D-PEPTIDE LINKING", "PEPTIDE LINKING")
+        self.filter = containsPolymerChainType(["D-PEPTIDE LINKING", "PEPTIDE LINKING"], exclusive = exclusive)
+
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -319,7 +331,7 @@ class containsDProteinChain(object):
         Returns:
 
         '''
-        return self.filter.call(t)
+        return self.filter(t)
 
 
 class containsLProteinChain(object):
@@ -382,7 +394,7 @@ class containsDnaChain(object):
         Args:
 
     '''
-        self.filter = containsPolymerChainType(exclusive, "DNA LINKING")
+        self.filter = containsPolymerChainType("DNA LINKING", exclusive)
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -391,7 +403,7 @@ class containsDnaChain(object):
         Returns:
 
         '''
-        return self.filter.call(t)
+        return self.filter(t)
 
 
 class containsDSaccharide(object):
@@ -405,8 +417,10 @@ class containsDSaccharide(object):
 
             Args:
         '''
-        self.filter = containsPolymerChainType(exclusive,"D-SACCHARIDE", "SACCHARIDE",\
-                "D-SACCHARIDE 1,4 AND 1,4 LINKING","D-SACCHARIDE 1,4 AND 1,6 LINKING")
+        self.filter = containsPolymerChainType(["D-SACCHARIDE", "SACCHARIDE",
+                      "D-SACCHARIDE 1,4 AND 1,4 LINKING",
+                      "D-SACCHARIDE 1,4 AND 1,6 LINKING"], exclusive = exclusive)
+
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -415,7 +429,7 @@ class containsDSaccharide(object):
         Returns:
 
         '''
-        return self.filter.call(t)
+        return self.filter(t)
 
 
 # TODO On hold: Make DsspSecondaryStucture class (Spark/utils/DsspSecondaryStructures)

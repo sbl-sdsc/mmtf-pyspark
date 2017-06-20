@@ -5,11 +5,12 @@ test.py: Testing mmtf_spark
 Authorship information:
     __author__ = "Peter Rose"
     __maintainer__ = "Mars Huang"
-    __email__ = "marshuang80@gmai.com:
+    __email__ = "marshuang80@gmail.com:
     __status__ = "debug"
 TODO:
     Change to main funciton instead of test.py
 '''
+
 from pyspark import SparkConf, SparkContext
 from MmtfReader import downloadMmtfFiles, readSequenceFile
 from filters import rFree
@@ -34,7 +35,7 @@ def main(argv):
     sc = SparkContext(conf=conf)
 
     #Get command line input
-    path = "../reduced"
+    path = "../../../full"
     try :
         opts,args = getopt.getopt(argv,"p:",["--path="])
     except getopt.GetoptError:
@@ -57,7 +58,7 @@ def main(argv):
     #print(pdb[:5])
     # for testing
     print("---------------------")
-    pdb.filter(resolution(0.0,0.2)).count()
+    print(pdb.filter(resolution(0.0,0.2)).count())
     #print(pdb.filter(containsDnaChain).collect())
     #print(pdb = Rworkfilter(pdb,0,0.2))
     print("----------------------")

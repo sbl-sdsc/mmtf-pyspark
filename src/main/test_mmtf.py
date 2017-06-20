@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from pyspark import SparkConf, SparkContext
-from MmtfReader import read
+from MmtfReader import downloadMmtfFiles
 from filters import rFree
 # Create variables
 APP_NAME = "MMTF_Spark"
@@ -12,12 +12,14 @@ conf = SparkConf().setAppName(APP_NAME)
 conf = conf.setMaster("local[*]")
 sc = SparkContext(conf=conf)
 #Mmtf sequence file reader
-pdb = read(path,sc)
+proteins = ['2ONX','1JLP','5X6H','5L2G','2MK1']
+
+
+pdb = downloadMmtfFiles(proteins,sc)
 # for testing
 print("---------------------")
 #print(pdb.filter(Rworkfilter))
-pdb = pdb.filter(rFree(0,1)).collect()
+pdb = pdb.collect()
 #print(pdb = Rworkfilter(pdb,0,0.2))
 print("----------------------")
-
-mmtf_test = pdb[0][1]
+t = pdb[0][1]
