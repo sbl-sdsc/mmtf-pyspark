@@ -518,9 +518,9 @@ class secondaryStructure(object):
 
     Attrbutes:
     '''
-    def __init__(self, helixFractionMax = 1.0, helixFractionMin = 0.0,
-                 sheetFractionMax = 1.0, sheetFractionMin = 0.0,
-                 coilFractionMax = 1.0, coilFractionMin = 0.0, exclusive = False):
+    def __init__(self, helixFractionMin = 0.0, helixFractionMax = 1.0,
+                 sheetFractionMin = 0.0, sheetFractionMax = 1.0,
+                 coilFractionMin = 0.0, coilFractionMax = 1.0, exclusive = False):
 
         self.helixFractionMax = helixFractionMax
         self.helixFractionMin = helixFractionMin
@@ -563,9 +563,9 @@ class secondaryStructure(object):
 
                     if secondary_structure == "ALPHA_HELIX":
                         helix += 1
-                    if secondary_structure == "EXTENDED":
+                    elif secondary_structure == "EXTENDED":
                         sheet += 1
-                    if secondary_structure == "COIL":
+                    elif secondary_structure == "COIL":
                         coil += 1
                     else:
                         other += 1
