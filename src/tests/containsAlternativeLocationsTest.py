@@ -13,7 +13,7 @@ __status__ = "Warning"
 import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
-from src.main.filters import rWork
+from src.main.filters import containsAlternativeLocations
 
 path = '../full'
 
@@ -27,13 +27,11 @@ class testContainsAlternativeLocations(unittest.TestCase):
 
 
     def test1(self):
-        pdb_1 = self.pdb.filter(rWork(0.171, 0.173))
+        pdb_1 = self.pdb.filter(containsAlternativeLocations())
         results_1 = pdb_1.keys().collect()
 
-        self.assertTrue('2ONX' in results_1)
-        self.assertFalse('2OLX' in results_1)
-        self.assertFalse('3REC' in results_1)
-        self.assertFalse('1LU3' in results_1)
+        self.assertTrue('4QXX' in results_1)
+        self.assertFalse('2ONX' in results_1)
 
 
     def tearDown(self):

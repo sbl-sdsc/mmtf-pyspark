@@ -13,7 +13,7 @@ __status__ = "Pass"
 import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
-from src.main.filters import containsDSaccharide
+from src.main.filters import containsDSaccharideChain
 
 
 class containsDSaccharideChainTest(unittest.TestCase):
@@ -28,14 +28,14 @@ class containsDSaccharideChainTest(unittest.TestCase):
 
 
     def test1(self):
-        pdb_1 = self.pdb.filter(containsDSaccharide())
+        pdb_1 = self.pdb.filter(containsDSaccharideChain())
         results_1 = pdb_1.keys().collect()
 
         self.assertFalse('2ONX' in results_1)
         self.assertFalse('1JLP' in results_1)
         self.assertFalse('5X6H' in results_1)
         self.assertFalse('5L2G' in results_1)
-        self.assertTrue('2MK1' in results_1)
+        self.assertFalse('2MK1' in results_1)
 
 
     # TODO: Mapper structure to polymer chains
