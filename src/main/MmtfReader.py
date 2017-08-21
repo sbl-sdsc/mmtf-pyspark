@@ -41,20 +41,24 @@ def getStructure(pdbId):
 #    infiles = sc.sequenceFile(path, text, byteWritable)
 #    return infiles.count() #.map(call)
 
-# TODO Check logic flow
 def readSequenceFile(path,sc, pdbId = None, fraction = None, seed = None):
+
     infiles = sc.sequenceFile(path, text, byteWritable)
+
     if (pdbId == None and fraction == None and seed == None):
         return infiles.map(call)
+
     elif(pdbId != None and fraction == None and seed == None):
         pdbIdSet = set(pdbId)
         return infiles.filter(lambda t: str(t[0]) in pdbIdSet).map(call)
+
     elif (fraction != None and seed != None):
         return infiles.sample(False, fraction, seed).map(call)
 #Another read function that takes list of pdb as input
 
 
-def downloadMmtfFiles(pdbIds, sc):
+def  downloadMmtfFiles(pdbIds, sc):
+
     return sc.parallelize(set(pdbIds)).map(lambda t: getStructure(t))
 
 #if __name__ == "__main__":

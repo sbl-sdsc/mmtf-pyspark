@@ -12,7 +12,9 @@ TODO:
     Debug and Test
     Doc String
 '''
-import re
+import re # For containsSequenceRegex
+from dateutil.parser import parse # For despositionDate
+from src.main.utils.dsspSecondaryStructure import *
 
 class rWork(object):
     '''This filter return true if the r_work value for this structure is within the specified range.
@@ -161,7 +163,6 @@ class experimentalMethods(object):
         return methods == self.experimental_methods
 
 
-# TODO NEED Debug/Testing, Not Sure if it is Working
 class containsSequenceRegex(object):
     '''This filter returns true if the polymer sequence motif matches the specified regular expression.
 	Sequence motifs support the following one-letter codes:
@@ -218,10 +219,7 @@ class containsSequenceRegex(object):
                     return True
         return False
 
-#Double check with peter/ test
 
-
-# TODO Can't Find getGroupNames : Double check with Peter if it is in group_list
 class containsGroup(object):
     '''This filter returns entries that contain specified groups (residues).
     Groups are specified by their one, two, or three-letter codes, e.g. "F", "MG", "ATP", as definedin the wwPDB Chemical Component Dictionary (https://www.wwpdb.org/data/ccd).
@@ -247,11 +245,13 @@ class containsGroup(object):
         Returns:
             bool: True if RDD contains all groups listed, else False
         '''
-        #TODO can't find getGroupName
         groups = [t[1].group_list[idx]['groupName'] for idx in t[1].group_type_list]
+
         for group in self.groupQuery:
+
             if group not in groups:
                 return False
+
         return True
 
 
@@ -266,15 +266,42 @@ class containsPolymerChainType(object):
     Attributes:
 
     '''
+
+    D_PEPTIDE_COOH_CARBOXY_TERMINUS = "D-PEPTIDE COOH CARBOXY TERMINUS"
+    D_PEPTIDE_NH3_AMINO_TERMINUS = "D-PEPTIDE NH3 AMINO TERMINUS"
+    D_PEPTIDE_LINKING = "D-PEPTIDE LINKING"
+    D_SACCHARIDE = "D-SACCHARIDE"
+    D_SACCHARIDE_14_and_14_LINKING = "D-SACCHARIDE 1,4 AND 1,4 LINKING"
+    D_SACCHARIDE_14_and_16_LINKING = "D-SACCHARIDE 1,4 AND 1,6 LINKING"
+    DNA_OH_3_PRIME_TERMINUS = "DNA OH 3 PRIME TERMINUS"
+    DNA_OH_5_PRIME_TERMINUS = "DNA OH 5 PRIME TERMINUS"
+    DNA_LINKING = "DNA LINKING"
+    L_PEPTIDE_COOH_CARBOXY_TERMINUS = "L-PEPTIDE COOH CARBOXY TERMINUS"
+    L_PEPTIDE_NH3_AMINO_TERMINUS = "L-PEPTIDE NH3 AMINO TERMINUS"
+    L_PEPTIDE_LINKING = "L-PEPTIDE LINKING"
+    L_SACCHARIDE = "L-SACCHARIDE"
+    L_SACCHARIDE_14_AND_14_LINKING = "L-SACCHARDIE 1,4 AND 1,4 LINKING"
+    L_SACCHARIDE_14_AND_16_LINKING = "L-SACCHARIDE 1,4 AND 1,6 LINKING"
+    PEPTIDE_LINKING = "PEPTIDE LINKING"
+    RNA_OH_3_PRIME_TERMINUS = "RNA OH 3 PRIME TERMINUS"
+    RNA_OH_5_PRIME_TERMINUS = "RNA OH 5 PRIME TERMINUS"
+    RNA_LINKING = "RNA LINKING"
+    NON_POLYMER = "NON-POLYMER"
+    OTHER = "OTHER"
+    SACCHARIDE = "SACCHARIDE"
+
     #default argument has to follow non-default argument
-    def __init__(self, entity_Types, exclusive = False):
+    def __init__(self, monomer_type, exclusive = False):
         '''The class
 
         Args:
 
         '''
+        if type(monomer_type) == str:
+            monomer_type = monomer_type.split(',')
+
         self.exclusive = exclusive
-        self.entity_types = entity_Types
+        self.monomer_type = monomer_type
 
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
@@ -306,7 +333,7 @@ class containsPolymerChainType(object):
                 if match and polymer:
                     group_idx = structure.group_type_list[group_counter]
                     group_type = structure.group_list[group_idx]['chemCompType']
-                    match = (group_type in self.entity_types)
+                    match = (group_type in self.monomer_type)
                 group_counter += 1
 
             if (polymer and match and not self.exclusive):
@@ -321,6 +348,35 @@ class containsPolymerChainType(object):
         return global_match and contains_polymer
 
 
+class containsAlternativeLocations(object):
+    '''This filter return true if this structure contains an alternative location
+
+
+    Attributes:
+
+    '''
+    def __init__(self):
+        '''The class
+
+        Args:
+
+        '''
+
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args:
+
+        Returns:
+         '''
+        structure = t[1]
+
+        for c in structure.alt_loc_list:
+            if c != '\0': return True
+
+        return False
+
+
 class containsDProteinChain(object):
     '''This filter
 
@@ -330,10 +386,12 @@ class containsDProteinChain(object):
     def __init__(self, exclusive = False):
         '''The class
 
-        Args:
+            Args:
 
-    '''
-        self.filter = containsPolymerChainType(["D-PEPTIDE LINKING", "PEPTIDE LINKING"], exclusive = exclusive)
+        '''
+        self.filter = containsPolymerChainType([\
+            containsPolymerChainType.D_PEPTIDE_LINKING,
+            containsPolymerChainType.PEPTIDE_LINKING], exclusive = exclusive)
 
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
@@ -357,8 +415,12 @@ class containsLProteinChain(object):
 
         Args:
 
-    '''
-        self.filter = containsPolymerChainType(["L-PEPTIDE LINKING", "PEPTIDE LINKING"], exclusive)
+        '''
+        self.filter = containsPolymerChainType([
+            containsPolymerChainType.L_PEPTIDE_LINKING,
+            containsPolymerChainType.PEPTIDE_LINKING,
+            ], exclusive)
+
 
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
@@ -382,8 +444,10 @@ class containsRnaChain(object):
 
         Args:
 
-    '''
-        self.filter = containsPolymerChainType("RNA LINKING",exclusive)
+        '''
+        self.filter = containsPolymerChainType(containsPolymerChainType.RNA_LINKING,exclusive)
+
+
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -407,7 +471,7 @@ class containsDnaChain(object):
         Args:
 
     '''
-        self.filter = containsPolymerChainType("DNA LINKING", exclusive)
+        self.filter = containsPolymerChainType(containsPolymerChainType.DNA_LINKING, exclusive)
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
@@ -419,7 +483,7 @@ class containsDnaChain(object):
         return self.filter(t)
 
 
-class containsDSaccharide(object):
+class containsDSaccharideChain(object):
     '''This filter
 
     Attributes:
@@ -430,9 +494,12 @@ class containsDSaccharide(object):
 
             Args:
         '''
-        self.filter = containsPolymerChainType(["D-SACCHARIDE", "SACCHARIDE",
-                      "D-SACCHARIDE 1,4 AND 1,4 LINKING",
-                      "D-SACCHARIDE 1,4 AND 1,6 LINKING"], exclusive = exclusive)
+        self.filter = containsPolymerChainType([
+            containsPolymerChainType.D_SACCHARIDE,
+            containsPolymerChainType.SACCHARIDE,
+            containsPolymerChainType.D_SACCHARIDE_14_and_14_LINKING,
+            containsPolymerChainType.D_SACCHARIDE_14_and_16_LINKING
+            ] , exclusive = exclusive)
 
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
@@ -451,42 +518,243 @@ class secondaryStructure(object):
 
     Attrbutes:
     '''
-    def __init__(self,_):
-        self.helixFractionMax = 1.0
-        self.helixFractionMin = 0.0
-        self.sheetFractionMax = 1.0
-        self.sheetFractionMin = 0.0
-        self.coilFractionMax = 1.0
-        self.coilFractionMin = 0.0
+    def __init__(self, helixFractionMin = 0.0, helixFractionMax = 1.0,
+                 sheetFractionMin = 0.0, sheetFractionMax = 1.0,
+                 coilFractionMin = 0.0, coilFractionMax = 1.0, exclusive = False):
+
+        self.helixFractionMax = helixFractionMax
+        self.helixFractionMin = helixFractionMin
+        self.sheetFractionMax = sheetFractionMax
+        self.sheetFractionMin = sheetFractionMin
+        self.coilFractionMax = coilFractionMax
+        self.coilFractionMin = coilFractionMin
+        self.exclusive = exclusive
+
+
     def __call__(self,t):
         structure = t[1]
-        if len(structure.entity_list) == 1:
-            if structure.sec_struct_list == 0 :
-                return False
+        contains_polymer = False
+        global_match = False
+        num_chains = structure.chains_per_model[0]
+        sec_struct = structure.sec_struct_list
+        group_counter = 0
+
+        for i in range(num_chains):
             helix = 0.0
             sheet = 0.0
             coil = 0.0
-            #TODO Peter uses switch case, might have to do with getQ3Code
-            #TODO Not sure how to DsspSecondaryStructure.getQ3Code
-            #TODO double check break is for switchcase
-            for code in structure.sec_struct_list:
-                if code == "ALPHA_HELIX":
-                    helix += 1
-                if code == "EXTENDED":
-                    sheet += 1
-                if code == "COIL":
-                    coil += 1
-                else:
-                    continue
-            length = len(structure.sec_struct_list)
-            helix /= length
-            sheet /= length
-            coil /= length
-            return helix >= self.helixFractionMin and helix <= \
-            self.helixFractionMax and sheet >= self.sheetFractionMin and sheet \
-            <= self.sheetFractionMax and coil >= self.coilFractionMin and coil \
-            <= self.coilFractionMax
-        return False
+            other = 0.0
+            match = True
+
+            chain_type = [chain['type'] for chain in structure.entity_list
+                          if i in chain['chainIndexList']][0]
+            polymer = chain_type == 'polymer'
+
+            if polymer:
+                contains_polymer = True
+            else:
+                match = False
+
+            for j in range(structure.groups_per_chain[i]):
+
+                if match and polymer:
+                    code = sec_struct[group_counter]
+                    secondary_structure = dsspSecondaryStructure.getQ3Code(code)
+
+                    if secondary_structure == "ALPHA_HELIX":
+                        helix += 1
+                    elif secondary_structure == "EXTENDED":
+                        sheet += 1
+                    elif secondary_structure == "COIL":
+                        coil += 1
+                    else:
+                        other += 1
+
+                group_counter += 1
+
+            if match and polymer:
+                n = structure.groups_per_chain[i] - other
+                helix /= n
+                sheet /= n
+                coil /= n
+
+                match = helix >= self.helixFractionMin and \
+                        helix <= self.helixFractionMax and \
+                        sheet >= self.sheetFractionMin and \
+                        sheet <= self.sheetFractionMax and \
+                        coil >= self.coilFractionMin and \
+                        coil <= self.coilFractionMax
+
+            if (polymer and match and not self.exclusive):
+                return True
+
+            if (polymer and not match and self.exclusive):
+                return False
+
+            if match:
+                global_match = True
+
+        return global_match and contains_polymer
+
+class depositionDate(object):
+    '''This filter return true if this structure contains an alternative location
+
+
+    Attributes:
+
+    '''
+    def __init__(self, startDate, endDate):
+        '''The class
+
+        Args:
+
+        '''
+        self.startDate = parse(startDate)
+        self.endDate = parse(endDate)
+
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args:
+
+        Returns:
+         '''
+        structure = t[1]
+        depositionDate = parse(structure.deposition_date)
+
+        return depositionDate >= self.startDate and depositionDate <= self.endDate
+
+
+class releaseDate(object):
+    '''This filter return true if this structure contains an alternative location
+
+
+    Attributes:
+
+    '''
+    def __init__(self, startDate, endDate):
+        '''The class
+
+        Args:
+
+        '''
+        self.startDate = parse(startDate)
+        self.endDate = parse(endDate)
+
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args:
+
+        Returns:
+         '''
+        structure = t[1]
+        releaseDate = parse(structure.release_date)
+
+        return releaseDate >= self.startDate and releaseDate <= self.endDate
+
+
+class polymerComposition(object):
+    '''This filter returns entries that contain chains made of the specified
+    monomer types. The default constructor returns entries that contain at least
+    one chain that matches the conditions. If the "exclusive" flag is set to true
+    in the constructor, all chains must match the conditions. For a multi-model
+    structure, this filter only checks the first model.
+
+
+    Attributes:
+
+    '''
+
+    AMINO_ACIDS_20 = ["ALA","ARG","ASN","ASP","CYS","GLN","GLU","GLY","HIS","ILE","LEU","LYS","MET","PHE","PRO","SER","THR","TRP","TYR","VAL"]
+    MINO_ACIDS_22 = ["ALA","ARG","ASN","ASP","CYS","GLN","GLU","GLY","HIS","ILE","LEU","LYS","MET","PHE","PRO","SER","THR","TRP","TYR","VAL","SEC","PYL"]
+    DNA_STD_NUCLEOTIDES = ["DA","DC","DG","DT"]
+    RNA_STD_NUCLEOTIDES = ["A","C","G","U"]
+
+    # TODO Process monomerNames input in case of Array or Strings
+    #default argument has to follow non-default argument
+    def __init__(self, monomer_type, exclusive = False):
+        '''The class
+
+        Args:
+
+        '''
+        if type(monomer_type) == str:
+            monomer_type = monomer_type.split(",")
+
+        self.exclusive = exclusive
+        self.residues = monomer_type
+
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args:
+
+        Returns:
+        '''
+        structure = t[1]
+        contains_polymer = False
+        global_match = False
+        num_chains = structure.chains_per_model[0] #get number of chains in first model, nessary?
+        #chain types in entity as key, enetity from entity_list
+        group_counter = 0
+
+        for i in range(num_chains):
+            match = True
+            chain_type = [chain['type'] for chain in structure.entity_list
+                         if i in chain['chainIndexList']][0]
+            polymer = chain_type == "polymer"
+
+            if polymer:
+                contains_polymer = True
+            else:
+                match = False
+            #group_type_list
+
+            for j in range(structure.groups_per_chain[i]):
+                if match and polymer:
+                    group_idx = structure.group_type_list[group_counter]
+                    group_type = structure.group_list[group_idx]['groupName']
+                    match = (group_type in self.residues)
+                group_counter += 1
+
+            if (polymer and match and not self.exclusive):
+                return True
+
+            if (polymer and not match and self.exclusive):
+                return False
+
+            if match:
+                global_match = True
+
+        return global_match and contains_polymer
+
+
+class orFilter(object):
+    '''This filter return true if this structure contains an alternative location
+
+
+    Attributes:
+
+    '''
+    def __init__(self, filter1, filter2):
+        '''The class
+
+        Args:
+
+        '''
+        self.filter1 = filter1
+        self.filter2 = filter2
+
+    def __call__(self,t):
+        '''calling the rWorkFilter class as a function
+
+        Args:
+
+        Returns:
+         '''
+
+        return self.filter1(t) or self.filter2(t)
 
 
 class notFilter(object):
@@ -501,6 +769,7 @@ class notFilter(object):
         Args:
         '''
         self.filter = filter_function
+
     def __call__(self,t):
         '''calling the rWorkFilter class as a function
 
