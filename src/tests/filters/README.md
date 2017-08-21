@@ -1,6 +1,6 @@
 # Unit tests
 
-This folder contains all the unit tests for mmtf-pyspark.
+This folder contains all the unit tests for mmtf-pyspark filters
 
 ## Example:
 To run unit test, cd to the directory of mmtf-pyspark.
