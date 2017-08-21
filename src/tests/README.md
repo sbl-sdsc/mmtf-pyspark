@@ -8,14 +8,6 @@ To run unit test, cd to the directory of mmtf-pyspark.
 python -m src.test.rFreeFilterTest
 ```
 
-## TODO
-
-Finish making filters 
-
-Make mappers 
-
-Comment code
-
 ## Test Status
 
 The following is a list of the unit tests and their status:
@@ -38,42 +30,41 @@ done
 
 ### ExperimentalMethodsTest
 
-need mappers
+done
 
 ### ContainsSequenceRegexTest
 
-need mappers
+done
 
 ### ContainsRnaChainTest
 
-need mappers
+done
 
 ### ContainsLProteinChain
 
-need mappers
+done
 
 ### ContainsDnaChainTest
 
-need mappers
+done
 
 ### ContainsDScacharideTest
 
-need mappers
+done
 
 ### ContainsDProteinsChainTest
 
-need mappers 
+done
 
 ### SecondardStructureTest
 
-make filter
+done
 
 ### PolymerCompositionTest
 
-make filter 
+done
 
 ### ContainsAlternativeLocationsTest 
 
-make filter  
-
+done
 
