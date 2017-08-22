@@ -44,12 +44,15 @@ class structureToPolymerChains(object):
             polymerChain = MMTFEncoder()
 
             entityToChainIndex = chainToEntityIndex[i]
+
             chain_type = [chain['type'] for chain in structure.entity_list
                          if i in chain['chainIndexList']][0]
             polymer = chain_type == "polymer"
             polymerAtomCount = 0
 
             atomMap = {}
+
+            structureId = ''
 
             if polymer:
                 # To avoid of information loss, add chainName/IDs and entity id
@@ -130,15 +133,18 @@ class structureToPolymerChains(object):
                 chId = structure.chain_name_list[i]
                 if self.useChainIdInsteadOfChainName :
                     chId = structure.chain_id_list[i]
-
+                '''
                 if self.excludeDuplicates:
                     if structure.entity_list[chainToEntityIndex[i]] in seqSet:
                         continue
                     seqSet.add(structure.entity_list[chainToEntityIndex[i]])
-
+                '''
                 chainList.append((structure.structure_id + "." + chId, polymerChain))
+        # TODO double check with python version
+        if self.excludeDuplicates:
+            return list(set(chainList))
 
-            return chainList
+        return chainList
 
 
     def _getNumAtomsAndBonds(self, structure):
@@ -158,6 +164,7 @@ class structureToPolymerChains(object):
                 groupCounter += 1
 
         return atomsPerChain, bondsPerChain
+
 
     def _getChainToEntityIndex(self, structure):
         '''Returns an list that maps a chain index to an entity index.
