@@ -12,7 +12,7 @@ Authorship information:
 from pyspark.sql import Row
 
 class structureToSecondaryStructureElements(object):
-    '''Maps chain sequences to it's sequence segments
+    '''Maps chain sequences to it's sequence elements
 
     Attributes:
     '''
