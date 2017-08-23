@@ -44,7 +44,7 @@ class structureToInteractingResidues(object):
 
 
     def _getDistanceProfile(structureID, matches, index, groupIndices, groupNames, structure):
-       cutoffDistanceSq = cutoffDistance * cutoffDistance
+        cutoffDistanceSq = cutoffDistance * cutoffDistance
 
         x = structure.x_coord_list
         y = structure.y_coord_list
@@ -61,7 +61,7 @@ class structureToInteractingResidues(object):
             minDSq = float('inf')
             minIndex = -1
 
-            for j in range(groupIndices[i], groupIndices[i+1]:
+            for j in range(groupIndices[i], groupIndices[i+1]):
 
                 for k in range(first, last):
                     dx = x[j] - x[k]

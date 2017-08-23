@@ -10,7 +10,7 @@ Authorship information:
 
 '''
 
-class structureToPolymerChains(object):
+class structureToPolymerSequences(object):
     '''This mapper maps a structure to it's polypeptides, polynucleotide chain sequences.
     For a multi-model structure, only the first model is considered.
 
@@ -53,7 +53,7 @@ class structureToPolymerChains(object):
                 else:
                     key += structure.chain_name_list[i]
 
-                sequences.append((key,structure.entity_list[chainToEntityIndex[i]['sequence']))
+                sequences.append((key,structure.entity_list[chainToEntityIndex[i]]['sequence']))
 
         # TODO double check
         if self.removeDuplicates:
