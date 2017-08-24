@@ -15,6 +15,8 @@ Authorship information:
 
 from mmtf.api.mmtf_reader import MMTFDecoder
 from mmtf.api import default_api
+from os import walk
+from os import path
 import msgpack
 
 
@@ -28,6 +30,36 @@ def call(t):
     decoder = MMTFDecoder()
     decoder.decode_data(unpack)
     return (str(t[0]),decoder)
+
+
+def call_mmtf(f):
+    if ".mmtf.gz" in f:
+        name = f.split('/')[-1].split('.')[0].upper()
+        decoder = default_api.parse_gzip(f)
+        return (name,decoder)
+
+    elif ".mmtf" in f:
+        name = f.split('/')[-1].split('.')[0].upper()
+        decoder = default_api.parse(f)
+        return (name,decoder)
+
+        #else:
+        #    return None
+
+    #except Exception:
+        #print("error reading file")
+    #    return None
+
+
+def getFiles(user_path):
+    files = []
+    for dirpath, dirnames, filenames in walk(user_path):
+        for f in filenames:
+            if path.isdir(f):
+                files += getFiles(f)
+            else:
+                files.append(dirpath + '/' + f)
+    return files
 
 
 def getStructure(pdbId):
@@ -57,7 +89,12 @@ def readSequenceFile(path,sc, pdbId = None, fraction = None, seed = None):
 #Another read function that takes list of pdb as input
 
 
-def  downloadMmtfFiles(pdbIds, sc):
+def readMmtfFiles(path, sc):
+    return sc.parallelize(getFiles(path)).map(call_mmtf).filter(lambda t: t != None)
+
+
+
+def downloadMmtfFiles(pdbIds, sc):
 
     return sc.parallelize(set(pdbIds)).map(lambda t: getStructure(t))
 
