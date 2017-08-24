@@ -9,9 +9,11 @@ Authorship information:
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
 '''
-#TODO Docstring
-#TODO Deflat Gzip try catch
-#TODO
+
+# TODO using local mmtf-python
+import sys
+sys.path.append("../../../mmtf-python/")
+
 
 from mmtf.api.mmtf_reader import MMTFDecoder
 from mmtf.api import default_api
@@ -69,10 +71,6 @@ def getStructure(pdbId):
     return (pdbId,decoder)
 
 
-#def read(path,sc):
-#    infiles = sc.sequenceFile(path, text, byteWritable)
-#    return infiles.count() #.map(call)
-
 def readSequenceFile(path,sc, pdbId = None, fraction = None, seed = None):
 
     infiles = sc.sequenceFile(path, text, byteWritable)
@@ -93,10 +91,17 @@ def readMmtfFiles(path, sc):
     return sc.parallelize(getFiles(path)).map(call_mmtf).filter(lambda t: t != None)
 
 
+def readPDBFiles(path, sc):
+	return sc.parallelize(getFiles(path)).map(call_pdb).filter(lambda t: t != None)
+
 
 def downloadMmtfFiles(pdbIds, sc):
+	return sc.parallelize(set(pdbIds)).map(lambda t: getStructure(t))
 
-    return sc.parallelize(set(pdbIds)).map(lambda t: getStructure(t))
+
+#def read(path,sc):
+#    infiles = sc.sequenceFile(path, text, byteWritable)
+#    return infiles.count() #.map(call)
 
 #if __name__ == "__main__":
 #    read(path,sc)
