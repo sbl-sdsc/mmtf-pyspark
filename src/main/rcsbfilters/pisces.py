@@ -21,8 +21,7 @@ Authorship information:
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
 '''
-
-# TODO import piscesDownloader
+from src.main.webservices import piscesDownloader
 
 class pisces(object):
     '''
