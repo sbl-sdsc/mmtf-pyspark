@@ -38,10 +38,10 @@ class pisces(object):
 
         pD = piscesDownloader(sequenceIdentity, resolition)
 
-        # TODO check getStructureCahinIds
         for pdbId in pD.getStructureChainIds():
             self.pdbIds.add(pdbId)
             self.pdbIds.add(pdbId[:4])
+
 
     def __call__(self, t):
         return t[0] in self.pdbIds
