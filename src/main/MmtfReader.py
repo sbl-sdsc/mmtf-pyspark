@@ -12,7 +12,9 @@ Authorship information:
 #TODO Docstring
 #TODO Deflat Gzip try catch
 #TODO
+import sys
 
+sys.path.insert(0, "../../../mmtf-python/")
 from mmtf.api.mmtf_reader import MMTFDecoder
 from mmtf.api import default_api
 import msgpack
