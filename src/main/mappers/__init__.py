@@ -1,5 +1,1 @@
-__all__ = ["structureToInteractingResidues",
-           "structureToPolymerChains",
-           "structureToPolymerSequences",
-           "structureToSecondaryStructureElements",
-           "structureToSecondaryStructureSegments"]
+from .structureToPolymerChains import structureToPolymerChains

@@ -1,24 +1,20 @@
 #!/user/bin/env python
 '''
 structureToSecondaryStructureElements.py:
-
 Authorship information:
     __author__ = "Yue Yu"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
-
 '''
 from pyspark.sql import Row
 
 class structureToSecondaryStructureElements(object):
     '''Maps chain sequences to it's sequence elements
-
     Attributes:
     '''
     def __init__(self, label, length = 4):
         '''Constructor sets the segment length.
-
         '''
         self.label = label
         self.length = length
@@ -48,7 +44,3 @@ class structureToSecondaryStructureElements(object):
                 sequences.append(Row(currSequence, self.label))
 
         return sequences
-
-
-
-

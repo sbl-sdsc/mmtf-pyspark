@@ -1,27 +1,22 @@
 #!/user/bin/env python
 '''
 structureToPolymerChain.py:
-
 Authorship information:
     __author__ = "Peter Rose"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
-
 '''
 from mmtf.utils import *
 from mmtf.api.mmtf_writer import MMTFEncoder
 
 class structureToPolymerChains(object):
     '''This mapper...
-
     Attributes:
     '''
     def __init__(self, useChainIdInsteadOfChainName = False, excludeDuplicates = False):
         '''This class initializer ...
-
         Args:
-
         '''
         self.useChainIdInsteadOfChainName = useChainIdInsteadOfChainName
         self.excludeDuplicates = excludeDuplicates
@@ -168,7 +163,6 @@ class structureToPolymerChains(object):
 
     def _getChainToEntityIndex(self, structure):
         '''Returns an list that maps a chain index to an entity index.
-
         Args:
             structureDataInterFace
         '''
@@ -180,4 +174,3 @@ class structureToPolymerChains(object):
                 entityChainIndex[j] = i
 
         return entityChainIndex
-

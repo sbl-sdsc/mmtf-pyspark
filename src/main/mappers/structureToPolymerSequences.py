@@ -1,74 +1,46 @@
 #!/user/bin/env python
 '''
-structureToPolymerSequences.py:
-
+structureToSecondaryStructureElements.py:
 Authorship information:
-    __author__ = "Peter Rose"
+    __author__ = "Yue Yu"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
-
 '''
+from pyspark.sql import Row
 
-class structureToPolymerSequences(object):
-    '''This mapper maps a structure to it's polypeptides, polynucleotide chain sequences.
-    For a multi-model structure, only the first model is considered.
-
+class structureToSecondaryStructureElements(object):
+    '''Maps chain sequences to it's sequence elements
     Attributes:
     '''
-    def __init__(self, useChainIdInsteadOfChainName = False, removeDuplicates= False):
-        '''Extracts all polymer chains from a structure. If the argument is set to true,
-        the assigned key is: <PDB ID.Chain ID>, where Chain ID is the unique identifier
-        assigned to each molecular entity in an mmCIF file. This Chain ID corresponds to
-        <a href="http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_atom_site.label_asym_id.html">
-        _atom_site.label_asym_id</a> field in an mmCIF file.
-
-        Args:
-            useChainIdInsteadOfChainName if true, use the Chain Id in the key assignments
-            removeDuplicates if true, return only one chain for each unique sequence= t[1]
+    def __init__(self, label, length = 4):
+        '''Constructor sets the segment length.
         '''
-        self.useChainIdInsteadOfChainName = useChainIdInsteadOfChainName
-        self.removeDuplicates= excludeDuplicates
-
+        self.label = label
+        self.length = length
 
     def __call__(self, t):
-        structure = t[1]
-        sequences = list()
-        seqSet = set()
+        # TODO double check indexing
+        sequence = t[1]
+        dsspQ3 = t[6]
+        sequences = []
 
-        chainToEntityIndex = self._getChainToEntityIndex(structure)
+        i = 0
+        # TODO double check while loop logic
+        while i < len(sequence):
+            currLength = 0
+            currSequence = ""
 
-        for i in range(structure.chains_per_model[0]):
-            polymer = structure.entity_list[i]['type'] == 'polymer'
+            for j in range(i, len(sequence)):
 
-            if polymer:
-                key = t[0]
+                if dsspQ3[j:j+1] == self.label:
+                    currLength = 0
+                    currSequence += sequence[j: j+1]
+                else: break
 
-                if '.' in key:
-                    key = key.split('.')[0]
+            i += currLength + 1
 
-                key += '.'
-                if self.useChainIdInsteadOfChainName:
-                    key += structure.chain_id_list[i]
-                else:
-                    key += structure.chain_name_list[i]
-
-                sequences.append((key,structure.entity_list[chainToEntityIndex[i]]['sequence']))
-
-        # TODO double check
-        if self.removeDuplicates:
-            return list(set(sequences))
+            if currLength >= self.length:
+                sequences.append(Row(currSequence, self.label))
 
         return sequences
-
-
-
-    def _getChainToEntityIndex(structure):
-        entityChainIndex = [0]*structure.num_chains
-
-        for i in range(len(structure.entity_list)):
-
-            for j in structure.entity_list[i]['chainIndexList']:
-                entityChainIndex[j] = i
-
-        return entityChainIndex

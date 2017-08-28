@@ -1,7 +1,6 @@
 #!/user/bin/env python
 '''
 dsspSecondaryStructure.py:
-
 Authorship information:
     __author__ = "Peter Rose"
     __maintainer__ = "Mars Huang"
