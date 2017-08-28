@@ -14,7 +14,7 @@ TODO:
 '''
 import re # For containsSequenceRegex
 from dateutil.parser import parse # For despositionDate
-from utils.dsspSecondaryStructure import *
+from src.main.utils.dsspSecondaryStructure import *
 
 class rWork(object):
     '''This filter return true if the r_work value for this structure is within the specified range.

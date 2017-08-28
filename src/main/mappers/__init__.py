@@ -1,1 +1,1 @@
-from .structureToPolymerChains import structureToPolymerChains
+from . import structureToPolymerChains
