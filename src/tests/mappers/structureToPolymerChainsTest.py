@@ -2,9 +2,11 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
+from src.main.mappers import structureToPolymerChains
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import containsAlternativeLocations
-from src.main.mappers.structureToPolymerChains import *
+#from src.main.mappers.structureToPolymerChains import *
+
 
 class structureToPolymerChainsTest(unittest.TestCase):
 
@@ -29,6 +31,7 @@ class structureToPolymerChainsTest(unittest.TestCase):
         results_1 = pdb_1.keys().collect()
 
         self.assertTrue(len(results_1) == 10)
+
 
     def tearDown(self):
         self.sc.stop()
