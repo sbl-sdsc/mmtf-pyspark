@@ -15,6 +15,7 @@ import sys
 sys.path.append("../../../mmtf-python/")
 
 
+sys.path.insert(0, "../../../mmtf-python/")
 from mmtf.api.mmtf_reader import MMTFDecoder
 from mmtf.api import default_api
 from os import walk

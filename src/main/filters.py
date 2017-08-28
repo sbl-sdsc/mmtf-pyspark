@@ -14,7 +14,7 @@ TODO:
 '''
 import re # For containsSequenceRegex
 from dateutil.parser import parse # For despositionDate
-from src.main.utils.dsspSecondaryStructure import *
+from utils.dsspSecondaryStructure import *
 
 class rWork(object):
     '''This filter return true if the r_work value for this structure is within the specified range.
@@ -561,11 +561,11 @@ class secondaryStructure(object):
                     code = sec_struct[group_counter]
                     secondary_structure = dsspSecondaryStructure.getQ3Code(code)
 
-                    if secondary_structure == "ALPHA_HELIX":
+                    if secondary_structure == dsspSecondaryStructure.ALPHA_HELIX:
                         helix += 1
-                    elif secondary_structure == "EXTENDED":
+                    elif secondary_structure == dsspSecondaryStructure.EXTENDED:
                         sheet += 1
-                    elif secondary_structure == "COIL":
+                    elif secondary_structure == dsspSecondaryStructure.COIL:
                         coil += 1
                     else:
                         other += 1
