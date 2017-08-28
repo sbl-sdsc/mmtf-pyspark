@@ -48,13 +48,12 @@ class piscesDownloader(object):
 
 
     def getStructureChainIds(self):
-        fileURL = self._getFileName()
+        fileURL = self.URL + '/' + self._getFileName()
         u = urlopen(fileURL)
         line = str(gzip.GzipFile(fileobj=u).read()).split('\\n')
-        structureChainId = [l.split()[0] + '.' + l.split[1][:2] for l in line if
+        structureChainId = [l.split()[0] + '.' + l.split()[1][:2] for l in line if
                             len(l.split()) > 1]
         return structureChainId
-
 
 
     def _getFileName(self):
