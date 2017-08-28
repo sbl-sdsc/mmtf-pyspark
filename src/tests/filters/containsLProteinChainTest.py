@@ -4,7 +4,7 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import containsLProteinChain
-from src.main.mappers.structureToPolymerChains import *
+from src.main.mappers import *
 
 class containsLProteinChainTest(unittest.TestCase):
 

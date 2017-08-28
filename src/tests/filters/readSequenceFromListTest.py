@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-#!/usr/bin/env python
 '''
 readSequenceFromListTest.py: Example reading a list of PDB IDs from a local MMTF Hadoop sequence \
 file into a tubleRDD.
@@ -10,7 +9,6 @@ __maintainer__ = "Mars Huang"
 __email__ = "marshuang80@gmai.com:
 __status__ = "Warning"
 '''
-# TODO Traceback "ResourceWarning: unclosed file"
 
 import unittest
 from pyspark import SparkConf, SparkContext

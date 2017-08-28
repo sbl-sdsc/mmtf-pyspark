@@ -45,7 +45,7 @@ class testContainsDnaChainTest(unittest.TestCase):
 
 
     def test3(self):
-        pdb_3 = self.pdb.flatMap(structureToPolymerChains.structureToPolymerChains())
+        pdb_3 = self.pdb.flatMap(structureToPolymerChains())
         pdb_3 = pdb_3.filter(containsDnaChain())
         results_3 = pdb_3.keys().collect()
 

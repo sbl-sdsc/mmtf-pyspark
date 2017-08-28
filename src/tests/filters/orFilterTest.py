@@ -4,7 +4,7 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import orFilter,containsDnaChain, containsRnaChain
-from src.main.mappers.structureToPolymerChains import *
+from src.main.mappers import *
 
 class testOrFilter(unittest.TestCase):
 
