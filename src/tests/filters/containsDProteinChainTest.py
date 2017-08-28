@@ -1,27 +1,19 @@
 #!/usr/bin/env python
-'''
-Simple example of reading an MMTF Hadoop Sequence file, filtering the entries \
-by rWork,and counting the number of entries.
-
-Authorship information:
-__author__ = "Peter Rose"
-__maintainer__ = "Mars Huang"
-__email__ = "marshuang80@gmai.com:
-__status__ = "Warning"
-'''
 
 import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import containsDProteinChain
-
+from src.main.mappers.structureToPolymerChains import *
 
 class containsDProteinChainTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('containsDProteinChainTest')
-        pdbIds = ['2ONX','1JLP','5X6H','5L2G','2MK1','2V5W','5XDP','5GOD']
         self.sc = SparkContext(conf=conf)
+
+
+        pdbIds = ['2ONX','1JLP','5X6H','5L2G','2MK1','2V5W','5XDP','5GOD']
         self.pdb = downloadMmtfFiles(pdbIds,self.sc)
 
 
@@ -52,17 +44,27 @@ class containsDProteinChainTest(unittest.TestCase):
         self.assertFalse('5GOD' in results_2)
 
 
-    # TODO: Mapper structure to polymer chains
-    '''
     def test3(self):
-        pdb_3 = self.pdb.filter(rWork(0.10, 0.16))
+        pdb_3 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_3 = pdb_3.filter(containsDProteinChain())
         results_3 = pdb_3.keys().collect()
 
-        self.assertFalse('2ONX' in results_3)
-        self.assertFalse('2OLX' in results_3)
-        self.assertFalse('3REC' in results_3)
-        self.assertFalse('1LU3' in results_3)
-    '''
+        self.assertFalse('2ONX.A' in results_3)
+        self.assertFalse('1JLP.A' in results_3)
+        self.assertFalse('5X6H.B' in results_3)
+        self.assertFalse('5L2G.A' in results_3)
+        self.assertFalse('5L2G.B' in results_3)
+        self.assertFalse('2MK1.A' in results_3)
+        self.assertFalse('5XDP.A' in results_3)
+        self.assertTrue('5XDP.B' in results_3)
+        self.assertFalse('2V5W.A' in results_3)
+        self.assertFalse('2V5W.B' in results_3)
+        self.assertTrue('2V5W.G' in results_3)
+        self.assertFalse('5GOD.A' in results_3)
+        self.assertFalse('5GOD.B' in results_3)
+        self.assertTrue('5GOD.C' in results_3)
+        self.assertTrue('5GOD.D' in results_3)
+
 
     def tearDown(self):
         self.sc.stop()

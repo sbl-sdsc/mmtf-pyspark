@@ -1,27 +1,26 @@
 #!/usr/bin/env python
-'''
-Simple example of reading an MMTF Hadoop Sequence file, filtering the entries \
-by rWork,and counting the number of entries.
-
-Authorship information:
-__author__ = "Peter Rose"
-__maintainer__ = "Mars Huang"
-__email__ = "marshuang80@gmai.com:
-__status__ = "Warning"
-'''
 
 import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import polymerComposition
-
+from src.main.mappers.structureToPolymerChains import *
 
 class polymerCompositionTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('testContainsAlternativeLocations')
-        pdbIds = ["2ONX","1JLP","5X6H","5L2G","2MK1","5UZT","1AA6","1NTH"]
         self.sc = SparkContext(conf=conf)
+
+        # 2ONX: only L-protein chain
+        # 1JLP: single L-protein chains with non-polymer capping group (NH2)
+        # 5X6H: L-protein and DNA chain (with std. nucleotides)
+        # 5L2G: DNA chain (with non-std. nucleotide)
+        # 2MK1: D-saccharide
+        # 5UZT: RNA chain (with std. nucleotides)
+        # 1AA6: contains SEC, selenocysteine (21st amino acid)
+        # 1NTH: contains PYL, pyrrolysine (22nd amino acid)
+        pdbIds = ["2ONX","1JLP","5X6H","5L2G","2MK1","5UZT","1AA6","1NTH"]
         self.pdb = downloadMmtfFiles(pdbIds,self.sc)
 
 
@@ -53,8 +52,35 @@ class polymerCompositionTest(unittest.TestCase):
         self.assertFalse('1NTH' in results_2)
 
 
-    # TODO test3 needs mapper
-    # TODO test4 needs mapper
+    def test3(self):
+        pdb_3 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_3 = pdb_3.filter(polymerComposition(polymerComposition.AMINO_ACIDS_20))
+        results_3 = pdb_3.keys().collect()
+
+        self.assertTrue('2ONX.A' in results_3)
+        self.assertFalse('1JLP.A' in results_3)
+        self.assertTrue('5X6H.B' in results_3)
+        self.assertFalse('5L2G.A' in results_3)
+        self.assertFalse('5L2G.B' in results_3)
+        self.assertFalse('2MK1.A' in results_3)
+        self.assertFalse('5UZT.A' in results_3)
+        self.assertFalse('1AA6.A' in results_3)
+        self.assertFalse('1NTH.A' in results_3)
+
+    def test4(self):
+        pdb_4 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_4 = pdb_4.filter(polymerComposition(polymerComposition.AMINO_ACIDS_22))
+        results_4 = pdb_4.keys().collect()
+
+        self.assertTrue('2ONX.A' in results_4)
+        self.assertFalse('1JLP.A' in results_4)
+        self.assertTrue('5X6H.B' in results_4)
+        self.assertFalse('5L2G.A' in results_4)
+        self.assertFalse('5L2G.B' in results_4)
+        self.assertFalse('2MK1.A' in results_4)
+        self.assertFalse('5UZT.A' in results_4)
+        self.assertTrue('1AA6.A' in results_4)
+        self.assertTrue('1NTH.A' in results_4)
 
 
     def test5(self):

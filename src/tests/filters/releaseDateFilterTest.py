@@ -1,16 +1,4 @@
 #!/usr/bin/env python
-'''
-Simple example of reading an MMTF Hadoop Sequence file, filtering the entries \
-by rFree,and counting the number of entries.
-
-Authorship information:
-__author__ = "Peter Rose"
-__maintainer__ = "Mars Huang"
-__email__ = "marshuang80@gmai.com:
-__status__ = "Warning"
-'''
-# TODO Traceback "ResourceWarning: unclosed filecodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 25: ordinal not in range(128)"
-# TODO No actual value for unit test
 
 import unittest
 from pyspark import SparkConf, SparkContext
@@ -20,10 +8,13 @@ from src.main.filters import releaseDate
 class testReleaseDateFilter(unittest.TestCase):
 
     def setUp(self):
-
         conf = SparkConf().setMaster("local[*]").setAppName('testrFreeFilter')
         pdbIds = ['1O6Y','4MYA','3VCO','5N0Y']
 
+        # 1O6Y: released on 2003-01-30
+        # 4MYA: released on 2014-01-01
+        # 3VCO: released on 2013-03-06
+        # 5N0Y: released on 2017-05-24
         self.sc = SparkContext(conf=conf)
         self.pdb = downloadMmtfFiles(pdbIds, self.sc)
 

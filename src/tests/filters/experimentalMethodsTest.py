@@ -1,20 +1,10 @@
 #!/usr/bin/env python
-'''
-Simple example of reading an MMTF Hadoop Sequence file, filtering the entries \
-by rWork,and counting the number of entries.
-
-Authorship information:
-__author__ = "Peter Rose"
-__maintainer__ = "Mars Huang"
-__email__ = "marshuang80@gmai.com:
-__status__ = "Warning"
-'''
 
 import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import experimentalMethods
-
+from src.main.mappers.structureToPolymerChains import *
 
 class experimentalMethodsTest(unittest.TestCase):
 
@@ -41,17 +31,14 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('3J07' in results_1)
 
 
-    # TODO: Mapper structure to polymer chains
-    '''
     def test1a(self):
-        pdb_3 = self.pdb.filter(rWork(0.10, 0.16))
-        results_3 = pdb_3.keys().collect()
+        pdb_1a = self.pdb.flatMap(structureToPolymerChains())
+        pdb_1a = pdb_1a.filter(experimentalMethods(experimentalMethods.X_RAY_DIFFRACTION))
+        results_1a = pdb_1a.keys().collect()
 
-        self.assertFalse('2ONX' in results_3)
-        self.assertFalse('2OLX' in results_3)
-        self.assertFalse('3REC' in results_3)
-        self.assertFalse('1LU3' in results_3)
-    '''
+        self.assertTrue('2ONX.A' in results_1a)
+        self.assertFalse('5VLN.A' in results_1a)
+
 
     def test2(self):
         pdb_2 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_NMR))
