@@ -5,8 +5,6 @@ from pyspark import SparkConf, SparkContext
 from src.main.mappers import structureToPolymerChains
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import containsAlternativeLocations
-#from src.main.mappers.structureToPolymerChains import *
-
 
 class structureToPolymerChainsTest(unittest.TestCase):
 
