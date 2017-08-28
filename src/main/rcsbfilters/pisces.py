@@ -34,15 +34,15 @@ class pisces(object):
 
     '''
     def __init__(self, sequenceIdentity, resolition):
-        pdbIds = set()
+        self.pdbIds = set()
 
-        pD = PiscesDownloader(sequenceIdentity, resolition)
+        pD = piscesDownloader(sequenceIdentity, resolition)
 
         # TODO check getStructureCahinIds
         for pdbId in pD.getStructureChainIds():
-            pdbIds.add(pdbId)
-            pdbIds.add(pdbId[:4])
+            self.pdbIds.add(pdbId)
+            self.pdbIds.add(pdbId[:4])
 
     def __call__(self, t):
-        return t[0] in pdbIds
+        return t[0] in self.pdbIds
 
