@@ -4,7 +4,8 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import containsDnaChain
-from src.main.mappers.structureToPolymerChains import *
+# from src.main.mappers.structureToPolymerChains import structureToPolymerChains
+from src.main.mappers import *
 
 class testContainsDnaChainTest(unittest.TestCase):
 
@@ -44,7 +45,7 @@ class testContainsDnaChainTest(unittest.TestCase):
 
 
     def test3(self):
-        pdb_3 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_3 = self.pdb.flatMap(structureToPolymerChains.structureToPolymerChains())
         pdb_3 = pdb_3.filter(containsDnaChain())
         results_3 = pdb_3.keys().collect()
 
