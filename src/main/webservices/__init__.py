@@ -1,1 +1,1 @@
-from . import piscesDownloader
+from .piscesDownloader import piscesDownloader
