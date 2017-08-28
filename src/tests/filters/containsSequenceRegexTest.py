@@ -1,27 +1,21 @@
 #!/usr/bin/env python
-'''
-Simple example of reading an MMTF Hadoop Sequence file, filtering the entries \
-by rWork,and counting the number of entries.
-
-Authorship information:
-__author__ = "Peter Rose"
-__maintainer__ = "Mars Huang"
-__email__ = "marshuang80@gmai.com:
-__status__ = "Warning"
-'''
 
 import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import containsSequenceRegex
-
+from src.main.mappers.structureToPolymerChains import *
 
 class containsSequenceRegexTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('containsDProteinChainTest')
-        pdbIds = ['5KE8','1JLP','5VAI']
         self.sc = SparkContext(conf=conf)
+
+        # 5KE8: contains Zinc finger motif
+        # 1JLP: does not contain Zinc finger motif
+        # 5VAI: contains Walker P loop
+        pdbIds = ['5KE8','1JLP','5VAI']
         self.pdb = downloadMmtfFiles(pdbIds,self.sc)
 
 
@@ -41,17 +35,17 @@ class containsSequenceRegexTest(unittest.TestCase):
         self.assertTrue('5VAI' in results_2)
 
 
-    # TODO: Mapper structure to polymer chains
-    '''
     def test3(self):
-        pdb_3 = self.pdb.filter(rWork(0.10, 0.16))
+        pdb_3 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_3 = pdb_3.filter(containsSequenceRegex("C.{2,4}C.{12}H.{3,5}H"))
         results_3 = pdb_3.keys().collect()
 
-        self.assertFalse('2ONX' in results_3)
-        self.assertFalse('2OLX' in results_3)
-        self.assertFalse('3REC' in results_3)
-        self.assertFalse('1LU3' in results_3)
-    '''
+        self.assertTrue('5KE8.A' in results_3)
+        self.assertFalse('5KE8.B' in results_3)
+        self.assertFalse('5KE8.C' in results_3)
+        self.assertFalse('1JLC.A' in results_3)
+        self.assertFalse('5VAI.A' in results_3)
+
 
     def tearDown(self):
         self.sc.stop()

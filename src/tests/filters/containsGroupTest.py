@@ -1,14 +1,4 @@
 #!/usr/bin/env python
-'''
-Simple example of reading an MMTF Hadoop Sequence file, filtering the entries \
-by rWork,and counting the number of entries.
-
-Authorship information:
-__author__ = "Peter Rose"
-__maintainer__ = "Mars Huang"
-__email__ = "marshuang80@gmai.com:
-__status__ = "Warning"
-'''
 
 import unittest
 from pyspark import SparkConf, SparkContext
@@ -22,8 +12,14 @@ class testContainsDnaChainTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('testContainsAlternativeLocations')
-        pdbIds = ['1STP','1JLP','5X6H','5L2G','2MK1']
         self.sc = SparkContext(conf=conf)
+
+        # 1STP: only L-protein chain
+        # 1JLP: single L-protein chains with non-polymer capping group (NH2)
+        # 5X6H: L-protein and DNA chain
+        # 5L2G: DNA chain
+        # 2MK1: D-saccharide
+        pdbIds = ['1STP','1JLP','5X6H','5L2G','2MK1']
         self.pdb = downloadMmtfFiles(pdbIds,self.sc)
 
 

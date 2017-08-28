@@ -1,28 +1,22 @@
 #!/usr/bin/env python
-'''
-Simple example of reading an MMTF Hadoop Sequence file, filtering the entries \
-by rFree,and counting the number of entries.
-
-Authorship information:
-__author__ = "Peter Rose"
-__maintainer__ = "Mars Huang"
-__email__ = "marshuang80@gmai.com:
-__status__ = "Warning"
-'''
-# TODO Traceback "ResourceWarning: unclosed filecodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 25: ordinal not in range(128)"
-# TODO No actual value for unit test
 
 import unittest
 from pyspark import SparkConf, SparkContext
 from src.main.MmtfReader import downloadMmtfFiles
 from src.main.filters import secondaryStructure
+from src.main.mappers.structureToPolymerChains import structureToPolymerChains
 
 class secondaryStructureTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('testrFreeFilter')
-        pdbIds = ["1AIE","1E0N","1EM7","2C7M"]
         self.sc = SparkContext(conf=conf)
+
+        # 1AIE: all alpha protein 20 alpha out of 31 = 0.645 helical
+        # 1E0N: all beta protein, NMR structure with 10 models, 13 beta out of 27 = 0.481 sheet
+        # 1EM7: alpha + beta, 14 alpha + 23 beta out of 56 = 0.25 helical and 0.411 sheet
+        # 2C7M: 2 chains, alpha + beta (DSSP in MMTF doesn't match DSSP on RCSB PDB website)
+        pdbIds = ["1AIE","1E0N","1EM7","2C7M"]
         self.pdb = downloadMmtfFiles(pdbIds, self.sc)
 
 
@@ -57,6 +51,23 @@ class secondaryStructureTest(unittest.TestCase):
 
         self.assertFalse('2C7M' in results_4)
 
+
+    def test5(self):
+        pdb_5 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_5 = pdb_5.filter(secondaryStructure(0.25, 0.75, 0.00, 0.40, 0.25, 0.50))
+        results_5 = pdb_5.keys().collect()
+
+        self.assertTrue('2C7M.A' in results_5)
+        self.assertTrue('2C7M.B' in results_5)
+
+
+    def test6(self):
+        pdb_6 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_6 = pdb_6.filter(secondaryStructure(0.70, 0.75, 0.00, 0.40, 0.25, 0.50))
+        results_6 = pdb_6.keys().collect()
+
+        self.assertTrue('2C7M.A' in results_6)
+        self.assertFalse('2C7M.B' in results_6)
 
     def tearDown(self):
         self.sc.stop()
