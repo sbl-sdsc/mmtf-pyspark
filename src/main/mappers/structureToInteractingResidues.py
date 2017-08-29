@@ -46,7 +46,7 @@ class structureToInteractingResidues(object):
         z = structure.z_coord_list
 
         first = groupIndices(index)
-        last = groupIndices(index)
+        last = groupIndices(index + 1)
 
         rows = []
 
@@ -70,8 +70,12 @@ class structureToInteractingResidues(object):
 
             if minIndex >= 0:
                 # TODO add unique group (and atom?) for each group?
-                row = Row(structureId, groupNames[index], index,
-                          groupNames.get(minIndex), minIndex, float(minDSq**2))
+                row = Row(structureId,
+                          groupNames[index],
+                          index,
+                          groupNames.get(minIndex),
+                          minIndex,
+                          float(minDSq**0.5))
                 rows.append(row)
 
         return rows
