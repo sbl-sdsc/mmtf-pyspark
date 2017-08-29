@@ -1,25 +1,41 @@
 #!/usr/bin/env python
+'''
+dataAnalysisWithDataFramesExample.py:
+
+Example script to demonstrate how to do data analysis with dataframes
+using mmtf-pyspark
+
+Authorship information:
+    __author__ = "Peter Rose"
+    __maintainer__ = "Mars Huang"
+    __email__ = "marshuang80@gmail.com:
+'''
+
 from pyspark import SparkConf, SparkContext
-from MmtfReader import downloadMmtfFiles
-from filters import rFree
+from src.main import MmtfReader
+from src.main.rcsbfilters import pisces
+from src.main.datasets import groupInteractionExtractor
+
 # Create variables
 APP_NAME = "MMTF_Spark"
-path = "../reduced"
-text = "org.apache.hadoop.io.Text"
-byteWritable = "org.apache.hadoop.io.BytesWritable"
-#Configure Spark
-conf = SparkConf().setAppName(APP_NAME)
-conf = conf.setMaster("local[*]")
+path = "/home/marshuang80/PDB/full"
+
+# Configure Spark
+conf = SparkConf().setAppName(APP_NAME).setMaster("local[*]")
 sc = SparkContext(conf=conf)
-#Mmtf sequence file reader
-proteins = ['2ONX','1JLP','5X6H','5L2G','2MK1']
 
+# Read all PDB entries
+pdb = MmtfReader.readSequenceFile(path, sc)
 
-pdb = downloadMmtfFiles(proteins,sc)
-# for testing
-print("---------------------")
-#print(pdb.filter(Rworkfilter))
-pdb = pdb.collect()
-#print(pdb = Rworkfilter(pdb,0,0.2))
-print("----------------------")
-t = pdb[0][1]
+# Save a non-redundant subset using Pisces filter (R. Dunbrack)
+sequenceIdentity = 20
+resolution = 2.0
+pdb = pdb.filter(pisces(sequenceIdentity, resolution))
+
+# Extract and list top interacting groups for Zinc in PDB
+cutoffDistance = 3.0
+finder = groupInteractionExtractor("ZN", cutoffDistance)
+interactions = finder.getDataset(pdb)
+
+# Show the top 10 interacting groups
+

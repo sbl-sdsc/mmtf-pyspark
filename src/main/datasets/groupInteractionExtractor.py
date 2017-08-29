@@ -8,7 +8,7 @@ Authorship information:
     __status__ = "debug"
 '''
 
-from src.main.ml.pythonRDDToDataset import *
+from src.main.ml import pythonRDDToDataset
 from src.main.utils.structureToAllInteractions import *
 
 class groupInteractionExtractor(object):
@@ -27,7 +27,8 @@ class groupInteractionExtractor(object):
         self.groupName = groupName
         self.distance = distance
 
-    def getDataset(structures):
+
+    def getDataset(self, structures):
         '''Returns a dataset of residues that interact with specified group within
         a specified cutoff distance
 
@@ -37,7 +38,7 @@ class groupInteractionExtractor(object):
             dataset with interacting residue and atom information
         '''
         # create a list of all residues with a threshold distance
-        rows = structures.flatmap(structureToAllInteractions(self.groupName, self.cutoffDistance))
+        rows = structures.flatMap(structureToAllInteractions(self.groupName, self.distance))
 
         # convert to a dataset
         colNames = ["structureId", "residue1", "atom1", "element1", "index1",

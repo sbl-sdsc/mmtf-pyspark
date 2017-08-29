@@ -38,6 +38,7 @@ class dsspSecondaryStructure(Enum):
         else:
             return dsspSecondaryStructure.COIL
 
+
     def getOneLetterCode(self):
         cases = { 0 : '5',
                   1 : 'S',
@@ -49,6 +50,7 @@ class dsspSecondaryStructure(Enum):
                   7 : 'C'
                   }
         return cases[self.value]
+
 
     def getDsspCode(numericCode):
         for x in list(dsspSecondaryStructure):

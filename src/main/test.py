@@ -42,8 +42,8 @@ def main(argv):
 
 
     #Get command line input
-    #path = "../../../full"
-    path = "../../../mmtf/mmtf_uncompressed"
+    path = "../../../full"
+    #path = "../../../mmtf/mmtf_uncompressed"
     #path = "../../../mmtf/test_compressed"
 
 
@@ -60,12 +60,13 @@ def main(argv):
     #Mmtf sequence file reader
     pdbIds = ['5GOD','1B38','1B39','1BUH','1C25','1CKP','1DI8','1DM2','1E1V'\
     ,'1E1X','1E9H','1F5Q','1FIN','1FPZ','1FQ1','1FQV','1FS1']
-    #pdb = downloadMmtfFiles(pdbIds,sc)
+    pdb = downloadMmtfFiles(pdbIds,sc)
     #print(pdb.filter(lambda t: t[0]).collect())
     #pdb = readSequenceFile(path,sc,pdbId = pdbIds)
     #pdb = readSequenceFile(path,sc)
     #pdb = readSequenceFile(path,sc,fraction = 0.5, seed = 7)
-    pdb = readMmtfFiles(path, sc)
+
+    #pdb = readMmtfFiles(path, sc)
 
     pdb_len = pdb.count()
     print(pdb_len)

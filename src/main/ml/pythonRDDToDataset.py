@@ -20,7 +20,7 @@ def getDataset(data, colNames):
 
     sf = []
 
-    for i in range(colNames):
+    for i in range(len(colNames)):
         o = row[i]
         if type(o) == str:
             sf.append(StructField(colNames[i], StringType(), False))
@@ -33,7 +33,7 @@ def getDataset(data, colNames):
         else:
             print("Data type not implemented yet")
 
-    schema = StuctType(sf)
+    schema = StructType(sf)
     spark = SparkSession.builder.getOrCreate()
     return spark.createDataFrame(data, schema)
 

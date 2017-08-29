@@ -4,7 +4,7 @@ structureToInteractingResidues.py:
 Authorship information:
     __author__ = "Peter Rose"
     __maintainer__ = "Mars Huang"
-    __email__ = "marshuang80@gmai.com:
+    __email__ = "marshuang80@gmail.com:
     __status__ = "debug"
 '''
 from pyspark.sql import Row
@@ -147,7 +147,7 @@ class structureToInteractingResidues(object):
             for j in range(structure.groups_per_chain[i]):
                 groupIndex = structure.group_type_list[groupCounter]
                 groupNames.append(structure.group_list[groupIndex]['groupName'])
-                atomCounter += len(structure.group_list[group_Index]['bondAtomList'])
+                atomCounter += len(structure.group_list[group_Index]['atomNameList'])
                 groupIndices.append(atomCounter)
                 groupCounter += 1
 

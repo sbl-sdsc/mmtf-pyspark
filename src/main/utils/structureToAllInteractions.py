@@ -26,11 +26,11 @@ class structureToAllInteractions(object):
         groupIndices, groupNames = self._getGroupIndices(structure)
         interactions = []
 
-        for i in range(len(groupName)):
+        for i in range(len(groupNames)):
 
             if groupNames[i] == self.groupName:
                 matches = []
-                boundingBox = self._calcBondingBox(structure, groupIndices,
+                boundingBox = self._calcBondingBox(structure, groupIndices, i,
                                                    self.cutoffDistance)
                 matches += self._findNeighbors(structure, i, boundingBox, groupIndices)
                 interactions += self._getDistanceProfile(structureId, matches, i, groupIndices, groupNames, structure)
@@ -39,14 +39,14 @@ class structureToAllInteractions(object):
 
 
     def _getDistanceProfile(self, structureId, matches, index, groupIndices, groupNames, structure):
-        cutoffDistanceSq = cutoffDistance * cutoffDistance
+        cutoffDistanceSq = self.cutoffDistance * self.cutoffDistance
 
         x = structure.x_coord_list
         y = structure.y_coord_list
         z = structure.z_coord_list
 
-        first = groupIndices(index)
-        last = groupIndices(index + 1)
+        first = groupIndices[index]
+        last = groupIndices[index + 1]
 
         groupIndex1 = structure.group_type_list[index]
 
@@ -100,7 +100,7 @@ class structureToAllInteractions(object):
 
                 if (x[j] >= boundingBox[0] and x[j] <= boundingBox[1] and
                     y[j] >= boundingBox[2] and y[j] <= boundingBox[3] and
-                    z[j] >= boundindBox[4] and z[j] <= boundingBox[5]):
+                    z[j] >= boundingBox[4] and z[j] <= boundingBox[5]):
                     matches.append(i)
                     break
 
@@ -160,11 +160,11 @@ class structureToAllInteractions(object):
             for j in range(structure.groups_per_chain[i]):
                 groupIndex = structure.group_type_list[groupCounter]
                 groupNames.append(structure.group_list[groupIndex]['groupName'])
-                atomCounter += len(structure.group_list[groupIndex]['bondAtomList'])
+                atomCounter += len(structure.group_list[groupIndex]['atomNameList'])
                 groupIndices.append(atomCounter)
                 groupCounter += 1
 
-        return groupIndices, groupName
+        return groupIndices, groupNames
 
 
 
