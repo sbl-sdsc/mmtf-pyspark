@@ -596,6 +596,7 @@ class secondaryStructure(object):
 
         return global_match and contains_polymer
 
+
 class depositionDate(object):
     '''This filter return true if this structure contains an alternative location
 
