@@ -38,4 +38,8 @@ finder = groupInteractionExtractor("ZN", cutoffDistance)
 interactions = finder.getDataset(pdb)
 
 # Show the top 10 interacting groups
-
+interactions.filter("element2 != 'C'") \
+			.groupBy("residue2") \
+			.count() \
+			.sort("count", ascending=False) \
+			.show(10)
