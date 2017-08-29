@@ -38,7 +38,7 @@ class structureToInteractingResidues(object):
         return neighbors
 
 
-    def _getDistanceProfile(structureID, matches, index, groupIndices, groupNames, structure):
+    def _getDistanceProfile(self, structureID, matches, index, groupIndices, groupNames, structure):
         cutoffDistanceSq = cutoffDistance * cutoffDistance
 
         x = structure.x_coord_list
@@ -77,7 +77,7 @@ class structureToInteractingResidues(object):
         return rows
 
 
-    def _findNeighbors(structure, index, boundingBox, groupIndices):
+    def _findNeighbors(self, structure, index, boundingBox, groupIndices):
         x = structure.x_coord_list
         y = structure.y_coord_list
         z = structure.z_coord_list
@@ -96,7 +96,7 @@ class structureToInteractingResidues(object):
         return matches
 
 
-    def _calcBondingBox(structure, groupIndices, i, cutoffDistance):
+    def _calcBondingBox(self, structure, groupIndices, i, cutoffDistance):
         x = structure.x_coord_list
         y = structure.y_coord_list
         z = structure.z_coord_list
@@ -130,7 +130,7 @@ class structureToInteractingResidues(object):
         return boundingBox
 
 
-    def _getGroupIndices(structure):
+    def _getGroupIndices(self, structure):
         groupIndices = [0]
         groupNames = []
 
