@@ -38,7 +38,7 @@ class structureToInteractingResidues(object):
         return neighbors
 
 
-    def _getDistanceProfile(self, structureID, matches, index, groupIndices, groupNames, structure):
+    def _getDistanceProfile(self, structureId, matches, index, groupIndices, groupNames, structure):
         cutoffDistanceSq = cutoffDistance * cutoffDistance
 
         x = structure.x_coord_list
