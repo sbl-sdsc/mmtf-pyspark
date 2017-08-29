@@ -88,8 +88,8 @@ class structureToInteractingResidues(object):
             for j in range(groupIndices[i], groupIndices[i+1]):
 
                 if (x[j] >= boundingBox[0] and x[j] <= boundingBox[1] and
-                    y[j] >= boundingBox[2] and y[j] <= boudningBox[3] and
-                    z[j] >= boudnindBox[4] and z[j] <= boundingBox[5]):
+                    y[j] >= boundingBox[2] and y[j] <= boundingBox[3] and
+                    z[j] >= boundindBox[4] and z[j] <= boundingBox[5]):
                     matches.append(i)
                     break
 
