@@ -30,9 +30,9 @@ class structureToAllInteractions(object):
 
             if groupNames[i] == self.groupName:
                 matches = []
-                boundingBox = self._calcBondingBox(structure, groupIndices, i
+                boundingBox = self._calcBondingBox(structure, groupIndices,
                                                    self.cutoffDistance)
-                matches += self._findNeighbors(structure, i, boundingBox, groupIndices))
+                matches += self._findNeighbors(structure, i, boundingBox, groupIndices)
                 interactions += self._getDistanceProfile(structureId, matches, i, groupIndices, groupNames, structure)
 
         return interactions
@@ -159,8 +159,8 @@ class structureToAllInteractions(object):
             # Loop over all groups in chains
             for j in range(structure.groups_per_chain[i]):
                 groupIndex = structure.group_type_list[groupCounter]
-                groupNames.append(structure.group_list[groupIndex]['groupName']
-                atomCounter += len(structure.group_list[groupIndex]['bondAtomList']
+                groupNames.append(structure.group_list[groupIndex]['groupName'])
+                atomCounter += len(structure.group_list[groupIndex]['bondAtomList'])
                 groupIndices.append(atomCounter)
                 groupCounter += 1
 

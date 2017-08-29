@@ -12,7 +12,7 @@ from pyspark.sql import SparkSession
 
 # TODO colNames to be string or list
 def getDataset(data, colNames):
-	row = data.first()
+    row = data.first()
     length = len(row)
 
     if length != len(colNames):
