@@ -33,10 +33,10 @@ class pisces(object):
     Attributes:
 
     '''
-    def __init__(self, sequenceIdentity, resolition):
+    def __init__(self, sequenceIdentity, resolution):
         self.pdbIds = set()
 
-        pD = piscesDownloader(sequenceIdentity, resolition)
+        pD = piscesDownloader(sequenceIdentity, resolution)
 
         for pdbId in pD.getStructureChainIds():
             self.pdbIds.add(pdbId)
