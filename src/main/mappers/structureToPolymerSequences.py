@@ -25,6 +25,7 @@ class structureToSecondaryStructureElements(object):
         useChainIdInsteadOfChainName (bool): if true, use the Chain Id in the key assignments
         duplicateSequences (bool): if true return only one chain for each unique sequence
     '''
+    
     def __init__(self, label, length = 4):
         self.label = label
         self.length = length

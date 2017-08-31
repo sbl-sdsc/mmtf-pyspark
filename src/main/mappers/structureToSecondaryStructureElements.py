@@ -13,10 +13,11 @@ Authorship information:
 from pyspark.sql import Row
 
 class structureToSecondaryStructureElements(object):
+    '''
+    Constructor sets the segment length.
+    '''
 
     def __init__(self, label, length = 4):
-        '''Constructor sets the segment length.
-        '''
         self.label = label
         self.length = length
 

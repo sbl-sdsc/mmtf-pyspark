@@ -13,10 +13,11 @@ Authorship information:
 from pyspark.sql import Row
 
 class structureToSecondaryStructureSegments(object):
+    '''
+    Constructor sets the segment length.
+    '''
+
     def __init__(self, length):
-        '''
-        Constructor sets the segment length.
-        '''
         if length % 2 != 1:
             print("length has to be an odd number")
 

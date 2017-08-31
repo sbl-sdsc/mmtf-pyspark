@@ -15,9 +15,6 @@ from pyspark.sql import Row
 class structureToInteractingResidues(object):
 
     def __init__(self, groupName, cutoffDistance):
-        '''This class initializer ...
-        Args:
-        '''
         self.groupName = groupName
         self.cutoffDistance = cutoffDistance
 
