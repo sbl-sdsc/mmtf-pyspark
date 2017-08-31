@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from src.main.MmtfReader import downloadMmtfFiles
+from src.main.io.MmtfReader import downloadMmtfFiles
 from src.main.filters import containsAlternativeLocations
 
 class testContainsAlternativeLocations(unittest.TestCase):
