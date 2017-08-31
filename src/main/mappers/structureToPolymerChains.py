@@ -1,8 +1,13 @@
 #!/user/bin/env python
 '''
 structureToPolymerChain.py:
+
+Maps a structure to its individual polymer chains. Polymer chains
+include polypeptides, polynucleotides, and linear and branched polysaccharides.
+For a multi-model structure, only the first model is considered.
+
 Authorship information:
-    __author__ = "Peter Rose"
+    __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
@@ -11,13 +16,18 @@ from mmtf.utils import *
 from mmtf.api.mmtf_writer import MMTFEncoder
 
 class structureToPolymerChains(object):
-    '''This mapper...
+    '''
+    Extracts all polymer chains from a structure. If the argument is set to true,
+	the assigned key is: <PDB ID.Chain ID>, where Chain ID is the unique identifier
+	assigned to each molecular entity in an mmCIF file. This Chain ID corresponds to
+	<a href="http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_atom_site.label_asym_id.html">
+	_atom_site.label_asym_id</a> field in an mmCIF file.
+
     Attributes:
+        useChainIdInsteadOfChainName (bool): if true, use Chain Id in the key assignments
+        excludeDuplicates (bool): if true return only one chain for each sequence
     '''
     def __init__(self, useChainIdInsteadOfChainName = False, excludeDuplicates = False):
-        '''This class initializer ...
-        Args:
-        '''
         self.useChainIdInsteadOfChainName = useChainIdInsteadOfChainName
         self.excludeDuplicates = excludeDuplicates
 

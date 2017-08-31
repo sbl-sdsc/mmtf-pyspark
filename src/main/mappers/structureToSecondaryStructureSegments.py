@@ -1,6 +1,9 @@
 #!/user/bin/env python
 '''
 structureToSecondaryStructureSegments.py:
+
+Maps chain seuqnce to its sequence segments
+
 Authorship information:
     __author__ = "Yue Yu"
     __maintainer__ = "Mars Huang"
@@ -10,12 +13,9 @@ Authorship information:
 from pyspark.sql import Row
 
 class structureToSecondaryStructureSegments(object):
-    '''Maps chain sequences to it's sequence segments.
-    The length must be an odd number
-    Attributes:
-    '''
     def __init__(self, length):
-        '''Constructor sets the segment length.
+        '''
+        Constructor sets the segment length.
         '''
         if length % 2 != 1:
             print("length has to be an odd number")
@@ -42,4 +42,3 @@ class structureToSecondaryStructureSegments(object):
                 sequences.append(Row(structureChainId, currSeq, labelQ8, labelQ3))
 
         return sequences
-

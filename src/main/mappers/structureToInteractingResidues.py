@@ -1,18 +1,19 @@
 #!/user/bin/env python
 '''
 structureToInteractingResidues.py:
+
+Convert a full format of the file to a reduced format
+
 Authorship information:
-    __author__ = "Peter Rose"
+    __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "debug"
+    __status__ = "Done"
 '''
 from pyspark.sql import Row
 
 class structureToInteractingResidues(object):
-    '''This mapper convert a full format of the file to a reduced format
-    Attributes:
-    '''
+
     def __init__(self, groupName, cutoffDistance):
         '''This class initializer ...
         Args:
