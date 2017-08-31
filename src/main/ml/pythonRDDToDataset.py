@@ -1,8 +1,12 @@
 #!/user/bin/env python
 '''
 pythonRDDToDataset.py:
+
+This class converts a PythonRDD<Row> to a Dataset<Row>. This method only
+supports simple data types and all data need to be not null.
+
 Authorship information:
-    __author__ = "Peter Rose"
+    __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
@@ -10,8 +14,16 @@ Authorship information:
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
 
-# TODO colNames to be string or list
 def getDataset(data, colNames):
+    '''
+    Converts a PythonRDD<Row> to a Dataset<Row>. This method only
+	supports simple data types and all data need to be not null.
+
+    Attributes:
+        data (PythonRDD): PythonRDD of row objects
+        colNames (list(str)): names of the columns in a row
+    '''
+
     row = data.first()
     length = len(row)
 
@@ -36,10 +48,3 @@ def getDataset(data, colNames):
     schema = StructType(sf)
     spark = SparkSession.builder.getOrCreate()
     return spark.createDataFrame(data, schema)
-
-
-
-
-
-
-
