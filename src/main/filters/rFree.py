@@ -27,6 +27,7 @@ class rFree(object):
         self.min_Rfree = minRfree
         self.max_Rfree = maxRfree
 
+
     def __call__(self, t):
         if t[1].r_free == None:
             return False

@@ -2,3 +2,17 @@ from .rWork import rWork
 from .rFree import rFree
 from .resolution import resolution
 from .experimentalMethods import experimentalMethods
+from .containsSequenceRegex import containsSequenceRegex
+from .containsGroup import containsGroup
+from .containsPolymerChainType import containsPolymerChainType
+from .containsAlternativeLocations import containsAlternativeLocations
+from .containsDProteinChain import containsDProteinChain
+from .containsLProteinChain import containsLProteinChain
+from .containsRnaChain import containsRnaChain
+from .containsDnaChain import containsDnaChain
+from .containsDSaccharideChain import containsDSaccharideChain
+from .secondaryStructure import secondaryStructure
+from .depositionDate import depositionDate
+from .releaseDate import releaseDate
+from .polymerComposition import polymerComposition
+from .orFilter import orFilter

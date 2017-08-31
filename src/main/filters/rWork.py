@@ -9,7 +9,7 @@ Authorship information:
     __author__ = "Peter Rose"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
-    __status__ = "debug"
+    __status__ = "Done"
 '''
 
 class rWork(object):
@@ -28,5 +28,3 @@ class rWork(object):
             return False
 
         return t[1].r_work >= self.min_Rwork and t[1].r_work <= self.max_Rwork
-
-
