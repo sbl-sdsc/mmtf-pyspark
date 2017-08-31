@@ -16,7 +16,7 @@ pisces.py
 
 
 Authorship information:
-    __author__ = "Peter Rose"
+    __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
@@ -31,6 +31,8 @@ class pisces(object):
      <p> resolution = 1.6, 1.8, 2.0, 2.2, 2.5, 3.0
 
     Attributes:
+        sequenceIdentity(int): sequence identity cutoff values
+        resolution (float): resolution cutoff value
 
     '''
     def __init__(self, sequenceIdentity, resolution):
@@ -45,4 +47,3 @@ class pisces(object):
 
     def __call__(self, t):
         return t[0] in self.pdbIds
-
