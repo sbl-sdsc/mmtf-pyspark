@@ -4,15 +4,11 @@ MmtfSReader.py: Reads and decodes an MMTF Hadoop Sequence file.
 (e.g. PDB ID) as the key and the MMTF StructureDataInterface as the value.
 
 Authorship information:
-    __author__ = "Peter Rose"
+    __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
 '''
-
-# TODO using local mmtf-python
-import sys
-sys.path.append("/home/marshuang80/PDB/mmtf-python/")
 
 from mmtf.api.mmtf_reader import MMTFDecoder
 from mmtf.api import default_api
