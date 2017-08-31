@@ -1,11 +1,12 @@
 #!/user/bin/env python
 '''
 dsspSecondaryStructure.py:
+
 Authorship information:
-    __author__ = "Peter Rose"
+    __author__ = "Yue Yu"
     __maintainer__ = "Mars Huang"
-    __email__ = "marshuang80@gmai.com:
-    __status__ = "debug"
+    __email__ = "marshuang80@gmail.com:
+    __status__ = "Done"
 '''
 
 from enum import Enum

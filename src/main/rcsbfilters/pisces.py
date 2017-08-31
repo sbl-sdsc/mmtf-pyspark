@@ -18,8 +18,8 @@ pisces.py
 Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
-    __email__ = "marshuang80@gmai.com:
-    __status__ = "debug"
+    __email__ = "marshuang80@gmail.com:
+    __status__ = "Done"
 '''
 from src.main.webservices import piscesDownloader
 
