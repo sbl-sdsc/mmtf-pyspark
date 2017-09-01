@@ -17,7 +17,7 @@ import sys
 
 
 from pyspark import SparkConf, SparkContext
-from src.main.io.MmtfReader import downloadMmtfFiles, readSequenceFile, readMmtfFiles, readPDBFiles
+from src.main.io.MmtfReader import *
 #from io.MmtfReader import *
 from src.main.filters import resolution
 import getopt
@@ -42,7 +42,7 @@ def main(argv):
 
 
     #Get command line input
-    path = "../pdb/pdb_uncompressed"
+    path = "../mmcif/mmcif_uncompressed/"
     #path = "../mmtf/mmtf_uncompressed"
     #path = "../mmtf/test_compressed"
 
@@ -67,7 +67,7 @@ def main(argv):
     #pdb = readSequenceFile(path,sc,fraction = 0.5, seed = 7)
 
     #pdb = readMmtfFiles(path, sc)
-    pdb = readPDBFiles(path, sc)
+    pdb = readMmcifFiles(path, sc, True)
 
     #pdb_len = pdb.count()
     #print(pdb_len)

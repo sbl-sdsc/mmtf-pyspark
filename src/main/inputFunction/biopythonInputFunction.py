@@ -25,13 +25,25 @@ def biopythonInputFunction(bp_struct, mmtf_encoder):
 
     # Set header info
     header = bp_struct.header
-    mmtf_encoder.set_header_info(r_free = None, # TODO
-                                 r_work = None, # TODO
-                                 resolution = header['resolution'],
-                                 title = header['name'],
-                                 deposition_date = header['deposition_date'],
-                                 release_date = header['release_date'],
-                                 experimental_methods = header['structure_method'])
+
+    # MMCif doesnt have header
+    if len(header) != 0:
+        mmtf_encoder.set_header_info(r_free = None, # TODO
+                                    r_work = None, # TODO
+                                    resolution = header['resolution'],
+                                    title = header['name'],
+                                    deposition_date = header['deposition_date'],
+                                    release_date = header['release_date'],
+                                    experimental_methods = header['structure_method'])
+
+    else:
+        mmtf_encoder.set_header_info(r_free = None,
+                                    r_work = None,
+                                    resolution = None,
+                                    title = None,
+                                    deposition_date = None,
+                                    release_date = None,
+                                    experimental_methods = None)
 
     # TODO Set bioassembly info
     # biop_encoder.set_bio_assembly_trans() -- needs extra biopython parsing methods for the bioassemblies
