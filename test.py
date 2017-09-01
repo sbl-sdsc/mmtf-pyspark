@@ -13,13 +13,13 @@ TODO:
 
 # TODO using local mmtf-python
 import sys
-sys.path.append("../../../mmtf-python/mmtf")
+#sys.path.append("../../../mmtf-python/mmtf")
 
 
 from pyspark import SparkConf, SparkContext
-from MmtfReader import downloadMmtfFiles, readSequenceFile, readMmtfFiles
+from src.main.io.MmtfReader import downloadMmtfFiles, readSequenceFile, readMmtfFiles, readPDBFiles
 #from io.MmtfReader import *
-#from filters import rFree
+from src.main.filters import resolution
 import getopt
 
 
@@ -42,9 +42,9 @@ def main(argv):
 
 
     #Get command line input
-    path = "../../../full"
-    #path = "../../../mmtf/mmtf_uncompressed"
-    #path = "../../../mmtf/test_compressed"
+    path = "../pdb/pdb_uncompressed"
+    #path = "../mmtf/mmtf_uncompressed"
+    #path = "../mmtf/test_compressed"
 
 
     try :
@@ -60,21 +60,22 @@ def main(argv):
     #Mmtf sequence file reader
     pdbIds = ['5GOD','1B38','1B39','1BUH','1C25','1CKP','1DI8','1DM2','1E1V'\
     ,'1E1X','1E9H','1F5Q','1FIN','1FPZ','1FQ1','1FQV','1FS1','2I9W']
-    pdb = downloadMmtfFiles(pdbIds,sc)
+    #pdb = downloadMmtfFiles(pdbIds,sc)
     #print(pdb.filter(lambda t: t[0]).collect())
     #pdb = readSequenceFile(path,sc,pdbId = pdbIds)
     #pdb = readSequenceFile(path,sc)
     #pdb = readSequenceFile(path,sc,fraction = 0.5, seed = 7)
 
     #pdb = readMmtfFiles(path, sc)
+    pdb = readPDBFiles(path, sc)
 
-    pdb_len = pdb.count()
-    print(pdb_len)
+    #pdb_len = pdb.count()
+    #print(pdb_len)
 
     #print(len(pdb))
     # for testing
     print("---------------------")
-    #print(pdb.filter(resolution(0.0,0.2)).count())
+    print(pdb.filter(resolution(0.0,2.0)).count())
     #print(pdb.filter(containsDnaChain).collect())
     #print(pdb = Rworkfilter(pdb,0,0.2))
     print("----------------------")

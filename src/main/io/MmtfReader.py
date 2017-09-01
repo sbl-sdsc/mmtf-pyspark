@@ -12,6 +12,10 @@ Authorship information:
 
 from mmtf.api.mmtf_reader import MMTFDecoder
 from mmtf.api import default_api
+from src.main.inputFunction import biopythonInputFunction
+from Bio.PDB import PDBParser
+from mmtf import MMTFEncoder
+from mmtf.api.default_api import pass_data_on
 from os import walk
 from os import path
 import msgpack
@@ -40,12 +44,22 @@ def call_mmtf(f):
         decoder = default_api.parse(f)
         return (name,decoder)
 
-        #else:
-        #    return None
+    else:
+        raise Exception("File format error")
 
-    #except Exception:
-        #print("error reading file")
-    #    return None
+
+def call_pdb(f):
+    if (".pdb" or ".ent") in f:
+        name = f.split('/')[-1].split('.')[0].upper()
+        parser = PDBParser()
+        structure = parser.get_structure(name, f)
+        mmtf_encoder = MMTFEncoder()
+        pass_data_on(input_data = structure, input_function = biopythonInputFunction,
+                     output_data = mmtf_encoder)
+        return (name,mmtf_encoder)
+
+    else:
+        raise Exception("File format error")
 
 
 def getFiles(user_path):
