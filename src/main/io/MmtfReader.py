@@ -21,6 +21,8 @@ from os import path
 import msgpack
 import gzip
 
+text = "org.apache.hadoop.io.Text"
+byteWritable = "org.apache.hadoop.io.BytesWritable"
 
 def call_sequence_file(t):
     '''
@@ -31,8 +33,17 @@ def call_sequence_file(t):
     unpack = msgpack.unpackb(data.read())
     decoder = MMTFDecoder()
     decoder.decode_data(unpack)
-    return (str(t[0]),decoder)
+    return (str(t[0]), decoder)
 
+
+def call_sequence_file_gzip(t):
+    '''
+    Call function for hadoop sequence files
+    '''
+    unpack = msgpack.unpackb(t[1])
+    decoder = MMTFDecoder()
+    decoder.decode_data(unpack)
+    return (str(t[0]), decoder)
 
 def call_mmtf(f):
     '''
@@ -42,12 +53,12 @@ def call_mmtf(f):
     if ".mmtf.gz" in f:
         name = f.split('/')[-1].split('.')[0].upper()
         decoder = default_api.parse_gzip(f)
-        return (name,decoder)
+        return (name, decoder)
 
     elif ".mmtf" in f:
         name = f.split('/')[-1].split('.')[0].upper()
         decoder = default_api.parse(f)
-        return (name,decoder)
+        return (name, decoder)
 
     else:
         raise Exception("File format error")
@@ -66,9 +77,9 @@ def call_pdb(f):
         parser = PDBParser()
         structure = parser.get_structure(name, f)
         mmtf_encoder = MMTFEncoder()
-        pass_data_on(input_data = structure, input_function = biopythonInputFunction,
-                     output_data = mmtf_encoder)
-        return (name,mmtf_encoder)
+        pass_data_on(input_data=structure, input_function=biopythonInputFunction,
+                     output_data=mmtf_encoder)
+        return (name, mmtf_encoder)
 
     else:
         raise Exception("File format error")
@@ -87,9 +98,9 @@ def call_mmcif(f):
         parser = MMCIFParser()
         structure = parser.get_structure(name, f)
         mmtf_encoder = MMTFEncoder()
-        pass_data_on(input_data = structure, input_function = biopythonInputFunction,
-                     output_data = mmtf_encoder)
-        return (name,mmtf_encoder)
+        pass_data_on(input_data=structure, input_function=biopythonInputFunction,
+                     output_data=mmtf_encoder)
+        return (name, mmtf_encoder)
 
     else:
         raise Exception("File format error")
@@ -108,9 +119,9 @@ def call_fast_mmcif(f):
         parser = FastMMCIFParser()
         structure = parser.get_structure(name, f)
         mmtf_encoder = MMTFEncoder()
-        pass_data_on(input_data = structure, input_function = biopythonInputFunction,
-                     output_data = mmtf_encoder)
-        return (name,mmtf_encoder)
+        pass_data_on(input_data=structure, input_function=biopythonInputFunction,
+                     output_data=mmtf_encoder)
+        return (name, mmtf_encoder)
 
     else:
         raise Exception("File format error")
@@ -148,10 +159,10 @@ def getStructure(pdbId):
     unpack = default_api.get_raw_data_from_url(pdbId)
     decoder = MMTFDecoder()
     decoder.decode_data(unpack)
-    return (pdbId,decoder)
+    return (pdbId, decoder)
 
 
-def readSequenceFile(path,sc, pdbId = None, fraction = None, seed = None):
+def readSequenceFile(path, sc, pdbId=None, fraction=None, seed=None, gz = True):
     '''
     Reads an MMTF Hadoop Sequence File. Can read all files from path,
     randomly rample a fraction, or a subset based on input list.
@@ -164,6 +175,10 @@ def readSequenceFile(path,sc, pdbId = None, fraction = None, seed = None):
         fraction (float): fraction of structure to read
         seed (int): random seed
     '''
+    if gz:
+        call_sequence_file = call_sequence_file
+    else:
+        call_sequence_file = call_sequence_file_gzip
 
     infiles = sc.sequenceFile(path, text, byteWritable)
 
@@ -207,10 +222,10 @@ def readPDBFiles(path, sc):
         structure data as keywork/value pairs
     '''
 
-	return sc.parallelize(getFiles(path)).map(call_pdb).filter(lambda t: t != None)
+    return sc.parallelize(getFiles(path)).map(call_pdb).filter(lambda t: t != None)
 
 
-def readMmcifFiles(path, sc, fast = False):
+def readMmcifFiles(path, sc, fast=False):
     '''
     Read the specified PDB entries from a MMcif file
 
@@ -240,4 +255,4 @@ def downloadMmtfFiles(pdbIds, sc):
         structure data as keywork/value pairs
     '''
 
-	return sc.parallelize(set(pdbIds)).map(lambda t: getStructure(t))
+    return sc.parallelize(set(pdbIds)).map(lambda t: getStructure(t))
