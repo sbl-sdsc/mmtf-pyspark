@@ -29,10 +29,10 @@ def call_sequence_file(t):
     Call function for hadoop sequence files
     '''
 
-    data = default_api.ungzip_data(t[1])
-    unpack = msgpack.unpackb(data.read())
+    unpack = msgpack.unpackb(t[1])
     decoder = MMTFDecoder()
     decoder.decode_data(unpack)
+
     return (str(t[0]), decoder)
 
 
@@ -40,9 +40,12 @@ def call_sequence_file_gzip(t):
     '''
     Call function for hadoop sequence files
     '''
-    unpack = msgpack.unpackb(t[1])
+
+    data = default_api.ungzip_data(t[1])
+    unpack = msgpack.unpackb(data.read())
     decoder = MMTFDecoder()
     decoder.decode_data(unpack)
+
     return (str(t[0]), decoder)
 
 def call_mmtf(f):
@@ -176,21 +179,21 @@ def readSequenceFile(path, sc, pdbId=None, fraction=None, seed=None, gz = True):
         seed (int): random seed
     '''
     if gz:
-        call_sequence_file = call_sequence_file
+        call = call_sequence_file_gzip
     else:
-        call_sequence_file = call_sequence_file_gzip
+        call = call_sequence_file
 
     infiles = sc.sequenceFile(path, text, byteWritable)
 
     if (pdbId == None and fraction == None and seed == None):
-        return infiles.map(call_sequence_file)
+        return infiles.map(call)
 
     elif(pdbId != None and fraction == None and seed == None):
         pdbIdSet = set(pdbId)
-        return infiles.filter(lambda t: str(t[0]) in pdbIdSet).map(call_sequence_file)
+        return infiles.filter(lambda t: str(t[0]) in pdbIdSet).map(call)
 
     elif (fraction != None and seed != None):
-        return infiles.sample(False, fraction, seed).map(call_sequence_file)
+        return infiles.sample(False, fraction, seed).map(call)
     else:
         raise Exception("Inappropriate combination of parameters")
 
