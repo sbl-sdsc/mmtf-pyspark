@@ -16,3 +16,4 @@ from .depositionDate import depositionDate
 from .releaseDate import releaseDate
 from .polymerComposition import polymerComposition
 from .orFilter import orFilter
+from .notFilter import notFilter

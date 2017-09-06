@@ -11,7 +11,7 @@ authorship information:
     __status__ = "done"
 '''
 
-class orFilter(object):
+class norFilter(object):
     '''
     Constructor takes another filter as input
 
