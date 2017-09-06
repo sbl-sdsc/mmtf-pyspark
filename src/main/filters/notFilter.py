@@ -11,7 +11,7 @@ authorship information:
     __status__ = "done"
 '''
 
-class norFilter(object):
+class notFilter(object):
     '''
     Constructor takes another filter as input
 
