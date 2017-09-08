@@ -7,11 +7,13 @@ Methods for parallel and distributed analysis and mining of the Protein Data Ban
 We strongly recommend that you have [anaconda](https://docs.continuum.io/anaconda/install/) and the lastest version of python installed
 
 
+## biopython
+Please install [biopython](http://biopython.org/wiki/Download) 
+
 ## mmtf-python 
 
 The most up-to-date mmtf-python is not on pip or Anaconda, please clone it from the following [github link](https://github.com/rcsb/mmtf-python)
 
-To use the package, please edit the file *mmtf-pyspark/mmtf_pyspark/src/main/__init__.py* and add the path to your local mmtf-python
 
 ## pyspark
 
@@ -44,6 +46,10 @@ conda install py4j
 
 ### Linux [link](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
 
+## JDK
+
+Depending on your OS, Java Development Kit might need to be installed
+
 
 # Usage
 
@@ -54,6 +60,7 @@ Or you can import mmtf-pyspark to your code from another directory with the foll
 ```python
 import sys
 sys.path.append("<path to your mmtf-pyspark folder")
+sys.path.append("<path to your mmtf-python folder")
 import mmtfPyspark
 from mmtfPyspark.src.main import filters
 ``` 
