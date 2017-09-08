@@ -61,3 +61,11 @@ from mmtfPyspark.src.main import filters
 # Examples
 
 Filters usage examples can be found in *mmtf-pyspark/mmtfPyspark/src/demos/filters* 
+
+# Hadoop Sequence Files
+
+The Hadoop sequence files can be downloaded with: 
+```
+curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
+tar -xvf full.tar
+```
