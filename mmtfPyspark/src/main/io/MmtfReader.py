@@ -15,7 +15,7 @@ from mmtf.api import default_api
 try:
     from src.main.inputFunction import biopythonInputFunction
 except ModuleNotFoundError:
-    from .inputFunction import biopythonInputFunction
+    from ..inputFunction import biopythonInputFunction
 from Bio.PDB import PDBParser, MMCIFParser, FastMMCIFParser
 from mmtf import MMTFEncoder
 from mmtf.api.default_api import pass_data_on
