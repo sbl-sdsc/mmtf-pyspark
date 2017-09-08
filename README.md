@@ -26,12 +26,12 @@ You can either create a scipt/jupyter-notebook in the *mmtf-pyspark/mmtfPyspark*
 
 Or you can import mmtf-pyspark to your code from another directory with the following lines:
 
-'''import sys
+```python
+import sys
 sys.path.append("<path to your mmtf-pyspark folder")
 import mmtfPyspark
 from mmtfPyspark.src.main import filters
-
-''' 
+``` 
 
 # Examples
 
