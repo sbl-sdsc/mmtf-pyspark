@@ -15,7 +15,7 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from src.main.filters import containsPolymerChainType
+from . import containsPolymerChainType
 
 class containsLProteinChain(object):
     '''Default constructor matches any entry that contains at least one L-protein chain.

@@ -19,7 +19,11 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from src.main.filters import containsPolymerChainType
+try:
+    from src.main.filters import containsPolymerChainType
+except ModuleNotFoundError:
+    from . import containsPolymerChainType
+
 
 class containsDSaccharideChain(object):
     '''

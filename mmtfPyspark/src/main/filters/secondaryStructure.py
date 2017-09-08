@@ -14,8 +14,12 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
+try:
+    from src.main.utils import dsspSecondaryStructure
+except ModuleNotFoundError:
+    from ..utils import dsspSecondaryStructure
 
-from src.main.utils import dsspSecondaryStructure
+
 
 class secondaryStructure(object):
     '''The default constructor returns entries that contain at least one
