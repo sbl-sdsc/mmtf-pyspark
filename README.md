@@ -40,9 +40,9 @@ conda install py4j
 ```
 [Manual download](https://medium.com/@GalarnykMichael/install-spark-on-mac-pyspark-453f395f240b) 
 
-### [Windows](https://medium.com/@GalarnykMichael/install-spark-on-windows-pyspark-4498a5d8d66c)
+### Windows [link](https://medium.com/@GalarnykMichael/install-spark-on-windows-pyspark-4498a5d8d66c)
 
-### [Linux](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
+### Linux [link](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
 
 
 # Usage
