@@ -49,12 +49,12 @@ class containsPolymerChainType(object):
     OTHER = "OTHER"
     SACCHARIDE = "SACCHARIDE"
 
-    def __init__(self, monomer_type, exclusive = False):
+    def __init__(self, *monomer_type, exclusive = False):
         if type(monomer_type) == str:
             monomer_type = monomer_type.split(',')
 
         self.exclusive = exclusive
-        self.monomer_type = monomer_type
+        self.monomer_type = list(monomer_type)
 
 
     def __call__(self,t):

@@ -9,7 +9,7 @@ Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "debug"
+    __status__ = "Done"
 '''
 
 from pyspark import SparkConf, SparkContext
@@ -20,8 +20,7 @@ def main():
 	path = "/home/marshuang80/PDB/reduced"
 
 	conf = SparkConf().setMaster("local[*]") \
-                      .setAppName("FilterByDepositionDate") \
-                      .set("spark.ui.port","4040")
+                      .setAppName("FilterByDepositionDate")
 	sc = SparkContext(conf = conf)
 
 	count = MmtfReader.readSequenceFile(path, sc) \
