@@ -4,6 +4,7 @@ import time
 
 class mmtf_structure(object):
     def run_length_decoder_numpy(self,in_array):
+        '''
         switch=False
         out_array=[]
         in_array = in_array.tolist()
@@ -17,8 +18,8 @@ class mmtf_structure(object):
         return numpy.asarray(out_array, dtype=numpy.int32)
 
         '''
-        lengths = np.array(l[1::2])
-        values = np.array(l[0::2])
+        lengths = np.array(in_array[1::2])
+        values = np.array(in_array[0::2])
         starts = np.insert(np.array([0]),1,np.cumsum(lengths))[:-1]
         ends = starts + lengths
         n = ends[-1]
@@ -35,7 +36,47 @@ class mmtf_structure(object):
         #e = time.time()
         #print(e-s)
         return x
+
+
+    def recursive_index_decode(self, int_array, max=32767, min=-32768):
+        """Unpack an array of integers using recursive indexing.
+        :param int_array: the input array of integers
+        :param max: the maximum integer size
+        :param min: the minimum integer size
+        :return the array of integers after recursive index decoding"""
+
         '''
+
+        n = len(int_array) - (np.count_nonzero(int_array == 32767) + np.count_nonzero(int_array == -32768)) + 1
+        out_arr = np.full(n, np.nan)
+        count = 0
+        decoded_val = 0
+        for item in int_array.tolist():
+            if item==max or item==min:
+                decoded_val += item
+            else:
+                decoded_val += item
+                out_arr[count] = decoded_val
+                count += 1
+                #out_arr.append(decoded_val)
+                decoded_val = 0
+
+
+        return out_arr
+
+        '''
+
+        out_arr = []
+        decoded_val = 0
+        for item in int_array.tolist():
+            if item==max or item==min:
+                decoded_val += item
+            else:
+                decoded_val += item
+                out_arr.append(decoded_val)
+                decoded_val = 0
+        return numpy.asarray(out_arr,dtype=numpy.int32)
+
 
 
     def run_length_decoder(self,l):
@@ -46,6 +87,7 @@ class mmtf_structure(object):
 
 
     def __init__(self, input_data):
+
         if b'resolution' in input_data:
             self.resolution = input_data[b'resolution']
         else:
@@ -107,7 +149,7 @@ class mmtf_structure(object):
         if b"secStructList" in input_data:
             self.sec_struct_list = np.frombuffer(input_data[b"secStructList"][12:],'>i1')
         else:
-            self.entity_list = []
+            self.sec_struct_list = []
         if b"chainNameList" in input_data:
             self.chain_name_list = [chr(a) for a in input_data[b"chainNameList"][12:][::4]]
         else:
@@ -124,8 +166,8 @@ class mmtf_structure(object):
 
 
         self.chain_id_list = [chr(a) for a in input_data[b"chainIdList"][12:][::4]]
-        self.group_type_list = np.frombuffer(input_data[b'groupTypeList'][12:],'>i4')
-        #self.group_x_coord_list = [a/1000 for a in np.frombuffer(t[b'x_coord_list'][12:],'>i2')[1::2]]
+        self.group_type_list = np.frombuffer(input_data[b'groupTypeList'][12:],'>i4') # double check /1000
+
 
         # TODO dictionary in bytes
         if b"entityList" in input_data:
@@ -136,46 +178,43 @@ class mmtf_structure(object):
 
 
         if b"occupancyList" in input_data:
-            self.occupancy_list = [a/100 for a in self.run_length_decoder_numpy(np.frombuffer(input_data[b"occupancyList"][12:],">i4"))]
+            #self.occupancy_list = [a/100 for a in self.run_length_decoder_numpy(np.frombuffer(input_data[b"occupancyList"][12:],">i4"))]
+            self.occupancy_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b"occupancyList"][12:],">i4")) /100
         else:
             self.occupancy_list = []
 
-        '''
-        # TODO int delta recursive
-        self.x_coord_list = decode_array(input_data[b"xCoordList"])
-        self.y_coord_list = decode_array(input_data[b"yCoordList"])
-        self.z_coord_list = decode_array(input_data[b"zCoordList"])
-        if b"bFactorList" in input_data:
-            self.b_factor_list = decode_array(input_data[b"bFactorList"])
+        if b"altLocList" in input_data:
+            #self.alt_loc_list = [chr(int(a)) for a in self.run_length_decoder_numpy(np.frombuffer(input_data[b'altLocList'][12:],">i4"))]
+            self.alt_loc_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b'altLocList'][12:],">i4")).astype(np.int16)
+
         else:
-            self.b_factor_list = []
+            self.alt_loc_list = []
 
+        if b"insCodeList" in input_data:
+            self.ins_code_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b"insCodeList"][12:],">i4"))
+        else:
+            self.ins_code_list = []
 
-        # TODO run length delta
+        self.group_id_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'groupIdList'][12:],'>i4')).astype(np.int16))
+
         if b"atomIdList" in input_data:
-            self.atom_id_list = decode_array(input_data[b"atomIdList"])
+            self.atom_id_list =np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'atomIdList'][12:],'>i4')).astype(np.int16))
         else:
             self.atom_id_list = []
-        self.group_id_list = decode_array(input_data[b"groupIdList"])
+
         if b"sequenceIndexList" in input_data:
-            self.sequence_index_list = decode_array(input_data[b"sequenceIndexList"])
+            self.sequence_index_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'sequenceIndexList'][12:],'>i4')).astype(np.int16))
         else:
             self.sequence_index_list = []
 
 
-        # TODO run_length
-        if b"altLocList" in input_data:
-            self.alt_loc_list = decode_array(input_data[b"altLocList"])
+        '''
+        self.x_coord_list = np.cumsum(self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2')))/1000
+        self.y_coord_list = np.cumsum(self.recursive_index_decode(np.frombuffer(input_data[b'yCoordList'][12:],'>i2')))/1000
+        self.z_coord_list = np.cumsum(self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2')))/1000
+        if b"bFactorList" in input_data:
+            self.b_factor_list = np.cumsum(self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2')))/1000
         else:
-            self.alt_loc_list = []
-        if b"insCodeList" in input_data:
-            self.ins_code_list = decode_array(input_data[b"insCodeList"])
-        else:
-            self.ins_code_list = []
-
-
-        # TODO Int run length
-
-
-'''
-    #[b'mmtfVersion', b'mmtfProducer', b'numBonds', b'numAtoms', b'numGroups', b'numChains', b'numModels', b'structureId', b'title', b'chainsPerModel', b'groupsPerChain', b'chainNameList', b'chainIdList', b'spaceGroup', b'unitCell', b'bioAssemblyList', b'bondAtomList', b'bondOrderList', b'groupList', b'xCoordList', b'yCoordList', b'zCoordList', b'bFactorList', b'secStructList', b'occupancyList', b'altLocList', b'insCodeList', b'groupTypeList', b'groupIdList', b'atomIdList', #b'sequenceIndexList',b'experimentalMethods', b'resolution', b'rFree', b'rWork', b'entityList', b'depositionDate', b'releaseDate', b'ncsOperatorList']
+            self.b_factor_list = []
+        '''
+        
