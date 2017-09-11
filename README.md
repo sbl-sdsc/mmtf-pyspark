@@ -46,19 +46,19 @@ conda install py4j
 
 1.  Using Anaconda and GOW(recommended)
 
-If you already have anaconda and GOW installed, skip this step.
+    If you already have anaconda and GOW installed, skip this step.
 
-[Download Anaconda](https://docs.continuum.io/anaconda/install/windows)
+    [Download Anaconda](https://docs.continuum.io/anaconda/install/windows)
 
-Basically, GOW allows you to use linux commands on windows. In this install, we will need curl, gzip, tar which GOW provides.
+    Basically, GOW allows you to use linux commands on windows. In this install, we will need curl, gzip, tar which GOW provides.
 
-[Download GOW](https://github.com/bmatzelle/gow/releases/download/v0.8.0/Gow-0.8.0.exe)
+    [Download GOW](https://github.com/bmatzelle/gow/releases/download/v0.8.0/Gow-0.8.0.exe)
 
 2.  Close and open a new command line (CMD).
 
 3.  Go to the Apache Spark website
 
-[Download Apache Spark](http://spark.apache.org/downloads.html)
+    [Download Apache Spark](http://spark.apache.org/downloads.html)
 
     a) Choose a Spark release
 
