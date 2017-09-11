@@ -75,7 +75,7 @@ conda install py4j
 
     tar xvf spark-2.1.0-bin-hadoop2.7.tar
     ```
-4.  Download winutils.exe into your spark-2.1.0-bin-hadoop2.7\bin
+4.  Download winutils.exe into YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin.
 
 ```
 curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.6.0/bin/winutils.exe?raw=true
@@ -85,7 +85,7 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
 6.  Next, we will edit our environmental variables so we can open a spark notebook in any directory.
 
-    (1)
+    (1) Find environmental variables:
 
     a) In Search, search for and then select: System (Control Panel)
 
@@ -95,18 +95,23 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
     d) In the section System Variables find the environment variables and select it. Click Edit. If the environment variable does not exist, click New.
 
-    (2)
+    (2) Set environmental variables:
 
-    (a) set "SPARK_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
+    a) set "SPARK_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
 
-    (b) set "HADOOP_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
+    b) set "HADOOP_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
 
-    (c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
+    c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
 
-    (d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
+    d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
 
-    (e) Add ";C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin" to your "PATH".
+    e) Add ";C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin" to your "PATH".
 
+7.  Close your terminal and open a new one. Type the command below to test if pyspark has been installed.
+
+```
+pyspark --master local[2]
+```
 
 ### Linux [link](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
 
