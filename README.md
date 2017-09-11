@@ -72,8 +72,33 @@ conda install py4j
 
     ```
     gzip -d spark-2.1.0-bin-hadoop2.7.tgz
+
     tar xvf spark-2.1.0-bin-hadoop2.7.tar
     ```
+4.  Download winutils.exe into your spark-2.1.0-bin-hadoop2.7\bin
+
+```
+curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.6.0/bin/winutils.exe?raw=true
+```
+
+5.  Make sure you have Java 7+ installed on your machine.
+
+6.  Next, we will edit our environmental variables so we can open a spark notebook in any directory.
+
+```
+setx SPARK_HOME C:\opt\spark\spark-2.1.0-bin-hadoop2.7
+
+setx HADOOP_HOME C:\opt\spark\spark-2.1.0-bin-hadoop2.7
+
+setx PYSPARK_DRIVER_PYTHON ipython
+
+setx PYSPARK_DRIVER_PYTHON_OPTS notebook
+
+Add ;C:\opt\spark\spark-2.1.0-bin-hadoop2.7\bin to your path.
+
+Notes on the setx command: https://ss64.com/nt/set.html
+
+```
 
 ### Linux [link](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
 
