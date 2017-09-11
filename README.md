@@ -46,17 +46,13 @@ conda install py4j
 
 0.  If you already have anaconda and GOW installed, skip to step 2.
 
-1.  Using Anaconda and GOW(recommended):
-
-    [Download Anaconda](https://docs.continuum.io/anaconda/install/windows)
+1.  Using GOW(recommended):
 
     Basically, GOW allows you to use linux commands on windows. In this install, we will need curl, gzip, tar which GOW provides.
 
     [Download GOW](https://github.com/bmatzelle/gow/releases/download/v0.8.0/Gow-0.8.0.exe)
 
-2.  Close and open a new command line (CMD).
-
-3.  Go to the Apache Spark website [link](http://spark.apache.org/downloads.html)
+2.  Go to the Apache Spark website [link](http://spark.apache.org/downloads.html)
 
     a) Choose a Spark release
 
@@ -75,15 +71,15 @@ conda install py4j
 
     tar xvf spark-2.1.0-bin-hadoop2.7.tar
     ```
-4.  Download winutils.exe into YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin.
+3.  Download winutils.exe into YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin.
 
 ```
 curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.6.0/bin/winutils.exe?raw=true
 ```
 
-5.  Make sure you have Java 7+ installed on your machine.
+4.  Make sure you have Java 7+ installed on your machine.
 
-6.  Next, we will edit our environmental variables so we can open a spark notebook in any directory.
+5.  Next, we will edit our environmental variables so we can open a spark notebook in any directory.
 
     (1) Find environmental variables:
 
@@ -107,7 +103,7 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
     e) Add ";C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin" to your "PATH".
 
-7.  Close your terminal and open a new one. Type the command below to test if pyspark has been installed.
+6.  Close your terminal and open a new one. Type the command below to test if pyspark has been installed.
 
 ```
 pyspark --master local[2]
