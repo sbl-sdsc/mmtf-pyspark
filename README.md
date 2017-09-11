@@ -85,7 +85,7 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
 6.  Next, we will edit our environmental variables so we can open a spark notebook in any directory.
 
-  1)
+    (1)
 
     a) In Search, search for and then select: System (Control Panel)
 
@@ -95,8 +95,8 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
     d) In the section System Variables find the environment variables and select it. Click Edit. If the environment variable does not exist, click New.
 
-  2)
-  
+    (2)
+
     (a) set "SPARK_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
 
     (b) set "HADOOP_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
