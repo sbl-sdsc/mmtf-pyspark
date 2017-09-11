@@ -44,9 +44,9 @@ conda install py4j
 
 ### Windows
 
-1.  Using Anaconda and GOW(recommended)
+0.  If you already have anaconda and GOW installed, skip to step 2.
 
-    If you already have anaconda and GOW installed, skip this step.
+1.  Using Anaconda and GOW(recommended):
 
     [Download Anaconda](https://docs.continuum.io/anaconda/install/windows)
 
@@ -56,9 +56,7 @@ conda install py4j
 
 2.  Close and open a new command line (CMD).
 
-3.  Go to the Apache Spark website
-
-    [Download Apache Spark](http://spark.apache.org/downloads.html)
+3.  Go to the Apache Spark website [link](http://spark.apache.org/downloads.html)
 
     a) Choose a Spark release
 
@@ -73,8 +71,8 @@ conda install py4j
     f) Unzip the file. Use the bolded commands below
 
     ```
-        gzip -d spark-2.1.0-bin-hadoop2.7.tgz
-        tar xvf spark-2.1.0-bin-hadoop2.7.tar
+    gzip -d spark-2.1.0-bin-hadoop2.7.tgz
+    tar xvf spark-2.1.0-bin-hadoop2.7.tar
     ```
 
 ### Linux [link](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
