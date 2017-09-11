@@ -85,20 +85,26 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
 6.  Next, we will edit our environmental variables so we can open a spark notebook in any directory.
 
-```
-setx SPARK_HOME C:\opt\spark\spark-2.1.0-bin-hadoop2.7
+    a) In Search, search for and then select: System (Control Panel)
 
-setx HADOOP_HOME C:\opt\spark\spark-2.1.0-bin-hadoop2.7
+    b) Click the Advanced system settings link.
 
-setx PYSPARK_DRIVER_PYTHON ipython
+    c) Click Environment Variables.
 
-setx PYSPARK_DRIVER_PYTHON_OPTS notebook
+    d) In the section System Variables find the environment variables and select it.
 
-Add ;C:\opt\spark\spark-2.1.0-bin-hadoop2.7\bin to your path.
+        Click Edit. If the environment variable does not exist, click New.
 
-Notes on the setx command: https://ss64.com/nt/set.html
+    (a) set "SPARK_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
 
-```
+    (b) set "HADOOP_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
+
+    (c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
+
+    (d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
+
+    (e) Add ";C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin" to your "PATH".
+
 
 ### Linux [link](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
 
