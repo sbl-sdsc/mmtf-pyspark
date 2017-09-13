@@ -72,9 +72,9 @@ conda install py4j
     tar xvf YOUR_SPARK_VERSION.tar
     ```
     
-3.  Download winutils.exe into "YOUR_DIRECTORY\YOUR_SPARK_VERSION\bin" using following command.
+3.  Download winutils.exe into "_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_\\bin" using following command.
 
-    As an example in following steps, "YOUR_DIRECTORY" could be "C:\opt\spark", "YOUR_SPARK_VERSION" could be "spark-2.2.0-bin-hadoop2.6".
+    As an example in following steps, _YOUR_DIRECTORY_ could be "C:\opt\spark", _YOUR_SPARK_VERSION_ could be "spark-2.2.0-bin-hadoop2.6".
 	
 ```
 curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.6.0/bin/winutils.exe?raw=true
@@ -96,15 +96,15 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
     **Set environmental variables:**
 
-	a) set "SPARK_HOME" to "YOUR_DIRECTORY\YOUR_SPARK_VERSION"
+	a) set "SPARK_HOME" to "_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_"
 	
-	b) set "HADOOP_HOME" to "YOUR_DIRECTORY\YOUR_SPARK_VERSION"
+	b) set "HADOOP_HOME" to "_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_"
 	
 	c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
 	
 	d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
 	
-	e) Add ";YOUR_DIRECTORY\YOUR_SPARK_VERSION\bin" to your "PATH".
+	e) Add ";_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_\\bin" to your "PATH".
 
 6.  Close your terminal and open a new one. Type the command below to test if pyspark has been installed.
 
