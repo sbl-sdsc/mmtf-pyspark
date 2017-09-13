@@ -6,7 +6,7 @@ from Bio.PDB.Polypeptide import three_to_one
 
 def biopythonInputFunction(bp_struct, mmtf_encoder):
     # Initialize structure
-    total_num_bonds = None  # TODO Can't find bond info in bioPython
+    total_num_bonds = 0  # TODO Can't find bond info in bioPython
     total_num_atoms = sum(1 for x in bp_struct.get_atoms())
     total_num_groups = sum(1 for x in bp_struct.get_residues())
     total_num_chains = sum(1 for x in bp_struct.get_chains())
@@ -22,6 +22,8 @@ def biopythonInputFunction(bp_struct, mmtf_encoder):
     # TODO Set xtal info
     # mmtf_encoder.set_xtal_info(space_group='C 2 2 21', unit_cell=[80.37000274658203, 96.12000274658203, 57.66999816894531, 90.0, 90.0, 90.0])  ## TODO
 
+    # TODO
+    # space_group, unit_cell
 
     # Set header info
     header = bp_struct.header
@@ -73,7 +75,7 @@ def biopythonInputFunction(bp_struct, mmtf_encoder):
                     insertion_code = '\x00'
                 else:
                     insertion_code = resinfo[2]
-                group_type = 0  ## TODO: convert chemical type to group_type integer using chemcomp dictionary
+                group_type = "No_group_info"  ## TODO: convert chemical type to group_type integer using chemcomp dictionary
                 atom_count = len(residue.child_list)
                 bond_count = 0  ## TODO: how to get bond count?
                 try:
