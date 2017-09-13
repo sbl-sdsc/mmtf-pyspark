@@ -73,8 +73,8 @@ conda install py4j
     ```
     
 3.  Download winutils.exe into "YOUR_DIRECTORY\YOUR_SPARK_VERSION\bin" using following command.
-	
-	As an example in following steps, "YOUR_DIRECTORY" could be "C:\opt\spark", "YOUR_SPARK_VERSION" could be "spark-2.2.0-bin-hadoop2.6".
+
+    As an example in following steps, "YOUR_DIRECTORY" could be "C:\opt\spark", "YOUR_SPARK_VERSION" could be "spark-2.2.0-bin-hadoop2.6".
 	
 ```
 curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.6.0/bin/winutils.exe?raw=true
@@ -84,27 +84,27 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
 5.  Next, we will edit our environmental variables so we can open a spark notebook in any directory.
 
-    (1) Find environmental variables:
+    **Find environmental variables:**
 
-    a) In Search, search for and then select: System (Control Panel)
+	a) In Search, search for and then select: System (Control Panel)
+	
+	b) Click the Advanced system settings link.
+	
+	c) Click Environment Variables.
+	
+	d) In the section System Variables find the environment variables and select it. Click Edit. If the environment variable does not exist, click New.
 
-    b) Click the Advanced system settings link.
+    **Set environmental variables:**
 
-    c) Click Environment Variables.
-
-    d) In the section System Variables find the environment variables and select it. Click Edit. If the environment variable does not exist, click New.
-
-    (2) Set environmental variables:
-
-    a) set "SPARK_HOME" to "YOUR_DIRECTORY\YOUR_SPARK_VERSION"
-
-    b) set "HADOOP_HOME" to "YOUR_DIRECTORY\YOUR_SPARK_VERSION"
-
-    c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
-
-    d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
-
-    e) Add ";YOUR_DIRECTORY\YOUR_SPARK_VERSION\bin" to your "PATH".
+	a) set "SPARK_HOME" to "YOUR_DIRECTORY\YOUR_SPARK_VERSION"
+	
+	b) set "HADOOP_HOME" to "YOUR_DIRECTORY\YOUR_SPARK_VERSION"
+	
+	c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
+	
+	d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
+	
+	e) Add ";YOUR_DIRECTORY\YOUR_SPARK_VERSION\bin" to your "PATH".
 
 6.  Close your terminal and open a new one. Type the command below to test if pyspark has been installed.
 
