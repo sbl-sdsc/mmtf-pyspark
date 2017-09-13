@@ -44,7 +44,7 @@ conda install py4j
 
 ### Windows
 
-0.  If you already have anaconda and GOW installed, skip to step 2.
+0.  If you already have GOW installed, skip to step 2.
 
 1.  Using GOW(recommended):
 
