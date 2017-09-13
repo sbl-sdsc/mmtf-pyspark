@@ -73,6 +73,7 @@ conda install py4j
     ```
     
 3.  Download winutils.exe into "YOUR_DIRECTORY\YOUR_SPARK_VERSION\bin" using following command.
+	
 	As an example in following steps, "YOUR_DIRECTORY" could be "C:\opt\spark", "YOUR_SPARK_VERSION" could be "spark-2.2.0-bin-hadoop2.6".
 	
 ```
