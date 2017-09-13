@@ -67,9 +67,9 @@ conda install py4j
     f) Unzip the file. Use the commands below
 
     ```
-    gzip -d YOUR_SPARK_FILENAME.tgz
+    gzip -d YOUR_SPARK_VERSION.tgz
 
-    tar xvf YOUR_SPARK_FILENAME.tar
+    tar xvf YOUR_SPARK_VERSION.tar
     ```
     
 3.  Download winutils.exe into "YOUR_DIRECTORY\YOUR_SPARK_VERSION\bin" using following command.
