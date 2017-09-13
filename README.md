@@ -64,18 +64,20 @@ conda install py4j
 
     e) Move the file to where you want to unzip it
 
-    f) Unzip the file. Use the bolded commands below
+    f) Unzip the file. Use the commands below
 
     ```
-    gzip -d spark-2.1.0-bin-hadoop2.7.tgz
+    gzip -d YOUR_SPARK_FILENAME.tgz
 
-    tar xvf spark-2.1.0-bin-hadoop2.7.tar
+    tar xvf YOUR_SPARK_FILENAME.tar
     ```
-3.  Download winutils.exe into YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin.
-
+    
+3.  Download winutils.exe into YOUR_DIRECTORY\YOUR_SPARK_VERSION\bin.
+	
 ```
 curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.6.0/bin/winutils.exe?raw=true
 ```
+	As an example, YOUR_DIRECTORY could be "opt\spark\", and YOUR_SPARK_VERSION could be "spark-2.2.0-bin-hadoop2.6"
 
 4.  Make sure you have Java 7+ installed on your machine.
 
@@ -93,15 +95,15 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
     (2) Set environmental variables:
 
-    a) set "SPARK_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
+    a) set "SPARK_HOME" to "C:\YOUR_DIRECTORY\YOUR_SPARK_VERSION"
 
-    b) set "HADOOP_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
+    b) set "HADOOP_HOME" to "C:\YOUR_DIRECTORY\YOUR_SPARK_VERSION"
 
     c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
 
     d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
 
-    e) Add ";C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin" to your "PATH".
+    e) Add ";C:\YOUR_DIRECTORY\YOUR_SPARK_VERSION\bin" to your "PATH".
 
 6.  Close your terminal and open a new one. Type the command below to test if pyspark has been installed.
 
