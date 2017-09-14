@@ -44,7 +44,7 @@ conda install py4j
 
 ### Windows
 
-0.  If you already have anaconda and GOW installed, skip to step 2.
+0.  If you already have GOW installed, skip to step 2.
 
 1.  Using GOW(recommended):
 
@@ -64,15 +64,18 @@ conda install py4j
 
     e) Move the file to where you want to unzip it
 
-    f) Unzip the file. Use the bolded commands below
+    f) Unzip the file. Use the commands below
 
     ```
-    gzip -d spark-2.1.0-bin-hadoop2.7.tgz
+    gzip -d YOUR_SPARK_VERSION.tgz
 
-    tar xvf spark-2.1.0-bin-hadoop2.7.tar
+    tar xvf YOUR_SPARK_VERSION.tar
     ```
-3.  Download winutils.exe into YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin.
+    
+3.  Download winutils.exe into "_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_\\bin" using following command.
 
+    As an example in following steps, _YOUR_DIRECTORY_ could be "C:\opt\spark", _YOUR_SPARK_VERSION_ could be "spark-2.2.0-bin-hadoop2.6".
+	
 ```
 curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.6.0/bin/winutils.exe?raw=true
 ```
@@ -81,27 +84,27 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 
 5.  Next, we will edit our environmental variables so we can open a spark notebook in any directory.
 
-    (1) Find environmental variables:
+    **Find environmental variables:**
 
-    a) In Search, search for and then select: System (Control Panel)
+	a) In Search, search for and then select: System (Control Panel)
+	
+	b) Click the Advanced system settings link.
+	
+	c) Click Environment Variables.
+	
+	d) In the section System Variables find the environment variables and select it. Click Edit. If the environment variable does not exist, click New.
 
-    b) Click the Advanced system settings link.
+    **Set environmental variables:**
 
-    c) Click Environment Variables.
-
-    d) In the section System Variables find the environment variables and select it. Click Edit. If the environment variable does not exist, click New.
-
-    (2) Set environmental variables:
-
-    a) set "SPARK_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
-
-    b) set "HADOOP_HOME" to "C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7"
-
-    c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
-
-    d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
-
-    e) Add ";C:\YOUR_DIRECTORY\spark\spark-2.1.0-bin-hadoop2.7\bin" to your "PATH".
+	a) set "SPARK_HOME" to "_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_"
+	
+	b) set "HADOOP_HOME" to "_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_"
+	
+	c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
+	
+	d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
+	
+	e) Add ";_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_\\bin" to your "PATH".
 
 6.  Close your terminal and open a new one. Type the command below to test if pyspark has been installed.
 
