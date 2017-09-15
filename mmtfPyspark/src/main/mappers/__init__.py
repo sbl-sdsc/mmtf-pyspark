@@ -1,1 +1,2 @@
 from .structureToPolymerChains import structureToPolymerChains
+from .structureToBioassembly import structureToBioassembly
