@@ -27,7 +27,7 @@ class structureToPolymerChains(object):
         useChainIdInsteadOfChainName (bool): if true, use Chain Id in the key assignments
         excludeDuplicates (bool): if true return only one chain for each sequence
     '''
-    
+
     def __init__(self, useChainIdInsteadOfChainName = False, excludeDuplicates = False):
         self.useChainIdInsteadOfChainName = useChainIdInsteadOfChainName
         self.excludeDuplicates = excludeDuplicates

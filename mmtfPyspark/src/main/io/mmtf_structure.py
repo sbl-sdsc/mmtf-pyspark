@@ -80,16 +80,9 @@ class mmtf_structure(object):
                 output_entity[key.decode('ascii')] = input_entity[key]
         return output_entity
 
-        self.x_coord_list = np.cumsum(self.recursive_index_decode(self.x_coord_list))/1000
-        self.y_coord_list = np.cumsum(self.recursive_index_decode(self.y_coord_list))/1000
-        self.z_coord_list = np.cumsum(self.recursive_index_decode(self.z_coord_list))/1000
-        return self
 
     def __init__(self, input_data):
 
-        self.x_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
-        self.y_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'yCoordList'][12:],'>i2'))
-        self.z_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2'))
         if b"bFactorList" in input_data:
             self.b_factor_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
         else:
@@ -120,7 +113,6 @@ class mmtf_structure(object):
             self.deposition_date = input_data[b"depositionDate"].decode()
         else:
             self.deposition_date = None
-
         if b"title" in input_data:
             self.title = input_data[b"title"]
         else:
@@ -153,68 +145,26 @@ class mmtf_structure(object):
             self.sec_struct_list = np.frombuffer(input_data[b"secStructList"][12:],'>i1')
         else:
             self.sec_struct_list = []
-
-
-        self.num_bonds = input_data[b"numBonds"]
-        self.num_chains = input_data[b"numChains"]
-        self.num_models = input_data[b"numModels"]
-        self.num_atoms = input_data[b"numAtoms"]
-        self.num_groups = input_data[b"numGroups"]
-        self.chains_per_model = input_data[b"chainsPerModel"]
-        self.groups_per_chain = input_data[b"groupsPerChain"]
-
-
-
-        self.group_type_list = np.frombuffer(input_data[b'groupTypeList'][12:],'>i4') # double check /1000
-
-
-        # TODO dictionary in bytes
-        if b"entityList" in input_data:
-            self.entity_list = self.decode_entity_list(input_data[b"entityList"])
-        else:
-            self.entity_list = []
-        self.group_list = self.decode_group_list(input_data[b"groupList"])
-
-
-        if b"occupancyList" in input_data:
-            self.occupancy_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b"occupancyList"][12:],">i4")) /100
-        else:
-            self.occupancy_list = []
-
-
-
         if b"insCodeList" in input_data:
             self.ins_code_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b"insCodeList"][12:],">i4"))
         else:
             self.ins_code_list = []
-
-        self.group_id_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'groupIdList'][12:],'>i4')).astype(np.int16))
-
         if b"atomIdList" in input_data:
-            self.atom_id_list =np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'atomIdList'][12:],'>i4')).astype(np.int16))
+            self.atom_id_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'atomIdList'][12:],'>i4')).astype(np.int16))
         else:
             self.atom_id_list = []
-
         if b"sequenceIndexList" in input_data:
             self.sequence_index_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'sequenceIndexList'][12:],'>i4')).astype(np.int16))
         else:
             self.sequence_index_list = []
-
-
-
-
-        # TODO dictionary in bytes
+        if b"occupancyList" in input_data:
+            self.occupancy_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b"occupancyList"][12:],">i4")) /100
+        else:
+            self.occupancy_list = []
         if b"entityList" in input_data:
             self.entity_list = self.decode_entity_list(input_data[b"entityList"])
         else:
             self.entity_list = []
-        self.group_list = self.decode_group_list(input_data[b"groupList"])
-
-
-
-
-        self.chain_id_list = [chr(a) for a in input_data[b"chainIdList"][12:][::4]]
-
         if b"chainNameList" in input_data:
             self.chain_name_list = [chr(a) for a in input_data[b"chainNameList"][12:][::4]]
         else:
@@ -223,10 +173,24 @@ class mmtf_structure(object):
             self.experimental_methods = [x.decode() for x in input_data[b"experimentalMethods"]]
         else:
             self.experimental_methods = None
-        '''
-        if b"altLocList" in input_data:
-            self.alt_loc_list = [chr(a) for a in self.run_length_decoder_numpy(np.frombuffer(input_data[b'altLocList'][12:],">i4")).astype(np.int16)]
+
+        # TODO: altLocList taking longest to convert
+        #if b"altLocList" in input_data:
+        #    self.alt_loc_list = [chr(a) for a in self.run_length_decoder_numpy(np.frombuffer(input_data[b'altLocList'][12:],">i4")).astype(np.int16)]
             #self.alt_loc_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b'altLocList'][12:],">i4")).astype(np.int16)
-        else:
-            self.alt_loc_list = []
-        '''
+        #else:
+        #    self.alt_loc_list = []
+
+        self.num_bonds = input_data[b"numBonds"]
+        self.num_chains = input_data[b"numChains"]
+        self.num_models = input_data[b"numModels"]
+        self.num_atoms = input_data[b"numAtoms"]
+        self.num_groups = input_data[b"numGroups"]
+        self.chains_per_model = input_data[b"chainsPerModel"]
+        self.groups_per_chain = input_data[b"groupsPerChain"]
+        self.group_id_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'groupIdList'][12:],'>i4')).astype(np.int16))
+        self.x_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
+        self.y_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'yCoordList'][12:],'>i2'))
+        self.z_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2'))
+        self.group_type_list = np.frombuffer(input_data[b'groupTypeList'][12:],'>i4') # double check /1000
+        self.chain_id_list = [chr(a) for a in input_data[b"chainIdList"][12:][::4]]
