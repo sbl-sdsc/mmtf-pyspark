@@ -110,6 +110,7 @@ class mmtfStructure(object):
         """
         Set the alternative location list for structure
         """
+
         self.alt_loc_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b'altLocList'][12:],">i4")).astype(np.int16)
         return self
 
@@ -118,7 +119,7 @@ class mmtfStructure(object):
         """
         Decodes a msgpack unpacked data to mmtf structure
         """
-
+        
         if b"bFactorList" in input_data:
             self.b_factor_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
         else:
@@ -219,8 +220,9 @@ class mmtfStructure(object):
         self.chains_per_model = input_data[b"chainsPerModel"]
         self.groups_per_chain = input_data[b"groupsPerChain"]
         self.group_id_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'groupIdList'][12:],'>i4')).astype(np.int16))
+        self.group_type_list = np.frombuffer(input_data[b'groupTypeList'][12:],'>i4') # double check /1000
+        self.chain_id_list = [chr(a) for a in input_data[b"chainIdList"][12:][::4]]
+        self.group_list = self.decode_group_list(input_data[b'groupList'])
         self.x_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
         self.y_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'yCoordList'][12:],'>i2'))
         self.z_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2'))
-        self.group_type_list = np.frombuffer(input_data[b'groupTypeList'][12:],'>i4') # double check /1000
-        self.chain_id_list = [chr(a) for a in input_data[b"chainIdList"][12:][::4]]

@@ -21,7 +21,7 @@ from mmtf import MMTFEncoder
 from mmtf.api.default_api import pass_data_on
 from os import walk
 from os import path
-from .mmtf_structure import mmtf_structure
+from .mmtfStructure import mmtfStructure
 import msgpack
 import gzip
 
@@ -33,8 +33,7 @@ def call_sequence_file(t):
     Call function for hadoop sequence files
     '''
     unpack = msgpack.unpackb(t[1])
-    #return unpack
-    decoder = mmtf_structure(unpack)
+    decoder = mmtfStructure(unpack)
     #decoder = MMTFDecoder()
     #decoder.decode_data(unpack)
     return (str(t[0]), decoder)
@@ -46,10 +45,7 @@ def call_sequence_file_gzip(t):
     '''
     data = default_api.ungzip_data(t[1])
     unpack = msgpack.unpackb(data.read())
-    #return unpack
-    decoder = MMTFDecoder()
-    decoder.decode_data(unpack)
-    #decoder = mmtf_structure(unpack)
+    decoder = mmtfStructure(unpack)
     return (str(t[0]), decoder)
 
 def call_mmtf(f):
@@ -165,10 +161,7 @@ def getStructure(pdbId):
     '''
 
     unpack = default_api.get_raw_data_from_url(pdbId)
-    #return unpack
-    decoder = MMTFDecoder()
-    decoder.decode_data(unpack)
-    #decoder = mmtf_structure(unpack)
+    decoder = mmtfStructure(unpack)
     return (pdbId, decoder)
 
 
