@@ -136,14 +136,14 @@ class structureToBioassembly(object):
                             for kk in range(len(structure.group_list[currgroup]['atomNameList'])):
                                 if addThisChain:
                                     p1 = array([xCoords[atomIndex], yCoords[atomIndex], zCoords[atomIndex], 1])
-                                    p1 = p1 * m
+                                    p2 = matmul(p1, m)
                                     bioAssembly.set_atom_info(
                                         structure.group_list[currgroup]['atomNameList'][kk],
                                         structure.atom_id_list[atomIndex],
                                         structure.alt_loc_list[atomIndex],
-                                        p1.item(0),
-                                        p1.item(1),
-                                        p1.item(2),
+                                        p2.item(0),
+                                        p2.item(1),
+                                        p2.item(2),
                                         structure.occupancy_list[atomIndex],
                                         structure.b_factor_list[atomIndex],
                                         structure.group_list[currgroup]['elementList'][kk],
