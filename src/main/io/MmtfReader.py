@@ -12,16 +12,13 @@ Authorship information:
 
 from mmtf.api.mmtf_reader import MMTFDecoder
 from mmtf.api import default_api
-try:
-    from src.main.inputFunction import biopythonInputFunction
-except ModuleNotFoundError:
-    from ..inputFunction import biopythonInputFunction
+from src.main.inputFunction import biopythonInputFunction
 from Bio.PDB import PDBParser, MMCIFParser, FastMMCIFParser
 from mmtf import MMTFEncoder
 from mmtf.api.default_api import pass_data_on
 from os import walk
 from os import path
-from .mmtfStructure import mmtfStructure
+from .mmtf_structure import mmtf_structure
 import msgpack
 import gzip
 
@@ -33,9 +30,9 @@ def call_sequence_file(t):
     Call function for hadoop sequence files
     '''
     unpack = msgpack.unpackb(t[1])
-    decoder = mmtfStructure(unpack)
-    #decoder = MMTFDecoder()
-    #decoder.decode_data(unpack)
+    #decoder = mmtf_structure(unpack)
+    decoder = MMTFDecoder()
+    decoder.decode_data(unpack)
     return (str(t[0]), decoder)
 
 
@@ -45,7 +42,10 @@ def call_sequence_file_gzip(t):
     '''
     data = default_api.ungzip_data(t[1])
     unpack = msgpack.unpackb(data.read())
-    decoder = mmtfStructure(unpack)
+    #return unpack
+    decoder = MMTFDecoder()
+    decoder.decode_data(unpack)
+    #decoder = mmtf_structure(unpack)
     return (str(t[0]), decoder)
 
 def call_mmtf(f):
@@ -73,7 +73,6 @@ def call_pdb(f):
     '''
 
     if (".pdb" or ".ent") in f:
-        print(f)
         name = f.split('/')[-1].split('.')[0].upper()
         # Open gz files
         if ".gz" in f:
@@ -161,7 +160,9 @@ def getStructure(pdbId):
     '''
 
     unpack = default_api.get_raw_data_from_url(pdbId)
-    decoder = mmtfStructure(unpack)
+    #return unpack
+    decoder = MMTFDecoder()
+    decoder.decode_data(unpack)
     return (pdbId, decoder)
 
 
