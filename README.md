@@ -19,6 +19,14 @@ The most up-to-date mmtf-python is not on pip or Anaconda, please clone it from 
 
 The following links are tutorials to install pyspark on differnt OS systems
 
+## msgpack
+
+Install msgpack using the following command:
+
+```
+pip install msgpack-python
+```
+
 ### Mac
 
 Using Homebrew(recommended):
@@ -71,11 +79,11 @@ conda install py4j
 
     tar xvf YOUR_SPARK_VERSION.tar
     ```
-    
+
 3.  Download winutils.exe into "_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_\\bin" using following command.
 
     As an example in following steps, _YOUR_DIRECTORY_ could be "C:\opt\spark", _YOUR_SPARK_VERSION_ could be "spark-2.2.0-bin-hadoop2.6".
-	
+
 ```
 curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.6.0/bin/winutils.exe?raw=true
 ```
@@ -87,23 +95,23 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
     **Find environmental variables:**
 
 	a) In Search, search for and then select: System (Control Panel)
-	
+
 	b) Click the Advanced system settings link.
-	
+
 	c) Click Environment Variables.
-	
+
 	d) In the section System Variables find the environment variables and select it. Click Edit. If the environment variable does not exist, click New.
 
     **Set environmental variables:**
 
 	a) set "SPARK_HOME" to "_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_"
-	
+
 	b) set "HADOOP_HOME" to "_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_"
-	
+
 	c) set "PYSPARK_DRIVER_PYTHON" to "ipython"
-	
+
 	d) set "PYSPARK_DRIVER_PYTHON_OPTS" to "notebook"
-	
+
 	e) Add ";_YOUR_DIRECTORY_\\_YOUR_SPARK_VERSION_\\bin" to your "PATH".
 
 6.  Close your terminal and open a new one. Type the command below to test if pyspark has been installed.
