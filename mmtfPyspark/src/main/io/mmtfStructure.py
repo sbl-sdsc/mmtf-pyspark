@@ -119,7 +119,7 @@ class mmtfStructure(object):
         """
         Decodes a msgpack unpacked data to mmtf structure
         """
-        
+
         if b"bFactorList" in input_data:
             self.b_factor_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
         else:
@@ -134,6 +134,8 @@ class mmtfStructure(object):
             self.r_free = None
         if b"rWork" in input_data:
             self.r_work = input_data[b"rWork"]
+        else:
+            self.r_work = None
         if b"bioAssemblyList" in input_data:
             self.bio_assembly = input_data[b"bioAssemblyList"]
         else:
@@ -183,7 +185,7 @@ class mmtfStructure(object):
         else:
             self.sec_struct_list = []
         if b"insCodeList" in input_data:
-            self.ins_code_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b"insCodeList"][12:],">i4"))
+            self.ins_code_list = [chr(x) for x in self.run_length_decoder_numpy(np.frombuffer(input_data[b"insCodeList"][12:],">i4")).astype(np.int16)]
         else:
             self.ins_code_list = []
         if b"atomIdList" in input_data:
@@ -226,3 +228,4 @@ class mmtfStructure(object):
         self.x_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
         self.y_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'yCoordList'][12:],'>i2'))
         self.z_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2'))
+        self.alt_loc_list = []
