@@ -12,6 +12,7 @@ Authorship information:
 '''
 
 from mmtf.api.mmtf_writer import MMTFEncoder
+import gzip
 import msgpack
 
 def writeSequenceFile(path, sc, structure, compressed = True):
@@ -39,4 +40,9 @@ def toByteArray(structure, compressed):
     '''
     #mmtf_dict = MMTFEncoder.encode_data(structure)
     #return bytearray().extend(map(ord,[[k,v] for k,v in mmtf_dict.items()]))
-    return bytearray(msgpack.packb(MMTFEncoder.encode_data(structure)))
+    byte_array = bytearray(msgpack.packb(MMTFEncoder.encode_data(structure)))
+
+    if compressed:
+        return gzip.compress(byte_array)
+    else:
+        return byte_array
