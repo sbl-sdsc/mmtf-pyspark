@@ -37,6 +37,6 @@ def toByteArray(structure, compressed):
     Returns:
         MMTF encoded and optionally gzipped structure data
     '''
-    mmtf_dict = MMTFEncoder.encode_data(structure)
+    #mmtf_dict = MMTFEncoder.encode_data(structure)
     #return bytearray().extend(map(ord,[[k,v] for k,v in mmtf_dict.items()]))
     return bytearray(msgpack.packb(MMTFEncoder.encode_data(structure)))
