@@ -19,11 +19,10 @@ except ModuleNotFoundError:
 from Bio.PDB import PDBParser, MMCIFParser, FastMMCIFParser
 from mmtf import MMTFEncoder
 from mmtf.api.default_api import pass_data_on
-from os import walk
-from os import path
 from .mmtfStructure import mmtfStructure
 import msgpack
 import gzip
+import os
 
 text = "org.apache.hadoop.io.Text"
 byteWritable = "org.apache.hadoop.io.BytesWritable"
@@ -34,8 +33,6 @@ def call_sequence_file(t):
     '''
     unpack = msgpack.unpackb(t[1])
     decoder = mmtfStructure(unpack)
-    #decoder = MMTFDecoder()
-    #decoder.decode_data(unpack)
     return (str(t[0]), decoder)
 
 
@@ -55,7 +52,10 @@ def call_mmtf(f):
 
     if ".mmtf.gz" in f:
         name = f.split('/')[-1].split('.')[0].upper()
-        decoder = default_api.parse_gzip(f)
+
+        data = gzip.open(f,'rb')
+        unpack = msgpack.unpack(data)
+        decoder = mmtfStructure(unpack)
         return (name, decoder)
 
     elif ".mmtf" in f:
@@ -183,6 +183,9 @@ def readSequenceFile(path, sc, pdbId=None, fraction=None, seed=None, gz = True):
     else:
         call = call_sequence_file
 
+    if not os.path.exists(path):
+        raise Exception("file path does not exist")
+
     infiles = sc.sequenceFile(path, text, byteWritable)
 
     if (pdbId == None and fraction == None and seed == None):
@@ -210,6 +213,9 @@ def readMmtfFiles(path, sc):
         structure data as keywork/value pairs
     '''
 
+    if not os.path.exists(path):
+        raise Exception("file path does not exist")
+
     return sc.parallelize(getFiles(path)).map(call_mmtf).filter(lambda t: t != None)
 
 
@@ -225,6 +231,9 @@ def readPDBFiles(path, sc):
         structure data as keywork/value pairs
     '''
 
+    if not os.path.exists(path):
+        raise Exception("file path does not exist")
+
     return sc.parallelize(getFiles(path)).map(call_pdb).filter(lambda t: t != None)
 
 
@@ -239,6 +248,9 @@ def readMmcifFiles(path, sc, fast=False):
     Return:
         structure data as keywork/value pairs
     '''
+
+    if not os.path.exists(path):
+        raise Exception("file path does not exist")
 
     if fast:
         return sc.parallelize(getFiles(path)).map(call_fast_mmcif).filter(lambda t: t != None)
