@@ -14,6 +14,7 @@ Authorship information:
 from mmtf.api.mmtf_writer import MMTFEncoder
 import gzip
 import msgpack
+import os
 
 def writeSequenceFile(path, sc, structure, compressed = True):
     '''
@@ -31,6 +32,28 @@ def writeSequenceFile(path, sc, structure, compressed = True):
                                "org.apache.hadoop.io.Text",
                                "org.apache.hadoop.io.BytesWritable")
 
+
+def writeMmtfFiles(path, sc, structure):
+    '''
+    Encodes and writes MMTF encoded and gzipped structure data to individual .mmtf.gz files.
+
+    Attributes:
+    path (str): Path to Hadoop file directory)
+    sc (Spark context)
+    structure (tuple): structure data to be written
+    '''
+
+    if path[-1] != "/":
+        path = path + "/"
+
+    if not os.path.exists(path):
+        os.makedirs(path)
+        
+    structure \
+        .map(lambda t: (t[0], toByteArray(t[1], False))) \
+        .foreach(lambda t: gzip.open(path + t[0] + '.mmtf.gz', mode = 'wb').write(t[1]))
+
+
 def toByteArray(structure, compressed):
     '''
     Returns an MMTF-encoded byte array with optional gzip compression
@@ -38,8 +61,7 @@ def toByteArray(structure, compressed):
     Returns:
         MMTF encoded and optionally gzipped structure data
     '''
-    #mmtf_dict = MMTFEncoder.encode_data(structure)
-    #return bytearray().extend(map(ord,[[k,v] for k,v in mmtf_dict.items()]))
+
     byte_array = bytearray(msgpack.packb(MMTFEncoder.encode_data(structure)))
 
     if compressed:
