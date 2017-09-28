@@ -1,13 +1,13 @@
 from pyspark import SparkConf, SparkContext
 import sys
 sys.path.append("../../../mmtf-pyspark")
-from MmtfReader import downloadMmtfFiles, readSequenceFile
+from src.main.io.MmtfReader import downloadMmtfFiles, readSequenceFile
 #MmtfReader import downloadMmtfFiles, readSequenceFile
-from filters import rFree
-from filters import notFilter
-from filters import resolution
+from src.main.filters import rFree
+from src.main.filters import notFilter
+from src.main.filters import resolution
 
-from utils.dsspSecondaryStructure import *
+from src.main.utils.dsspSecondaryStructure import *
 import getopt
 import sys
 
@@ -38,7 +38,7 @@ def main(argv):
             path = arg
 
     #Mmtf sequence file reader
-    pdbIds = ['1AQ1']
+    pdbIds = ['1AQ1','5GOD']
     pdb = downloadMmtfFiles(pdbIds,sc)
 
     def getChainToEntityIndex(structure):
@@ -228,6 +228,7 @@ def main(argv):
 
                         atomName = structure.group_list[groupType]["atomNameList"][m]
                         element = structure.group_list[groupType]["elementList"][m]
+
                         print("      " + str(atomId) + "\t" + atomName + "\t" + altLocId +
                             "\t" + str(x) + "\t" + str(y) + "\t" + str(z) +
                             "\t" + str(occupancy) + "\t" + str(bFactor) + "\t" + element)
@@ -240,7 +241,7 @@ def main(argv):
 
 
     def TraverseStructureHierarchy(structure):
-        print();
+        structure = structure.set_alt_loc_list()
         print(structure.entity_list)
         printMmtfInfo(structure)
         printMetadata(structure)
@@ -251,6 +252,8 @@ def main(argv):
         printChainEntityGroupAtomInfo(structure)
         printBioAssemblyData(structure)
 
+    #pdb = pdb.flatMap(lambda t: t[1].set_alt_loc_list())
+    #print(pdb[1])
     pdb.foreach(lambda t: TraverseStructureHierarchy(t[1]))
 
 
