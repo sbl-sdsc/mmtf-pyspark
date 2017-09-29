@@ -23,6 +23,7 @@ from .mmtfStructure import mmtfStructure
 import msgpack
 import gzip
 import os
+from os import path, walk
 
 text = "org.apache.hadoop.io.Text"
 byteWritable = "org.apache.hadoop.io.BytesWritable"
