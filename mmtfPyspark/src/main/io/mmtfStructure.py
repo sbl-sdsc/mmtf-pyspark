@@ -110,8 +110,8 @@ class mmtfStructure(object):
         """
         Set the alternative location list for structure
         """
-
-        self.alt_loc_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b'altLocList'][12:],">i4")).astype(np.int16)
+        #TODO: set inputdata first
+        self.alt_loc_list = [chr(x) for x in self.run_length_decoder_numpy(np.frombuffer(self.alt_loc_list,">i4")).astype(np.int16)]
         return self
 
 
@@ -153,7 +153,7 @@ class mmtfStructure(object):
         else:
             self.deposition_date = None
         if b"title" in input_data:
-            self.title = input_data[b"title"]
+            self.title = input_data[b"title"].decode()
         else:
             self.title = None
         if b"mmtfVersion" in input_data:
@@ -169,7 +169,8 @@ class mmtfStructure(object):
         else:
             self.structure_id = None
         if b"spaceGroup" in input_data:
-            self.space_group = input_data[b"spaceGroup"].decode()
+            #self.space_group = input_data[b"spaceGroup"].decode()
+            self.space_group = input_data[b"spaceGroup"]
         else:
             self.space_group = None
         if b"bondAtomList" in input_data:
@@ -209,7 +210,8 @@ class mmtfStructure(object):
         else:
             self.chain_name_list = []
         if b"experimentalMethods" in input_data:
-            self.experimental_methods = [x.decode() for x in input_data[b"experimentalMethods"]]
+            #self.experimental_methods = [x.decode() for x in input_data[b"experimentalMethods"]]
+            self.experimental_methods = input_data[b"experimentalMethods"]
         else:
             self.experimental_methods = None
 
@@ -228,4 +230,4 @@ class mmtfStructure(object):
         self.x_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
         self.y_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'yCoordList'][12:],'>i2'))
         self.z_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2'))
-        self.alt_loc_list = []
+        self.alt_loc_list = input_data[b'altLocList'][12:]
