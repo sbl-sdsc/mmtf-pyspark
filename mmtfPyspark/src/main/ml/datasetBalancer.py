@@ -59,8 +59,6 @@ def upsample(data, columnName, seed = 7):
         seed (Int): random number seed
     '''
 
-    # TODO specify max ratio between minority and majority class
-
     counts = data.groupby(columnName).count().collect()
 
     count = [int(x[1]) for x in counts]
