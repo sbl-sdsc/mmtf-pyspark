@@ -48,10 +48,12 @@ def writeMmtfFiles(path, sc, structure):
 
     if not os.path.exists(path):
         os.makedirs(path)
-        
-    structure \
-        .map(lambda t: (t[0], toByteArray(t[1], False))) \
-        .foreach(lambda t: gzip.open(path + t[0] + '.mmtf.gz', mode = 'wb').write(t[1]))
+
+    structure = structure.map(lambda s: (s[0],s[1].set_alt_loc_list()) \
+                                  if not s[1].alt_loc_set \
+                                  else s) \
+                .map(lambda t: (t[0], toByteArray(t[1], False))) \
+                .foreach(lambda t: gzip.open(path + t[0] + '.mmtf.gz', mode = 'wb').write(t[1]))
 
 
 def toByteArray(structure, compressed):

@@ -56,16 +56,14 @@ def call_mmtf(f):
 
         data = gzip.open(f,'rb')
         unpack = msgpack.unpack(data)
-        decoder = mmtfStructure(unpack)
-        return (name, decoder)
+        return (name, unpack)
+        #decoder = mmtfStructure(unpack)
+        #return (name, decoder)
 
     elif ".mmtf" in f:
         name = f.split('/')[-1].split('.')[0].upper()
         decoder = default_api.parse(f)
         return (name, decoder)
-
-    else:
-        raise Exception("File format error")
 
 
 def call_pdb(f):

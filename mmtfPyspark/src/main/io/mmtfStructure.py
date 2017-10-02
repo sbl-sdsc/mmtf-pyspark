@@ -40,7 +40,7 @@ class mmtfStructure(object):
         :return the array of integers after recursive index decoding
         """
 
-        out_arr = np.cumsum(int_array)/1000
+        out_arr = np.cumsum(int_array)/1000 # TODO check
         return out_arr[(int_array != max) & (int_array != min)]
 
 
@@ -112,6 +112,7 @@ class mmtfStructure(object):
         """
         #TODO: set inputdata first
         self.alt_loc_list = [chr(x) for x in self.run_length_decoder_numpy(np.frombuffer(self.alt_loc_list,">i4")).astype(np.int16)]
+        self.alt_loc_set = True
         return self
 
 
@@ -223,7 +224,8 @@ class mmtfStructure(object):
         self.num_groups = input_data[b"numGroups"]
         self.chains_per_model = input_data[b"chainsPerModel"]
         self.groups_per_chain = input_data[b"groupsPerChain"]
-        self.group_id_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'groupIdList'][12:],'>i4')).astype(np.int16))
+        self.group_id_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'groupIdList'][12:],'>i4'))).astype(np.int32)
+        #self.group_id_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b'groupIdList'][12:],'>i4')) # double check /1000
         self.group_type_list = np.frombuffer(input_data[b'groupTypeList'][12:],'>i4') # double check /1000
         self.chain_id_list = [chr(a) for a in input_data[b"chainIdList"][12:][::4]]
         self.group_list = self.decode_group_list(input_data[b'groupList'])
@@ -231,3 +233,4 @@ class mmtfStructure(object):
         self.y_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'yCoordList'][12:],'>i2'))
         self.z_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2'))
         self.alt_loc_list = input_data[b'altLocList'][12:]
+        self.alt_loc_set = False
