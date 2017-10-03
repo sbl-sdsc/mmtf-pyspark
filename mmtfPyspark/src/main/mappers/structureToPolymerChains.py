@@ -34,7 +34,7 @@ class structureToPolymerChains(object):
 
 
     def __call__(self, t):
-        structure = t[1]
+        structure = t[1].set_alt_loc_list()
 
         # Precalculate indices
         numChains = structure.chains_per_model[0]
