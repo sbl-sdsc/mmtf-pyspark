@@ -8,9 +8,10 @@ supports simple data types and all data need to be not null.
 Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
-    __email__ = "marshuang80@gmai.com:
+    __email__ = "marshuang80@gmail.com:
     __status__ = "debug"
 '''
+
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
 
