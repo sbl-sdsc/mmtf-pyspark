@@ -29,7 +29,7 @@ class containsLProteinChain(object):
     '''
 
     def __init__(self, exclusive = False):
-        self.filter = containsPolymerChainType([\
+        self.filter = containsPolymerChainType([
             containsPolymerChainType.L_PEPTIDE_LINKING,
             containsPolymerChainType.PEPTIDE_LINKING], exclusive = exclusive)
 
