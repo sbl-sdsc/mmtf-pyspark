@@ -36,8 +36,8 @@ class structureToSecondaryStructureSegments(object):
 
         for i in range(len(sequence)):
             currSeq = sequence[i:i+self.length]
-            labelQ3 = dsspQ3[i+ int(self.length/2), i + int(self.length/2) + 1]
-            labelQ8 = dsspQ8[i+ int(self.length/2), i + int(self.length/2) + 1]
+            labelQ3 = dsspQ3[i+ int(self.length/2) : i + int(self.length/2) + 1]
+            labelQ8 = dsspQ8[i+ int(self.length/2) : i + int(self.length/2) + 1]
 
             if (labelQ8 != "X" and labelQ3 != "X"):
                 sequences.append(Row(structureChainId, currSeq, labelQ8, labelQ3))
