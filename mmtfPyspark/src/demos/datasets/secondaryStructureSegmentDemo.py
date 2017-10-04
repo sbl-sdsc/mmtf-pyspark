@@ -8,6 +8,7 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
+
 from pyspark import SparkConf, SparkContext
 from src.main.io import MmtfReader
 from src.main.mappers import structureToPolymerChains
