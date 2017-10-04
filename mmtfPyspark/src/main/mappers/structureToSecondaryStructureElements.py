@@ -28,7 +28,6 @@ class structureToSecondaryStructureElements(object):
         sequences = []
 
         i = 0
-        # TODO double check while loop logic
         while i < len(sequence):
             currLength = 0
             currSequence = ""
@@ -36,7 +35,7 @@ class structureToSecondaryStructureElements(object):
             for j in range(i, len(sequence)):
 
                 if dsspQ3[j:j+1] == self.label:
-                    currLength = 0
+                    currLength += 1
                     currSequence += sequence[j: j+1]
                 else: break
 
@@ -44,5 +43,7 @@ class structureToSecondaryStructureElements(object):
 
             if currLength >= self.length:
                 sequences.append(Row(currSequence, self.label))
+
+            i += 1
 
         return sequences
