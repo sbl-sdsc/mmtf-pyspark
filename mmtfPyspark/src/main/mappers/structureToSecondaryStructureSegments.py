@@ -34,8 +34,10 @@ class structureToSecondaryStructureSegments(object):
         numSegments = max(0, len(sequence) - self.length)
         sequences = []
 
-        for i in range(len(sequence)):
+        for i in range(len(sequence) - self.length):
             currSeq = sequence[i:i+self.length]
+
+            #print(dsspQ3)
             labelQ3 = dsspQ3[i+ int(self.length/2) : i + int(self.length/2) + 1]
             labelQ8 = dsspQ8[i+ int(self.length/2) : i + int(self.length/2) + 1]
 

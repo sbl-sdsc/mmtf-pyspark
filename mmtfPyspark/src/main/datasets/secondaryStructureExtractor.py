@@ -62,12 +62,13 @@ def getSecStructFractions(t):
     for code in structure.sec_struct_list:
 
         seqIndex = structure.sequence_index_list[structureIndex]
-        structureIndex += 1
-        while dsspIndex < structureIndex:
+
+        while dsspIndex < seqIndex:
             dsspQ3 += "X"
             dsspQ8 += "X"
             dsspIndex += 1
 
+        structureIndex += 1
         dsspQ8 += dsspSecondaryStructure.getDsspCode(code).getOneLetterCode()
         dsspIndex += 1
 
