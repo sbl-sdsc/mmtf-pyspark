@@ -21,7 +21,7 @@ def main():
     start = time.time()
 
     conf = SparkConf().setMaster("local[*]") \
-                      .setAppName("FilterByDExperimentalMethods")
+                      .setAppName("secondaryStructureSegmentDemo")
     sc = SparkContext(conf = conf)
 
     pdb = MmtfReader.downloadMmtfFiles(["1STP"],sc)
