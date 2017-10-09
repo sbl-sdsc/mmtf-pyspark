@@ -1,1 +1,1 @@
-from .proteinSequenceEncoder import proteinSequenceEncoder
+#from .proteinSequenceEncoder import proteinSequenceEncoder
