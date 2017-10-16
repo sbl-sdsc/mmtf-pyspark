@@ -70,4 +70,3 @@ def getDataset(sc):
     colNames = ["scopID","sequence", "secondaryStructure", "trained"]
 
     return pythonRDDToDataset.getDataset(data, colNames)
-
