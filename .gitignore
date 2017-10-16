@@ -87,3 +87,7 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Spark metastore_db
+mmtfPyspark/src/main/metastore_db
+.
