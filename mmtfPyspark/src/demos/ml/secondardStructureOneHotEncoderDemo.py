@@ -6,7 +6,7 @@ Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "Done"
+    __status__ = "Debug"
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
@@ -18,6 +18,7 @@ from src.main.rcsbfilters import pisces
 from src.main.io import MmtfReader
 import time
 
+# TODO data count is more than Java
 
 def main():
     start = time.time()
