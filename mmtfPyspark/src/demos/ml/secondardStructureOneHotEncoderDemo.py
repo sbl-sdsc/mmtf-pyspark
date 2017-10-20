@@ -21,11 +21,19 @@ import time
 # TODO data count is more than Java
 
 def main():
+    '''
+    This class creates a dataset of sequence segments dericed from a
+    non-redundant set. The dataset contains the sequence segment, the DSSP Q8
+    and DSSP Q3 code of the center residue in a seuqnce segment, and a one-hot
+    encoding of the sequence segment.
+    The dataset is saved in a file specified by the user
+    '''
+
     start = time.time()
 
     conf = SparkConf() \
             .setMaster("local[*]") \
-            .setAppName("secondaryStructureSegmentDemo")
+            .setAppName("SecondaryStructureOneHotEncoderDemo")
     sc = SparkContext(conf = conf)
 
     # Read MMTF Hadoop sequence file and create a non-redundant set
