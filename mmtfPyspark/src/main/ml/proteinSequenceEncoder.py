@@ -10,6 +10,7 @@ Authorship information:
 
 from pyspark.sql import SparkSession
 from pyspark.ml.linalg import Vectors
+from pyspark.ml.linalg import VectorUDT
 
 
 class proteinSequenceEncoder(object):
@@ -18,7 +19,7 @@ class proteinSequenceEncoder(object):
     The protein sequence must be present in the input data set,
     the default column name is "sequence". The default column name
     for the feature vector is "features".
-    ''''
+    '''
 
     AMINO_ACIDS21 = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', \
                      'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y']
@@ -89,20 +90,26 @@ class proteinSequenceEncoder(object):
         '''
 
         session = SparkSession.builder.getOrCreate()
+        AMINO_ACIDS21 = self.AMINO_ACIDS21
 
         # Encoder function to be passed as User Defined Function (UDF)
         def encoder(s):
-            values = []
+
+            values = [0] * len(AMINO_ACIDS21) * len(s)
 
             for i in range(len(s)):
-                prop = properties[s[i]]
 
-                for p in prop:
-                    values.append(p)
+                if s[i] in AMINO_ACIDS21:
+                    index = AMINO_ACIDS21.index(s[i])
 
-            return Vecors.dense(values)
+                else:
+                    index = AMINO_ACIDS21['X']
 
-        session.udf.register("encoder", encoder)
+                values[i*len(AMINO_ACIDS21) + index] = 1
+
+            return Vectors.dense(values)
+
+        session.udf.register("encoder", encoder, VectorUDT())
 
         self.data.createOrReplaceTempView("table")
         sql = f"SELECT *, encoder({self.inputCol}) AS {self.outputCol} from table"
