@@ -93,7 +93,7 @@ class proteinSequenceEncoder(object):
         AMINO_ACIDS21 = self.AMINO_ACIDS21
 
         # Encoder function to be passed as User Defined Function (UDF)
-        def encoder(s):
+        def _encoder(s):
 
             values = [0] * len(AMINO_ACIDS21) * len(s)
 
@@ -109,10 +109,79 @@ class proteinSequenceEncoder(object):
 
             return Vectors.dense(values)
 
-        session.udf.register("encoder", encoder, VectorUDT())
+        session.udf.register("encoder", _encoder, VectorUDT())
 
         self.data.createOrReplaceTempView("table")
         sql = f"SELECT *, encoder({self.inputCol}) AS {self.outputCol} from table"
+
+        data = session.sql(sql)
+
+        return data
+
+
+    def propertyEncode(self):
+        '''
+        Encodes a protein sequence by 7 physicochemical properties
+
+        <p> See:  Meiler, J., Müller, M., Zeidler, A. et al. J Mol Model (2001) 7: 360. doi:
+    	<a href="https://link.springer.com/article/10.1007/s008940100038">10.1007/s008940100038</a>
+
+        Returns:
+            dataset with feature vector appended
+        '''
+
+        session = SparkSession.builder.getOrCreate()
+        properties = self.properties
+
+        #Encoder function to be passed as User Defined Function (UDF)
+        def _encoder(s):
+            values = []
+
+            for i in range(len(s)):
+
+                if s[i] in properties:
+                    values += properties[s[i]]
+
+            return Vectors.dense(values)
+
+        session.udf.register("encoder", _encoder, VectorUDT())
+
+        self.data.createOrReplaceTempView("table")
+        sql = f"SELECT *, encoder({self.inputCol}) AS {self.outputCol} from table"
+
+        data = session.sql(sql)
+
+        return data
+
+
+    def blosum62Encode(self):
+        '''
+        Encodes a protein sequence by 7 Blosum62
+
+        <p> See: <a href="https://ftp.ncbi.nih.gov/repository/blocks/unix/blosum/BLOSUM/blosum62.blast.new">BLOSUM62 Matrix</a>
+
+        Returns:
+            dataset with feature vector appended
+        '''
+
+        session = SparkSession.builder.getOrCreate()
+        blosum62 = self.blosum62
+
+        #Encoder function to be passed as User Defined Function (UDF)
+        def _encoder(s):
+            values = []
+
+            for i in range(len(s)):
+
+                if s[i] in blosum62:
+                    values += blosum62[s[i]]
+
+            return Vectors.dense(values)
+
+        session.udf.register("encoder", _encoder, VectorUDT())
+
+        self.data.createOrReplaceTempView("table")
+        sql = f"SELECT *, encoder({self.inputCol}) AS {self.outputCol} from table)"
 
         data = session.sql(sql)
 
