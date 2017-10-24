@@ -23,6 +23,7 @@ class proteinSequenceEncoder(object):
     the default column name is "sequence". The default column name
     for the feature vector is "features".
     '''
+    self.model = None
 
     AMINO_ACIDS21 = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', \
                      'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y']
@@ -226,23 +227,147 @@ class proteinSequenceEncoder(object):
                     .setWindowSize(windowSize) \
                     .setVectorSize(vectorSize) \
 
-            model = word2Vec.fit(data)
+            self.model = word2Vec.fit(data)
 
         elif fileName != None and sc != None:
             reader = Word2VecModel()
 
-            model = reader.load(sc, file)
+            self.model = reader.load(sc, fileName)
 
             print(f"model file : {fileName} \n \
-                    inputCol : {model.getInputCol()} \n \
-                    windowSize : {model.getWindowSize()} \n \
-                    vectorSize : {model.getVectorSize()}")
+                    inputCol : {self.model.getInputCol()} \n \
+                    windowSize : {self.model.getWindowSize()} \n \
+                    vectorSize : {self.model.getVectorSize()}")
 
-            model.setOutputCol(self.outputCol)
+            self.model.setOutputCol(self.outputCol)
 
         else:
             raise Exception("Either provide word2Vec file (filename) + SparkContext (sc), \
                             or number of words(n) + window size(windowSize) \
-                            + vector size (vetorSize), or function parameters")
+                            + vector size (vetorSize), for function parameters")
+            return
 
-        return model.transform(data)
+        return self.model.transform(data)
+
+
+    def shifted3GramWord2VecEncode(self, windowSize = None, vectorSize = None, fileName = None, sc = None):
+        '''
+        Encodes a protein sequence as three non-overlapping 3-grams,
+        trains a Word2Vec model on the 3-grams, and then averages the
+        three resulting freature vectors.
+
+    	<P> Asgari E, Mofrad MRK (2015) Continuous Distributed Representation
+	    of Biological Sequences for Deep Proteomics and Genomics.
+	    PLOS ONE 10(11): e0141287. doi:
+	    <a href="https://doi.org/10.1371/journal.pone.0141287">10.1371/journal.pone.0141287</a>
+
+        Attribute:
+            windowSize (int): width of the window used to slide across the sequence
+                              context words from [-window, window]
+            vectorSize (int): dimension of the feature vector
+            fileName (string): filename of Word2VecModel
+            sc (SparkContext): spark context
+
+        Return:
+            dataset with features vector added to original dataset
+        '''
+
+        # Create n-grams out of the sequence
+        # e.g., 2-gram [IDCGH, ...] => [ID. DC, CG, GH,...]
+        # TODO set input column
+        data = sequenceNgrammer.shiftedNgram(self.data, 3, 0, "ngram0")
+        data = sequenceNgrammer.shiftedNgram(self.data, 3, 1, "ngram0")
+        data = sequenceNgrammer.shiftedNgram(self.data, 3, 2, "ngram0")
+
+        if not (windowSize == None and vectorSize == None):
+
+            ngram0 = data.select("ngram0").withColumnRenamed("ngram0","ngram")
+            ngram1 = data.select("ngram1").withColumnRenamed("ngram1","ngram")
+            ngram2 = data.select("ngram2").withColumnRenamed("ngram2","ngram")
+
+            ngrams = ngram0.union(ngram1).union(ngram2)
+
+            # Convert n-grams to W2V feature vector
+            # [I D, D C, C G, G H, ... ] => [0.1234, 0.2394, .. ]
+            word2Vec = Word2Vec()
+            word2Vec.setInputCol("ngram") \
+                    .setMinCount(10) \
+                    .setNumPartitions(8) \
+                    .setWindowSize(windowSize) \
+                    .setVectorSize(vectorSize) \
+
+            self.model = word2Vec.fit(ngrams)
+
+        elif fileName != None and sc != None:
+            reader = Word2VecModel()
+
+            self.model = reader.load(sc, fileName)
+
+            print(f"model file : {fileName} \n \
+                    inputCol : {self.model.getInputCol()} \n \
+                    windowSize : {self.model.getWindowSize()} \n \
+                    vectorSize : {self.model.getVectorSize()}")
+
+        else:
+            raise Exception("Either provide word2Vec file (filename) + SparkContext (sc), \
+                            or window size(windowSize) + vector size (vetorSize), \
+                            for function parameters")
+            return
+
+        self.model.setInputCol("ngram0")
+        self.model.setOutputCol("features0")
+        data = self.model.transform(data)
+
+        self.model.setInputCol("ngram1")
+        self.model.setOutputCol("features1")
+        data = self.model.transform(data)
+
+        self.model.setInputCol("ngram2")
+        self.model.setOutputCol("features2")
+        data = self.model.transform(data)
+
+        data = self.averageFeatureVectors(data, outputCol)
+
+        return data
+
+
+    def getWord2VecModel(self):
+        '''
+        Returns a Word2VecModel created by overlappingNgramWord2VecEncode()
+
+        Returns:
+            overlapping Ngram Word2VecModel if available, otherwise None
+        '''
+
+        return self.model
+
+
+    def averageFeatureVectors(self, data, outputCol):
+        '''
+        Average the feature vectors
+        '''
+
+        session = SparkSession.builder.getOrCreate()
+
+        def _averager(v1, v2, v3):
+            f1 = v1.toArray()
+            f2 = v2.toArray()
+            f3 = v3.toArray()
+
+            length = min(len(f1), len(f2), len(f3))
+            average = []
+
+            for i in range(length):
+                average.append((f1[i] + f2[i] + f3[i])/3.0)
+
+            return Vectors.dense(values)
+
+        session.udf.register("averager", _averager, VectorUDT())
+
+        self.data.createOrReplaceTempView("table")
+
+        sql = f"SELECT *, averager(feature0, feature1, feature2) AS {self.outputCol} from table)"
+
+        data = session.sql(sql)
+
+        return data
