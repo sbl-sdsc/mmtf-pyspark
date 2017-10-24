@@ -11,6 +11,9 @@ Authorship information:
 from pyspark.sql import SparkSession
 from pyspark.ml.linalg import Vectors
 from pyspark.ml.linalg import VectorUDT
+from pyspark.ml.feature import Word2Vec, Word2VecModel
+#from pyspark.ml.feature.Word2Vec import Word2VecModelReader
+from src.main.ml import sequenceNgrammer
 
 
 class proteinSequenceEncoder(object):
@@ -186,3 +189,60 @@ class proteinSequenceEncoder(object):
         data = session.sql(sql)
 
         return data
+
+
+    def overlappingNgramWord2VecEncode(self, n = None, windowSize = None, vectorSize = None, fileName = None, sc = None):
+        '''
+        Encodes a protein sequence by converting it into n-grams and
+        then transforming it into a Word2Vec feature vector.
+
+        If given word2Vec file name, then this function encodes a protein
+        sequence by converting it into n-grams and then transforming it using
+        pre-trained word2Vec model read from that file
+
+        Attribute:
+            n (int): The number of words in an n-gram
+            windowSize (int): width of the window used to slide across the \
+                              squence, context words from [-window,window]
+            vectorSize (int): dimension of the feature vector
+            fileName (str): filename of Word2Vec model
+
+        Returns:
+            dataset with features vector added to original dataset
+        '''
+
+        # Create n-grams out of the sequence
+        # E.g., 2-gram IDCGH, ... =>[ID, DC, CG, GH, ...]
+
+        data = sequenceNgrammer.ngram(self.data, n, "ngram")
+
+        if not (n == None and windowSize == None and vectorSize == None):
+            # Convert n-grams to W2V freature vector
+            # [ID, DC, CG, GH, ...] => [0.1234, 0.2394, ...]
+            word2Vec = Word2Vec()
+            word2Vec.setInputCol("ngram") \
+                    .setOutputCol(self.outputCol) \
+                    .setNumPartitions(8) \
+                    .setWindowSize(windowSize) \
+                    .setVectorSize(vectorSize) \
+
+            model = word2Vec.fit(data)
+
+        elif fileName != None and sc != None:
+            reader = Word2VecModel()
+
+            model = reader.load(sc, file)
+
+            print(f"model file : {fileName} \n \
+                    inputCol : {model.getInputCol()} \n \
+                    windowSize : {model.getWindowSize()} \n \
+                    vectorSize : {model.getVectorSize()}")
+
+            model.setOutputCol(self.outputCol)
+
+        else:
+            raise Exception("Either provide word2Vec file (filename) + SparkContext (sc), \
+                            or number of words(n) + window size(windowSize) \
+                            + vector size (vetorSize), or function parameters")
+
+        return model.transform(data)

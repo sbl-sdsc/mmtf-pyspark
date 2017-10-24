@@ -12,7 +12,7 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, types
 
 
 def ngram(data, n, outputCol):
@@ -45,12 +45,12 @@ def ngram(data, n, outputCol):
             ngram.append(s[i: i + n])
             i += 1
 
-        return ngam
+        return ngram
 
-    session.udf.register("ngrammer", _ngrammer, VectorUDT())
+    session.udf.register("ngrammer", _ngrammer, types.ArrayType(types.StringType()))
 
-    self.data.createOrReplaceTempView("table")
-    sql = f"SELECT *, encoder({sequence}) AS {outputCol} from table)"
+    data.createOrReplaceTempView("table")
+    sql = f"SELECT *, ngrammer(sequence) AS {outputCol} from table"
 
     data = session.sql(sql)
 
