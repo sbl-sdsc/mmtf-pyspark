@@ -23,7 +23,7 @@ class proteinSequenceEncoder(object):
     the default column name is "sequence". The default column name
     for the feature vector is "features".
     '''
-    self.model = None
+    model = None
 
     AMINO_ACIDS21 = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', \
                      'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y']
