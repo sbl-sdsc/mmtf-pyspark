@@ -276,8 +276,8 @@ class proteinSequenceEncoder(object):
         # e.g., 2-gram [IDCGH, ...] => [ID. DC, CG, GH,...]
         # TODO set input column
         data = sequenceNgrammer.shiftedNgram(self.data, 3, 0, "ngram0")
-        data = sequenceNgrammer.shiftedNgram(self.data, 3, 1, "ngram0")
-        data = sequenceNgrammer.shiftedNgram(self.data, 3, 2, "ngram0")
+        data = sequenceNgrammer.shiftedNgram(data, 3, 1, "ngram1")
+        data = sequenceNgrammer.shiftedNgram(data, 3, 2, "ngram2")
 
         if not (windowSize == None and vectorSize == None):
 
@@ -326,7 +326,7 @@ class proteinSequenceEncoder(object):
         self.model.setOutputCol("features2")
         data = self.model.transform(data)
 
-        data = self.averageFeatureVectors(data, outputCol)
+        data = self.averageFeatureVectors(data, self.outputCol)
 
         return data
 
