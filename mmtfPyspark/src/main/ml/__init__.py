@@ -1,1 +1,3 @@
 from .proteinSequenceEncoder import proteinSequenceEncoder
+from .sparkMultiClassClassifier import sparkMultiClassClassifier
+from .sparkRegressor import sparkRegressor
