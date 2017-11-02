@@ -13,7 +13,7 @@ Authorship information:
 from pypark.ml.feature import StringIndexer, IndexToString
 from pyspark.ml import Pipline
 from pyspark.mllib.evaluation import BinaryClassificationMetrics, MultiClassificationMetrics
-
+from collections import OrderedDict
 
 
 class sparkMultiClassClassifier(object):
@@ -90,7 +90,7 @@ class sparkMultiClassClassifier(object):
 
         # Collect metrics
         pred = predictions.select("prediction", self.label)
-        metrics = {}
+        metrics = OrderedDict
         metrics["Method"] = predictor # TODO predictor.getClass(),getSimpleName
         if classCount == 2:
             b = BinaryClassificationMetrics(pred)
@@ -105,4 +105,3 @@ class sparkMultiClassClassifier(object):
         metrics["", "\nConfusion Matrix\n{labels}\n{m.confusionMatrix()}"]
 
         return metrics
-        

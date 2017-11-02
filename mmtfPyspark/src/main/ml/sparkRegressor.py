@@ -12,6 +12,7 @@ Authorship information:
 
 from pyspark.ml import Pipline
 from pyspark.ml.evaluation import RegressionEvaluator
+from collections import OrderedDict
 
 class sparkRegressor(object):
     '''
@@ -60,7 +61,7 @@ class sparkRegressor(object):
         predictions.select(primaryKey, self.label, "prediction").sample(False, 0.1, self.seed).show(50)
 
         # Collect Metrics
-        metrics = {}
+        metrics = OrderedDict()
         metrics["Method"] = predictor.getClass().getSimpleName() # TODO
 
         evaluator = RegressionEvaluator().setLabelCol(self.label) \
