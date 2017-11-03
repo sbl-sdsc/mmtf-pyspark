@@ -30,7 +30,7 @@ class structureToInteractingResidues(object):
             if groupNames[i] == self.groupName:
                 matches = []
                 boundingBox = self._calcBondingBox(structure, groupIndices, i, self.cutoffDistance)
-                matches += self._findNeighbors(structure, index, boudningBox, groupIndices)
+                matches += self._findNeighbors(structure, index, boudingBox, groupIndices)
                 neighbors += self._getDistanceProfile(structureId,
                                   matches, i, groupIndices, groupNames, structure)
         return neighbors
