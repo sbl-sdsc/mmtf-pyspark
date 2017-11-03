@@ -12,10 +12,10 @@ Thedatasetshavethefollowing
 Example:download,read,andsavetheSWISS_PROTdataset
 
 <pre>
-	{@code
-	Dataset<Row>ds=UniProt.getDataset(UniProtDataset.SWISS_PROT);
-	ds.printSchema();
-	ds.show(5);
+    {@code
+    Dataset<Row>ds=UniProt.getDataset(UniProtDataset.SWISS_PROT);
+    ds.printSchema();
+    ds.show(5);
 ds.write().mode("overwrite").format("parquet").save(fileName);
 }
 </pre>
@@ -28,24 +28,38 @@ Authorship information:
     __status__ = "Done"
 '''
 
-# TODO Uniprot Links are down, can't test
-
 from collections import namedtuple
 import tempfile
 import urllib.request
 import gzip
 from pyspark.sql import SparkSession
+from enum import Enum
+
+'''
+class UniProtDataset(Enum):
+
+    baseUrl = "ftp://ftp.uniprot.org/pub/databases/uniprot/"
+
+    SWISS_PROT = baseUrl + "current_release/knowledgebase/complete/uniprot_sprot.fasta.gz"
+    TREMBL = baseUrl + "current_release/knowledgebase/complete/uniprot_trembl.fasta.gz"
+    UNIREF50 = baseUrl + "uniref/uniref50/uniref50.fasta.gz"
+    UNIREF90 = baseUrl + "uniref/uniref90/uniref90.fasta.gz"
+    UNIREF100 = baseUrl + "uniref/uniref100/uniref100.fasta.gz"
+'''
+
+def enum(**enums):
+
+    return type('Enum', (), enums)
+
 
 baseUrl = "ftp://ftp.uniprot.org/pub/databases/uniprot/"
+UniProtDataset = enum(SWISS_PROT=baseUrl + "current_release/knowledgebase/complete/uniprot_sprot.fasta.gz",
+                      TREMBL=baseUrl + "current_release/knowledgebase/complete/uniprot_trembl.fasta.gz",
+                      UNIREF50=baseUrl + "uniref/uniref50/uniref50.fasta.gz",
+                      UNIREF90=baseUrl + "uniref/uniref90/uniref90.fasta.gz",
+                      UNIREF100=baseUrl + "uniref/uniref100/uniref100.fasta.gz")
 
-SWISS_PROT = baseUrl + "current_release/knowledgebase/complete/uniprot_sprot.fasta.gz"
-TREMBL = baseUrl + "current_release/knowledgebase/complete/uniprot_trembl.fasta.gz"
-UNIREF50 = baseUrl + "uniref/uniref50/uniref50.fasta.gz"
-UNIREF90 = baseUrl + "uniref/uniref90/uniref90.fasta.gz"
-UNIREF100 = baseUrl + "uniref/uniref100/uniref100.fasta.gz"
 
-# TODO named tuple or enum
-:
 def getUniprotDataset(dataType):
     '''
     Get Uniprot Dataset
@@ -53,21 +67,23 @@ def getUniprotDataset(dataType):
 
     # Decalre string variables
     db, uniqueIdentifier, entryName, proteinName, organismName, geneName, \
-    proteinExistence, sequenceVersion, sequence = '','','','','','','','',''
+        proteinExistence, sequenceVersion, sequence = '', '', '', '', '', '', '', '', ''
     firstLine = True
 
     # Make temporary file
-    tempFile = tempfile.NamedTemporaryFile(delete = False)
-    with open (tempFile.name, "w") as t:
+    tempFile = tempfile.NamedTemporaryFile(delete=False)
+    with open(tempFile.name, "w") as t:
 
         t.writelines("db,uniqueIdentifier,entryName,proteinName, \
                      organismName,geneName,proteinExistence, \
                      sequenceVersion,sequence \n")
 
         inputStream = urllib.request.urlopen(dataType)
-        rd = gzip.GzipFile(fileobj = inputStream)
+        rd = gzip.GzipFile(fileobj=inputStream)
 
-        for line in rd: #TODO check rd output content after UNIPROT online
+        for line in rd:  # TODO check rd output content after UNIPROT online
+
+            line = str(line)[2:-3]
 
             if ">" in line:
                 line = line.replace(",", ";")
@@ -77,16 +93,16 @@ def getUniprotDataset(dataType):
                                  {proteinName},{organismName},{geneName},\
                                  {proteinExistence},{sequenceVersion}, \
                                  {sequence}\n")
-                firstTime = False
+                firstLine = False
                 sequence = ""
-                tmp = line[1].split("\\|") # TODO
+                tmp = line.split("|")  # TODO
                 db = tmp[0]
                 uniqueIdentifier = tmp[1]
-                tmp[0] = tmp[2] # TODO
+                tmp[0] = tmp[2]  # TODO
 
-                if len(tmp[0].split(" OS=")) > 2 :
+                if len(tmp[0].split(" OS=")) > 2:
                     length = len(tmp[0].split(" OS")[0]) + \
-                             len(tmp[0].split(" OS")[1]) + 4
+                        len(tmp[0].split(" OS")[1]) + 4
                     tmp[0] = tmp[0][:length]
 
                 # Set sequence version
@@ -98,7 +114,7 @@ def getUniprotDataset(dataType):
                 proteinExistence = pe[1] if len(pe) > 1 else ""
 
                 # Set GeneName
-                gn = tmp[0].split(" GE=")[-1]
+                ge = tmp[0].split(" GE=")[-1]
                 geneName = ge[1] if len(ge) > 1 else ""
 
                 # Set organismName
@@ -108,16 +124,14 @@ def getUniprotDataset(dataType):
                 entryName = tmp[0].split(" ")[0]
                 proteinName = tmp[0][len(entryName) + 1]
             else:
-                sequence = sequence.concat(line) # TODO figure out what it is concating
-
-    # TODO writelines again?
+                sequence += line
 
     spark = SparkSession.builder.getOrCreate()
 
     dataset = spark.read \
-                   .format("csv")
-                   .option("header","true")
-                   .option("inferSchema", "true")
+                   .format("csv") \
+                   .option("header", "true") \
+                   .option("inferSchema", "true") \
                    .load(tempFile.name)
     return dataset
 
@@ -129,20 +143,22 @@ def getUnirefDataset(dataType):
 
     # Decalre string variables
     uniqueIdentifier, clusterName, taxon, representativeMember, taxonID, \
-    members = '','','','','',''
+        members = '', '', '', '', '', ''
     firstLine = True
 
     # Make temporary file
-    tempFile = tempfile.NamedTemporaryFile(delete = False)
-    with open (tempFile.name, "w") as t:
+    tempFile = tempfile.NamedTemporaryFile(delete=False)
+    with open(tempFile.name, "w") as t:
 
         t.writelines("uniqueIdentifier,clusterName,members,taxon,taxonID,\
                      representativeMember,sequence\n")
 
         inputStream = urllib.request.urlopen(dataType)
-        rd = gzip.GzipFile(fileobj = inputStream)
+        rd = gzip.GzipFile(fileobj=inputStream)
 
-        for line in rd: #TODO check rd output content after UNIPROT online
+        for line in rd:  # TODO check rd output content after UNIPROT online
+
+            line = str(line)[2:-3]
 
             if ">" in line:
                 line = line.replace(",", ";")
@@ -151,10 +167,10 @@ def getUnirefDataset(dataType):
                     t.writelines(f"{uniqueIdentifier},{clusterName},{members},\
                                  {taxon},{taxonID},{representativeMember},\
                                  {sequence}\n")
-                firstTime = False
+                firstLine = False
 
                 sequence = ""
-                tmp = line[1] # TODO
+                tmp = line[1]  # TODO
 
                 # Set representativeMember
                 rm = tmp.split(" RepID=")[-1]
@@ -175,15 +191,38 @@ def getUnirefDataset(dataType):
                 uniqueIdentifier = tmp.split(" ")[0]
                 clusterName = tmp[len(uniqueIdentifier) + 1]
             else:
-                sequence = sequence.concat(line) # TODO figure out what it is concating
-
-    # TODO writelines again?
+                sequence += line
 
     spark = SparkSession.builder.getOrCreate()
 
     dataset = spark.read \
-                   .format("csv")
-                   .option("header","true")
-                   .option("inferSchema", "true")
+                   .format("csv") \
+                   .option("header", "true") \
+                   .option("inferSchema", "true") \
                    .load(tempFile.name)
     return dataset
+
+
+def getDataset(UniProtDataset):
+    '''
+    Returns the specified UniProt dataset.
+
+    Attributes:
+        uniProtDataset (String): name of the UniProt dataset
+
+    Returns:
+        dataset with sequence and metadata
+    '''
+
+    if UniProtDataset.split('/')[-3] == "uniref":
+
+        return getUnirefDataset(UniProtDataset)
+
+    elif UniProtDataset.split('/')[-3] == "knowledgebase":
+
+        return getUniprotDataset(UniProtDataset)
+
+    else:
+
+        raise Exception("Please use pre-defined uniprotDataset \n \
+                         eg: UniprotDataset.SWISS_PROT")

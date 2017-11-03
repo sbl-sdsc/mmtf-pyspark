@@ -1,1 +1,2 @@
 from .groupInteractionExtractor import groupInteractionExtractor
+from .UniProt import UniProtDataset

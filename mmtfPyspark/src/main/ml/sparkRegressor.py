@@ -10,7 +10,7 @@ Authorship information:
     __status__ = "Debug"
 '''
 
-from pyspark.ml import Pipline
+from pyspark.ml import Pipeline
 from pyspark.ml.evaluation import RegressionEvaluator
 from collections import OrderedDict
 

@@ -10,9 +10,9 @@ Authorship information:
     __status__ = "Debug"
 '''
 
-from pypark.ml.feature import StringIndexer, IndexToString
-from pyspark.ml import Pipline
-from pyspark.mllib.evaluation import BinaryClassificationMetrics, MultiClassificationMetrics
+from pyspark.ml.feature import StringIndexer, IndexToString
+from pyspark.ml import Pipeline
+from pyspark.mllib.evaluation import BinaryClassificationMetrics, MulticlassMetrics
 from collections import OrderedDict
 
 
@@ -56,11 +56,11 @@ class sparkMultiClassClassifier(object):
 
         print("\n Class\tTrain\tTest")
         for l in labels:
-            print("%s\t%i\t%i" % (l,
-                                  trainingData.select(self.label).filter(
-                                      label + " = '" + l + "''").count()
-                                  testData.select(self.label).filter(
-                                      label + " = '" + l + "''").count()
+            print("%s\t%i\t%i" % (l \
+                                  ,trainingData.select(self.label) \
+                                  .filter(label + " = '" + l + "''").count() \
+                                  ,testData.select(self.label) \
+                                  .filter(label + " = '" + l + "''").count() \
                                   )
                   )
 
@@ -95,7 +95,7 @@ class sparkMultiClassClassifier(object):
         if classCount == 2:
             b = BinaryClassificationMetrics(pred)
             metrics["AUC"] = str(b.areaUnderROC())
-        m = MultiClassificationMetrics(pred)
+        m = MulticlassMetrics(pred)
         metrics["F"] = str(m.weightedFMeasure())
         metrics["Accuracy"] = str(m.accuracy())
         metrics["Precision"] = str(m.weightedPrecision())
