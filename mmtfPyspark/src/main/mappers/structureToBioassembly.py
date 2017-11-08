@@ -28,7 +28,7 @@ class structureToBioassembly(object):
         useChainIdInsteadOfChainName (bool): if true, use Chain Id in the key assignments
         excludeDuplicates (bool): if true return only one chain for each sequence
     '''
-    
+
     def __init__(self, useChainIdInsteadOfChainName = False, excludeDuplicates = False):
         self.useChainIdInsteadOfChainName = useChainIdInsteadOfChainName
         self.excludeDuplicates = excludeDuplicates
@@ -36,6 +36,7 @@ class structureToBioassembly(object):
 
     def __call__(self, t):
         structure = t[1]
+        structure = structure.set_alt_loc_list()
 
         bioassemblies = structure.bio_assembly
 
@@ -152,8 +153,23 @@ class structureToBioassembly(object):
                                 atomIndex = atomIndex + 1
 
                             # bond not implemented
+                            if addThisChain:
+
+                                for l in range(len(structure.group_list[currgroup]['bondOrderList'])):
+
+                                    bondIndOne = structure.group_list[currgroup]['bondAtomList'][l*2]
+                                    bondIndTwo = structure.group_list[currgroup]['bondAtomList'][l*2+1]
+                                    bondOrder = structure.group_list[currgroup]['bondOrderList'][l]
+
+                                    #newChain.set_group_bond(bondIndOne, bondIndTwo, bondOrder)
+
+                                    bioAssembly.current_group.bond_atom_list += [bondIndOne, bondIndTwo]
+                                    bioAssembly.current_group.bond_order_list.append(bondOrder)
+
 
                             groupIndex = groupIndex + 1
+
+
                     chainIndex = chainIndex + 1
                 modelIndex = modelIndex + 1
                         #print(type(currMatrix))
