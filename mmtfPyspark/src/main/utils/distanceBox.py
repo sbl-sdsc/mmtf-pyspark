@@ -54,7 +54,7 @@ class distanceBox(object):
         k = float(point.z) * self.inverseBinWidth
         location = i + (j*10000) + (k*1000000000)
 
-        print(location, pointName)
+        #print(location, pointName)
 
         if location in self.hashMap:
             self.hashMap[location] = self.hashMap[location].append(pointName)
@@ -70,6 +70,7 @@ class distanceBox(object):
         checkedLocations = set()
 
         for location in self.hashMap.keys():
+            print(location)
 
             overlap = False
 

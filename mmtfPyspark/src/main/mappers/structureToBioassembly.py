@@ -37,6 +37,7 @@ class structureToBioassembly(object):
     def __call__(self, t):
         structure = t[1]
         structure = structure.set_alt_loc_list()
+        #print(structure.group_type_list)
 
         bioassemblies = structure.bio_assembly
 
@@ -123,7 +124,11 @@ class structureToBioassembly(object):
                                 structure.groups_per_chain[chainIndex])
                             chainCounter = chainCounter + 1
                         for jj in range(structure.groups_per_chain[chainIndex]):
+                            #print(structure.group_type_list)
                             currgroup = structure.group_type_list[groupIndex]
+                            #if ii == 0 and j == 0 and jj < 10:
+                                #print(currgroup)
+
                             if addThisChain:
                                 bioAssembly.set_group_info(structure.group_list[currgroup]['groupName'],
                                                             structure.group_id_list[groupIndex],

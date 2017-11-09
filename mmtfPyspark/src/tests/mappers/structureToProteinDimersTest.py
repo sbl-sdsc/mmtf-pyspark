@@ -16,6 +16,7 @@ class structureToProteinDimersTest(unittest.TestCase):
     def test1(self):
         pdbIds = ["1I1G"]
         self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        #print(self.pdb.collect()[0][1].group_type_list)
 
 
         pdb_1 = self.pdb.flatMap(structureToBioassembly()) \

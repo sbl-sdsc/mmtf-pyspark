@@ -31,6 +31,8 @@ class structureToProteinDimers(object):
 
     def __call__(self, t):
         structure = t[1]
+        #print(structure.group_type_list)
+
 
         # split structure into a list of chains
         chains = self._splitToChains(structure)
@@ -131,27 +133,28 @@ class structureToProteinDimers(object):
 
             for k in range(tmp.groups_per_chain[0]):
                 groupType = tmp.group_type_list[groupIndex]
-                print(tmp.group_type_list)
-                #print(tmp.group_list[groupType]["bondAtomList"])
 
-                for m in tmp.group_list[groupType]["bondAtomList"]:
+
+                #for m in tmp.group_list[groupType]["bondAtomList"]:
+                for m in range(len(tmp.group_list[groupType]["formalChargeList"])):
 
                     atomName = tmp.group_list[groupType]["atomNameList"][m]
 
-                    #if atomName == "CB":
+                    if atomName == "CB":
 
-                        #xCoord = tmp.x_coord_list[atomIndex]
-                        #yCoord = tmp.y_coord_list[atomIndex]
-                        #zCoord = tmp.z_coord_list[atomIndex]
+                        xCoord = tmp.x_coord_list[atomIndex]
+                        yCoord = tmp.y_coord_list[atomIndex]
+                        zCoord = tmp.z_coord_list[atomIndex]
 
-                        #newPoint = Point3D(xCoord, yCoord, zCoord)
+                        newPoint = Point3D(xCoord, yCoord, zCoord)
 
-                        #newbox.addPoint(newPoint, atomIndex)
+                        newbox.addPoint(newPoint, atomIndex)
 
                     atomIndex += 1
 
                 groupIndex += 1
             #print(len(tmp.x_coord_list), atomIndex, groupIndex)
+            #print(len(chains), tmp.groups_per_chain[0])
 
             distanceBoxes.append(newbox)
 
@@ -228,6 +231,7 @@ class structureToProteinDimers(object):
 
             for j in range(s.groups_per_chain[i]):
                 groupIndex = s.group_type_list[groupCounter]
+                #print(s.group_type_list)
 
                 # Set group info
                 newChain.set_group_info(s.group_list[groupIndex]['groupName'],
