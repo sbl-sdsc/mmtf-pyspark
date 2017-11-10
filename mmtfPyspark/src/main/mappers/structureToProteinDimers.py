@@ -17,6 +17,8 @@ import itertools
 from sympy import Point3D
 from src.main.utils import distanceBox
 import time
+import numpy as np
+import math
 
 class structureToProteinDimers(object):
     '''
@@ -36,6 +38,7 @@ class structureToProteinDimers(object):
 
         # split structure into a list of chains
         chains = self._splitToChains(structure)
+        chainVectors = self._getChainVectors(chains)
         resList = []
 
         if self.useAllAtoms:
@@ -43,7 +46,7 @@ class structureToProteinDimers(object):
         else:
             boxes = self._getCBetaAtomsDistanceBoxes(chains, self.cutoffDistance)
 
-        exclusiveHashSet = set()
+        self.exclusiveHashSet = set()
 
         for i in range(len(chains)):
 
@@ -55,23 +58,78 @@ class structureToProteinDimers(object):
 
                     if self.exclusive:
 
+
+                        newVec = chainVectors[i] - chainVectors[j]
+                        if not self._checkList(newVec, self.exclusiveHashSet):
+                            print(newVec)
+                            resList.append(self._combineChains(chains[i], chains[j]))
+                            print("*")
+                            self.exclusiveHashSet.add(newVec)
+
+                        '''
                         es1 = chains[i].entity_list[self._getChainToEntityIndex(chains[i])[0]]["sequence"]
                         es2 = chains[j].entity_list[self._getChainToEntityIndex(chains[j])[0]]["sequence"]
 
                         newTuple1 = (es1, es2)
                         newTuple2 = (es2, es1)
 
-                        if (newTuple1 not in exclusiveHashSet) and (newTuple2 not in exclusiveHashSet):
-
+                        if (newTuple1 not in self.exclusiveHashSet) and (newTuple2 not in self.exclusiveHashSet):
+                            print(newTuple1)
                             resList.append(self._combineChains(chains[i], chains[j]))
                             exclusiveHashSet.add(newTuple1)
                             exclusiveHashSet.add(newTuple2)
+                        '''
 
                     else: resList.append(self._combineChains(chains[i], chains[j]))
 
                 j += 1
 
         return resList
+
+
+    def _checkList(self, vec, exclusiveList):
+
+        for point in self.exclusiveList:
+
+            if np.linagl.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1: return True
+            vec.negate() #TODO what?
+
+            if np.linagl.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1: return True
+            vec.negate()
+
+        return False
+
+
+    def _angle(self, a, b):
+      arccosInput = np.dot(a,b)/np.linagl.norm(a)/np.linagl.norm(b)
+      arccosInput = 1.0 if arccosInput > 1.0 else arccosInput
+      arccosInput = -1.0 if arccosInput < -1.0 else arccosInput
+      return math.acos(arccosInput)
+
+
+    def _getChainVectors(self, chains):
+
+        chainVectors = []
+
+        for chain in chains:
+
+            chainVectors.append(self._calcAverageVec(chain))
+
+        return chainVectors
+
+
+    def _calcAverageVec(self, s1):
+
+        totX, totY, totZ = 0, 0, 0
+
+        for i in range(s1.num_atoms): # TODO double check num atoms
+
+            totX += s1.x_coord_list[i]
+            totY += s1.y_coord_list[i]
+            totZ += s1.z_coord_list[i]
+
+        return np.array([totX/s1.num_atoms, totY/s1.num_atoms, totZ/s1.num_atoms])
+
 
     def _distance(self, s1, s2, index1, index2):
 
@@ -320,6 +378,7 @@ class structureToProteinDimers(object):
         # Set model info (only one model: 0)
         combinedStructure.set_model_info(0,2)
 
+        print(self._getChainToEntityIndex(s1)[0])
         chainToEntityIndex = self._getChainToEntityIndex(s1)[0]
 
         # Set entity and chain info

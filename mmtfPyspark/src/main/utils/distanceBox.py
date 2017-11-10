@@ -8,6 +8,8 @@ Authorship information:
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
 '''
+import numpy as np
+from collections import defaultdict
 
 class distanceBox(object):
 
@@ -44,23 +46,26 @@ class distanceBox(object):
     def __init__(self, binWidth):
 
         self.inverseBinWidth = 1.0/binWidth
-        self.hashMap = {}
+        self.hashMap = defaultdict(list)
 
 
     def addPoint(self, point, pointName):
 
-        i = float(point.x) * self.inverseBinWidth
-        j = float(point.y) * self.inverseBinWidth
-        k = float(point.z) * self.inverseBinWidth
+        i = np.rint(float(point.x) * self.inverseBinWidth)
+        j = np.rint(float(point.y) * self.inverseBinWidth)
+        k = np.rint(float(point.z) * self.inverseBinWidth)
         location = i + (j*10000) + (k*1000000000)
 
         #print(location, pointName)
 
-        if location in self.hashMap:
-            self.hashMap[location] = self.hashMap[location].append(pointName)
+        #if location in self.hashMap:
+        #    print(location)
+        #    print(self.hashMap[location])
+        #self.hashMap[location] = self.hashMap[location].append(pointName)
+        self.hashMap[location].append(pointName)
 
-        else:
-            self.hashMap[location] = [pointName]
+        #else:
+        #    self.hashMap[location] = [pointName]
 
 
 
@@ -70,7 +75,6 @@ class distanceBox(object):
         checkedLocations = set()
 
         for location in self.hashMap.keys():
-            print(location)
 
             overlap = False
 
@@ -80,6 +84,7 @@ class distanceBox(object):
 
                 if loc in distanceBox.hashMap:
                     overlap = True
+
                     break
 
             if overlap:
