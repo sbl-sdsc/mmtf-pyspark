@@ -22,8 +22,8 @@ class sparkRegressor(object):
 
         self.predictor = predictor
         self.label = label
-        self.testFractor = 0.3
-        self.seed = 1
+        self.testFraction = testFraction
+        self.seed = seed
 
 
     def fit(self, data):
@@ -44,7 +44,7 @@ class sparkRegressor(object):
         testData = splits[1]
 
         # Train a RandomForest model
-        predictor.setLabelCol(self.label).setFeaturesCol("features")
+        self.predictor.setLabelCol(self.label).setFeaturesCol("features")
 
         # Chain indexer and forest in a Pipeline
         pipeline = Pipeline().setStages([self.predictor])
@@ -56,13 +56,13 @@ class sparkRegressor(object):
         predictions = model.transform(testData)
 
         # Display some sample predictions
-        print(f"Sample predictions: {self.prediction}") # TODO self.predictor.getClass().getSimpleName
-        primaryKey = predictions.columns()[0]
+        print(f"Sample predictions: {str(self.predictor).split('_')[0]}") # TODO self.predictor.getClass().getSimpleName
+        primaryKey = predictions.columns[0]
         predictions.select(primaryKey, self.label, "prediction").sample(False, 0.1, self.seed).show(50)
 
         # Collect Metrics
         metrics = OrderedDict()
-        metrics["Method"] = predictor.getClass().getSimpleName() # TODO
+        metrics["Method"] = str(self.predictor).split("_")[0] # TODO
 
         evaluator = RegressionEvaluator().setLabelCol(self.label) \
                                          .setPredictionCol("prediction") \

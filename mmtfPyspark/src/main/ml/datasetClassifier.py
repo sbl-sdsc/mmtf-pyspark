@@ -18,7 +18,7 @@ Authorship information:
 
 from src.main.ml import sparkMultiClassClassifier, datasetBalancer
 from pyspark.sql import SparkSession
-from pyspark.ml.classification import DecisionTreeClassifier, LogisticRegression, MultilayerPerceptronClassifier, RandomForestClassifer
+from pyspark.ml.classification import DecisionTreeClassifier, LogisticRegression, MultilayerPerceptronClassifier, RandomForestClassifier
 import sys
 import time
 
@@ -29,23 +29,25 @@ def main(argv):
 
     start = time.time()
 
-    spark = SparkSession.builder() \
-                        .master("local[*]")
-                        .appName("datasetClassifier")
+    spark = SparkSession.builder \
+                        .master("local[*]") \
+                        .appName("datasetClassifier") \
                         .getOrCreate()
 
-    data = spark.read().parquet(argv[0]).cache()
+    data = spark.read.parquet(argv[0]).cache()
 
-    vector = data.first().getAs("features")
-    featureCount = vector.numActives() # TODO double check
+    vector = data.first()["features"]
+    featureCount = len(vector)
 
-    print("Feature count    : {featureCount}")
+    print(f"Feature count    : {featureCount}")
     classCount = int(data.select(label).distinct().count())
-    print("Class count    : {classCount}")
-    print("Dataset size (unbalanced)    : {data.count()}")
+    print(f"Class count    : {classCount}")
+    print(f"Dataset size (unbalanced)    : {data.count()}")
+    data.groupby(label).count().show(classCount)
+
     data = datasetBalancer.downsample(data, label, 1)
 
-    print("Dataset size (balanced)  : {data.count()}")
+    print(f"Dataset size (balanced)  : {data.count()}")
     data.groupby(label).count().show(classCount)
 
     testFraction = 0.3
@@ -55,29 +57,29 @@ def main(argv):
     dtc = DecisionTreeClassifier()
     mcc = sparkMultiClassClassifier(dtc, label, testFraction, seed)
     matrics = mcc.fit(data)
-    for k,v in matrics: print(f"{k}\t{v}")
+    for k,v in matrics.items(): print(f"{k}\t{v}")
 
     # RandomForest
     rfc = RandomForestClassifier()
     mcc = sparkMultiClassClassifier(rfc, label, testFraction, seed)
     matrics = mcc.fit(data)
-    for k,v in matrics: print(f"{k}\t{v}")
+    for k,v in matrics.items(): print(f"{k}\t{v}")
 
     # LogisticRegression
     lr = LogisticRegression()
     mcc = sparkMultiClassClassifier(lr, label, testFraction, seed)
     matrics = mcc.fit(data)
-    for k,v in matrics: print(f"{k}\t{v}")
+    for k,v in matrics.items(): print(f"{k}\t{v}")
 
     # MultilayerPerceptronClassifier
     layers = [featureCount, 10, classCount]
-    mpc = MultilayerPerceptronClassifier().setLayers(labers) \
+    mpc = MultilayerPerceptronClassifier().setLayers(layers) \
                                           .setBlockSize(128) \
-                                          .setSeed(1234L) \
+                                          .setSeed(1234) \
                                           .setMaxIter(200)
     mcc = sparkMultiClassClassifier(mpc, label, testFraction, seed)
     matrics = mcc.fit(data)
-    for k,v in matrics: print(f"{k}\t{v}")
+    for k,v in matrics.items(): print(f"{k}\t{v}")
 
     end = time.time()
     print("Time: %f  sec." %(end-start))

@@ -28,15 +28,16 @@ def main(argv):
 
     start = time.time()
 
-    spark = SparkSession.builder() \
-                        .master("local[*]")
-                        .appName("datasetRegressor")
+    spark = SparkSession.builder \
+                        .master("local[*]") \
+                        .appName("datasetRegressor") \
                         .getOrCreate()
 
-    data = spark.read().parquet(argv[0]).cache()
+    data = spark.read.parquet(argv[0]).cache()
 
-    vector = data.first().getAs("features")
-    featureCount = vector.numActives() # TODO double check
+    vector = data.first()
+    print(vector)
+    featureCount = len(vector)
     print("Feature count    : {featureCount}")
 
     print("Dataset size (unbalanced)    : {data.count()}")
@@ -49,14 +50,14 @@ def main(argv):
                            .setFeaturesCol("features")
     reg = sparkRegressor(lr, label, testFraction, seed)
     matrics = reg.fit(data)
-    for k,v in matrics: print(f"{k}\t{v}")
+    for k,v in matrics.items(): print(f"{k}\t{v}")
 
     # GBTRegressor
     gbt = GBTRegressor().setLabelCol(label) \
                         .setFeaturesCol("features")
     reg = sparkRegressor(gbt, label, testFraction, seed)
     matrics = reg.fit(data)
-    for k,v in matrics: print(f"{k}\t{v}")
+    for k,v in matrics.items(): print(f"{k}\t{v}")
 
     # GeneralizedLinearRegression
     glr = GeneralizedLinearRegression().setLabelCol(label) \
@@ -67,7 +68,7 @@ def main(argv):
                                        .setRegParam(0.3)
     reg = sparkRegressor(glr, label, testFraction, seed)
     matrics = reg.fit(data)
-    for k,v in matrics: print(f"{k}\t{v}")
+    for k,v in matrics.items(): print(f"{k}\t{v}")
 
     end = time.time()
     print("Time: %f  sec." %(end-start))
