@@ -11,9 +11,14 @@ Authorship information:
 
 import numpy as np
 import time
+from mmtf.utils import decoder_utils
 import struct
 
 class mmtfStructure(object):
+    model_counter = 0
+    chain_counter = 0
+    group_counter = 0
+    atom_counter = 0
 
     def run_length_decoder_numpy(self,in_array):
         """
@@ -234,3 +239,21 @@ class mmtfStructure(object):
         self.z_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2'))
         self.alt_loc_list = input_data[b'altLocList'][12:]
         self.alt_loc_set = False
+
+
+    def pass_data_on(self, data_setters):
+        """Write the data from the getters to the setters.
+        :param data_setters: a series of functions that can fill a chemical
+        data structure
+        :type data_setters: DataTransferInterface
+        """
+        self.set_alt_loc_list()
+        data_setters.init_structure(self.num_bonds, len(self.x_coord_list), len(self.group_type_list),
+                                    len(self.chain_id_list), len(self.chains_per_model), self.structure_id)
+        decoder_utils.add_entity_info(self, data_setters)
+        decoder_utils.add_atomic_information(self, data_setters)
+        decoder_utils.add_header_info(self, data_setters)
+        decoder_utils.add_xtalographic_info(self, data_setters)
+        decoder_utils.generate_bio_assembly(self, data_setters)
+        decoder_utils.add_inter_group_bonds(self, data_setters)
+        data_setters.finalize_structure()
