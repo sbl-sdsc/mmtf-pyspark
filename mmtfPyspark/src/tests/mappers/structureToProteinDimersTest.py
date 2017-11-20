@@ -16,14 +16,55 @@ class structureToProteinDimersTest(unittest.TestCase):
     def test1(self):
         pdbIds = ["1I1G"]
         self.pdb = downloadMmtfFiles(pdbIds,self.sc)
-        #print(self.pdb.collect()[0][1].group_type_list)
-
 
         pdb_1 = self.pdb.flatMap(structureToBioassembly()) \
                         .flatMap(structureToProteinDimers(8,20,False, True))
-        results_1 = pdb_1.keys().collect()
-        print(results_1)
-        self.assertTrue(len(results_1) == 12)
+
+        self.assertTrue(pdb_1.count() == 4)
+
+
+    def test2(self):
+        pdbIds = ["5NV3"]
+        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+
+        pdb_2 = self.pdb.flatMap(structureToBioassembly()) \
+                        .flatMap(structureToProteinDimers(8,20,False, True))
+
+        self.assertTrue(pdb_2.count() == 12)
+
+
+    def test3(self):
+        pdbIds = ["4GIS"]
+        # A3-A2
+        # A4-A1
+        # B5-A1
+        # B6-A2
+        # B6-B5
+        # B7-A3
+        # B7-A4
+        # B8-A4
+        # B8-B7
+        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+
+        pdb_3 = self.pdb.flatMap(structureToBioassembly()) \
+                        .flatMap(structureToProteinDimers(8,20,False, True))
+
+        self.assertTrue(pdb_3.count() == 9)
+
+
+    def test4(self):
+        pdbIds = ["1BZ5"]
+        # C5-B4
+        # C6-B3
+        # D7-A2
+        # D8-A1
+        # E10-E9
+        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+
+        pdb_4 = self.pdb.flatMap(structureToBioassembly()) \
+                        .flatMap(structureToProteinDimers(9,20,False, True))
+
+        self.assertTrue(pdb_3.count() == 5)
 
 
     def tearDown(self):

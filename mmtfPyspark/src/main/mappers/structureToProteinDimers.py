@@ -46,7 +46,7 @@ class structureToProteinDimers(object):
         else:
             boxes = self._getCBetaAtomsDistanceBoxes(chains, self.cutoffDistance)
 
-        self.exclusiveHashSet = set()
+        self.exclusiveHashSet = np.empty([0,3])
 
         for i in range(len(chains)):
 
@@ -58,13 +58,12 @@ class structureToProteinDimers(object):
 
                     if self.exclusive:
 
-
                         newVec = chainVectors[i] - chainVectors[j]
                         if not self._checkList(newVec, self.exclusiveHashSet):
                             print(newVec)
                             resList.append(self._combineChains(chains[i], chains[j]))
                             print("*")
-                            self.exclusiveHashSet.add(newVec)
+                            self.exclusiveHashSet = np.append(self.exclusiveHashSet, [newVec], axis = 0)
 
                         '''
                         es1 = chains[i].entity_list[self._getChainToEntityIndex(chains[i])[0]]["sequence"]
@@ -89,13 +88,13 @@ class structureToProteinDimers(object):
 
     def _checkList(self, vec, exclusiveList):
 
-        for point in self.exclusiveList:
+        for point in exclusiveList:
 
-            if np.linagl.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1: return True
-            vec.negate() #TODO what?
+            if np.linalg.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1: return True
+            vec = vec * -1
 
-            if np.linagl.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1: return True
-            vec.negate()
+            if np.linalg.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1: return True
+            vec = vec * -1
 
         return False
 
@@ -378,7 +377,6 @@ class structureToProteinDimers(object):
         # Set model info (only one model: 0)
         combinedStructure.set_model_info(0,2)
 
-        print(self._getChainToEntityIndex(s1)[0])
         chainToEntityIndex = self._getChainToEntityIndex(s1)[0]
 
         # Set entity and chain info
@@ -391,7 +389,7 @@ class structureToProteinDimers(object):
                                          s1.chain_name_list[0],
                                          s1.groups_per_chain[0])
 
-        for i in range(s1.groups_per_chain[1]):
+        for i in range(s1.groups_per_chain[0]):
             groupIndex = s1.group_type_list[groupCounter]
 
             # Set group info
@@ -405,7 +403,7 @@ class structureToProteinDimers(object):
                                              s1.sequence_index_list[groupCounter],
                                              s1.sec_struct_list[groupCounter])
 
-            for j in range(len(s.group_list[groupIndex]['atomNameList'])):
+            for j in range(len(s1.group_list[groupIndex]['atomNameList'])):
                 combinedStructure.set_atom_info(s1.group_list[groupIndex]['atomNameList'][j],
                                                 s1.atom_id_list[atomCounter],
                                                 s1.alt_loc_list[atomCounter],
@@ -425,7 +423,7 @@ class structureToProteinDimers(object):
                 bondIndOne = s1.group_list[groupIndex]["bondAtomList"][k*2]
                 bondIndTwo = s1.group_list[groupIndex]["bondAtomList"][k*2 + 1]
                 bondOrder = s1.group_list[groupIndex]["bondOrderList"][k]
-                combinedStructure.setGroupBond(bondIndOne, bondIndTwo, bondOrder)
+                combinedStructure.set_group_bond(bondIndOne, bondIndTwo, bondOrder)
 
             groupCounter += 1
 
@@ -444,7 +442,7 @@ class structureToProteinDimers(object):
         groupCounter = 0
         atomCounter = 0
 
-        for i in range(s2.groups_per_chain[1]):
+        for i in range(s2.groups_per_chain[0]):
             groupIndex = s2.group_type_list[groupCounter]
 
             # Set group info
@@ -478,7 +476,7 @@ class structureToProteinDimers(object):
                 bondIndOne = s2.group_list[groupIndex]["bondAtomList"][k*2]
                 bondIndTwo = s2.group_list[groupIndex]["bondAtomList"][k*2 + 1]
                 bondOrder = s2.group_list[groupIndex]["bondOrderList"][k]
-                combinedStructure.setGroupBond(bondIndOne, bondIndTwo, bondOrder)
+                combinedStructure.set_group_bond(bondIndOne, bondIndTwo, bondOrder)
 
             groupCounter += 1
 
