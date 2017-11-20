@@ -23,7 +23,7 @@ def main():
     sc = SparkContext(conf = conf)
 
     # Read Jpred Dataset
-    res = JpredDataset.getDataset(sc)
+    res = JpredDataset.getDataset()
     res.show(10)
 
     # Write to Json file

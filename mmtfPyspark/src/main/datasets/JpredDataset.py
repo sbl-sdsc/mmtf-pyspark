@@ -19,14 +19,13 @@ Authorship information:
 import urllib.request
 import tarfile
 from pyspark.sql import Row
+from pyspark import SparkContext
 from src.main.ml import pythonRDDToDataset
 
-def getDataset(sc):
+
+def getDataset():
     '''
     Gets JPred 4/JNet (v.2.3.1) secondary structure dataset.
-
-    Attribute:
-        sc (SparkContext)
 
     Return:
         secondaryStructure dataset
@@ -66,6 +65,7 @@ def getDataset(sc):
         row = Row(scopId, sequences[scopId], secondaryStructures[scopId], trained[scopId])
         res.append(row)
 
+    sc = SparkContext.getOrCreate()
     data = sc.parallelize(res)
     colNames = ["scopID","sequence", "secondaryStructure", "trained"]
 
