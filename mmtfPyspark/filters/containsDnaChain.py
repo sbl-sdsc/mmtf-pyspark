@@ -13,10 +13,7 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
-try:
-    from mmtfPyspark.filters import containsPolymerChainType
-except ModuleNotFoundError:
-    from . import containsPolymerChainType
+from mmtfPyspark.filters import containsPolymerChainType
 
 class containsDnaChain(object):
     '''

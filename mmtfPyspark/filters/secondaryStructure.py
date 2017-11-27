@@ -14,11 +14,7 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
-try:
-    from mmtfPyspark.utils import dsspSecondaryStructure
-except ModuleNotFoundError:
-    from ..utils import dsspSecondaryStructure
-
+from mmtfPyspark.utils import dsspSecondaryStructure
 
 
 class secondaryStructure(object):

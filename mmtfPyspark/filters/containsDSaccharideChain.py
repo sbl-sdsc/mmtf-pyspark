@@ -19,10 +19,7 @@ Authorship information:
     __status__ = "Done"
 '''
 
-try:
-    from mmtfPyspark.filters import containsPolymerChainType
-except ModuleNotFoundError:
-    from . import containsPolymerChainType
+from mmtfPyspark.filters import containsPolymerChainType
 
 
 class containsDSaccharideChain(object):
