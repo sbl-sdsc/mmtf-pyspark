@@ -17,9 +17,9 @@ import sys
 
 
 from pyspark import SparkConf, SparkContext
-from src.main.io.MmtfReader import *
+from mmtfPyspark.io.MmtfReader import *
 #from io.MmtfReader import *
-from src.main.filters import resolution
+from mmtfPyspark.filters import resolution
 import getopt
 
 

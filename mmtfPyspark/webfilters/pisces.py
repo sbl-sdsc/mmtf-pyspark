@@ -21,7 +21,7 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
-from src.main.webservices import piscesDownloader
+from mmtfPyspark.webservices import piscesDownloader
 
 class pisces(object):
     '''

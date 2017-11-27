@@ -1,13 +1,13 @@
 from pyspark import SparkConf, SparkContext
 import sys
 sys.path.append("../../../mmtf-pyspark")
-from src.main.io.MmtfReader import downloadMmtfFiles, readSequenceFile
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles, readSequenceFile
 #MmtfReader import downloadMmtfFiles, readSequenceFile
-from src.main.filters import rFree
-from src.main.filters import notFilter
-from src.main.filters import resolution
+from mmtfPyspark.filters import rFree
+from mmtfPyspark.filters import notFilter
+from mmtfPyspark.filters import resolution
 
-from src.main.utils.dsspSecondaryStructure import *
+from mmtfPyspark.utils.dsspSecondaryStructure import *
 import getopt
 import sys
 

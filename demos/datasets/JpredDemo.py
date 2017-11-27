@@ -11,7 +11,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
-from src.main.datasets import JpredDataset
+from mmtfPyspark.datasets import JpredDataset
 import time
 
 

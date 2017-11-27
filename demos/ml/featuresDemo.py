@@ -12,13 +12,13 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext, SQLContext
 from pyspark.sql.functions import col, when
-from src.main.ml import proteinSequenceEncoder
-from src.main.mappers import structureToPolymerChains
-from src.main.rcsbfilters import blastCluster
-from src.main.filters import containsLProteinChain
-from src.main.datasets import secondaryStructureExtractor
-from src.main.rcsbfilters import pisces
-from src.main.io import MmtfReader
+from mmtfPyspark.ml import proteinSequenceEncoder
+from mmtfPyspark.mappers import structureToPolymerChains
+from mmtfPyspark.rcsbfilters import blastCluster
+from mmtfPyspark.filters import containsLProteinChain
+from mmtfPyspark.datasets import secondaryStructureExtractor
+from mmtfPyspark.rcsbfilters import pisces
+from mmtfPyspark.io import MmtfReader
 import time
 
 

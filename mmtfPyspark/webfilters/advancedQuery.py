@@ -25,7 +25,7 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from src.main.webservices import advancedQueryService
+from mmtfPyspark.webservices import advancedQueryService
 
 class advancedQuery(object):
     '''

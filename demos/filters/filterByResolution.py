@@ -16,8 +16,8 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from src.main.io import MmtfReader
-from src.main.filters import resolution
+from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.filters import resolution
 import time
 
 def main():

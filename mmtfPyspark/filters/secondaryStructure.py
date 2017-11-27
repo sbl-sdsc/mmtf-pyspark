@@ -15,7 +15,7 @@ Authorship information:
     __status__ = "Done"
 '''
 try:
-    from src.main.utils import dsspSecondaryStructure
+    from mmtfPyspark.utils import dsspSecondaryStructure
 except ModuleNotFoundError:
     from ..utils import dsspSecondaryStructure
 

@@ -2,8 +2,8 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from src.main.io.MmtfReader import downloadMmtfFiles
-from src.main.filters import resolution
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.filters import resolution
 
 class testResolutionFilter(unittest.TestCase):
 

@@ -12,8 +12,8 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from src.main.io import MmtfReader
-from src.main.filters import *
+from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.filters import *
 
 
 def main():

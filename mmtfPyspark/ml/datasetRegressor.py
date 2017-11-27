@@ -15,7 +15,7 @@ Authorship information:
     __status__ = "Debug"
 '''
 
-from src.main.ml import sparkRegressor, datasetBalancer
+from mmtfPyspark.ml import sparkRegressor, datasetBalancer
 from pyspark.sql import SparkSession
 from pyspark.ml.regression import GBTRegressor, GeneralizedLinearRegression, LinearRegression
 import sys

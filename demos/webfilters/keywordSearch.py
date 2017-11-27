@@ -14,9 +14,9 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from src.main.webfilters import PdbjMine
-from src.main.datasets import PdbjMineService
-from src.main.io import MmtfReader
+from mmtfPyspark.webfilters import PdbjMine
+from mmtfPyspark.datasets import PdbjMineService
+from mmtfPyspark.io import MmtfReader
 
 def main():
     path = "/home/marshuang80/PDB/full"

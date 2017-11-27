@@ -28,7 +28,7 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from src.main.datasets import customReportService
+from mmtfPyspark.datasets import customReportService
 from pyspark.sql import SparkSession
 
 class customReportQuery(object):

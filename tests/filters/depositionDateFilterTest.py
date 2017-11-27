@@ -2,8 +2,8 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from src.main.io.MmtfReader import downloadMmtfFiles
-from src.main.filters import depositionDate
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.filters import depositionDate
 
 class testDepositionDateFilter(unittest.TestCase):
 

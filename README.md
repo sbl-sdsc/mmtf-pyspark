@@ -138,7 +138,7 @@ import sys
 sys.path.append("<path to your mmtf-pyspark folder")
 sys.path.append("<path to your mmtf-python folder")
 import mmtfPyspark
-from mmtfPyspark.src.main import filters
+from mmtfPyspark.mmtfPyspark import filters
 ```
 
 # Examples

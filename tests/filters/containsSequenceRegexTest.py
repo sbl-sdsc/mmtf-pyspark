@@ -2,9 +2,9 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from src.main.io.MmtfReader import downloadMmtfFiles
-from src.main.filters import containsSequenceRegex
-from src.main.mappers import *
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.filters import containsSequenceRegex
+from mmtfPyspark.mappers import *
 
 class containsSequenceRegexTest(unittest.TestCase):
 

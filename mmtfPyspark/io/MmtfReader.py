@@ -13,7 +13,7 @@ Authorship information:
 from mmtf.api.mmtf_reader import MMTFDecoder
 from mmtf.api import default_api
 try:
-    from src.main.inputFunction import biopythonInputFunction
+    from mmtfPyspark.inputFunction import biopythonInputFunction
 except ModuleNotFoundError:
     from ..inputFunction import biopythonInputFunction
 from Bio.PDB import PDBParser, MMCIFParser, FastMMCIFParser

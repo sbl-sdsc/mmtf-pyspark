@@ -20,7 +20,7 @@ import urllib.request
 import tarfile
 from pyspark.sql import Row
 from pyspark import SparkContext
-from src.main.ml import pythonRDDToDataset
+from mmtfPyspark.ml import pythonRDDToDataset
 
 
 def getDataset():

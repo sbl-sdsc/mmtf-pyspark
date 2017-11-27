@@ -13,7 +13,7 @@ from pyspark.ml.linalg import Vectors
 from pyspark.ml.linalg import VectorUDT
 from pyspark.ml.feature import Word2Vec, Word2VecModel
 #from pyspark.ml.feature.Word2Vec import Word2VecModelReader
-from src.main.ml import sequenceNgrammer
+from mmtfPyspark.ml import sequenceNgrammer
 
 
 class proteinSequenceEncoder(object):

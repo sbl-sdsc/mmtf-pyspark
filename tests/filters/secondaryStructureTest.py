@@ -2,9 +2,9 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from src.main.io.MmtfReader import downloadMmtfFiles
-from src.main.filters import secondaryStructure
-from src.main.mappers import structureToPolymerChains
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.filters import secondaryStructure
+from mmtfPyspark.mappers import structureToPolymerChains
 
 class secondaryStructureTest(unittest.TestCase):
 

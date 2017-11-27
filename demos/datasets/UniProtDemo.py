@@ -10,8 +10,8 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
-from src.main.datasets import UniProt
-#from src.main.datasets import UniProtDataset # TODO find ways to skip import
+from mmtfPyspark.datasets import UniProt
+#from mmtfPyspark.datasets import UniProtDataset # TODO find ways to skip import
 import time
 
 

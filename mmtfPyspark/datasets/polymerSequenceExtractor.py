@@ -12,8 +12,8 @@ Authorship information:
     __status__ = "Debug"
 '''
 
-from src.main.ml import pythonRDDToDataset
-from src.main.mappers import strctureToPolymerSquences
+from mmtfPyspark.ml import pythonRDDToDataset
+from mmtfPyspark.mappers import strctureToPolymerSquences
 from pyspark.sql import Row
 
 

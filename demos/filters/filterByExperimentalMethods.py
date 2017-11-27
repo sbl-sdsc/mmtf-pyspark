@@ -13,8 +13,8 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from src.main.io import MmtfReader
-from src.main.filters import experimentalMethods
+from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.filters import experimentalMethods
 
 def main():
 	path = "/home/marshuang80/PDB/reduced"

@@ -15,7 +15,7 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from src.main.rcsbfilters import advancedQuery
+from mmtfPyspark.rcsbfilters import advancedQuery
 
 class chemicalStructureQuery(object):
 

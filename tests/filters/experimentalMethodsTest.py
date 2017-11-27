@@ -2,9 +2,9 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from src.main.io.MmtfReader import downloadMmtfFiles
-from src.main.filters import experimentalMethods
-from src.main.mappers import *
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.filters import experimentalMethods
+from mmtfPyspark.mappers import *
 
 class experimentalMethodsTest(unittest.TestCase):
 

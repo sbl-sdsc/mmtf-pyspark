@@ -11,9 +11,9 @@ Authorship information:
     __status__ = "Debug"
 '''
 
-from src.main.ml import pythonRDDToDataset
-from src.main.mappers import structureToSecondaryStructureElements
-from src.main.datasets import secondaryStructureExtractor
+from mmtfPyspark.ml import pythonRDDToDataset
+from mmtfPyspark.mappers import structureToSecondaryStructureElements
+from mmtfPyspark.datasets import secondaryStructureExtractor
 
 def getDataset(structure, label, length=None):
     '''

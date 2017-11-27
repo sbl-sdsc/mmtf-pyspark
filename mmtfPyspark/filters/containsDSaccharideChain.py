@@ -20,7 +20,7 @@ Authorship information:
 '''
 
 try:
-    from src.main.filters import containsPolymerChainType
+    from mmtfPyspark.filters import containsPolymerChainType
 except ModuleNotFoundError:
     from . import containsPolymerChainType
 

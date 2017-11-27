@@ -15,7 +15,7 @@ from mmtf.utils import *
 from mmtf.api.mmtf_writer import MMTFEncoder
 import itertools
 from sympy import Point3D
-from src.main.utils import distanceBox
+from mmtfPyspark.utils import distanceBox
 import time
 import numpy as np
 import math

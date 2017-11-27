@@ -10,7 +10,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
-from src.main.datasets import customReportService
+from mmtfPyspark.datasets import customReportService
 import time
 
 

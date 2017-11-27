@@ -10,10 +10,10 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from src.main.io import MmtfReader
-from src.main.mappers import structureToPolymerChains
-from src.main.filters import containsLProteinChain
-from src.main.datasets import secondaryStructureSegmentExtractor, secondaryStructureExtractor
+from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.mappers import structureToPolymerChains
+from mmtfPyspark.filters import containsLProteinChain
+from mmtfPyspark.datasets import secondaryStructureSegmentExtractor, secondaryStructureExtractor
 import time
 
 

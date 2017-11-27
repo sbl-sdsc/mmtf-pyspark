@@ -2,9 +2,9 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from src.main.mappers import structureToBioassembly, structureToProteinDimers
-from src.main.io.MmtfReader import downloadMmtfFiles
-from src.main.filters import containsAlternativeLocations
+from mmtfPyspark.mappers import structureToBioassembly, structureToProteinDimers
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.filters import containsAlternativeLocations
 
 class structureToProteinDimersTest(unittest.TestCase):
 

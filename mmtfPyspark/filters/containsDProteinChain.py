@@ -15,7 +15,7 @@ Authorship information:
     __status__ = "Done"
 '''
 try:
-    from src.main.filters import containsPolymerChainType
+    from mmtfPyspark.filters import containsPolymerChainType
 except ModuleNotFoundError:
     from . import containsPolymerChainType
 

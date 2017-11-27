@@ -2,9 +2,9 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from src.main.io.MmtfReader import downloadMmtfFiles
-from src.main.filters import containsDProteinChain
-from src.main.mappers import *
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.filters import containsDProteinChain
+from mmtfPyspark.mappers import *
 
 class containsDProteinChainTest(unittest.TestCase):
 

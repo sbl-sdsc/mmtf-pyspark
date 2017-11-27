@@ -15,8 +15,8 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from src.main.ml import pythonRDDToDataset
-from src.main.utils import dsspSecondaryStructure
+from mmtfPyspark.ml import pythonRDDToDataset
+from mmtfPyspark.utils import dsspSecondaryStructure
 from pyspark.sql import Row
 
 

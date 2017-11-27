@@ -16,7 +16,7 @@ Authorship information:
     __status__ = "Debug"
 '''
 
-from src.main.ml import sparkMultiClassClassifier, datasetBalancer
+from mmtfPyspark.ml import sparkMultiClassClassifier, datasetBalancer
 from pyspark.sql import SparkSession
 from pyspark.ml.classification import DecisionTreeClassifier, LogisticRegression, MultilayerPerceptronClassifier, RandomForestClassifier
 import sys

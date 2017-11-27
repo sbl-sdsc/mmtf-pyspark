@@ -13,8 +13,8 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from src.main.ml import pythonRDDToDataset
-from src.main.utils.structureToAllInteractions import *
+from mmtfPyspark.ml import pythonRDDToDataset
+from mmtfPyspark.utils.structureToAllInteractions import *
 
 class groupInteractionExtractor(object):
     '''

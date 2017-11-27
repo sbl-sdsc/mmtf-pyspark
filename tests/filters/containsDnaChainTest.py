@@ -2,10 +2,10 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from src.main.io.MmtfReader import downloadMmtfFiles
-from src.main.filters import containsDnaChain
-# from src.main.mappers.structureToPolymerChains import structureToPolymerChains
-from src.main.mappers import *
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.filters import containsDnaChain
+# from mmtfPyspark.mappers.structureToPolymerChains import structureToPolymerChains
+from mmtfPyspark.mappers import *
 
 class testContainsDnaChainTest(unittest.TestCase):
 
