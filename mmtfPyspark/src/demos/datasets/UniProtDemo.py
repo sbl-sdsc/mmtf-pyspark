@@ -11,7 +11,7 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext, SQLContext
 from src.main.datasets import UniProt
-from src.main.datasets.UniProt import UniProtDataset
+#from src.main.datasets import UniProtDataset # TODO find ways to skip import
 import time
 
 
@@ -23,7 +23,9 @@ def main():
     sc = SparkContext(conf = conf)
 
     # Read Jpred Dataset
-    ds = UniProt.getDataset(UniProtDataset.SWISS_PROT)
+    #ds = UniProt.getDataset(UniProt.SWISS_PROT)
+    ds = UniProt.getDataset(UniProt.UNIREF50)
+
     ds.show(20, False)
 
     end = time.time()

@@ -35,16 +35,19 @@ import gzip
 from pyspark.sql import SparkSession
 from enum import Enum
 
-'''
-class UniProtDataset(Enum):
 
-    baseUrl = "ftp://ftp.uniprot.org/pub/databases/uniprot/"
 
-    SWISS_PROT = baseUrl + "current_release/knowledgebase/complete/uniprot_sprot.fasta.gz"
-    TREMBL = baseUrl + "current_release/knowledgebase/complete/uniprot_trembl.fasta.gz"
-    UNIREF50 = baseUrl + "uniref/uniref50/uniref50.fasta.gz"
-    UNIREF90 = baseUrl + "uniref/uniref90/uniref90.fasta.gz"
-    UNIREF100 = baseUrl + "uniref/uniref100/uniref100.fasta.gz"
+#class UniProtDataset(Enum):
+
+baseUrl = "ftp://ftp.uniprot.org/pub/databases/uniprot/"
+
+SWISS_PROT = baseUrl + "current_release/knowledgebase/complete/uniprot_sprot.fasta.gz"
+TREMBL = baseUrl + "current_release/knowledgebase/complete/uniprot_trembl.fasta.gz"
+UNIREF50 = baseUrl + "uniref/uniref50/uniref50.fasta.gz"
+UNIREF90 = baseUrl + "uniref/uniref90/uniref90.fasta.gz"
+UNIREF100 = baseUrl + "uniref/uniref100/uniref100.fasta.gz"
+
+
 '''
 
 def enum(**enums):
@@ -58,6 +61,8 @@ UniProtDataset = enum(SWISS_PROT=baseUrl + "current_release/knowledgebase/comple
                       UNIREF50=baseUrl + "uniref/uniref50/uniref50.fasta.gz",
                       UNIREF90=baseUrl + "uniref/uniref90/uniref90.fasta.gz",
                       UNIREF100=baseUrl + "uniref/uniref100/uniref100.fasta.gz")
+'''
+
 
 
 def getUniprotDataset(dataType):
@@ -74,9 +79,7 @@ def getUniprotDataset(dataType):
     tempFile = tempfile.NamedTemporaryFile(delete=False)
     with open(tempFile.name, "w") as t:
 
-        t.writelines("db,uniqueIdentifier,entryName,proteinName, \
-                     organismName,geneName,proteinExistence, \
-                     sequenceVersion,sequence \n")
+        t.writelines("db,uniqueIdentifier,entryName,proteinName,organismName,geneName,proteinExistence,sequenceVersion,sequence\n")
 
         inputStream = urllib.request.urlopen(dataType)
         rd = gzip.GzipFile(fileobj=inputStream)
@@ -88,41 +91,48 @@ def getUniprotDataset(dataType):
             if ">" in line:
                 line = line.replace(",", ";")
 
+
+                #print(f"{db},{uniqueIdentifier},{entryName},{proteinName},{organismName},{geneName},{proteinExistence},{sequenceVersion}, {sequence}\n")
+
                 if not firstLine:
-                    t.writelines(f"{db},{uniqueIdentifier},{entryName},\
-                                 {proteinName},{organismName},{geneName},\
-                                 {proteinExistence},{sequenceVersion}, \
-                                 {sequence}\n")
+                    t.writelines(f"{db},{uniqueIdentifier},{entryName},{proteinName},{organismName},{geneName},{proteinExistence},{sequenceVersion}, {sequence}\n".replace(' ',''))
+
                 firstLine = False
                 sequence = ""
                 tmp = line.split("|")  # TODO
                 db = tmp[0]
                 uniqueIdentifier = tmp[1]
-                tmp[0] = tmp[2]  # TODO
+                tmp = tmp[2]  # TODO
 
-                if len(tmp[0].split(" OS=")) > 2:
-                    length = len(tmp[0].split(" OS")[0]) + \
-                        len(tmp[0].split(" OS")[1]) + 4
-                    tmp[0] = tmp[0][:length]
+                if len(tmp.split(" OS=")) > 2:
+                    length = len(tmp.split(" OS")[0]) + \
+                        len(tmp.split(" OS")[1]) + 4
+                    tmp = tmp[:length]
 
                 # Set sequence version
-                sv = tmp[0].split(" SV=")[-1]
+                sv = tmp.split(" SV=")
+                tmp = sv[0]
                 sequenceVersion = sv[1] if len(sv) > 1 else ""
 
+
                 # Set proteinExistence
-                pe = tmp[0].split(" PE=")[-1]
+                pe = tmp.split(" PE=")
+                tmp = pe[0]
                 proteinExistence = pe[1] if len(pe) > 1 else ""
 
                 # Set GeneName
-                ge = tmp[0].split(" GE=")[-1]
+                ge = tmp.split(" GN=")
+                tmp = ge[0]
                 geneName = ge[1] if len(ge) > 1 else ""
 
                 # Set organismName
-                on = tmp[0].split(" ON=")[-1]
+                on = tmp.split(" OS=")
+                tmp = on[0]
                 organismName = on[1] if len(on) > 1 else ""
 
-                entryName = tmp[0].split(" ")[0]
-                proteinName = tmp[0][len(entryName) + 1]
+                entryName = tmp.split(" ")[0]
+
+                proteinName = tmp[len(entryName) + 1:]
             else:
                 sequence += line
 
@@ -150,8 +160,7 @@ def getUnirefDataset(dataType):
     tempFile = tempfile.NamedTemporaryFile(delete=False)
     with open(tempFile.name, "w") as t:
 
-        t.writelines("uniqueIdentifier,clusterName,members,taxon,taxonID,\
-                     representativeMember,sequence\n")
+        t.writelines("uniqueIdentifier,clusterName,members,taxon,taxonID,representativeMember,sequence\n")
 
         inputStream = urllib.request.urlopen(dataType)
         rd = gzip.GzipFile(fileobj=inputStream)
@@ -164,32 +173,36 @@ def getUnirefDataset(dataType):
                 line = line.replace(",", ";")
 
                 if not firstLine:
-                    t.writelines(f"{uniqueIdentifier},{clusterName},{members},\
-                                 {taxon},{taxonID},{representativeMember},\
-                                 {sequence}\n")
+                    t.writelines(f"{uniqueIdentifier},{clusterName},{members},{taxon},{taxonID},{representativeMember},{sequence}\n".replace(' ',''))
+
                 firstLine = False
 
                 sequence = ""
                 tmp = line[1]  # TODO
 
                 # Set representativeMember
-                rm = tmp.split(" RepID=")[-1]
+                rm = tmp.split(" RepID=")
+                tmp = rm[0]
                 representativeMember = rm[1] if len(rm) > 1 else ""
 
                 # Set taxonID
-                tid = tmp.split(" TaxID=")[-1]
+                tid = tmp.split(" TaxID=")
+                tmp = tid[0]
                 taxonID = tid[1] if len(tid) > 1 else ""
 
+
                 # Set taxon
-                tx = tmp.split(" Tax=")[-1]
+                tx = tmp.split(" Tax=")
+                tmp = tx[0]
                 taxon = tx[1] if len(tx) > 1 else ""
 
                 # Set members
-                m = tmp.split(" n=")[-1]
+                m = tmp.split(" n=")
+                tmp = m[0]
                 members = m[1] if len(m) > 1 else ""
 
                 uniqueIdentifier = tmp.split(" ")[0]
-                clusterName = tmp[len(uniqueIdentifier) + 1]
+                clusterName = tmp[len(uniqueIdentifier) + 1:]
             else:
                 sequence += line
 
