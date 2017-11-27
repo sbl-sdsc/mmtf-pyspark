@@ -14,7 +14,7 @@ from mmtfPyspark.ml import proteinSequenceEncoder
 from mmtfPyspark.mappers import structureToPolymerChains
 from mmtfPyspark.filters import containsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor
-from mmtfPyspark.rcsbfilters import pisces
+from mmtfPyspark.webfilters import pisces
 from mmtfPyspark.io import MmtfReader
 import time
 

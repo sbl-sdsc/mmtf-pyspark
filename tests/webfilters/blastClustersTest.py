@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
-from mmtfPyspark.rcsbfilters import blastCluster
+from mmtfPyspark.webfilters import blastCluster
 from mmtfPyspark.mappers import structureToPolymerChains
 
 

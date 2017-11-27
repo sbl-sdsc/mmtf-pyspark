@@ -14,10 +14,10 @@ from pyspark import SparkConf, SparkContext, SQLContext
 from pyspark.sql.functions import col, when
 from mmtfPyspark.ml import proteinSequenceEncoder
 from mmtfPyspark.mappers import structureToPolymerChains
-from mmtfPyspark.rcsbfilters import blastCluster
+from mmtfPyspark.webfilters import blastCluster
 from mmtfPyspark.filters import containsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureExtractor
-from mmtfPyspark.rcsbfilters import pisces
+from mmtfPyspark.webfilters import pisces
 from mmtfPyspark.io import MmtfReader
 import time
 

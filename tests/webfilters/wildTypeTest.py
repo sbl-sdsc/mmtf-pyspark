@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
-from mmtfPyspark.rcsbfilters import wildTypeQuery
+from mmtfPyspark.webfilters import wildTypeQuery
 
 
 class wildTypeTest(unittest.TestCase):
