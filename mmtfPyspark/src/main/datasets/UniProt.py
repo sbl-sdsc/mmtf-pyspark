@@ -48,23 +48,6 @@ UNIREF90 = baseUrl + "uniref/uniref90/uniref90.fasta.gz"
 UNIREF100 = baseUrl + "uniref/uniref100/uniref100.fasta.gz"
 
 
-'''
-
-def enum(**enums):
-
-    return type('Enum', (), enums)
-
-
-baseUrl = "ftp://ftp.uniprot.org/pub/databases/uniprot/"
-UniProtDataset = enum(SWISS_PROT=baseUrl + "current_release/knowledgebase/complete/uniprot_sprot.fasta.gz",
-                      TREMBL=baseUrl + "current_release/knowledgebase/complete/uniprot_trembl.fasta.gz",
-                      UNIREF50=baseUrl + "uniref/uniref50/uniref50.fasta.gz",
-                      UNIREF90=baseUrl + "uniref/uniref90/uniref90.fasta.gz",
-                      UNIREF100=baseUrl + "uniref/uniref100/uniref100.fasta.gz")
-'''
-
-
-
 def getUniprotDataset(dataType):
     '''
     Get Uniprot Dataset
@@ -170,6 +153,7 @@ def getUnirefDataset(dataType):
             line = str(line)[2:-3]
 
             if ">" in line:
+
                 line = line.replace(",", ";")
 
                 if not firstLine:
@@ -178,7 +162,7 @@ def getUnirefDataset(dataType):
                 firstLine = False
 
                 sequence = ""
-                tmp = line[1]  # TODO
+                tmp = line
 
                 # Set representativeMember
                 rm = tmp.split(" RepID=")
