@@ -15,6 +15,7 @@ class testContainsAlternativeLocations(unittest.TestCase):
         # 2ONX: has no alternative location ids
         pdbIds = ['4QXX','2ONX']
         self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = self.pdb.map(lambda x: (x[0],x[1].set_alt_loc_list()))
 
 
     def test1(self):
