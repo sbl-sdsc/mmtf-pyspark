@@ -25,8 +25,8 @@ import getopt
 
 # Create variables
 APP_NAME = "MMTF_Spark"
-#path = "~/PDB/full"
-path = "~/PDB/mmtf/mmtf_uncompressed"
+path = "/home/marshuang80/PDB/full"
+#path = "~/PDB/mmtf/mmtf_uncompressed"
 
 # text = "org.apache.hadoop.io.Text"
 # byteWritable = "org.apache.hadoop.io.BytesWritable"
@@ -60,7 +60,7 @@ def main(argv):
     #Mmtf sequence file reader
     pdbIds = ['5GOD','1B38','1B39','1BUH','1C25','1CKP','1DI8','1DM2','1E1V'\
     ,'1E1X','1E9H','1F5Q','1FIN','1FPZ','1FQ1','1FQV','1FS1','2I9W']
-    #pdb = downloadMmtfFiles(pdbIds,sc)
+    pdb = downloadMmtfFiles(pdbIds,sc)
     #print(pdb.filter(lambda t: t[0]).collect())
     #pdb = readSequenceFile(path,sc,pdbId = pdbIds)
     #pdb = readSequenceFile(path,sc)
