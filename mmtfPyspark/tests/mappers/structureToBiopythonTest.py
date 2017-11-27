@@ -31,6 +31,7 @@ class structureToBiopythonTest(unittest.TestCase):
         chainCounts = self.pdb.flatMapValues(structureToBiopython()) \
                         .values() \
                         .map(lambda x: sum(1 for a in x.get_chains()))
+        print(chainCounts.sum())
 
         self.assertTrue(chainCounts.sum() == 10)
 
