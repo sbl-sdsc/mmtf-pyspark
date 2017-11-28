@@ -13,13 +13,13 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.webservices'
                         ]
 
-mmtfPyspark_dependencies =  ['pyspark',
-                             'Biopython',
-                             'msgpack-python',
-                             'numpy',
-                             'mmtf-python',
-                             'sympy',
-                             'requests'
+mmtfPyspark_dependencies = ['pyspark',
+                            'Biopython',
+                            'msgpack-python',
+                            'numpy',
+                            'mmtf-python',
+                            'sympy',
+                            'requests'
                             ]
 
 setup(name='mmtfPyspark',
