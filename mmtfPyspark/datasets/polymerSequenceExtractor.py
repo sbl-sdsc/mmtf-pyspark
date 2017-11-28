@@ -13,7 +13,7 @@ Authorship information:
 '''
 
 from mmtfPyspark.ml import pythonRDDToDataset
-from mmtfPyspark.mappers import strctureToPolymerSquences
+from mmtfPyspark.mappers import structureToPolymerSequences
 from pyspark.sql import Row
 
 
@@ -29,7 +29,7 @@ def getDataset(structures):
         dataset with interacting residue and atom information
     '''
 
-    rows = structures.flatMap(structureToPolymerSquences()) \
+    rows = structures.flatMap(structureToPolymerSequences()) \
                      .map(lambda x: Row(x[0],x[1]))
 
     colNames = ["structureChainId", "sequence"]

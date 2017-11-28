@@ -1,5 +1,6 @@
 
 from .structureToPolymerChains import structureToPolymerChains
+from .structureToPolymerSequences import structureToPolymerSequences
 from .structureToBioassembly import structureToBioassembly
 from .structureToSecondaryStructureSegments import structureToSecondaryStructureSegments
 from .structureToSecondaryStructureElements import structureToSecondaryStructureElements
