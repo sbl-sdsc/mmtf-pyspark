@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+import unittest
+from pyspark import SparkConf, SparkContext
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.datasets import customReportService
+from mmtfPyspark.mappers import structureToPolymerChains
+
+
+class customReportQueryTest(unittest.TestCase):
+
+    def setUp(self):
+        conf = SparkConf().setMaster("local[*]").setAppName('customReportQueryTest')
+        self.sc = SparkContext(conf=conf)
+
+
+    def test1(self):
+
+        ds = customReportService.getDataset(["pmc","pubmedId","depositionDate"])
+        self.assertTrue(str(ds.schema) == "StructType(List(StructField(structureId,StringType,true),StructField(pmc,StringType,true),StructField(pubmedId,IntegerType,true),StructField(depositionDate,TimestampType,true)))")
+        self.assertTrue(ds.count() > 130101)
+
+
+    def test2(self):
+
+        ds = customReportService.getDataset(["ecNo"])
+        self.assertTrue(str(ds.schema) == "StructType(List(StructField(structureChainId,StringType,true),StructField(structureId,StringType,true),StructField(chainId,StringType,true),StructField(ecNo,StringType,true)))")
+        self.assertTrue(ds.count() > 130101)
+
+
+    def tearDown(self):
+        self.sc.stop()
+
+
+if __name__ == '__main__':
+    unittest.main()
