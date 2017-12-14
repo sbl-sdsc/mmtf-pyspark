@@ -8,7 +8,7 @@ specified range
 Authorship information:
     __author__ = "Peter Rose"
     __maintainer__ = "Mars Huang"
-    __email__ = "marshuang80@gmai.com:
+    __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
 

@@ -9,7 +9,7 @@ authorship information:
     __author__ = "mars huang"
     __maintainer__ = "mars huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "done"
+    __status__ = "Done"
 '''
 
 from dateutil.parser import parse

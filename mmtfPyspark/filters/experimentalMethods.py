@@ -11,7 +11,7 @@ The current list of support experimental method types can be found here:
 Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
-    __email__ = "marshuang80@gmai.com:
+    __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
 
