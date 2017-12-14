@@ -2,13 +2,11 @@
 '''
 secondaryStructureElementExtractor.py:
 
-# TODO comment
-
 Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "Debug"
+    __status__ = "Done"
 '''
 
 from mmtfPyspark.ml import pythonRDDToDataset

@@ -30,6 +30,7 @@ def getDataset(structure):
     # convert to dataset
     colNames = ["structureChainId", "sequence", "alpha", "beta",
                 "coil", "dsspQ8Code", "dsspQ3Code"]
+    
     return pythonRDDToDataset.getDataset(rows, colNames)
 
 

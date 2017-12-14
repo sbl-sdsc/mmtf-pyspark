@@ -74,9 +74,6 @@ def getUniprotDataset(dataType):
             if ">" in line:
                 line = line.replace(",", ";")
 
-
-                #print(f"{db},{uniqueIdentifier},{entryName},{proteinName},{organismName},{geneName},{proteinExistence},{sequenceVersion}, {sequence}\n")
-
                 if not firstLine:
                     t.writelines(f"{db},{uniqueIdentifier},{entryName},{proteinName},{organismName},{geneName},{proteinExistence},{sequenceVersion}, {sequence}\n".replace(' ',''))
 

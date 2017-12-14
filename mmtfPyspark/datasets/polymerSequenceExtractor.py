@@ -33,4 +33,5 @@ def getDataset(structures):
                      .map(lambda x: Row(x[0],x[1]))
 
     colNames = ["structureChainId", "sequence"]
+    
     return pythonRDDToDataset.getDataset(rows, colNames)

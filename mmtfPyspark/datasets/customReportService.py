@@ -119,5 +119,5 @@ def readCsv(spark, inputFileName):
                    .option("inferSchema", "true") \
                    .load(inputFileName) \
                    .cache()
-    #dataset.head(10)
+
     return dataset

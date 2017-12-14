@@ -23,16 +23,8 @@ def getDataset(sqlQuery):
     encodedSQL = urllib.parse.quote(sqlQuery)
     tmp = tempfile.NamedTemporaryFile(delete=False)
 
-    # URL retrive won't work on certain IP address
     URL= "https://pdbj.org/rest/mine2_sql"
     urlretrieve(URL + "?format=csv&q=" + encodedSQL, tmp.name)
-
-    '''
-    url = self.URL + "?format=csv&q=" + encodedSQL
-    #print(requests.get(url).content)
-    with open(tmp.name, 'w') as t:
-        t.write(str(requests.get(url).content)[2:-1])
-    '''
 
     spark = SparkSession.builder.getOrCreate()
 
