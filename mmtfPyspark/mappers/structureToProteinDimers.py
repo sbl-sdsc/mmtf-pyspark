@@ -7,7 +7,7 @@ Maps a structure to its protein dimers
 Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
-    __email__ = "marshuang80@gmai.com:
+    __email__ = "marshuang80@gmail.com:
     __status__ = "debug"
 '''
 
@@ -22,6 +22,7 @@ import math
 
 class structureToProteinDimers(object):
     '''
+    Maps a protein structure to it's protein dimers
     '''
 
     def __init__(self, cutoffDistance = 8.0, contacts = 20, useAllAtoms = False, exclusive = False):
@@ -33,8 +34,6 @@ class structureToProteinDimers(object):
 
     def __call__(self, t):
         structure = t[1]
-        #print(structure.group_type_list)
-
 
         # split structure into a list of chains
         chains = self._splitToChains(structure)
@@ -60,9 +59,9 @@ class structureToProteinDimers(object):
 
                         newVec = chainVectors[i] - chainVectors[j]
                         if not self._checkList(newVec, self.exclusiveHashSet):
-                            print(newVec)
+
                             resList.append(self._combineChains(chains[i], chains[j]))
-                            print("*")
+
                             self.exclusiveHashSet = np.append(self.exclusiveHashSet, [newVec], axis = 0)
 
                         '''
@@ -100,9 +99,11 @@ class structureToProteinDimers(object):
 
 
     def _angle(self, a, b):
+
       arccosInput = np.dot(a,b)/np.linagl.norm(a)/np.linagl.norm(b)
       arccosInput = 1.0 if arccosInput > 1.0 else arccosInput
       arccosInput = -1.0 if arccosInput < -1.0 else arccosInput
+
       return math.acos(arccosInput)
 
 
@@ -150,10 +151,6 @@ class structureToProteinDimers(object):
 
         pointsInBox2 = box1.getIntersection(box2)
         pointsInBox1 = box2.getIntersection(box1)
-        #pointsInBox2 = [a.intersection(b) for a,b in zip(itertools.product(box1, box2))]
-        #pointsInBox1 = [a.intersection(b) for a,b in zip(itertools.product(box2, box1))]
-
-        #print(pointsInBox2)
 
         hs1, hs2 = set(), set()
 
