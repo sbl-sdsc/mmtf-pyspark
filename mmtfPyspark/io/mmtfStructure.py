@@ -130,7 +130,7 @@ class mmtfStructure(object):
 
         if b"bFactorList" in input_data:
             int_array = np.frombuffer(input_data[b'bFactorList'][12:],'>i2')
-            decode_num = np.frombuffer(input_data[b'bFractorList'][8:12],'>i')
+            decode_num = np.frombuffer(input_data[b'bFactorList'][8:12],'>i')
             self.b_factor_list = self.recursive_index_decode(int_array, decode_num)
         else:
             self.b_factor_list = []
