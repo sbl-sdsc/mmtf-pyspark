@@ -6,7 +6,7 @@ Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "debug"
+    __status__ = "Done"
 '''
 
 import numpy as np
@@ -36,7 +36,7 @@ class mmtfStructure(object):
         return x
 
 
-    def recursive_index_decode(self, int_array, max=32767, min=-32768):
+    def recursive_index_decode(self, int_array, decode_num = 1000):
         """
         Unpack an array of integers using recursive indexing.
         :param int_array: the input array of integers
@@ -45,8 +45,10 @@ class mmtfStructure(object):
         :return the array of integers after recursive index decoding
         """
 
-        out_arr = np.cumsum(int_array)/1000 # TODO check
-        return out_arr[(int_array != max) & (int_array != min)]
+        maximum = 32767
+        minimum = -32768
+        out_arr = np.cumsum(int_array)/decode_num
+        return out_arr[(int_array != maximum) & (int_array != minimum)]
 
 
     def decode_entity_list(self, input_data):
@@ -127,7 +129,9 @@ class mmtfStructure(object):
         """
 
         if b"bFactorList" in input_data:
-            self.b_factor_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
+            int_array = np.frombuffer(input_data[b'bFactorList'][12:],'>i2')
+            decode_num = np.frombuffer(input_data[b'bFractorList'][8:12],'>i')
+            self.b_factor_list = self.recursive_index_decode(int_array, decode_num)
         else:
             self.b_factor_list = []
         if b'resolution' in input_data:
@@ -216,7 +220,6 @@ class mmtfStructure(object):
         else:
             self.chain_name_list = []
         if b"experimentalMethods" in input_data:
-            #self.experimental_methods = [x.decode() for x in input_data[b"experimentalMethods"]]
             self.experimental_methods = input_data[b"experimentalMethods"]
         else:
             self.experimental_methods = None
@@ -230,13 +233,12 @@ class mmtfStructure(object):
         self.chains_per_model = input_data[b"chainsPerModel"]
         self.groups_per_chain = input_data[b"groupsPerChain"]
         self.group_id_list = np.cumsum(self.run_length_decoder_numpy(np.frombuffer(input_data[b'groupIdList'][12:],'>i4'))).astype(np.int32)
-        #self.group_id_list = self.run_length_decoder_numpy(np.frombuffer(input_data[b'groupIdList'][12:],'>i4')) # double check /1000
-        self.group_type_list = np.frombuffer(input_data[b'groupTypeList'][12:],'>i4') # double check /1000
+        self.group_type_list = np.frombuffer(input_data[b'groupTypeList'][12:],'>i4')
         self.chain_id_list = [chr(a) for a in input_data[b"chainIdList"][12:][::4]]
         self.group_list = self.decode_group_list(input_data[b'groupList'])
-        self.x_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'))
-        self.y_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'yCoordList'][12:],'>i2'))
-        self.z_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2'))
+        self.x_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'xCoordList'][12:],'>i2'),np.frombuffer(input_data[b'xCoordList'][8:12],'>i'))
+        self.y_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'yCoordList'][12:],'>i2'),np.frombuffer(input_data[b'yCoordList'][8:12],'>i'))
+        self.z_coord_list = self.recursive_index_decode(np.frombuffer(input_data[b'zCoordList'][12:],'>i2'),np.frombuffer(input_data[b'xCoordList'][8:12],'>i'))
         self.alt_loc_list = input_data[b'altLocList'][12:]
         self.alt_loc_set = False
 
