@@ -188,8 +188,6 @@ class structureToProteinDimers(object):
             for k in range(tmp.groups_per_chain[0]):
                 groupType = tmp.group_type_list[groupIndex]
 
-
-                #for m in tmp.group_list[groupType]["bondAtomList"]:
                 for m in range(len(tmp.group_list[groupType]["formalChargeList"])):
 
                     atomName = tmp.group_list[groupType]["atomNameList"][m]
@@ -207,8 +205,6 @@ class structureToProteinDimers(object):
                     atomIndex += 1
 
                 groupIndex += 1
-            #print(len(tmp.x_coord_list), atomIndex, groupIndex)
-            #print(len(chains), tmp.groups_per_chain[0])
 
             distanceBoxes.append(newbox)
 
