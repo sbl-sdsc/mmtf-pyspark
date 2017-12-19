@@ -1,0 +1,16 @@
+os:
+  - linux
+language: python
+python:
+  - "3.6"
+matrix:
+    include:
+        # Use generic language for osx
+        - os: osx
+          python: 3.6
+          language: generic
+# Command to install dependencies
+install:
+    - pip install -r requirements.txt
+# command to run tests
+script: nosetests
