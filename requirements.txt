@@ -5,3 +5,4 @@ numpy==1.13.3
 pyspark==2.1.1+hadoop2.7
 requests==2.18.4
 sympy==1.1.1
+git+http://github.com/sbl-sdsc/mmtf-pyspark/#egg=mmtf-pyspark
