@@ -7,7 +7,7 @@ Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "debug"
+    __status__ = "Done"
 '''
 
 from mmtf.api.mmtf_reader import MMTFDecoder
