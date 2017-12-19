@@ -18,7 +18,7 @@ import getopt
 def main(argv):
     # Create variables
     APP_NAME = "MMTF_Spark"
-    path = "/home/marshuang80/PDB/reduced"
+    path = "<Path to your MMTF Files?"
 
     #Configure Spark
     conf = SparkConf().setAppName(APP_NAME)
@@ -54,4 +54,3 @@ if __name__ == "__main__":
 
     #Execute Main functionality
     main(sys.argv[1:])
-
