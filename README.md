@@ -1,31 +1,36 @@
 # Mmtf-pyspark
 Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark.
 
+This project is still currently under developement. 
+
+
+# Installation
+1. Clone this repository to a local directory
+
+2. Install mmtf-pyspark with pip:
+
+```
+pip install mmtf-pyspark/
+```
+
+# Examples
+
+Demos can be found in mmtf-pysark/demos
+
+# Hadoop Sequence Files
+
+The Hadoop sequence files can be downloaded with:
+```
+curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
+tar -xvf full.tar
+```
+
 # Requirements
 
 ## anaconda
 We strongly recommend that you have [anaconda](https://docs.continuum.io/anaconda/install/) and the lastest version of python installed
 
-
-## biopython
-Please install [biopython](http://biopython.org/wiki/Download)
-
-## mmtf-python
-
-The most up-to-date mmtf-python is not on pip or Anaconda, please clone it from the following [github link](https://github.com/rcsb/mmtf-python)
-
-
-## pyspark
-
-The following links are tutorials to install pyspark on differnt OS systems
-
-## msgpack
-
-Install msgpack using the following command:
-
-```
-pip install msgpack-python
-```
+## Pyspark
 
 ### Mac
 
@@ -48,6 +53,26 @@ brew install apache-spark
 ```
 conda install py4j
 ```
+
+4. Add pyspark path in your bash_profile
+
+Open bash_profile with your favorite editor, eg:
+
+```
+cd ~
+vim ~/.bash_profile
+
+``` 
+
+Add the following lines in your bash_profile:
+
+```
+export SPARK_HOME=~/spark-2.2.0-bin-hadoop2.7  <Path to your spark>
+export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
+export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/build:$PYTHONPATH
+```
+
+
 [Manual download](https://medium.com/@GalarnykMichael/install-spark-on-mac-pyspark-453f395f240b)
 
 ### Windows
@@ -127,28 +152,3 @@ pyspark --master local[2]
 Depending on your OS, Java Development Kit might need to be installed
 
 
-# Usage
-
-You can either create a scipt/jupyter-notebook in the *mmtf-pyspark/mmtfPyspark* and follow the examples from *mmtf-pyspark/mmtfPyspark/DataAnalysisWithDataFrameExample*.
-
-Or you can import mmtf-pyspark to your code from another directory with the following lines:
-
-```python
-import sys
-sys.path.append("<path to your mmtf-pyspark folder")
-sys.path.append("<path to your mmtf-python folder")
-import mmtfPyspark
-from mmtfPyspark.mmtfPyspark import filters
-```
-
-# Examples
-
-Filters usage examples can be found in *mmtf-pyspark/mmtfPyspark/src/demos/filters*
-
-# Hadoop Sequence Files
-
-The Hadoop sequence files can be downloaded with:
-```
-curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
-tar -xvf full.tar
-```
