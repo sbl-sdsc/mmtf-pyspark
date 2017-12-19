@@ -1,7 +1,7 @@
 # Mmtf-pyspark
 Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark.
 
-This project is still currently under developement. 
+This project is still currently under development.
 
 
 # Installation
@@ -34,24 +34,28 @@ We strongly recommend that you have [anaconda](https://docs.continuum.io/anacond
 
 ### Mac
 
-Using Homebrew(recommended):
+1. Download Spark from Apache website [link](http://spark.apache.org/downloads.html)
 
-1. Install Homebrew, go to terminal and run
+2. Go to the downloaded file's directory and unzip the file
 
+For example, if your file is in **Downloads**
 ```
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-
-2. Install apache-spark, run
-
-```
-brew install apache-spark
+cd Downloads/
+tar -zxvf spark-2.6.0-bin-hadoop2.6.tgz
 ```
 
 3. Install py4j, run
 
+If Anaconda is installed :
+
 ```
 conda install py4j
+```
+
+Else, use pip install:
+
+```
+pip install py4j
 ```
 
 4. Add pyspark path in your bash_profile
@@ -62,7 +66,7 @@ Open bash_profile with your favorite editor, eg:
 cd ~
 vim ~/.bash_profile
 
-``` 
+```
 
 Add the following lines in your bash_profile:
 
@@ -72,8 +76,21 @@ export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
 export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/build:$PYTHONPATH
 ```
 
+5. Source your bash_profile
 
-[Manual download](https://medium.com/@GalarnykMichael/install-spark-on-mac-pyspark-453f395f240b)
+Either reopen your terminal, or run the follwing command:
+
+```
+source ~/.bash_profile
+```
+
+6. Check installation by importing pyspark
+
+open **python** or **ipython**, and try:
+
+```
+import pyspark
+```
 
 ### Windows
 
@@ -151,4 +168,10 @@ pyspark --master local[2]
 
 Depending on your OS, Java Development Kit might need to be installed
 
+# Test mmtf-pyspark
 
+Test your installation by running mmtf-pyspark/test.py and count the number of protein entries in the PDB:
+
+```
+python mmtf-pyspark/test.py -p <Path to your MMTF files>
+```
