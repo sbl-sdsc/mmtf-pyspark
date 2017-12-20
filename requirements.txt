@@ -6,4 +6,5 @@ sympy==1.1.1
 nose
 pyspark
 python-dateutil
+
 git+http://github.com/sbl-sdsc/mmtf-pyspark/#egg=mmtf-pyspark
