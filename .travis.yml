@@ -7,4 +7,6 @@ python:
 install:
     - pip install -r requirements.txt
 # command to run tests
-script: nosetests
+script: nosetests --exclude-dir=./mmtfPyspark/webfilters \
+                  --exclude-dir=./mmtfPyspark/mappers \
+                  --exclude-dir=./mmtfPyspark/datasets
