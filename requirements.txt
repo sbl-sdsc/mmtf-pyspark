@@ -7,4 +7,4 @@ nose
 pyspark
 python-dateutil
 
-git+http://github.com/sbl-sdsc/mmtf-pyspark/#egg=mmtf-pyspark
+[-e] git+http://github.com/sbl-sdsc/mmtf-pyspark/#egg=mmtf-pyspark
