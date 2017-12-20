@@ -8,3 +8,4 @@ sympy==1.1.1
 nose
 pyspark
 python-dateutil
+ipyleaflet
