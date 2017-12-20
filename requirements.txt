@@ -4,4 +4,5 @@ numpy==1.13.3
 requests==2.18.4
 sympy==1.1.1
 nose
+pyspark
 python-dateutil
