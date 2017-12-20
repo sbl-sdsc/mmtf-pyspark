@@ -1,7 +1,7 @@
 biopython==1.70
 mmtf-python==1.0.9
 numpy==1.13.3
-pyspark==2.1.1+hadoop2.7  
 requests==2.18.4
 sympy==1.1.1
+nose
 git+http://github.com/sbl-sdsc/mmtf-pyspark/#egg=mmtf-pyspark
