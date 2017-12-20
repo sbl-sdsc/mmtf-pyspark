@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SPARK_VERSION='2.2.1'
-HADOOP_VERSION='2.4'
+HADOOP_VERSION='2.7'
 
 curl http://mirror.cogentco.com/pub/apache/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz --output /tmp/spark.tgz
 
