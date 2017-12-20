@@ -20,7 +20,6 @@ mmtfPyspark_dependencies = ['pyspark',
                             'mmtf-python',
                             'sympy',
                             'requests'
-                            'python-dateutil'
                             ]
 
 setup(name='mmtfPyspark',
