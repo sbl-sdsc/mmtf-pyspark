@@ -1,0 +1,15 @@
+SPARK_VERSION='2.2.1'
+HADOOP_VERSION='2.4'
+
+curl http://mirror.cogentco.com/pub/apache/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz --output /tmp/spark.tgz
+
+cd /tmp && tar -xvzf /tmp/spark.tgz
+
+SPARK_HOME=/tmp/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION                           
+export PATH=$SPARK_HOME/bin:$PATH               
+export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
+                                                
+export PYSPARK_DRIVER_PYTHON="jupyter"          
+export PYSPARK_DRIVER_PYTHON_OPTS="notebook"    
+                                                
+
