@@ -18,7 +18,7 @@ import getopt
 def main(argv):
     # Create variables
     APP_NAME = "MMTF_Spark"
-    path = "<Path to your MMTF Files?"
+    path = "resources/sample_rdd"
 
     #Configure Spark
     conf = SparkConf().setAppName(APP_NAME)
@@ -42,7 +42,7 @@ def main(argv):
     #pdb = downloadMmtfFiles(pdbIds,sc)
 
     pdb = readSequenceFile(path,sc)
-    print(f"Total number of protein entries in PDB : {pdb.count()}")
+    print(f"Total number of protein entries in directory : {pdb.count()}")
 
     #pdb = readSequenceFile(path,sc,fraction = 0.1, seed = 7)
 
