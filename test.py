@@ -16,6 +16,7 @@ import getopt
 
 
 def main(argv):
+
     # Create variables
     APP_NAME = "MMTF_Spark"
     path = "resources/sample_rdd"

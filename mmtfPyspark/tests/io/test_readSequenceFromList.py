@@ -18,8 +18,9 @@ from mmtfPyspark.io.MmtfReader import readSequenceFile
 class testReadSequenceFile(unittest.TestCase):
 
     def setUp(self):
-        path = '/home/marshuang80/PDB/full'
-        stringIds = "1AQ1,1B38,1B39,1BUH,1C25,1CKP,1DI8,1DM2,1E1V,1E1X,1E9H,1F5Q,1FIN,1FPZ,1FQ1,1FQV,1FS1"
+        path = 'resources/sample_rdd'
+        stringIds = "1FDK,1FDL,1FDM,1FDN,1FDO,1FDP,1FDQ,1FDR,1FDS,1FDT"
+
         self.pdbIds = stringIds.split(',')
         conf = SparkConf().setMaster("local[*]").setAppName('readSequenceFile')
         self.sc = SparkContext(conf=conf)
