@@ -4,7 +4,8 @@ Methods for parallel and distributed analysis and mining of the Protein Data Ban
 This project is still currently under development.
 
 # Demos
-To try out our jupyter notebook demos without installation, please click on the binder icon and navigate to the /demos folder. [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master)
+To try out our jupyter notebook demos without installation, please click on the binder icon and navigate to the /demos folder. (It might take some time for binder to build the environment)
+ [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master)
 
 # Installation
 1. Clone this repository to a local directory
