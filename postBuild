@@ -1,14 +1,6 @@
 #!/bin/bash
-#wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=acc-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/9.0.1+11/jdk-9.0.1_linux-x64_bin.tar.gz"
-#tar -xzvf jdk-9.0.1_linux-x64_bin.tar.gz
-
-#export JAVA_HOME=./jdk-9.0.1/
-#export PATH=$JAVA_HOME/bin:$PATH
-
-
 SPARK_VERSION='2.2.1'
 HADOOP_VERSION='2.7'
-
 
 curl http://mirror.cogentco.com/pub/apache/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz --output /tmp/spark.tgz
 
