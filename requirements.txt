@@ -1,7 +1,5 @@
 -e ./
 
-python_version == 3.6.0
-
 biopython==1.70
 mmtf-python==1.0.9
 numpy==1.13.3
