@@ -8,8 +8,6 @@ This project is still currently under development.
 # Demos
 To try out our jupyter notebook demos without installing PySpark, please click on the binder icon and navigate to the /demos folder (An example data analysis notebook, "DataAnalysisWithDataFrameExample", can be found in the main directory).
 
-*myBinder is still using python 3.5, might face some errors with Strings. Problems will be fixed as soon as the new patch is released*
-
 It can a few minutes for Binder to setup the environment.
 
  [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master)
