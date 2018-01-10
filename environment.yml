@@ -1,0 +1,4 @@
+name: myBinder-environment
+
+dependencies:
+  - python=3.6
