@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/sbl-sdsc/mmtf-pyspark.svg?branch=master)](https://travis-ci.org/sbl-sdsc/mmtf-pyspark)
 [![Version](http://img.shields.io/badge/version-0.1-blue.svg?style=flat)](https://github.com/sbl-sdsc/mmtf-pyspark)
+[![License](http://img.shields.io/badge/license-Apache 2.0-red.svg?style=flat)](https://github.com/sbl-sdsc/mmtf-pyspark/blob/master/LICENSE)
 
 # Mmtf-pyspark
 Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark.
