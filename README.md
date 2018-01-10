@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/sbl-sdsc/mmtf-pyspark.svg?branch=master)](https://travis-ci.org/sbl-sdsc/mmtf-pyspark)
 [![Version](http://img.shields.io/badge/version-0.1-blue.svg?style=flat)](https://github.com/sbl-sdsc/mmtf-pyspark)
-[![License](http://img.shields.io/badge/license-Apache 2.0-red.svg?style=flat)](https://github.com/sbl-sdsc/mmtf-pyspark/blob/master/LICENSE)
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master)
+
 
 # Mmtf-pyspark
 Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark.
@@ -8,11 +9,9 @@ Methods for parallel and distributed analysis and mining of the Protein Data Ban
 This project is still currently under development.
 
 # Demos
-To try out our jupyter notebook demos without any installation, please click on the binder icon and navigate to the /demos folder (An example data analysis notebook, "DataAnalysisWithDataFrameExample", can be found in the main directory).
+To try out our jupyter notebook demos without any installation, please click on the red binder icon on top and navigate to the /demos folder (An example data analysis notebook, "DataAnalysisWithDataFrameExample", can be found in the main directory).
 
 It can a few minutes for Binder to setup the environment.
-
- [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master)
 
 # Installation
 1. Clone this repository to a local directory
