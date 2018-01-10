@@ -9,12 +9,12 @@ Methods for parallel and distributed analysis and mining of the Protein Data Ban
 
 This project is still currently under development.
 
-# Demos
+## Demos
 To try out our jupyter notebook demos without any installation, please click on the red binder icon on top and navigate to the /demos folder (An example data analysis notebook, "DataAnalysisWithDataFrameExample", can be found in the main directory).
 
 It can a few minutes for Binder to setup the environment.
 
-# Installation
+## Installation
 1. Clone this repository to a local directory
 
 2. Install mmtf-pyspark with pip:
@@ -23,11 +23,7 @@ It can a few minutes for Binder to setup the environment.
 pip install mmtf-pyspark/
 ```
 
-# Examples
-
-Demos can be found in mmtf-pysark/demos
-
-# Hadoop Sequence Files
+## Hadoop Sequence Files
 
 The Hadoop sequence files can be downloaded with:
 ```
@@ -35,14 +31,14 @@ curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
 tar -xvf full.tar
 ```
 
-# Requirements
+## Requirements
 
-## anaconda
+### anaconda
 We strongly recommend that you have [anaconda](https://docs.continuum.io/anaconda/install/) and the lastest version of python installed
 
-## Pyspark
+### Pyspark
 
-### Mac
+#### Mac
 
 1. Download Spark from Apache website [link](http://spark.apache.org/downloads.html)
 
@@ -102,7 +98,7 @@ open **python** or **ipython**, and try:
 import pyspark
 ```
 
-### Windows
+#### Windows
 
 0.  If you already have GOW installed, skip to step 2.
 
@@ -172,16 +168,8 @@ curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master
 pyspark --master local[2]
 ```
 
-### Linux [link](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
+#### Linux [link](https://medium.com/@GalarnykMichael/install-spark-on-ubuntu-pyspark-231c45677de0)
 
-## JDK
+### JDK
 
 Depending on your OS, Java Development Kit might need to be installed
-
-# Test mmtf-pyspark
-
-Test your installation by running mmtf-pyspark/test.py and count the number of protein entries in the PDB:
-
-```
-python mmtf-pyspark/test.py -p <Path to your MMTF files>
-```
