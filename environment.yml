@@ -9,7 +9,8 @@ dependencies:
   - sympy=1.1.1
   - nose
   - pyspark
-  - py3Dmol
   - py4j
   - python-dateutil
   - ipyleaflet
+  - pip:
+      - py3Dmol
