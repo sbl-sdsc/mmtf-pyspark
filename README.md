@@ -12,7 +12,7 @@ This project is still currently under development.
 ## Demos
 To try out our jupyter notebook demos without any installation, please click on the red binder icon on top and navigate to the /demos folder (An example data analysis notebook, "DataAnalysisWithDataFrameExample", can be found in the main directory).
 
-It can a few minutes for Binder to setup the environment.
+It can take a few minutes for Binder to setup the environment.
 
 ## Installation
 1. Clone this repository to a local directory
