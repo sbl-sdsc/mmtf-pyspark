@@ -53,13 +53,14 @@ def call_mmtf(f):
 
         data = gzip.open(f,'rb')
         unpack = msgpack.unpack(data)
-        return (name, unpack)
-        #decoder = mmtfStructure(unpack)
-        #return (name, decoder)
+        decoder = mmtfStructure(unpack)
+        return (name, decoder)
 
     elif ".mmtf" in f:
         name = f.split('/')[-1].split('.')[0].upper()
-        decoder = default_api.parse(f)
+
+        unpack = msgpack.unpack(open(f,"rb"))
+        decoder = mmtfStructure(unpack)
         return (name, decoder)
 
 
@@ -81,9 +82,6 @@ def call_pdb(f):
                      output_data=mmtf_encoder)
         return (name, mmtf_encoder)
 
-    else:
-        raise Exception("File format error")
-
 
 def call_mmcif(f):
     '''
@@ -102,9 +100,6 @@ def call_mmcif(f):
                      output_data=mmtf_encoder)
         return (name, mmtf_encoder)
 
-    else:
-        raise Exception("File format error")
-
 
 def call_fast_mmcif(f):
     '''
@@ -122,9 +117,6 @@ def call_fast_mmcif(f):
         pass_data_on(input_data=structure, input_function=biopythonInputFunction,
                      output_data=mmtf_encoder)
         return (name, mmtf_encoder)
-
-    else:
-        raise Exception("File format error")
 
 
 def getFiles(user_path):
