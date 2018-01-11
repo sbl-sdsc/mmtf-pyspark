@@ -93,4 +93,4 @@ mmtfPyspark/src/main/metastore_db
 .
 
 # test file
-mmtfPyspark/test.py
+./test.py
