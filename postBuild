@@ -11,5 +11,3 @@ export PATH=$SPARK_HOME/bin:$PATH
 export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
 
 export PYSPARK_SUBMIT_ARGS="--master local[*] pyspark-shell"
-
-pip install mmtf-pyspark/
