@@ -1,8 +1,6 @@
 from pyspark import SparkConf, SparkContext
 import sys
-sys.path.append("../../../mmtf-pyspark")
 from mmtfPyspark.io.MmtfReader import downloadMmtfFiles, readSequenceFile
-#MmtfReader import downloadMmtfFiles, readSequenceFile
 from mmtfPyspark.filters import rFree
 from mmtfPyspark.filters import notFilter
 from mmtfPyspark.filters import resolution
@@ -14,9 +12,7 @@ import sys
 
 # Create variables
 APP_NAME = "MMTF_Spark"
-path = "~/PDB/reduced"
-# text = "org.apache.hadoop.io.Text"
-# byteWritable = "org.apache.hadoop.io.BytesWritable"
+
 def main(argv):
 
     #Configure Spark
@@ -27,7 +23,6 @@ def main(argv):
     sc = SparkContext(conf=conf)
 
     #Get command line input
-    path = "../../../test"
     try :
         opts,args = getopt.getopt(argv,"p:",["--path="])
     except getopt.GetoptError:
@@ -252,8 +247,6 @@ def main(argv):
         printChainEntityGroupAtomInfo(structure)
         printBioAssemblyData(structure)
 
-    #pdb = pdb.flatMap(lambda t: t[1].set_alt_loc_list())
-    #print(pdb[1])
     pdb.foreach(lambda t: TraverseStructureHierarchy(t[1]))
 
 
