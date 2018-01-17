@@ -27,7 +27,10 @@ def writeSequenceFile(path, sc, structure, compressed = True):
         compress (bool): if true, apply gzip compression
     '''
 
-    structure.map(lambda t: (t[0], toByteArray(t[1], compressed))).saveAsHadoopFile(path,
+    structure.map(lambda s: (s[0],s[1].set_alt_loc_list()) \
+                             if not s[1].alt_loc_set \
+                             else s) \
+             .map(lambda t: (t[0], toByteArray(t[1], compressed))).saveAsHadoopFile(path,
                                "org.apache.hadoop.mapred.SequenceFileOutputFormat",
                                "org.apache.hadoop.io.Text",
                                "org.apache.hadoop.io.BytesWritable")
