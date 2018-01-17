@@ -30,5 +30,5 @@ def getDataset(structure, label, length=None):
 
         rows = secondaryStructureExtractor.getPythonRdd(structure) \
                .flatMap(structureToSecondaryStructureElements(label, length))
-        print(rows.collect())
+
         return pythonRDDToDataset.getDataset(rows, colNames)
