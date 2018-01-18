@@ -185,7 +185,7 @@ class proteinSequenceEncoder(object):
         session.udf.register("encoder", _encoder, VectorUDT())
 
         self.data.createOrReplaceTempView("table")
-        sql = f"SELECT *, encoder({self.inputCol}) AS {self.outputCol} from table)"
+        sql = f"SELECT *, encoder({self.inputCol}) AS {self.outputCol} from table"
 
         data = session.sql(sql)
 
