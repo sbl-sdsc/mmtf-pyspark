@@ -40,7 +40,7 @@ def main():
     # Read MMTF Hadoop sequence file and create a non-redundant set
     # (<=20% seq. identity) of L-protein chains
 
-    path = "/home/marshuang80/PDB/reduced"
+    path = "../../resources/mmtf_reduced_sample"
 
     sequenceIdentity = 20
     resolution = 2.0
@@ -64,7 +64,7 @@ def main():
     data = encoder.shifted3GramWord2VecEncode(windowSize, vectorSize).cache()
 
     data.printSchema()
-    data.show(25, False)
+    data.show(10, False)
 
     end = time.time()
 
