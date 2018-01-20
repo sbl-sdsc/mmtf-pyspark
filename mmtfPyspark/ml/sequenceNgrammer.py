@@ -96,9 +96,10 @@ def shiftedNgram(data, n, shift, outputCol):
 
         while j < t:
             ngram.append(s[i: i + n])
+            j += 1
             i += n
 
-        return ngam
+        return ngram
 
     session.udf.register("ngrammer", _ngrammer, types.ArrayType(types.StringType()))
 

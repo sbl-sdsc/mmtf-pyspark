@@ -275,10 +275,11 @@ class proteinSequenceEncoder(object):
         # Create n-grams out of the sequence
         # e.g., 2-gram [IDCGH, ...] => [ID. DC, CG, GH,...]
         # TODO set input column
+        #data = sequenceNgrammer.ngram(self.data, 2, "ngram")
+
         data = sequenceNgrammer.shiftedNgram(self.data, 3, 0, "ngram0")
         data = sequenceNgrammer.shiftedNgram(data, 3, 1, "ngram1")
         data = sequenceNgrammer.shiftedNgram(data, 3, 2, "ngram2")
-
         if not (windowSize == None and vectorSize == None):
 
             ngram0 = data.select("ngram0").withColumnRenamed("ngram0","ngram")
@@ -287,14 +288,17 @@ class proteinSequenceEncoder(object):
 
             ngrams = ngram0.union(ngram1).union(ngram2)
 
+
             # Convert n-grams to W2V feature vector
             # [I D, D C, C G, G H, ... ] => [0.1234, 0.2394, .. ]
             word2Vec = Word2Vec()
+
             word2Vec.setInputCol("ngram") \
+                    .setOutputCol("feature") \
                     .setMinCount(10) \
                     .setNumPartitions(8) \
                     .setWindowSize(windowSize) \
-                    .setVectorSize(vectorSize) \
+                    .setVectorSize(vectorSize)
 
             self.model = word2Vec.fit(ngrams)
 
@@ -314,19 +318,22 @@ class proteinSequenceEncoder(object):
                             for function parameters")
             return
 
-        self.model.setInputCol("ngram0")
-        self.model.setOutputCol("features0")
-        data = self.model.transform(data)
 
-        self.model.setInputCol("ngram1")
-        self.model.setOutputCol("features1")
-        data = self.model.transform(data)
+        #data = data.withColumn("feature0",self.model.transform(data.select('ngram0').withColumnRenamed("ngram0","ngram")))
+        for i in reversed(range(3)):
+            feature = self.model.transform(data.select('ngram' + str(i)).withColumnRenamed("ngram" + str(i),"ngram"))
+            data = data.join(feature.withColumnRenamed("ngram","ngram" + str(i)), "ngram" + str(i))
+            data = data.withColumnRenamed("feature", "feature" + str(i))
 
-        self.model.setInputCol("ngram2")
-        self.model.setOutputCol("features2")
-        data = self.model.transform(data)
 
         data = self.averageFeatureVectors(data, self.outputCol)
+        data.printSchema()
+
+        cols = ['structureChainId','sequence','labelQ8','labelQ3','ngram0','ngram1',\
+                'ngram2','feature0','feature1','feature2', 'features']
+
+        data = data.select(cols)
+
 
         return data
 
@@ -360,13 +367,13 @@ class proteinSequenceEncoder(object):
             for i in range(length):
                 average.append((f1[i] + f2[i] + f3[i])/3.0)
 
-            return Vectors.dense(values)
+            return Vectors.dense(average)
 
         session.udf.register("averager", _averager, VectorUDT())
 
-        self.data.createOrReplaceTempView("table")
+        data.createOrReplaceTempView("table")
 
-        sql = f"SELECT *, averager(feature0, feature1, feature2) AS {self.outputCol} from table)"
+        sql = f"SELECT *, averager(feature0, feature1, feature2) AS {self.outputCol} from table"
 
         data = session.sql(sql)
 
