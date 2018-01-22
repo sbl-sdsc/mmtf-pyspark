@@ -7,14 +7,13 @@ Authorship information:
     __author__ = "Mars Huang"
     __maintainer__ = "Mars Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "Debug"
+    __status__ = "Done"
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
 from pyspark.sql.functions import col, when
 from mmtfPyspark.ml import proteinSequenceEncoder
 from mmtfPyspark.mappers import structureToPolymerChains
-from mmtfPyspark.webfilters import blastCluster
 from mmtfPyspark.filters import containsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureExtractor
 from mmtfPyspark.webfilters import pisces
@@ -42,12 +41,13 @@ def main():
     # Read MMTF Hadoop sequence file and create a non-redundant set (<=40% seq. identity)
     # of L-protein chains
     sequenceIdentity = 40
+    resolution = 2.0
 
     pdb = MmtfReader \
             .readSequenceFile(path, sc) \
-            .filter(blastCluster(sequenceIdentity)) \
+            .filter(pisces(sequenceIdentity, resolution)) \
             .flatMap(structureToPolymerChains()) \
-            .filter(blastCluster(sequenceIdentity)) \
+            .filter(pisces(sequenceIdentity, resolution)) \
             .filter(containsLProteinChain()) \
 
     # Get secondary structure content
