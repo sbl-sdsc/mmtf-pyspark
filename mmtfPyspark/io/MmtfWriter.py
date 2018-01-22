@@ -12,6 +12,7 @@ Authorship information:
 '''
 
 from mmtf.api.mmtf_writer import MMTFEncoder
+from mmtfPyspark.io import mmtfStructure
 import gzip
 import msgpack
 import os
@@ -26,14 +27,15 @@ def writeSequenceFile(path, sc, structure, compressed = True):
         structure (tuple): structure data to be written
         compress (bool): if true, apply gzip compression
     '''
+    if structure.first()[1] == mmtfStructure:
+        structure.map(lambda s: (s[0],s[1].set_alt_loc_list()) \
+                                 if not s[1].alt_loc_set \
+                                 else s) \
 
-    structure.map(lambda s: (s[0],s[1].set_alt_loc_list()) \
-                             if not s[1].alt_loc_set \
-                             else s) \
-             .map(lambda t: (t[0], toByteArray(t[1], compressed))).saveAsHadoopFile(path,
-                               "org.apache.hadoop.mapred.SequenceFileOutputFormat",
-                               "org.apache.hadoop.io.Text",
-                               "org.apache.hadoop.io.BytesWritable")
+    structure.map(lambda t: (t[0], toByteArray(t[1], compressed))).saveAsHadoopFile(path,
+                       "org.apache.hadoop.mapred.SequenceFileOutputFormat",
+                       "org.apache.hadoop.io.Text",
+                       "org.apache.hadoop.io.BytesWritable")
 
 
 def writeMmtfFiles(path, sc, structure):
