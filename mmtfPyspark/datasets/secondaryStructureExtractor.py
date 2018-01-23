@@ -9,8 +9,8 @@ with the fraction of alpha, beta and coil within a chain.
 The input to this class must be a single protein chain.
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
@@ -30,7 +30,7 @@ def getDataset(structure):
     # convert to dataset
     colNames = ["structureChainId", "sequence", "alpha", "beta",
                 "coil", "dsspQ8Code", "dsspQ3Code"]
-    
+
     return pythonRDDToDataset.getDataset(rows, colNames)
 
 

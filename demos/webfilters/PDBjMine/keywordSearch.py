@@ -7,8 +7,8 @@ This filter searches the 'keyword' column in the brief_summary table for
 a keyword and returns a couple of columns for the matching entries
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''

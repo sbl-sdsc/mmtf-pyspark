@@ -4,8 +4,8 @@ readSequenceFromListTest.py: Example reading a list of PDB IDs from a local MMTF
 file into a tubleRDD.
 
 Authorship information:
-__author__ = "Mars Huang"
-__maintainer__ = "Mars Huang"
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
 __email__ = "marshuang80@gmail.com:
 __status__ = "Warning"
 '''

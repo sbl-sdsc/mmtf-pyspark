@@ -4,8 +4,8 @@ JpredDemo.py:
 
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
@@ -28,7 +28,7 @@ def main():
 
     # Write to Json file
     res = res.coalesce(1)
-    res.write.format("json").save("/home/marshuang80/backup/JpredData3")
+    res.write.format("json").save("./JpredData3")
 
 
     end = time.time()
@@ -39,5 +39,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
