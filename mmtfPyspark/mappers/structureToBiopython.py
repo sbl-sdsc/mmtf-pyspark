@@ -7,7 +7,7 @@ Maps a structure to BioPython Structure
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmai.com:
+    __email__ = "marshuang80@gmail.com:
     __status__ = "debug"
 '''
 from Bio.PDB.mmtf import DefaultParser
