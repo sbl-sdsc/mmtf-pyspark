@@ -8,10 +8,11 @@ dependencies:
   - requests=2.18.4
   - sympy=1.1.1
   - nose
+  - ipywidgets
   - pyspark
   - py4j
   - python-dateutil
   - ipyleaflet
   - pip:
       - py3Dmol
-      - git+https://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtf-pyspark[complete] 
+      - git+https://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtf-pyspark[complete]
