@@ -17,6 +17,7 @@ mmtfPyspark_dependencies = ['pyspark',
                             'Biopython',
                             'msgpack-python',
                             'numpy',
+                            'ipywidgets'
                             'mmtf-python',
                             'sympy',
                             'requests'
