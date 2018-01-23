@@ -19,7 +19,7 @@ from mmtfPyspark.datasets import PdbjMineService
 from mmtfPyspark.io import MmtfReader
 
 def main():
-    path = "/home/marshuang80/PDB/full"
+    path = "../../resources/mmtf_full_sample/" 
 
     conf = SparkConf().setMaster("local[*]") \
                       .setAppName("keywordSearch")

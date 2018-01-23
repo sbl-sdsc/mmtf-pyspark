@@ -11,7 +11,6 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext, SQLContext
 from mmtfPyspark.datasets import UniProt
-#from mmtfPyspark.datasets import UniProtDataset # TODO find ways to skip import
 import time
 
 
