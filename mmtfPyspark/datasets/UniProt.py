@@ -64,7 +64,9 @@ def getUniprotDataset(dataType):
 
         t.writelines("db,uniqueIdentifier,entryName,proteinName,organismName,geneName,proteinExistence,sequenceVersion,sequence\n")
 
+        print(1)
         inputStream = urllib.request.urlopen(dataType, timeout = 6000)
+        print(2)
         rd = gzip.GzipFile(fileobj=inputStream)
 
         for line in rd:  # TODO check rd output content after UNIPROT online
