@@ -33,8 +33,8 @@ Square brackets specify alternative residues at a particular position. The Walke
 A or G are followed by 4 variable residues, then G and K, and finally S or T
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''

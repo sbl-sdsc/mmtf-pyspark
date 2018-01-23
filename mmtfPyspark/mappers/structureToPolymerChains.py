@@ -7,8 +7,8 @@ include polypeptides, polynucleotides, and linear and branched polysaccharides.
 For a multi-model structure, only the first model is considered.
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmai.com:
     __status__ = "debug"
 '''

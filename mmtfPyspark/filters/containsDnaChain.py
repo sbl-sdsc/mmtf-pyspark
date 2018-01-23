@@ -8,8 +8,8 @@ set to true in the constructor, all polymer chains must be Dna. For a multi-mode
 structure (e.g., NMR structure), this filter only checks the first model.
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''

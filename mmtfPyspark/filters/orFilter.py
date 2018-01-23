@@ -5,8 +5,8 @@ orFilter.py
 This filter wraps two filter and returns true if one of the filters passes
 
 authorship information:
-    __author__ = "mars huang"
-    __maintainer__ = "mars huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "done"
 '''

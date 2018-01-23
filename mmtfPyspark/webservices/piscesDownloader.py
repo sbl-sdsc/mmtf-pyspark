@@ -16,7 +16,7 @@ Bioinformatics, 19:1589-1591, 2003.
 
 Authorship information:
     __author__ = "Peter Rose"
-    __maintainer__ = "Mars Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''

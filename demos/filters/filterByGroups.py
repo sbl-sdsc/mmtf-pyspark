@@ -10,8 +10,8 @@ e.g. "F", "MG", "ATP", as defined in the
 <a href="https://www.wwpdb.org/data/ccd">wwPDB Chemical Component Dictionary</a>.
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''

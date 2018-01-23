@@ -9,8 +9,8 @@ For details see:
 <a href="http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html">Chemical Structure Search</a>.
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''

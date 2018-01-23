@@ -4,8 +4,8 @@ MmtfSReader.py: Reads and decodes an MMTF Hadoop Sequence file.
 (e.g. PDB ID) as the key and the MMTF StructureDataInterface as the value.
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''

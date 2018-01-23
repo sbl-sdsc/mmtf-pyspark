@@ -6,8 +6,8 @@ This class converts a PythonRDD<Row> to a Dataset<Row>. This method only
 supports simple data types and all data need to be not null.
 
 Authorship information:
-    __author__ = "Mars Huang"
-    __maintainer__ = "Mars Huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "debug"
 '''

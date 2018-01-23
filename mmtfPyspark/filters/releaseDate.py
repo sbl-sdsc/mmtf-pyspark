@@ -6,8 +6,8 @@ this filter return turn if the releaseDate date for this
 structure is within the specified range
 
 authorship information:
-    __author__ = "mars huang"
-    __maintainer__ = "mars huang"
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "done"
 '''
