@@ -36,7 +36,7 @@ def main():
             .setMaster("local[*]") \
             .setAppName("featuresDemo")
     sc = SparkContext(conf = conf)
-    path = "/home/marshuang80/PDB/reduced"
+    path = "../../resources/mmtf_reduced_sample/"
 
     # Read MMTF Hadoop sequence file and create a non-redundant set (<=40% seq. identity)
     # of L-protein chains

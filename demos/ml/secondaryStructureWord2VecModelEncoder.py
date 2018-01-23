@@ -20,7 +20,7 @@ from mmtfPyspark.io import MmtfReader
 import time
 
 # TODO data count is more than Java
-# TODO need model file 
+# TODO need model file
 
 def main():
     '''
@@ -41,7 +41,7 @@ def main():
     # Read MMTF Hadoop sequence file and create a non-redundant set
     # (<=20% seq. identity) of L-protein chains
 
-    path = "/home/marshuang80/PDB/reduced"
+    path = "../../resources/mmtf_reduced_sample/"
 
     sequenceIdentity = 20
     resolution = 2.0

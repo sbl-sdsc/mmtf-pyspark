@@ -21,7 +21,7 @@ from mmtfPyspark.io import MmtfReader
 from mmtfPyspark.filters import rFree
 
 def main():
-    path = "/home/marshuang80/PDB/reduced"
+    path = "../../resources/mmtf_reduced_sample/"
 
     conf = SparkConf().setMaster("local[*]") \
                       .setAppName("filterByResolution")

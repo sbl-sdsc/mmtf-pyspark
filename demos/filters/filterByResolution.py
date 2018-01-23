@@ -21,7 +21,7 @@ from mmtfPyspark.filters import resolution
 import time
 
 def main():
-    path = "/home/marshuang80/PDB/reduced"
+    path = "../../resources/mmtf_reduced_sample/"
     start = time.time()
 
     conf = SparkConf().setMaster("local[*]") \

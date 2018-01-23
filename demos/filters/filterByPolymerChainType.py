@@ -17,7 +17,7 @@ from mmtfPyspark.filters import *
 
 
 def main():
-	path = "/home/marshuang80/PDB/reduced"
+	path = "../../resources/mmtf_reduced_sample/"
 
 	conf = SparkConf().setMaster("local[*]") \
                       .setAppName("FilterByPolymerChainType")
