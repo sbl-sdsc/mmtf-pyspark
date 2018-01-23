@@ -9,7 +9,7 @@ For a multi-model structure, only the first model is considered.
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmai.com:
+    __email__ = "marshuang80@gmail.com:
     __status__ = "debug"
 '''
 from mmtf.utils import *
