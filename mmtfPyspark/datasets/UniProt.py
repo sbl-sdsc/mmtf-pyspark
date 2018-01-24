@@ -64,8 +64,35 @@ def getUniprotDataset(dataType):
 
         t.writelines("db,uniqueIdentifier,entryName,proteinName,organismName,geneName,proteinExistence,sequenceVersion,sequence\n")
 
-        inputStream = urllib.request.urlopen(dataType, timeout=10)
-        rd = gzip.GzipFile(fileobj=inputStream)
+
+        #inputStream = urllib.request.urlopen(dataType, timeout = 6000)
+        #rd = gzip.GzipFile(fileobj=inputStream)
+
+        # TODO: Testing ftplib
+        import ftplib
+        import io
+        import os
+        HOST = 'ftp.uniprot.org'
+        DIRN = 'pub/databases/uniprot/current_release/knowledgebase/complete'
+        FILE = 'uniprot_sprot.fasta.gz'
+
+        f = ftplib.FTP(HOST)
+        print("*** CONNECTED TO HOST ***")
+
+        f.login()
+        print("*** LOGGED IN AS ANONYMOUS ***")
+
+        f.cwd(DIRN)
+        print(f"*** CHANGED TO {DIRN} FOLDER ***")
+
+        f.retrbinary(f"RETR {FILE}", open(FILE, 'wb').write)
+        print("*** DOWNLOADED FILE ***")
+
+        rd = gzip.open(f'./{FILE}','rb')
+        print("*** OPENED DOWNLOADED FILE ***")
+
+        os.remove(f"./{FILE}")
+        print("*** REMOVED DOWNLOADED FILE ***")
 
         for line in rd:  # TODO check rd output content after UNIPROT online
 
