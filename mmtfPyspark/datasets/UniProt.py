@@ -76,7 +76,7 @@ def getUniprotDataset(dataType):
         DIRN = 'pub/databases/uniprot/current_release/knowledgebase/complete'
         FILE = 'uniprot_sprot.fasta.gz'
 
-        f = ftplib.FTP(HOST)
+        f = ftplib.FTP(HOST, timeout = 1200)
         print("*** CONNECTED TO HOST ***")
 
         f.login()
