@@ -67,7 +67,7 @@ def getUniprotDataset(dataType):
 
         #inputStream = urllib.request.urlopen(dataType, timeout = 6000)
         #rd = gzip.GzipFile(fileobj=inputStream)
-
+        '''
         # TODO: Testing ftplib
         import ftplib
         import io
@@ -93,7 +93,7 @@ def getUniprotDataset(dataType):
 
         os.remove(f"./{FILE}")
         print("*** REMOVED DOWNLOADED FILE ***")
-
+        '''
         for line in rd:  # TODO check rd output content after UNIPROT online
 
             line = str(line)[2:-3]
