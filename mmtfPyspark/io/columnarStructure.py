@@ -13,7 +13,7 @@ Authorship information:
 '''
 import numpy as np
 
-class columnarStructure(object):
+class ColumnarStructure(object):
     '''Column based data structure to efficiently access structure information
 
     Attributes:
