@@ -33,13 +33,13 @@ class ColumnarStructureX(ColumnarStructure):
         95% 0.025 +- 1.96
         99% 0.005 +- 2.576
         '''
-
+        
         if self.normalizedbFactors is None:
 
             self.get_entity_types()
             self.bFactors = self.get_b_factors()
             # Filter out DOD and HOH
-            stats = self.bFactors[(self.entityTypes != "HOH") & (self.entityTypes != "DOD")]
+            stats = self.bFactors[self.entityTypes == 'WAT']
             # Define normalize function
             normalize = lambda x: (x - stats.mean()) / stats.std()
             self.normalizedbFactors = normalize(self.bFactors)
