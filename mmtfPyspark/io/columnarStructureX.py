@@ -12,7 +12,7 @@ Authorship information:
 '''
 import numpy as np
 from mmtfPyspark.io import ColumnarStructure
-
+from sympy import Point3D
 
 class ColumnarStructureX(ColumnarStructure):
     '''Inheritance of class ColumnarStructure with additional functions
@@ -52,12 +52,11 @@ class ColumnarStructureX(ColumnarStructure):
         using the method of Liu et at. B-factors are normalized and scaled the
         90% Confidenceinterval of the B-factors to [-1,1]. Any value outside of
         the 90% confidence interval is set to either -1 or 1, whichever is closer.
-
         Reference:
             Liu et al. BMC Bioinformatics 2014, 15(Suppl 16):S3,
-                Use B-factor related features for accurate classification between
-                protein binding interfaces and crystal packing contacts
-                <"https://doi.org/10.1186/1471-2105-15-S16-S3">
+            Use B-factor related features for accurate classification between
+            protein binding interfaces and crystal packing contacts
+            <"https://doi.org/10.1186/1471-2105-15-S16-S3">
         '''
 
         if self.clampedNormalizedbFactor is None:
@@ -73,3 +72,37 @@ class ColumnarStructureX(ColumnarStructure):
             self.clampedNormalizedbFactor[self.clampedNormalizedbFactor > 1.0] = 1.0
 
         return self.clampedNormalizedbFactor
+
+
+    def get_calpha_coordinates(self):
+        '''Get the coordinates for Calpha atoms
+        '''
+
+        self.get_calpha_atom_indices()
+
+        x = self.get_x_coords()
+        y = self.get_y_coords()
+        z = self.get_z_coords()
+
+        # TODO: Point3D extremely slow, only use if nessassary
+        #calpha_coords_list = [Point3D(x[i], y[i], z[i]) for i in self.caIndices]
+        calpha_coords_list = [[x[i], y[i], z[i]] for i in self.caIndices]
+        self.calpha_coords = np.array(calpha_coords_list)
+
+        return self.calpha_coords
+
+
+    def get_calpha_atom_indices(self):
+        '''Get the indices of Calpha atoms
+        '''
+
+        self.get_entity_types()
+        self.get_atom_names()
+
+        caIndices_list = [i for i in range(self.get_num_atoms()) \
+                          if (self.atomNames[i] == "CA" \
+                          and self.entityTypes[i] == "PRO")]
+
+        self.caIndices = np.array(caIndices_list)
+
+        return self.caIndices
