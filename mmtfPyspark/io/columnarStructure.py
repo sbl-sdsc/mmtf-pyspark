@@ -199,7 +199,7 @@ class ColumnarStructure(object):
                         eType = "PSR"
                     else:
                         eType = "UNK"
-                elif "HOH" == ccType:
+                elif (self.groupNames[start] == "HOH" or self.groupName[start] == "DOD"):
                     eType = "WAT"
                 elif "SACCHARIDE" in ccType:
                     eType = "SAC"
