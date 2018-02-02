@@ -2,7 +2,7 @@
 '''
 experimentalMethods.py:
 
-This filter returns ture if all the specified experimental methods
+This filter returns ture if any of the specified experimental methods
 match a PDB entry
 
 The current list of support experimental method types can be found here:
@@ -46,4 +46,4 @@ class experimentalMethods(object):
 
         methods = sorted([b.decode().upper()
                           for b in structure.experimental_methods])
-        return methods == self.experimental_methods
+        return sum([1 for m in self.experimental_methods if m in methods]) > 0
