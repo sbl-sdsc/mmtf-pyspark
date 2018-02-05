@@ -2,11 +2,34 @@
 '''
 sequenceSimilarity.py
 
-This filter returns entries that contain groups with specified chemical structures (SMILES string).
-This chemical structure query supports for query: exact, similar, substructure, and superstructure.
-For details see:
+This filter returns entries that pass the sequence similarity search
+criteria. Searches protein and nucleic acid sequences using the BLAST.
+PSI-BLAST is used to find more distantly related protein sequences.
 
-<a href="http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html">Chemical Structure Search</a>.
+The E value, or Expect value, is a parameter that describes the number of
+hits one can expect to see just by chance when searching a database of a
+particular size. For example, an E value of one indicates that a result will
+contain one sequence with similar score simply by chance. The scoring takes
+chain length into consideration and therefore shorter sequences can have
+identical matches with high E value.
+
+The Low Complexity filter masks low complexity regions in a sequence to
+filter out avoid spurious alignments.
+
+Sequence Identity Cutoff (%) filter removes entries of low sequence
+similarity. The cutoff value is a percentage value between 0 to 100.
+
+Note: sequences must be at least 12 residues long. For shorter sequences try
+the Sequence Motif Search.
+
+References:
+<li>BLAST: Sequence searching using NCBI's BLAST (Basic Local Alignment
+Search Tool) Program , Altschul, S.F., Gish, W., Miller, W., Myers, E.W. and
+Lipman, D.J. Basic local alignment search tool. J. Mol. Biol. 215: 403-410
+(1990)
+<li>PSI-BLAST: Sequence searching to detect distantly related evolutionary
+relationships using NCBI's PSI-BLAST (Position-Specific Iterated BLAST).
+</ul>
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -19,39 +42,33 @@ from mmtfPyspark.webfilters import advancedQuery
 
 class sequenceSimilarity(object):
 
-    EXACT = "Exact"
-    SIMILAR = "Similar"
-    SUBSTRUCTURE = "Substructure"
-    SUPERSTRUCTURE = "Superstructure"
+    BLAST = 'blast'
+    PSI_BLAST = 'psi-blast'
 
-    def __init__(self, smiles, queryType = "Substructure", percentSimilarity = 0):
+    def __init__(self, sequence, searchTool = BLAST, eValueCutoff = 10.0, \
+                 sequenceIdentityCutoff = 0, maskLowComplexity = True):
         '''
-        Constructor to setup filter that matches any entry with at least one chemical component
-        that matches the specified SMILES string using the specified query type.
-        For details see:
-            <a href="http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html">Chemical Structure Search</a>.
+        Filters by squence similarity using all default parameters.
 
         Attribute:
-            smiles (String): SMILES string representing chemical structure
-            queryType: One of the 4 supported types
-            percentSimilarity: percent similarity for similarity search. This parameter is
-                               ignored for all other query types
+            sequence (str): query sequence
+            searchTool (class variable): sequenceSimilarity.BLAST or sequenceSimilarity.PSI_BLAST
+            eValueCutoff (float): maximun e-value
+            sequenceIdentityCutoff (int): minimum sequence identity cutoff
+            maskLowComplexity (bool) : if true, mask (ignore) low complexity regions in sequence
         '''
 
-        if not (queryType == self.EXACT \
-                or queryType == self.SIMILAR \
-                or queryType == self.SUBSTRUCTURE \
-                or queryType == self.SUPERSTRUCTURE):
+        if len(sequence) < 12:
+                raise ValueError("ERROR: the query sequence must be at least 12 residues long")
 
-                raise Exception("Invalid search type: %s" %queryType)
+        complexity = 'yes' if maskLowComplexity else 'no'
 
-        query = "<orgPdbQuery>" + \
-                   "<queryType>org.pdb.query.simple.ChemSmilesQuery</queryType>" + \
-        	       "<smiles>" + smiles + "</smiles>" + \
-        	       "<searchType>" + queryType + "</searchType>" + \
-        	       "<similarity>" + str(percentSimilarity) + "</similarity>" + \
-        	       "<polymericType>Any</polymericType>" + \
-               "</orgPdbQuery>"
+        query = "<orgPdbQuery>" + "<queryType>org.pdb.query.simple.SequenceQuery</queryType>" \
+                + "<sequence>" + sequence + "</sequence>" + "<searchTool>" + searchTool \
+                + "</searchTool>" + "<maskLowComplexity>" + complexity\
+                + "</maskLowComplexity>" + "<eValueCutoff>" + str(eValueCutoff) \
+                + "</eValueCutoff>" + "<sequenceIdentityCutoff>" + str(sequenceIdentityCutoff) \
+                + "</sequenceIdentityCutoff>" + "</orgPdbQuery>"
 
         self.filter = advancedQuery(query)
 
