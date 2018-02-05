@@ -26,7 +26,7 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('3PDM' in results_1)
         self.assertFalse('5MNX' in results_1)
         self.assertFalse('5I1R' in results_1)
-        self.assertFalse('5MON' in results_1)
+        self.assertTrue('5MON' in results_1)
         self.assertFalse('5LCB' in results_1)
         self.assertFalse('3J07' in results_1)
 
@@ -50,7 +50,7 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5K7N' in results_2)
         self.assertFalse('3PDM' in results_2)
         self.assertFalse('5MNX' in results_2)
-        self.assertFalse('5I1R' in results_2)
+        self.assertTrue('5I1R' in results_2)
         self.assertFalse('5MON' in results_2)
         self.assertFalse('5LCB' in results_2)
         self.assertFalse('3J07' in results_2)
@@ -68,8 +68,8 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5MNX' in results_3)
         self.assertFalse('5I1R' in results_3)
         self.assertFalse('5MON' in results_3)
-        self.assertFalse('5LCB' in results_3)
-        self.assertFalse('3J07' in results_3)
+        self.assertTrue('5LCB' in results_3)
+        self.assertTrue('3J07' in results_3)
 
 
     def test4(self):
@@ -84,8 +84,8 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5MNX' in results_4)
         self.assertFalse('5I1R' in results_4)
         self.assertFalse('5MON' in results_4)
-        self.assertFalse('5LCB' in results_4)
-        self.assertFalse('3J07' in results_4)
+        self.assertTrue('5LCB' in results_4)
+        self.assertTrue('3J07' in results_4)
 
 
     def test5(self):
@@ -131,13 +131,14 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('3PDM' in results_7)
         self.assertTrue('5MNX' in results_7)
         self.assertFalse('5I1R' in results_7)
-        self.assertFalse('5MON' in results_7)
+        self.assertTrue('5MON' in results_7)
         self.assertFalse('5LCB' in results_7)
         self.assertFalse('3J07' in results_7)
 
 
     def test8(self):
-        pdb_8 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING,experimentalMethods.SOLUTION_NMR))
+        pdb_8 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING))\
+                        .filter(experimentalMethods(experimentalMethods.SOLUTION_NMR))
         results_1 = pdb_8.keys().collect()
         self.assertFalse('2ONX' in results_1)
         self.assertFalse('5VLN' in results_1)
@@ -153,7 +154,8 @@ class experimentalMethodsTest(unittest.TestCase):
 
 
     def test9(self):
-        pdb_9 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_NMR,experimentalMethods.SOLUTION_SCATTERING))
+        pdb_9 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_NMR))\
+                        .filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING))
         results_9 = pdb_9.keys().collect()
         self.assertFalse('2ONX' in results_9)
         self.assertFalse('5VLN' in results_9)
@@ -169,7 +171,9 @@ class experimentalMethodsTest(unittest.TestCase):
 
 
     def test10(self):
-        pdb_10 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLID_STATE_NMR,experimentalMethods.ELECTRON_MICROSCOPY,experimentalMethods.SOLUTION_SCATTERING))
+        pdb_10 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLID_STATE_NMR))\
+                         .filter(experimentalMethods(experimentalMethods.ELECTRON_MICROSCOPY))\
+                         .filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING))
         results_10 = pdb_10.keys().collect()
         self.assertFalse('2ONX' in results_10)
         self.assertFalse('5VLN' in results_10)
