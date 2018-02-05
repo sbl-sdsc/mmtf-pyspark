@@ -11,7 +11,7 @@ Authorship information:
     __status__ = "dev"
 '''
 import numpy as np
-from mmtfPyspark.io import ColumnarStructure
+from mmtfPyspark.dev import ColumnarStructure
 from sympy import Point3D
 
 class ColumnarStructureX(ColumnarStructure):
@@ -33,7 +33,7 @@ class ColumnarStructureX(ColumnarStructure):
         95% 0.025 +- 1.96
         99% 0.005 +- 2.576
         '''
-        
+
         if self.normalizedbFactors is None:
 
             self.get_entity_types()
