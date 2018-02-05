@@ -20,7 +20,7 @@ class experimentalMethods(object):
     Attributes:
         experimental_methods (list(string)): A list of experimental methods to check
     '''
-    
+
     # constants to be used as arguments to the Experimental Methods filter
     ELECTRON_CRYSTALLOGRAPHY = "ELECTRON CRYSTALLOGRAPHY"
     ELECTRON_MICROSCOPY = "ELECTRON MICROSCOPY"
@@ -37,10 +37,10 @@ class experimentalMethods(object):
     X_RAY_DIFFRACTION = "X-RAY DIFFRACTION"
 
     def __init__(self, *experimentalMethods):
-        self.experimental_methods = sorted(list(experimentalMethods))
+        self.experimental_methods = experimentalMethods
 
 
     def __call__(self, t):
         structure = t[1]
-        methods = [b.decode().upper() for b in structure.experimental_methods])
+        methods = [b.decode().upper() for b in structure.experimental_methods]
         return sum([1 for m in self.experimental_methods if m in methods]) > 0
