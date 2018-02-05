@@ -20,6 +20,7 @@ class experimentalMethods(object):
     Attributes:
         experimental_methods (list(string)): A list of experimental methods to check
     '''
+    
     # constants to be used as arguments to the Experimental Methods filter
     ELECTRON_CRYSTALLOGRAPHY = "ELECTRON CRYSTALLOGRAPHY"
     ELECTRON_MICROSCOPY = "ELECTRON MICROSCOPY"
