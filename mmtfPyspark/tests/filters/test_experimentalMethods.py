@@ -18,6 +18,7 @@ class experimentalMethodsTest(unittest.TestCase):
     def test1(self):
         pdb_1 = self.pdb.filter(experimentalMethods(experimentalMethods.X_RAY_DIFFRACTION))
         results_1 = pdb_1.keys().collect()
+
         self.assertTrue('2ONX' in results_1)
         self.assertFalse('5VLN' in results_1)
         self.assertFalse('5VAI' in results_1)
@@ -43,6 +44,7 @@ class experimentalMethodsTest(unittest.TestCase):
     def test2(self):
         pdb_2 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_NMR))
         results_2 = pdb_2.keys().collect()
+
         self.assertFalse('2ONX' in results_2)
         self.assertTrue('5VLN' in results_2)
         self.assertFalse('5VAI' in results_2)
@@ -59,6 +61,7 @@ class experimentalMethodsTest(unittest.TestCase):
     def test3(self):
         pdb_3 = self.pdb.filter(experimentalMethods(experimentalMethods.ELECTRON_MICROSCOPY))
         results_3 = pdb_3.keys().collect()
+
         self.assertFalse('2ONX' in results_3)
         self.assertFalse('5VLN' in results_3)
         self.assertTrue('5VAI' in results_3)
@@ -75,6 +78,7 @@ class experimentalMethodsTest(unittest.TestCase):
     def test4(self):
         pdb_4 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLID_STATE_NMR))
         results_4 = pdb_4.keys().collect()
+
         self.assertFalse('2ONX' in results_4)
         self.assertFalse('5VLN' in results_4)
         self.assertFalse('5VAI' in results_4)
@@ -91,6 +95,7 @@ class experimentalMethodsTest(unittest.TestCase):
     def test5(self):
         pdb_5 = self.pdb.filter(experimentalMethods(experimentalMethods.ELECTRON_CRYSTALLOGRAPHY))
         results_2 = pdb_5.keys().collect()
+
         self.assertFalse('2ONX' in results_2)
         self.assertFalse('5VLN' in results_2)
         self.assertFalse('5VAI' in results_2)
@@ -107,6 +112,7 @@ class experimentalMethodsTest(unittest.TestCase):
     def test6(self):
         pdb_6 = self.pdb.filter(experimentalMethods(experimentalMethods.FIBER_DIFFRACTION))
         results_6 = pdb_6.keys().collect()
+
         self.assertFalse('2ONX' in results_6)
         self.assertFalse('5VLN' in results_6)
         self.assertFalse('5VAI' in results_6)
@@ -123,6 +129,7 @@ class experimentalMethodsTest(unittest.TestCase):
     def test7(self):
         pdb_7 = self.pdb.filter(experimentalMethods(experimentalMethods.NEUTRON_DIFFRACTION))
         results_7 = pdb_7.keys().collect()
+
         self.assertFalse('2ONX' in results_7)
         self.assertFalse('5VLN' in results_7)
         self.assertFalse('5VAI' in results_7)
@@ -140,6 +147,7 @@ class experimentalMethodsTest(unittest.TestCase):
         pdb_8 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING))\
                         .filter(experimentalMethods(experimentalMethods.SOLUTION_NMR))
         results_1 = pdb_8.keys().collect()
+
         self.assertFalse('2ONX' in results_1)
         self.assertFalse('5VLN' in results_1)
         self.assertFalse('5VAI' in results_1)
@@ -157,6 +165,7 @@ class experimentalMethodsTest(unittest.TestCase):
         pdb_9 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_NMR))\
                         .filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING))
         results_9 = pdb_9.keys().collect()
+
         self.assertFalse('2ONX' in results_9)
         self.assertFalse('5VLN' in results_9)
         self.assertFalse('5VAI' in results_9)
@@ -175,6 +184,7 @@ class experimentalMethodsTest(unittest.TestCase):
                          .filter(experimentalMethods(experimentalMethods.ELECTRON_MICROSCOPY))\
                          .filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING))
         results_10 = pdb_10.keys().collect()
+
         self.assertFalse('2ONX' in results_10)
         self.assertFalse('5VLN' in results_10)
         self.assertFalse('5VAI' in results_10)
