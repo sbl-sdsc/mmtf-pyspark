@@ -35,7 +35,7 @@ Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "Done"
+    __status__ = "Need unit test"
 '''
 
 from mmtfPyspark.webfilters import advancedQuery
