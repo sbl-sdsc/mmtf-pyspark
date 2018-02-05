@@ -41,9 +41,5 @@ class experimentalMethods(object):
 
     def __call__(self, t):
         structure = t[1]
-        if len(structure.experimental_methods) != len(self.experimental_methods):
-            return False
-
-        methods = sorted([b.decode().upper()
-                          for b in structure.experimental_methods])
+        methods = [b.decode().upper() for b in structure.experimental_methods])
         return sum([1 for m in self.experimental_methods if m in methods]) > 0
