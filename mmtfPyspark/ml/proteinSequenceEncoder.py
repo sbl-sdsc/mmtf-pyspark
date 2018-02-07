@@ -78,19 +78,33 @@ class proteinSequenceEncoder(object):
     }
 
 
-    def __init__(self, data, inputCol = "sequence", outputCol = "features"):
+    def __init__(self, data = None, inputCol = "sequence", outputCol = "features"):
 
         self.data = data
         self.inputCol = inputCol
         self.outputCol = outputCol
 
 
-    def oneHotEncode(self):
+    def oneHotEncode(self, data = None, inputCol = None, outputCol = None):
         '''
         One-hot encodes a protein sequence. The one-hot encoding
         encodes the 20 natural amino acids, plus X for any other
         residue for a total of 21 elements per residue.
         '''
+
+        # Setting class variables
+        if data is not None:
+            self.data = data
+
+        if inputCol is not None:
+            self.inputCol = inputCol
+
+        if outputCol is not None:
+            self.outputCol = outputCol
+
+        if self.data is None:
+            raise ValueError("Class variable data is not defined, please pass\
+                             in a dataframe into the data parameter")
 
         session = SparkSession.builder.getOrCreate()
         AMINO_ACIDS21 = self.AMINO_ACIDS21
@@ -106,7 +120,7 @@ class proteinSequenceEncoder(object):
                     index = AMINO_ACIDS21.index(s[i])
 
                 else:
-                    index = AMINO_ACIDS21['X']
+                    index = AMINO_ACIDS21.index('X')
 
                 values[i*len(AMINO_ACIDS21) + index] = 1
 
@@ -122,7 +136,7 @@ class proteinSequenceEncoder(object):
         return data
 
 
-    def propertyEncode(self):
+    def propertyEncode(self, data = None, inputCol = None, outputCol = None):
         '''
         Encodes a protein sequence by 7 physicochemical properties
 
@@ -132,6 +146,20 @@ class proteinSequenceEncoder(object):
         Returns:
             dataset with feature vector appended
         '''
+
+        # Setting class variables
+        if data is not None:
+            self.data = data
+
+        if inputCol is not None:
+            self.inputCol = inputCol
+
+        if outputCol is not None:
+            self.outputCol = outputCol
+
+        if self.data is None:
+            raise ValueError("Class variable data is not defined, please pass\
+                             in a dataframe into the data parameter")
 
         session = SparkSession.builder.getOrCreate()
         properties = self.properties
@@ -157,7 +185,7 @@ class proteinSequenceEncoder(object):
         return data
 
 
-    def blosum62Encode(self):
+    def blosum62Encode(self, data = None, inputCol = None, outputCol = None):
         '''
         Encodes a protein sequence by 7 Blosum62
 
@@ -166,6 +194,19 @@ class proteinSequenceEncoder(object):
         Returns:
             dataset with feature vector appended
         '''
+
+        if data is not None:
+            self.data = data
+
+        if inputCol is not None:
+            self.inputCol = inputCol
+
+        if outputCol is not None:
+            self.outputCol = outputCol
+
+        if self.data is None:
+            raise ValueError("Class variable data is not defined, please pass\
+                             in a dataframe into the data parameter")
 
         session = SparkSession.builder.getOrCreate()
         blosum62 = self.blosum62
@@ -191,7 +232,10 @@ class proteinSequenceEncoder(object):
         return data
 
 
-    def overlappingNgramWord2VecEncode(self, n = None, windowSize = None, vectorSize = None, fileName = None, sc = None):
+    def overlappingNgramWord2VecEncode(self, data = None, inputCol = None,
+                                       outpuCol = None, n = None,
+                                       windowSize = None, vectorSize = None,
+                                       fileName = None, sc = None):
         '''
         Encodes a protein sequence by converting it into n-grams and
         then transforming it into a Word2Vec feature vector.
@@ -210,6 +254,19 @@ class proteinSequenceEncoder(object):
         Returns:
             dataset with features vector added to original dataset
         '''
+
+        if data is not None:
+            self.data = data
+
+        if inputCol is not None:
+            self.inputCol = inputCol
+
+        if outputCol is not None:
+            self.outputCol = outputCol
+
+        if self.data is None:
+            raise ValueError("Class variable data is not defined, please pass\
+                             in a dataframe into the data parameter")
 
         # Create n-grams out of the sequence
         # E.g., 2-gram IDCGH, ... =>[ID, DC, CG, GH, ...]
@@ -249,7 +306,9 @@ class proteinSequenceEncoder(object):
         return self.model.transform(data)
 
 
-    def shifted3GramWord2VecEncode(self, windowSize = None, vectorSize = None, fileName = None, sc = None):
+    def shifted3GramWord2VecEncode(self, data = None, inputCol = None,
+                                   outputCol = None, windowSize = None,
+                                   vectorSize = None, fileName = None, sc = None):
         '''
         Encodes a protein sequence as three non-overlapping 3-grams,
         trains a Word2Vec model on the 3-grams, and then averages the
@@ -271,10 +330,21 @@ class proteinSequenceEncoder(object):
             dataset with features vector added to original dataset
         '''
 
+        if data is not None:
+            self.data = data
+
+        if inputCol is not None:
+            self.inputCol = inputCol
+
+        if outputCol is not None:
+            self.outputCol = outputCol
+
+        if self.data is None:
+            raise ValueError("Class variable data is not defined, please pass\
+                             in a dataframe into the data parameter")
+
         # Create n-grams out of the sequence
         # e.g., 2-gram [IDCGH, ...] => [ID. DC, CG, GH,...]
-        # TODO set input column
-        #data = sequenceNgrammer.ngram(self.data, 2, "ngram")
 
         data = sequenceNgrammer.shiftedNgram(self.data, 3, 0, "ngram0")
         data = sequenceNgrammer.shiftedNgram(data, 3, 1, "ngram1")
