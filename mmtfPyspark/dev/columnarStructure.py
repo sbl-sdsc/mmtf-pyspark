@@ -11,6 +11,7 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "dev"
 '''
+
 import numpy as np
 
 class ColumnarStructure(object):
