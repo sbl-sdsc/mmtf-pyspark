@@ -1,0 +1,270 @@
+#!/user/bin/env python
+'''
+interactionCenter.py:
+
+InteractionCenter stores information about an atom involved in a molecular
+interaction.
+
+Authorship information:
+    __author__ = "Mars (Shih-Cheng) Huang"
+    __maintainer__ = "Mars (Shih-Cheng) Huang"
+    __email__ = "marshuang80@gmail.com:
+    __status__ = "debug"
+'''
+
+from pyspark.sql.types import *
+
+class InteractionCenter(object):
+
+    def __init__(self, structure, atomIndex):
+
+        self.set_atom_name(structure.get_atom_names()[atomIndex])
+        self.set_element(structure.get_elements()[atomIndex])
+        self.set_group_name(structure.get_group_names()[atomIndex])
+        self.set_group_number(structure.get_group_numbers()[atomIndex])
+        self.set_type(structure.get_entity_types()[atomIndex])
+        self.set_chain_name(structure.get_chain_names()[atomIndex])
+        self.set_sequence_position(structure.get_sequence_positions()[atomIndex])
+        self.set_coordinates([structure.get_x_coords()[atomIndex]\
+                              structure.get_y_coords()[atomIndex]\
+                              structure.get_z_coords()[atomIndex]])
+        self.set_normalized_b_factor(structure.get_normalized_b_factors()[atomIndex])
+
+
+    def get_atom_name(self):
+        '''Gets the atom name
+
+        Returns:
+            name of the atom
+        '''
+
+        return self.atomName
+
+
+    def set_atom_name(self, atomName):
+        '''Sets the atom name
+
+        Attribute:
+            atomName (str): name of the atom
+        '''
+
+        self.atomName =  atomName
+
+
+    def get_element(self):
+        '''Gets the case-sensitive element symbol
+
+        Returns:
+            element symbol
+        '''
+
+        return self.element
+
+
+    def set_element(self, element):
+        '''Sets the case-sensitive element symbol
+
+        Attributes:
+            element (str): element symbol
+        '''
+
+        self.element = element
+
+
+    def get_group_name(self):
+        '''
+        Gets the names of the group. This name is the chemical component id
+        of this group
+
+        Returns:
+            name of group
+        '''
+
+        return self.groupName
+
+
+    def set_group_name(self, groupName):
+        '''
+        Sets the names of the group. This name is the chemical component id
+        of this group
+
+        Attribute:
+            groupName (str): name of group
+        '''
+
+        self.groupName = groupName
+
+
+    def get_group_number(self):
+        '''
+        Gets the group number for the interaction center. A group number
+        consists of the residue number (e.g. 101) plus an optional insertion code
+        (e.g. A): 101A.
+
+        Returns:
+            group number
+        '''
+
+        return self.groupNumber
+
+
+    def set_group_number(self, groupNumber):
+        '''
+        Sets the group number for the interaction center. A group number
+        consists of the residue number (e.g. 101) plus an optional insertion code
+        (e.g. A): 101A.
+
+        Attributes:
+            groupNumber (str): group number
+        '''
+
+        self.groupNumber = groupNumber
+
+
+    def get_type(self):
+        '''Gets the type of the group.
+
+        Returns:
+            type of group
+        '''
+
+        return self.type
+
+
+    def set_type(self, gtype):
+        '''Sets the type of the group.
+
+        Attribute:
+            gtype (str): type of group
+        '''
+
+        self.type = gtype
+
+
+    def get_chain_name(self):
+        '''Gets the chainName. This corresponds to the "chain Id" in PDB files.
+
+        Returns:
+            the name of the chain
+        '''
+
+        return self.chainName
+
+
+    def set_chain_name(self, chainName):
+        '''Sets the chainName. This corresponds to the "chain Id" in PDB files.
+
+        Attributes:
+            chainName (str): the name of the chian
+        '''
+
+        self.chainName = chainName
+
+
+    def get_sequence_position(self):
+        '''
+        Gets an index into the one-letter polymer sequence. this index is
+        zero-based. If the interaction center is not a polymer atom, this index
+        is -1
+
+        Returns:
+            index into polymer sequence
+        '''
+
+        return self.sequencePosition
+
+
+    def set_sequence_position(self, sequencePosition):
+        '''
+        Sets an index into the one-letter polymer sequence. this index is
+        zero-based. If the interaction center is not a polymer atom, this index
+        is -1
+
+        Attributes:
+            sequencePosition (int): index into polymer sequence
+        '''
+
+        self.sequencePosition = sequencePosition
+
+
+    def get_coordinates(self):
+        '''Gets the position of the interaction center.
+
+        Return:
+            the position of the interaction center
+        '''
+
+        return self.coordinates
+
+
+    def set_coordinates(self, coordinates):
+        '''Sets the position of the interaction center.
+
+        Attributes:
+            coordinates (list): the position of the interaction center
+        '''
+
+        self.coordinates = coordinates
+
+
+    def get_normalized_b_factors(self):
+        '''Gets the normalized b-factor
+
+        Returns:
+            the normalized b-factor
+        '''
+
+        return self.normalizedbFactor
+
+
+    def set_normalized_b_factors(self, normalizedbFactor):
+        '''Sets the normalized b-factor
+
+        Attributes:
+            normalizedbFactor (float) the normalized b-factor
+        '''
+
+        self.normalizedbFactor = normalizedbFactor
+
+
+    # TODO need get length function?
+
+    def get_as_object(self):
+        '''
+        Returns a list of objects representing this interaction center. Note,
+        not all data are currently included. This method is ucsed to create
+        Spark datasets.
+
+        Returns:
+            list of objects representing this interaction center
+        '''
+
+        return [self.atomName, self.element, self.groupName, self.groupNumber \
+                self.type, self.chainName, self.normalizedbFactor]
+
+
+    def get_struct_fields(self, index):
+        '''
+        Returns a schema to create Spark Datasets. This schema must match the
+        order in which the data are return by the getAsObject() method.
+
+        Attributes:
+            index (int): an integer to label an interaction center
+
+        Returns:
+            schema to represent an interaction center in spark dataset.
+        '''
+
+        sf = []
+        nullable = True
+        index = str(index)
+
+        sf.append(StructField("atom" + index, StringType(), nullable))
+        sf.append(StructField("element" + index, StringType(), nullable))
+        sf.append(StructField("group" + index, StringType(), nullable))
+        sf.append(StructField("groupNum" + index, StringType(), nullable))
+        sf.append(StructField("type" + index, StringType(), nullable))
+        sf.append(StructField("chain" + index, StringType(), nullable))
+        sf.append(StructField("nbFactor" + index, FloatType(), nullable))
+
+        return sf
