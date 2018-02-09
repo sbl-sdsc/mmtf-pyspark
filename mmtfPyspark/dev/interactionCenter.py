@@ -239,7 +239,7 @@ class InteractionCenter(object):
             list of objects representing this interaction center
         '''
 
-        return [self.atomName, self.element, self.groupName, self.groupNumber \
+        return [self.atomName, self.element, self.groupName, self.groupNumber, \
                 self.type, self.chainName, self.normalizedbFactor]
 
 
