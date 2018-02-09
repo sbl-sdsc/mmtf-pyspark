@@ -25,9 +25,9 @@ class InteractionCenter(object):
         self.set_type(structure.get_entity_types()[atomIndex])
         self.set_chain_name(structure.get_chain_names()[atomIndex])
         self.set_sequence_position(structure.get_sequence_positions()[atomIndex])
-        self.set_coordinates([structure.get_x_coords()[atomIndex] \
-                              structure.get_y_coords()[atomIndex] \
-                              structure.get_z_coords()[atomIndex]])
+        self.set_coordinates(np.array([structure.get_x_coords()[atomIndex], \
+                                       structure.get_y_coords()[atomIndex], \
+                                       structure.get_z_coords()[atomIndex]]))
         self.set_normalized_b_factor(structure.get_normalized_b_factors()[atomIndex])
 
 
