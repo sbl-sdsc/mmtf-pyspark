@@ -13,7 +13,7 @@ Methods for parallel and distributed analysis and mining of the Protein Data Ban
 This project is still currently under development.
 
 ## Demos
-To try out our jupyter notebook demos without any installation, please click on the red binder icon on top and navigate to the /demos folder (An example data analysis notebook, "DataAnalysisWithDataFrameExample", can be found in the main directory).
+To try out our jupyter notebook demos without any installation, please click on the pink "launch binder" icon on top and navigate to the /demos folder (An example data analysis notebook, "DataAnalysisWithDataFrameExample", can be found in the main directory).
 
 It can take a few minutes for Binder to setup the environment.
 
