@@ -61,7 +61,7 @@ class InteractionFilter(object):
             distanceCutoff (float): the maximum distance for interacting atoms
         '''
 
-        return self._distanceCutoff = distanceCutoff
+        self._distanceCutoff = distanceCutoff
 
 
     def get_normalized_b_factor_cutoff(self):
