@@ -6,7 +6,7 @@
 [![Download MMTF](http://img.shields.io/badge/download-MMTF_full-orange.svg?style=flat)](https://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar)
 [![Download MMTF Reduced](http://img.shields.io/badge/download-MMTF_reduced-orange.svg?style=flat)](https://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar)
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master)
-
+[![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/mmtf_spec)
 
 Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark.
 
