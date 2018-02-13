@@ -86,7 +86,7 @@ class ColumnarStructureX(ColumnarStructure):
 
         # TODO: Point3D extremely slow, only use if nessassary
         #calpha_coords_list = [Point3D(x[i], y[i], z[i]) for i in self.caIndices]
-        calpha_coords_list = [[x[i], y[i], z[i]] for i in self.caIndices]
+        calpha_coords_list = [np.array([x[i], y[i], z[i]]) for i in self.caIndices]
         self.calpha_coords = np.array(calpha_coords_list)
 
         return self.calpha_coords
