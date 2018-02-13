@@ -181,17 +181,17 @@ class CoordinateGeometry(object):
             raise ValueError(f"ERROR: Octrahedrality calculation requires at \
                              least 5 neighbors, but found: {len(self.neighbors)}")
 
+        # 4 angles between positions in equatorial plane
+        equatorial = [(0,1),(1,2),(2,3),(3,0)]
+        sum1 = sum([self.dotProducts[i][j]**2 for i,j in equatorial])
+
         # 4 angles between axial position 1 and equatorial plane
-        axial_1 = [(0,1),(1,2),(2,3),(3,0)]
-        sum1 = sum([self.dotProducts[i][j]**2 for i,j in axial_1])
+        axial_1 = [(0,4),(1,4),(2,4),(3,4)]
+        sum2 = sum([self.dotProducts[i][j]**2 for i,j in axial_1])
 
         # 4 angles between axial position 2 and equatorial plane
-        axial_2 = [(0,4),(1,4),(2,4),(3,4)]
-        sum2 = sum([self.dotProducts[i][j]**2 for i,j in axial_2])
-
-        # 4 angles between axial position 3 and equatorial plane
-        axial_3 = [(0,5),(1,5),(2,5),(3,5)]
-        sum3 = sum([self.dotProducts[i][j]**2 for i,j in axial_3])
+        axial_2 = [(0,5),(1,5),(2,5),(3,5)]
+        sum3 = sum([self.dotProducts[i][j]**2 for i,j in axial_2])
 
         return 1.0 - 1.0 / 4.0 * sum([sum1, sum2, sum3])
 
