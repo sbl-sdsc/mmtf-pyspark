@@ -16,6 +16,8 @@ from pyspark.sql.types import *
 
 class InteractionCenter(object):
 
+    length = 7
+
     def __init__(self, structure, atomIndex):
 
         self.set_atom_name(structure.get_atom_names()[atomIndex])
@@ -29,6 +31,18 @@ class InteractionCenter(object):
                                        structure.get_y_coords()[atomIndex], \
                                        structure.get_z_coords()[atomIndex]]))
         self.set_normalized_b_factor(structure.get_normalized_b_factors()[atomIndex])
+
+
+    def get_length(self):
+        '''
+        Returns the number of data items in an interaction center.
+        Note, not all data are currently included
+
+        Returns:
+            the number of data items in an interaction center
+        '''
+
+        return length
 
 
     def get_atom_name(self):
