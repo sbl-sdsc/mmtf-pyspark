@@ -18,7 +18,7 @@ Authorship information:
 
 from mmtfPyspark.dev import CoordinateGeometry
 from pyspark.sql import Row
-from pysparl.types import *
+from pyspark.types import *
 import numpy as np
 
 class AtomInteraction(object):
