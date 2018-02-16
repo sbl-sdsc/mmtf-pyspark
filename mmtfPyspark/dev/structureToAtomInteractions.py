@@ -150,8 +150,8 @@ class StructureToAtomInteractions(object):
             if self.filter.is_target_group(groupNames[i]) \
             and self.filter.is_target_element(elements[i]):
 
-            newPoint = np.array(x[i],y[i],z[i])
-            box.add_point(newPoint,i)
+                newPoint = np.array(x[i],y[i],z[i])
+                box.add_point(newPoint,i)
 
         return box
 
