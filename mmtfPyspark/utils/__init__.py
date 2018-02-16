@@ -1,2 +1,2 @@
 from .dsspSecondaryStructure import dsspSecondaryStructure
-from .distanceBox import distanceBox
+from .distanceBox import DistanceBox
