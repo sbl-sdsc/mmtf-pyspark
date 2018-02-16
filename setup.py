@@ -10,7 +10,8 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.ml',
                         'mmtfPyspark.utils',
                         'mmtfPyspark.webfilters',
-                        'mmtfPyspark.webservices'
+                        'mmtfPyspark.webservices',
+                        'mmtfPyspark.dev'
                         ]
 
 mmtfPyspark_dependencies = ['pyspark',
