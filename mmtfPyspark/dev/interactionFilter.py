@@ -214,7 +214,7 @@ class InteractionFilter(object):
         self._targetElements = set(elements)
 
 
-    def set_query_groups(include, groups):
+    def set_query_groups(self, include, groups):
         '''
         Sets groups to either be included or excluded in the query. Group names
         must be upper case (e.g. 'ZN' for Zinc)
@@ -244,7 +244,7 @@ class InteractionFilter(object):
         self._queryGroups = set(groups)
 
 
-    def set_target_groups(include, groups):
+    def set_target_groups(self, include, groups):
         '''
         Sets groups to either be included or excluded in the target. Group names
         must be upper case (e.g. 'ZN' for Zinc)
@@ -274,7 +274,7 @@ class InteractionFilter(object):
         self._targetGroups = set(groups)
 
 
-    def set_prohibited_target_groups(groups):
+    def set_prohibited_target_groups(self, groups):
         '''
         Sets groups that must not appear in interactions. Any interactions that
         involves the specified groups will be excluded from the results.
@@ -293,7 +293,7 @@ class InteractionFilter(object):
         self._prohibitedTargetGroups = groups
 
 
-    def is_query_element(element):
+    def is_query_element(self, element):
         '''
         Returns True if the specified elements matches the query conditions.
 
@@ -312,7 +312,7 @@ class InteractionFilter(object):
             return element not in self._queryElements
 
 
-    def is_target_element(element):
+    def is_target_element(self, element):
         '''
         Returns True if the specified elements matches the target conditions.
 
@@ -331,7 +331,7 @@ class InteractionFilter(object):
             return element not in self._targetElements
 
 
-    def is_query_group(group):
+    def is_query_group(self, group):
         '''
         Returns True if the specified group matches the query conditions.
 
@@ -350,7 +350,7 @@ class InteractionFilter(object):
             return group not in self._queryGroups
 
 
-    def is_target_group(group):
+    def is_target_group(self, group):
         '''
         Returns True if the specified group matches the target conditions.
 
@@ -369,7 +369,7 @@ class InteractionFilter(object):
             return group not in self._targetGroups
 
 
-    def is_prohibited_target_group(group):
+    def is_prohibited_target_group(self, group):
         '''
         Returns True if the specified group must not occur in an interactions.
 
