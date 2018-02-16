@@ -75,4 +75,4 @@ class GroupInteractionExtractor(object):
         rows = structures.flatMap(StructureToAtomInteractions(sc.broadcast(interactionFilter), pairwise))
 
         # convert PythonRDD to Dataset
-        return spark.createDataFrame(rows, AtomInteraction().get_schema(interactionFilter.get_max_interactions())
+        return spark.createDataFrame(rows, AtomInteraction().get_schema(interactionFilter.get_max_interactions()))
