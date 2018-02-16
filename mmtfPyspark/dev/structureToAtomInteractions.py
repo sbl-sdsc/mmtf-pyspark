@@ -15,7 +15,7 @@ Authorship information:
 from mmtfPyspark.dev import InteractionFilter, ColumnarStructureX, \
                             AtomInteraction, InteractionCenter
 
-class StructureToAtomInteraction(object):
+class StructureToAtomInteractions(object):
     '''
     Attributes:
         bfilter (Class): Specifies the conditions for calculating interactions
