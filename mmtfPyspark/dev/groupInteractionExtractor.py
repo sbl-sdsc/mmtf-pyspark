@@ -22,7 +22,7 @@ from pyspark.sql import SparkSession
 from pyspark import SparkContext
 from mmtfPyspark.dev import StructureToAtomInteraction, AtomInteraction
 
-class groupInteractionExtractor(object):
+class GroupInteractionExtractor(object):
 
     def get_pair_interactions(self, structures, interactionFilter):
         '''
