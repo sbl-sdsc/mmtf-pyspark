@@ -12,7 +12,6 @@ dependencies:
   - pyspark
   - py4j
   - python-dateutil
-  - ipyleaflet
   - pip:
       - py3Dmol
       - git+https://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtf-pyspark[complete]
