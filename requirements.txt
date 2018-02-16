@@ -11,4 +11,3 @@ ipywidgets
 py3Dmol
 py4j
 python-dateutil
-ipyleaflet
