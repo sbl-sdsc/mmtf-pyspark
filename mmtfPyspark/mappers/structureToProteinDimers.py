@@ -15,7 +15,7 @@ from mmtf.utils import *
 from mmtf.api.mmtf_writer import MMTFEncoder
 import itertools
 from sympy import Point3D
-from mmtfPyspark.utils import distanceBox
+from mmtfPyspark.utils import DistanceBox
 import time
 import numpy as np
 import math
@@ -181,7 +181,7 @@ class structureToProteinDimers(object):
         for i in range(len(chains)):
 
             tmp = chains[i]
-            newbox = distanceBox(cutoffDistance)
+            newbox = DistanceBox(cutoffDistance)
             groupIndex = 0
             atomIndex = 0
 
@@ -219,7 +219,7 @@ class structureToProteinDimers(object):
         for i in range(len(chains)):
 
             tmp = chains[i]
-            newbox = distanceBox(cutoffDistance)
+            newbox = DistanceBox(cutoffDistance)
 
             for j in range(tmp.num_atoms):
 
