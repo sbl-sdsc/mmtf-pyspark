@@ -20,7 +20,7 @@ Authorship information:
 
 from pyspark.sql import SparkSession
 from pyspark import SparkContext
-from mmtfPyspark.dev import StructureToAtomInteraction, AtomInteraction
+from mmtfPyspark.dev import StructureToAtomInteractions, AtomInteraction
 
 class GroupInteractionExtractor(object):
 
