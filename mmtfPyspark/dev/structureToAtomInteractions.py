@@ -117,7 +117,7 @@ class StructureToAtomInteractions(object):
                 # atoms with partial occupancy (< 1.0)
                 if self.filter.is_prohibited_target_group(groupNames[neighborIndex]) \
                 or self.filter.get_normalized_b_factor_cutoff() < normalizedbFactors[neighborIndex] \
-                or occupancies[neighborIndex] < float(1.0)
+                or occupancies[neighborIndex] < float(1.0):
 
                     # return an empty atom interaction
                     return AtomInteraction()
