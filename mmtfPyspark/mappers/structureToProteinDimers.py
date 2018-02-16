@@ -198,9 +198,11 @@ class structureToProteinDimers(object):
                         yCoord = tmp.y_coord_list[atomIndex]
                         zCoord = tmp.z_coord_list[atomIndex]
 
-                        newPoint = Point3D(xCoord, yCoord, zCoord)
+                        # TODO trying numpy instead of Point3D
+                        #newPoint = Point3D(xCoord, yCoord, zCoord)
+                        newPoint = np.array([xCoord, yCoord, zCoord])
 
-                        newbox.addPoint(newPoint, atomIndex)
+                        newbox.add_point(newPoint, atomIndex)
 
                     atomIndex += 1
 
@@ -227,9 +229,11 @@ class structureToProteinDimers(object):
                 yCoord = tmp.y_coord_list[j]
                 zCoord = tmp.z_coord_list[j]
 
-                newPoint = Point3D(xCoord, yCoord, zCoord)
+                # TODO trying numpy instead of Point3D
+                # newPoint = Point3D(xCoord, yCoord, zCoord)
+                newPoint = np.array([xCoord, yCoord, zCoord])
 
-                newbox.addPoint(newPoint, j)
+                newbox.add_point(newPoint, j)
 
             distanceBoxes.append(newbox)
 
