@@ -14,6 +14,8 @@ Authorship information:
 
 from mmtfPyspark.dev import InteractionFilter, ColumnarStructureX, \
                             AtomInteraction, InteractionCenter
+from mmtfPyspark.utils import DistanceBox
+import numpy as np
 
 class StructureToAtomInteractions(object):
     '''
@@ -26,7 +28,7 @@ class StructureToAtomInteractions(object):
 
     def __init__(self, bfilter, pairwise = False):
 
-        self.filter = bfilter.getValue()
+        self.filter = bfilter.value
         self.pairwise = pairwise
 
 
@@ -68,7 +70,7 @@ class StructureToAtomInteractions(object):
         return interactions
 
 
-    def _get_interactions(arrays, queryAtomIndex, box):
+    def _get_interactions(self, arrays, queryAtomIndex, box):
         interaction = AtomInteraction()
 
         # get the x,y,z coordinates of the structure
@@ -97,7 +99,10 @@ class StructureToAtomInteractions(object):
 
         # Retrieve atom indices of atoms that lay within grid cubes
         # that are within cutoff distance of the query atom
-        neighborIndices = box.get_neighbors(np.array(qx, qy, qz))
+        neighborIndices = box.get_neighbors(np.array([qx, qy, qz]))
+        # TEST: flattern neighborIndices
+        neighborIndices = [n for neighbors in neighborIndices for n in neighbors]
+
 
         # determine and record interactions with neighbor atoms
         for neighborIndex in neighborIndices:
@@ -143,14 +148,14 @@ class StructureToAtomInteractions(object):
         y = arrays.get_y_coords()
         z = arrays.get_z_coords()
         elements = arrays.get_elements()
-        groupsNames = arrays.get_group_elements()
+        groupNames = arrays.get_group_names()
 
         box = DistanceBox(self.filter.get_distance_cutoff())
         for i in range(arrays.get_num_atoms()):
             if self.filter.is_target_group(groupNames[i]) \
             and self.filter.is_target_element(elements[i]):
 
-                newPoint = np.array(x[i],y[i],z[i])
+                newPoint = np.array([x[i],y[i],z[i]])
                 box.add_point(newPoint,i)
 
         return box
@@ -165,6 +170,7 @@ class StructureToAtomInteractions(object):
         elements = arrays.get_elements()
         groupStartIndices = arrays.get_group_to_atom_indices()
         occupancies = arrays.get_occupancies()
+        normalizedbFactors = arrays.get_normalized_b_factors()
 
         # Find atoms that match the query criteria and exlcued atoms with
         # partial occupancy
