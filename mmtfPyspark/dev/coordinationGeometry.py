@@ -14,6 +14,7 @@ Authorship information:
 
 import numpy as np
 import itertools as it
+import math
 
 class CoordinateGeometry(object):
 
@@ -78,10 +79,10 @@ class CoordinateGeometry(object):
                              3 neighbors, but found: {len(self.neighbors)}")
 
         total = 0.0
-        for i,j in itertools.combinations(range(3), 2):
+        for i,j in it.combinations(range(3), 2):
             total += (self.dotProducts[i][j] + 0.5) ** 2
 
-        return 1.0 - 4.0 / 7.0 * total
+        return float(1.0 - 4.0 / 7.0 * total)
 
 
     def q4(self):
@@ -112,10 +113,10 @@ class CoordinateGeometry(object):
                              4 neighbors, but found: {len(self.neighbors)}")
 
         total = 0.0
-        for i,j in itertools.combinations(range(4), 2):
+        for i,j in it.combinations(range(4), 2):
             total += (self.dotProducts[i][j] + 1.0/3.0) ** 2
 
-        return 1.0 - 3.0 / 8.0 * total
+        return float(1.0 - 3.0 / 8.0 * total)
 
 
     def q5(self):
@@ -154,7 +155,7 @@ class CoordinateGeometry(object):
         # 1 axial-axial angle (180 deg: cos(180) = -1)
         sum3 = (self.dotProducts[3][4] + 1) ** 2
 
-        return 1.0 - 6.0 / 35.0 * sum1 - 3.0 / 10.0 * sum2 - 3.0 / 40.0 * sum3
+        return float(1.0 - 6.0 / 35.0 * sum1 - 3.0 / 10.0 * sum2 - 3.0 / 40.0 * sum3)
 
 
     def q6(self):
@@ -193,30 +194,48 @@ class CoordinateGeometry(object):
         axial_2 = [(0,5),(1,5),(2,5),(3,5)]
         sum3 = sum([self.dotProducts[i][j]**2 for i,j in axial_2])
 
-        return 1.0 - 1.0 / 4.0 * sum([sum1, sum2, sum3])
+        return float(1.0 - 1.0 / 4.0 * sum([sum1, sum2, sum3]))
 
 
     def _calc_distances(self):
 
-        dist = [np.linalg.norm(self.center - n) for n in self.neighbors]
-        self.distances = np.array(dist)
+        dist = [float(np.linalg.norm(self.center - n)) for n in self.neighbors]
+        #self.distances = np.array(dist)
+        # TODO use list instead of numpy
+        self.distances = dist
 
 
     def _calc_angles(self):
 
         self._get_vectors()
-        self.angles = [*map(self._angle, self.vectors[:-1], self.vectors[1:])]
+        #self.angles = [*map(self._angle, self.vectors[:-1], self.vectors[1:])]
+        # TODO:
+        self.angles = [0.0] * int((len(self.neighbors) * len(self.neighbors) - 1)/2)
+
+        n = 0
+        for i in range(len(self.vectors) -1):
+            for j in range(i+1, len(self.vectors)):
+
+                self.angles[n] = self._angle(i,j)
+                n += 1
 
 
     def _calc_dot_products(self):
 
         index = self._get_index_by_distance(self.distances)
-        vectors = np.array([np.linalg.norm(self.center - self.neighbors[i]) \
-                            for i in index])
+        vectors = np.array([np.linalg.norm(self.center - self.neighbors[index[i]]) \
+                            for i in range(len(self.neighbors))])
 
+        self.dotProducts = [[0]*len(vectors)]*len(vectors)
+        for i in range(len(vectors) -1):
+            for j in range(1,len(vectors)):
+                self.dotProducts[i][j] = np.dot(vectors[i],vectors[j])
+
+        # TODO:
+        '''
         self.dotProducts = [[np.dot(i,j) for j in vectors[1:]] \
                             for i in vectors[:1]]
-
+        '''
 
     def _get_vectors(self):
 
@@ -225,11 +244,11 @@ class CoordinateGeometry(object):
 
     def _angle(self, a, b):
 
-      arccosInput = np.dot(a,b)/np.linagl.norm(a)/np.linagl.norm(b)
+      arccosInput = np.dot(a,b)/np.linalg.norm(a)/np.linalg.norm(b)
       arccosInput = 1.0 if arccosInput > 1.0 else arccosInput
       arccosInput = -1.0 if arccosInput < -1.0 else arccosInput
 
-      return math.acos(arccosInput)
+      return float(math.acos(arccosInput))
 
 
     def _get_index_by_distance(self, values):
