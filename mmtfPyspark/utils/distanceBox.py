@@ -76,9 +76,9 @@ class DistanceBox(object):
 
     def get_neighbors(self, point):
 
-        i = np.rint(float(point.x) * self.inverseBinWidth)
-        j = np.rint(float(point.y) * self.inverseBinWidth)
-        k = np.rint(float(point.z) * self.inverseBinWidth)
+        i = np.rint(float(point[0]) * self.inverseBinWidth)
+        j = np.rint(float(point[1]) * self.inverseBinWidth)
+        k = np.rint(float(point[2]) * self.inverseBinWidth)
         location = i + (j*10000) + (k*1000000000)
 
         box = self.get_box_two(location)
