@@ -13,27 +13,38 @@ Authorship information:
 '''
 
 from pyspark.sql.types import *
+import numpy as np
 
 class InteractionCenter(object):
 
-    length = 7
+    def __init__(self, structure = None, atomIndex = None):
 
-    def __init__(self, structure, atomIndex):
+        if structure is not None and atomIndex is not None:
 
-        self.set_atom_name(structure.get_atom_names()[atomIndex])
-        self.set_element(structure.get_elements()[atomIndex])
-        self.set_group_name(structure.get_group_names()[atomIndex])
-        self.set_group_number(structure.get_group_numbers()[atomIndex])
-        self.set_type(structure.get_entity_types()[atomIndex])
-        self.set_chain_name(structure.get_chain_names()[atomIndex])
-        self.set_sequence_position(structure.get_sequence_positions()[atomIndex])
-        self.set_coordinates(np.array([structure.get_x_coords()[atomIndex], \
-                                       structure.get_y_coords()[atomIndex], \
-                                       structure.get_z_coords()[atomIndex]]))
-        self.set_normalized_b_factor(structure.get_normalized_b_factors()[atomIndex])
+            self.set_atom_name(structure.get_atom_names()[atomIndex])
+            self.set_element(structure.get_elements()[atomIndex])
+            self.set_group_name(structure.get_group_names()[atomIndex])
+            self.set_group_number(structure.get_group_numbers()[atomIndex])
+            self.set_type(structure.get_entity_types()[atomIndex])
+            self.set_chain_name(structure.get_chain_names()[atomIndex])
+            self.set_sequence_position(structure.get_sequence_positions()[atomIndex])
+            self.set_coordinates(np.array([structure.get_x_coords()[atomIndex], \
+                                           structure.get_y_coords()[atomIndex], \
+                                           structure.get_z_coords()[atomIndex]]))
+            self.set_normalized_b_factors(structure.get_normalized_b_factors()[atomIndex])
+
+        else:
+            self.coordinates = None
+            self.atomName = None
+            self.element = None
+            self.groupName = None
+            self.groupNumber = None
+            self.type = None
+            self.chainName = None
+            self.normalizedbFactor = None
 
 
-    def get_length(self):
+    def get_length():
         '''
         Returns the number of data items in an interaction center.
         Note, not all data are currently included
@@ -42,7 +53,9 @@ class InteractionCenter(object):
             the number of data items in an interaction center
         '''
 
-        return length
+        LENGTH = 7
+
+        return LENGTH
 
 
     def get_atom_name(self):
@@ -252,12 +265,12 @@ class InteractionCenter(object):
         Returns:
             list of objects representing this interaction center
         '''
-
+        
         return [self.atomName, self.element, self.groupName, self.groupNumber, \
                 self.type, self.chainName, self.normalizedbFactor]
 
 
-    def get_struct_fields(self, index):
+    def get_struct_fields(index):
         '''
         Returns a schema to create Spark Datasets. This schema must match the
         order in which the data are return by the getAsObject() method.
@@ -280,3 +293,5 @@ class InteractionCenter(object):
         sf.append(StructField("type" + index, StringType(), nullable))
         sf.append(StructField("chain" + index, StringType(), nullable))
         sf.append(StructField("nbFactor" + index, FloatType(), nullable))
+
+        return sf
