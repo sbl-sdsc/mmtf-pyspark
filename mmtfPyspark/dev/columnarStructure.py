@@ -365,7 +365,7 @@ class ColumnarStructure(object):
 
         if self.entityChainIndex is None:
 
-            self.entityChainIndex = np.empty(self.get_num_chains(), dtype = '>i4')
+            self.entityChainIndex = np.empty(self.structure.num_chains, dtype = '>i4')
 
             for i,entity in enumerate(self.structure.entity_list):
 
