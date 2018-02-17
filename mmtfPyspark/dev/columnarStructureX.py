@@ -39,10 +39,11 @@ class ColumnarStructureX(ColumnarStructure):
             self.get_entity_types()
             self.bFactors = self.get_b_factors()
             # Filter out DOD and HOH
-            stats = self.bFactors[self.entityTypes == 'WAT']
+            stats = np.array([self.bFactors[i] for i in range(self.get_num_atoms())\
+                              if self.entityTypes[i] == 'WAT'])
             # Define normalize function
             normalize = lambda x: (x - stats.mean()) / stats.std()
-            self.normalizedbFactors = normalize(self.bFactors)
+            self.normalizedbFactors = [float(n) for n in normalize(self.bFactors)]
 
         return self.normalizedbFactors
 
