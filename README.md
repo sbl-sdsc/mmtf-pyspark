@@ -83,6 +83,7 @@ Add the following lines in your bash_profile:
 export SPARK_HOME=~/spark-2.2.0-bin-hadoop2.7  <Path to your spark>
 export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
 export PYTHONPATH=$SPARK_HOME/python:$SPARK_HOME/python/build:$PYTHONPATH
+export PYSPARK_PYTHON=python3
 ```
 
 5. Source your bash_profile
