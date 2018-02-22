@@ -215,7 +215,6 @@ class CoordinateGeometry(object):
         n = 0
         for i in range(len(self.vectors) -1):
             for j in range(i+1, len(self.vectors)):
-
                 self.angles[n] = self._angle(i,j)
                 n += 1
 
@@ -223,13 +222,16 @@ class CoordinateGeometry(object):
     def _calc_dot_products(self):
 
         index = self._get_index_by_distance(self.distances)
-        vectors = np.array([np.linalg.norm(self.center - self.neighbors[index[i]]) \
+        vectors = np.array([(self.center - self.neighbors[index[i]]) / \
+                            np.linalg.norm(self.center - self.neighbors[index[i]]) \
                             for i in range(len(self.neighbors))])
 
-        self.dotProducts = [[0]*len(vectors)]*len(vectors)
+
+        #self.dotProducts = [[0]*len(vectors)]*len(vectors)
+        self.dotProducts = np.zeros((len(vectors),len(vectors)))
         for i in range(len(vectors) -1):
-            for j in range(1,len(vectors)):
-                self.dotProducts[i][j] = np.dot(vectors[i],vectors[j])
+            for j in range(i+1,len(vectors)):
+                self.dotProducts[i,j] = float(np.dot(vectors[i],vectors[j]))
 
         # TODO:
         '''
