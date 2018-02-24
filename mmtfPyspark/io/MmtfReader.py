@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 '''
-MmtfSReader.py: Reads and decodes an MMTF Hadoop Sequence file.
-(e.g. PDB ID) as the key and the MMTF StructureDataInterface as the value.
+mmtfReader.py: Methods for reading and downloading structures in MMTF file
+formats. The data are returned as a PythonRDD with the structure id (e.g. PDB ID)
+as the key and the structural data as the value.
+
+Supported operations and file formats:
+    - Read directory of MMTF-Hadoop sequence files in full and reduced representation
+    - Download MMTF full and reduced representations using web service (mmtf.rcsb.org)
+    - Read directory of MMTF files (.mmtf, mmtf.gz)
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -10,118 +16,155 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from mmtf.api.mmtf_reader import MMTFDecoder
-from mmtf.api import default_api
-from mmtfPyspark.inputFunction import biopythonInputFunction
-from Bio.PDB import PDBParser, MMCIFParser, FastMMCIFParser
-from mmtf import MMTFEncoder
-from mmtf.api.default_api import pass_data_on
-from mmtfPyspark.io.mmtfStructure import mmtfStructure
+import os
 import msgpack
 import gzip
-import os
+from mmtfPyspark.io import mmtfStructure
+from mmtf.api import default_api
 from os import path, walk
 
-text = "org.apache.hadoop.io.Text"
-byteWritable = "org.apache.hadoop.io.BytesWritable"
 
-def call_sequence_file(t):
+def read_full_squence_file(sc, pdbId=None, fraction=None, seed=123):
+    '''Reads a MMTF-Hadoop Sequence file using the default file location.
+    The default file location is determined by {mmtfReader.get_mmtf_full_path}
+
+    Downloads:
+        To download mmtf files: {https://mmtf.rcsb.org/download.htm}
+
+    Attributes:
+        sc (Spark Context):
+        pdbID (list(str)): List of structures to read
+        fraction (float): fraction of structure to read
+        seed (int): random seed
     '''
-    Call function for hadoop sequence files
+    return read_sequence_file(_get_mmtf_full_path(), sc, pdbId, fraction, seed)
+
+
+def read_reduced_squence_file(sc, pdbId=None, fraction=None, seed=123):
+    '''Reads a MMTF-Hadoop Sequence file using the default file location.
+    The default file location is determined by {mmtfReader.get_mmtf_reduced_path}
+
+    Downloads:
+        To download mmtf files: {https://mmtf.rcsb.org/download.htm}
+
+    Attributes:
+        sc (Spark Context):
+        pdbID (list(str)): List of structures to read
+        fraction (float): fraction of structure to read
+        seed (int): random seed
     '''
+    return read_sequence_file(_get_mmtf_reduced_path(), sc, pdbId, fraction, seed)
+
+
+def read_sequence_file(path, sc, pdbId=None, fraction=None, seed=123):
+    '''Reads an MMTF Hadoop Sequence File. Can read all files from path,
+    randomly rample a fraction, or a subset based on input list.
+    See <a href="http://mmtf.rcsb.org/download.html"> for file download information</a>
+
+    Attributes:
+        path (str): path to file directory
+        sc (Spark Context):
+        pdbID (list(str)): List of structures to read
+        fraction (float): fraction of structure to read
+        seed (int): random seed
+    '''
+
+    if not os.path.exists(path):
+        raise Exception("file path does not exist")
+
+    infiles = sc.sequenceFile(path, text, byteWritable)
+
+    # Read in all structures from a directory
+    if (pdbId == None and fraction == None):
+        return infiles.map(_call_sequence_file)
+
+    # Read in a specified list of pdbIds
+    elif(pdbId != None and fraction == None):
+        pdbIdSet = set(pdbId)
+        return infiles.filter(lambda t: str(t[0]) in pdbIdSet).map(_call_sequence_file)
+
+    # Read in a random fraction of structures from a directory
+    elif (pdbId == None and fraction != None):
+        return infiles.sample(False, fraction, seed).map(_call_sequence_file)
+
+    else:
+        raise Exception("Inappropriate combination of parameters")
+
+
+def read_mmtf_files(path, sc):
+    '''Read the specified PDB entries from a MMTF file
+
+    Attributes:
+        path (str): Path to MMTF files
+        sc (Spark context)
+
+    Return:
+        structure data as keywork/value pairs
+    '''
+
+    if not os.path.exists(path):
+        raise Exception("file path does not exist")
+
+    return sc.parallelize(_get_files(path)).map(_call_mmtf).filter(lambda t: t != None)
+
+# TODO: wait for mmtf-python to update get_raw_data_from_url to get reduced files
+def download_mmtf_files(pdbIds, sc):
+    '''Download and reads the specified PDB entries using <a href="http://mmtf.rcsb.org/download.html">MMTF web services</a>.
+
+    Attributes:
+        path (str): Path to PDB files
+        sc (Spark context)
+
+    Return:
+        structure data as keywork/value pairs
+    '''
+
+    return sc.parallelize(set(pdbIds)).map(lambda t: _get_structure(t))
+
+# Helper fucntions
+def _get_structure(pdbId):
+    '''
+    Download and decode a list of structure from a list of PDBid
+
+    Attributes:
+        pdbID (List(str)): List of structures to download
+    Return:
+        tuble of pdbID and deccoder
+    '''
+
+    unpack = default_api.get_raw_data_from_url(pdbId)
+    decoder = MmtfStructure(unpack)
+    return (pdbId, decoder)
+
+def _call_sequence_file(t):
+    '''Call function for hadoop sequence files'''
+
     unpack = msgpack.unpackb(t[1])
-    decoder = mmtfStructure(unpack)
+    decoder = MmtfStructure(unpack)
     return (str(t[0]), decoder)
 
 
-def call_sequence_file_gzip(t):
-    '''
-    Call function for hadoop sequence files
-    '''
-    data = default_api.ungzip_data(t[1])
-    unpack = msgpack.unpackb(data.read())
-    decoder = mmtfStructure(unpack)
-    return (str(t[0]), decoder)
-
-def call_mmtf(f):
-    '''
-    Call function for mmtf files
-    '''
+def _call_mmtf(f):
+    '''Call function for mmtf files'''
 
     if ".mmtf.gz" in f:
         name = f.split('/')[-1].split('.')[0].upper()
 
         data = gzip.open(f,'rb')
         unpack = msgpack.unpack(data)
-        decoder = mmtfStructure(unpack)
+        decoder = MmtfStructure(unpack)
         return (name, decoder)
 
     elif ".mmtf" in f:
         name = f.split('/')[-1].split('.')[0].upper()
 
         unpack = msgpack.unpack(open(f,"rb"))
-        decoder = mmtfStructure(unpack)
+        decoder = MmtfStructure(unpack)
         return (name, decoder)
 
 
-def call_pdb(f):
-    '''
-    Call function for pdb files
-    '''
-
-    if (".pdb" or ".ent") in f:
-        print(f)
-        name = f.split('/')[-1].split('.')[0].upper()
-        # Open gz files
-        if ".gz" in f:
-            f = gzip.open(f, 'rt')
-        parser = PDBParser()
-        structure = parser.get_structure(name, f)
-        mmtf_encoder = MMTFEncoder()
-        pass_data_on(input_data=structure, input_function=biopythonInputFunction,
-                     output_data=mmtf_encoder)
-        return (name, mmtf_encoder)
-
-
-def call_mmcif(f):
-    '''
-    Call function for mmcif files
-    '''
-
-    if (".cif") in f:
-        name = f.split('/')[-1].split('.')[0].upper()
-        # Open gz files
-        if ".gz" in f:
-            f = gzip.open(f, 'rt')
-        parser = MMCIFParser()
-        structure = parser.get_structure(name, f)
-        mmtf_encoder = MMTFEncoder()
-        pass_data_on(input_data=structure, input_function=biopythonInputFunction,
-                     output_data=mmtf_encoder)
-        return (name, mmtf_encoder)
-
-
-def call_fast_mmcif(f):
-    '''
-    Call function for mmcifr files (Using Fast Parser)
-    '''
-
-    if (".cif") in f:
-        name = f.split('/')[-1].split('.')[0].upper()
-        # Open gz files
-        if ".gz" in f:
-            f = gzip.open(f, 'rt')
-        parser = FastMMCIFParser()
-        structure = parser.get_structure(name, f)
-        mmtf_encoder = MMTFEncoder()
-        pass_data_on(input_data=structure, input_function=biopythonInputFunction,
-                     output_data=mmtf_encoder)
-        return (name, mmtf_encoder)
-
-
-def getFiles(user_path):
-    '''
-    Get List of files from path
+def _get_files(user_path):
+    '''Get List of files from path
 
     Attributes:
         user_path (str): File path
@@ -138,124 +181,33 @@ def getFiles(user_path):
     return files
 
 
-def getStructure(pdbId):
+def _get_mmtf_full_path():
+    '''Returns the path to the full MMTF-Hadoop sequence file.
+    It looks for the environmental variable "MMTF_FULL", if not set, an error
+    message will be shown.
+
+    Returns:
+        path to the mmtf_full directory
     '''
-    Download and decode a list of structure from a list of PDBid
 
-    Attributes:
-        pdbID (List(str)): List of structures to download
-    Return:
-        tuble of pdbID and deccoder
-    '''
-
-    unpack = default_api.get_raw_data_from_url(pdbId)
-    decoder = mmtfStructure(unpack)
-    return (pdbId, decoder)
-
-
-def readSequenceFile(path, sc, pdbId=None, fraction=None, seed=None, gz = True):
-    '''
-    Reads an MMTF Hadoop Sequence File. Can read all files from path,
-    randomly rample a fraction, or a subset based on input list.
-    See <a href="http://mmtf.rcsb.org/download.html"> for file download information</a>
-
-    Attributes:
-        path (str): path to file directory
-        sc (Spark Context):
-        pdbID (list(str)): List of structures to read
-        fraction (float): fraction of structure to read
-        seed (int): random seed
-    '''
-    if gz:
-        call = call_sequence_file_gzip
+    if 'MMTF_FULL' in os.environ:
+        print(f"Hadoop Sequence file path: MMTF_FULL={os.environ.get(MMTF_FULL)}")
+        return os.environ.get("MMTF_FULL")
     else:
-        call = call_sequence_file
+        raise EnvironmentError("Environmental variable 'MMTF_FULL not set'")
 
-    if not os.path.exists(path):
-        raise Exception("file path does not exist")
 
-    infiles = sc.sequenceFile(path, text, byteWritable)
+def _get_mmtf_reduced_path():
+    '''Returns the path to the reduced MMTF-Hadoop sequence file.
+    It looks for the environmental variable "MMTF_REDUCED", if not set, an error
+    message will be shown.
 
-    if (pdbId == None and fraction == None and seed == None):
-        return infiles.map(call)
+    Returns:
+        path to the mmtf_reduced directory
+    '''
 
-    elif(pdbId != None and fraction == None and seed == None):
-        pdbIdSet = set(pdbId)
-        return infiles.filter(lambda t: str(t[0]) in pdbIdSet).map(call)
-
-    elif (fraction != None and seed != None):
-        return infiles.sample(False, fraction, seed).map(call)
+    if 'MMTF_REDUCED' in os.environ:
+        print(f"Hadoop Sequence file path: MMTF_REDUCED={os.environ.get(MMTF_REDUCED)}")
+        return os.environ.get("MMTF_REDUCED")
     else:
-        raise Exception("Inappropriate combination of parameters")
-
-
-def readMmtfFiles(path, sc):
-    '''
-    Read the specified PDB entries from a MMTF file
-
-    Attributes:
-        path (str): Path to MMTF files
-        sc (Spark context)
-
-    Return:
-        structure data as keywork/value pairs
-    '''
-
-    if not os.path.exists(path):
-        raise Exception("file path does not exist")
-
-    return sc.parallelize(getFiles(path)).map(call_mmtf).filter(lambda t: t != None)
-
-
-def readPDBFiles(path, sc):
-    '''
-    Read the specified PDB entries from a PDB file
-
-    Attributes:
-        path (str): Path to PDB files
-        sc (Spark context)
-
-    Return:
-        structure data as keywork/value pairs
-    '''
-
-    if not os.path.exists(path):
-        raise Exception("file path does not exist")
-
-    return sc.parallelize(getFiles(path)).map(call_pdb).filter(lambda t: t != None)
-
-
-def readMmcifFiles(path, sc, fast=False):
-    '''
-    Read the specified PDB entries from a MMcif file
-
-    Attributes:
-        path (str): Path to MMcif files
-        sc (Spark context)
-
-    Return:
-        structure data as keywork/value pairs
-    '''
-
-    if not os.path.exists(path):
-        raise Exception("file path does not exist")
-
-    if fast:
-        return sc.parallelize(getFiles(path)).map(call_fast_mmcif).filter(lambda t: t != None)
-    else:
-        return sc.parallelize(getFiles(path)).map(call_mmcif).filter(lambda t: t != None)
-
-
-def downloadMmtfFiles(pdbIds, sc):
-    '''
-    Download and reads the specified PDB entries using <a href="http://mmtf.rcsb.org/download.html">MMTF web services</a>.
-
-    Attributes:
-        path (str): Path to PDB files
-        sc (Spark context)
-
-    Return:
-        structure data as keywork/value pairs
-    '''
-
-    return sc.parallelize(set(pdbIds)).map(lambda t: getStructure(t))
+        raise EnvironmentError("Environmental variable 'MMTF_REDUCED not set'")
