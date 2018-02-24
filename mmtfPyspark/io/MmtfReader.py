@@ -19,10 +19,12 @@ Authorship information:
 import os
 import msgpack
 import gzip
-from mmtfPyspark.io import mmtfStructure
+from mmtfPyspark.io import MmtfStructure
 from mmtf.api import default_api
 from os import path, walk
 
+text = "org.apache.hadoop.io.Text"
+byteWritable = "org.apache.hadoop.io.BytesWritable"
 
 def read_full_squence_file(sc, pdbId=None, fraction=None, seed=123):
     '''Reads a MMTF-Hadoop Sequence file using the default file location.
@@ -138,8 +140,9 @@ def _get_structure(pdbId):
 
 def _call_sequence_file(t):
     '''Call function for hadoop sequence files'''
-
-    unpack = msgpack.unpackb(t[1])
+    # TODO: check if all sequence files are gzipped
+    data = default_api.ungzip_data(t[1])
+    unpack = msgpack.unpackb(data.read())
     decoder = MmtfStructure(unpack)
     return (str(t[0]), decoder)
 
@@ -191,7 +194,7 @@ def _get_mmtf_full_path():
     '''
 
     if 'MMTF_FULL' in os.environ:
-        print(f"Hadoop Sequence file path: MMTF_FULL={os.environ.get(MMTF_FULL)}")
+        print(f"Hadoop Sequence file path: MMTF_FULL={os.environ.get('MMTF_FULL')}")
         return os.environ.get("MMTF_FULL")
     else:
         raise EnvironmentError("Environmental variable 'MMTF_FULL not set'")
@@ -207,7 +210,7 @@ def _get_mmtf_reduced_path():
     '''
 
     if 'MMTF_REDUCED' in os.environ:
-        print(f"Hadoop Sequence file path: MMTF_REDUCED={os.environ.get(MMTF_REDUCED)}")
+        print(f"Hadoop Sequence file path: MMTF_REDUCED={os.environ.get('MMTF_REDUCED')}")
         return os.environ.get("MMTF_REDUCED")
     else:
         raise EnvironmentError("Environmental variable 'MMTF_REDUCED not set'")
