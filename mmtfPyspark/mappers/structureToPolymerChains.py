@@ -14,7 +14,7 @@ Authorship information:
 '''
 from mmtf.utils import *
 from mmtf.api.mmtf_writer import MMTFEncoder
-from mmtfPyspark.io.mmtfStructure import mmtfStructure
+from mmtfPyspark.io.mmtfStructure import MmtfStructure
 
 class structureToPolymerChains(object):
     '''
@@ -36,7 +36,7 @@ class structureToPolymerChains(object):
 
     def __call__(self, t):
 
-        if type(t[1]) == mmtfStructure and t[1].alt_loc_set == False:
+        if type(t[1]) == MmtfStructure and t[1].alt_loc_set == False:
             structure = t[1].set_alt_loc_list()
         else:
             structure = t[1]
