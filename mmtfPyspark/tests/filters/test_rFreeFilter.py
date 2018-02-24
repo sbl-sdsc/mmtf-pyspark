@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import rFree
 
 class testrFreeFilter(unittest.TestCase):
@@ -16,7 +16,7 @@ class testrFreeFilter(unittest.TestCase):
         # 3REC: n/a NMR structure
         # 1LU3: n/a EM structure
         pdbIds = ['2ONX','2OLX','3REC','1LU3']
-        self.pdb = downloadMmtfFiles(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
 
     def test1(self):

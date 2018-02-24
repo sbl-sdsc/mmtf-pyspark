@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import containsDProteinChain
 from mmtfPyspark.mappers import *
 
@@ -14,7 +14,7 @@ class containsDProteinChainTest(unittest.TestCase):
 
 
         pdbIds = ['2ONX','1JLP','5X6H','5L2G','2MK1','2V5W','5XDP','5GOD']
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

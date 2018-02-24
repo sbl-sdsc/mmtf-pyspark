@@ -246,7 +246,7 @@ def readMmcifFiles(path, sc, fast=False):
         return sc.parallelize(getFiles(path)).map(call_mmcif).filter(lambda t: t != None)
 
 
-def downloadMmtfFiles(pdbIds, sc):
+def download_mmtf_files(pdbIds, sc):
     '''
     Download and reads the specified PDB entries using <a href="http://mmtf.rcsb.org/download.html">MMTF web services</a>.
 

@@ -46,7 +46,7 @@ def main():
     fraction = 0.1
     seed = 123
 
-    #.downloadMmtfFiles(["2ONX",'1JLP','5X6H','5L2G','2MK1' ],sc) \
+    #.download_mmtf_files(["2ONX",'1JLP','5X6H','5L2G','2MK1' ],sc) \
 
 
 

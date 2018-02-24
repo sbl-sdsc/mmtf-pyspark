@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import containsAlternativeLocations
 
 class testContainsAlternativeLocations(unittest.TestCase):
@@ -14,7 +14,7 @@ class testContainsAlternativeLocations(unittest.TestCase):
         # 4QXX: has alternative location ids
         # 2ONX: has no alternative location ids
         pdbIds = ['4QXX','2ONX']
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
         self.pdb = self.pdb.map(lambda x: (x[0],x[1].set_alt_loc_list()))
 
 

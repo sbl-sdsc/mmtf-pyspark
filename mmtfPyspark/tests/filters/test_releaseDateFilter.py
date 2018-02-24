@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import releaseDate
 
 class testReleaseDateFilter(unittest.TestCase):
@@ -16,7 +16,7 @@ class testReleaseDateFilter(unittest.TestCase):
         # 3VCO: released on 2013-03-06
         # 5N0Y: released on 2017-05-24
         self.sc = SparkContext(conf=conf)
-        self.pdb = downloadMmtfFiles(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
 
     def test1(self):

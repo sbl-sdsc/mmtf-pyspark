@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.mappers import structureToBioassembly, structureToProteinDimers
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import containsAlternativeLocations
 
 class structureToProteinDimersTest(unittest.TestCase):
@@ -15,7 +15,7 @@ class structureToProteinDimersTest(unittest.TestCase):
 
     def test1(self):
         pdbIds = ["1I1G"]
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
         pdb_1 = self.pdb.flatMap(structureToBioassembly()) \
                         .flatMap(structureToProteinDimers(8,20,False, True))
@@ -25,7 +25,7 @@ class structureToProteinDimersTest(unittest.TestCase):
 
     def test2(self):
         pdbIds = ["5NV3"]
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
         pdb_2 = self.pdb.flatMap(structureToBioassembly()) \
                         .flatMap(structureToProteinDimers(8,20,False, True))
@@ -44,7 +44,7 @@ class structureToProteinDimersTest(unittest.TestCase):
         # B7-A4
         # B8-A4
         # B8-B7
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
         pdb_3 = self.pdb.flatMap(structureToBioassembly()) \
                         .flatMap(structureToProteinDimers(8,20,False, True))
@@ -59,7 +59,7 @@ class structureToProteinDimersTest(unittest.TestCase):
         # D7-A2
         # D8-A1
         # E10-E9
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
         pdb_4 = self.pdb.flatMap(structureToBioassembly()) \
                         .flatMap(structureToProteinDimers(9,20,False, True))

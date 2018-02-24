@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import containsDnaChain
 # from mmtfPyspark.mappers.structureToPolymerChains import structureToPolymerChains
 from mmtfPyspark.mappers import *
@@ -19,7 +19,7 @@ class testContainsDnaChainTest(unittest.TestCase):
         # 5L2G: DNA chain
         # 2MK1: D-saccharide
         pdbIds = ['2ONX','1JLP','5X6H','5L2G','2MK1']
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

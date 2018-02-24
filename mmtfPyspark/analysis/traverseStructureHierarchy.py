@@ -1,6 +1,6 @@
 from pyspark import SparkConf, SparkContext
 import sys
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles, read_sequence_file
+from mmtfPyspark.io.MmtfReader import download_mmtf_files, read_sequence_file
 from mmtfPyspark.filters import rFree
 from mmtfPyspark.filters import notFilter
 from mmtfPyspark.filters import resolution
@@ -34,7 +34,7 @@ def main(argv):
 
     #Mmtf sequence file reader
     pdbIds = ['1AQ1','5GOD']
-    pdb = downloadMmtfFiles(pdbIds,sc)
+    pdb = download_mmtf_files(pdbIds,sc)
 
     def getChainToEntityIndex(structure):
         entityChainIndex = [0] * structure.num_chains

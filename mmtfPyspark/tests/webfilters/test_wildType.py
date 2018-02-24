@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import wildTypeQuery
 
 
@@ -13,7 +13,7 @@ class wildTypeTest(unittest.TestCase):
         self.sc = SparkContext(conf=conf)
 
         pdbIds = ["1PEN", "1OCZ", "2ONX"]
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

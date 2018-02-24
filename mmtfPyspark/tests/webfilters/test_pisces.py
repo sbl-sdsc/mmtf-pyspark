@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import pisces
 from mmtfPyspark.mappers import *
 
@@ -14,7 +14,7 @@ class piscesTest(unittest.TestCase):
 
         # "4R4X.A" and "5X42.B" should pass filter
         pdbIds = ["5X42","4R4X","2ONX","1JLP"]
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import polymerComposition
 from mmtfPyspark.mappers import *
 
@@ -21,7 +21,7 @@ class polymerCompositionTest(unittest.TestCase):
         # 1AA6: contains SEC, selenocysteine (21st amino acid)
         # 1NTH: contains PYL, pyrrolysine (22nd amino acid)
         pdbIds = ["2ONX","1JLP","5X6H","5L2G","2MK1","5UZT","1AA6","1NTH"]
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

@@ -13,7 +13,7 @@ class testCoordiateGeometry(unittest.TestCase):
         conf = SparkConf().setMaster("local[*]").setAppName('coordinateGeometry')
         self.sc = SparkContext(conf=conf)
 
-        self.pdb = MmtfReader.downloadMmtfFiles(['5Y20'], self.sc)
+        self.pdb = MmtfReader.download_mmtf_files(['5Y20'], self.sc)
 
 
     def get_coords(self, cs, index):

@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import containsDSaccharideChain
 from mmtfPyspark.mappers import *
 
@@ -19,7 +19,7 @@ class containsDSaccharideChainTest(unittest.TestCase):
         # 2MK1: As of V5 of PDBx/mmCIF, saccharides seem to be represented as monomers,
         #       instead of polysaccharides, so none of these tests returns true anymore.
         pdbIds = ['2ONX','1JLP','5X6H','5L2G','2MK1']
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

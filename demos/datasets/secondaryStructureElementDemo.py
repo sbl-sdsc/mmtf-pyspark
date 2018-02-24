@@ -24,7 +24,7 @@ def main():
                       .setAppName("secondaryStructureElementDemo")
     sc = SparkContext(conf = conf)
 
-    pdb = MmtfReader.downloadMmtfFiles(["1STP"],sc).cache()
+    pdb = MmtfReader.download_mmtf_files(["1STP"],sc).cache()
 
     pdb = pdb.flatMap(structureToPolymerChains()) \
              .filter(containsLProteinChain())

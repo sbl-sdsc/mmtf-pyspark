@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import PdbjMine
 from mmtfPyspark.datasets import PdbjMineService
 from mmtfPyspark.mappers import structureToPolymerChains
@@ -15,7 +15,7 @@ class mineSearchTest(unittest.TestCase):
         self.sc = SparkContext(conf=conf)
 
         pdbIds = ["5JDE","5CU4","5L6W","5UFU","5IHB"]
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):
