@@ -12,7 +12,7 @@ __status__ = "Warning"
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import readSequenceFile
+from mmtfPyspark.io.MmtfReader import read_sequence_file
 
 
 class testReadSequenceFile(unittest.TestCase):
@@ -22,9 +22,9 @@ class testReadSequenceFile(unittest.TestCase):
         stringIds = "1FDK,1FDL,1FDM,1FDN,1FDO,1FDP,1FDQ,1FDR,1FDS,1FDT"
 
         self.pdbIds = stringIds.split(',')
-        conf = SparkConf().setMaster("local[*]").setAppName('readSequenceFile')
+        conf = SparkConf().setMaster("local[*]").setAppName('read_sequence_file')
         self.sc = SparkContext(conf=conf)
-        self.pdb = readSequenceFile(path, self.sc, pdbId = self.pdbIds)
+        self.pdb = read_sequence_file(path, self.sc, pdbId = self.pdbIds)
 
 
     def test_size(self):
