@@ -44,7 +44,7 @@ def main():
     resolution = 2.0
 
     pdb = MmtfReader \
-            .readSequenceFile(path, sc) \
+            .read_sequence_file(path, sc) \
             .filter(pisces(sequenceIdentity, resolution)) \
             .flatMap(structureToPolymerChains()) \
             .filter(pisces(sequenceIdentity, resolution)) \

@@ -23,7 +23,7 @@ def main():
                       .setAppName("FilterByDepositionDate")
 	sc = SparkContext(conf = conf)
 
-	count = MmtfReader.readSequenceFile(path, sc) \
+	count = MmtfReader.read_sequence_file(path, sc) \
                       .filter(depositionDate("2016-01-28","2017-02-28")) \
                       .count()
 

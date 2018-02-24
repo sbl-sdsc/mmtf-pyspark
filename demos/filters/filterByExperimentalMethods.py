@@ -23,7 +23,7 @@ def main():
                       .setAppName("FilterByDExperimentalMethods")
 	sc = SparkContext(conf = conf)
 
-	MmtfReader.readSequenceFile(path, sc) \
+	MmtfReader.read_sequence_file(path, sc) \
               .filter(experimentalMethods(experimentalMethods.NEUTRON_DIFFRACTION, experimentalMethods.X_RAY_DIFFRACTION)) \
               .keys() \
               .foreach(lambda x: print(x))

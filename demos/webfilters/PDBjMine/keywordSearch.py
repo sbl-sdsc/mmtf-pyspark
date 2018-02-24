@@ -25,7 +25,7 @@ def main():
                       .setAppName("keywordSearch")
     sc = SparkContext(conf = conf)
 
-    pdb = MmtfReader.readSequenceFile(path, sc)
+    pdb = MmtfReader.read_sequence_file(path, sc)
     sql = "select pdbid, resolution, biol_species, db_uniprot, db_pfam, hit_score from keyword_search('porin') order by hit_score desc"
 
     search = PdbjMine(sql)
