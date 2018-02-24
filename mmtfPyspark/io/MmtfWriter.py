@@ -12,7 +12,7 @@ Authorship information:
 '''
 
 from mmtf.api.mmtf_writer import MMTFEncoder
-from mmtfPyspark.io import mmtfStructure
+from mmtfPyspark.io import MmtfStructure
 import gzip
 import msgpack
 import os
@@ -27,7 +27,7 @@ def writeSequenceFile(path, sc, structure, compressed = True):
         structure (tuple): structure data to be written
         compress (bool): if true, apply gzip compression
     '''
-    if structure.first()[1] == mmtfStructure:
+    if structure.first()[1] == MmtfStructure:
         structure.map(lambda s: (s[0],s[1].set_alt_loc_list()) \
                                  if not s[1].alt_loc_set \
                                  else s) \
