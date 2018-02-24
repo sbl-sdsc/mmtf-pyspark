@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.mappers import structureToBiopython, structureToPolymerChains
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import containsAlternativeLocations
 
 class structureToBiopythonTest(unittest.TestCase):
@@ -22,7 +22,7 @@ class structureToBiopythonTest(unittest.TestCase):
         # tot: 10 chains
 
         pdbIds = ["1STP","4HHB","1JLP","5X6H","5L2G","2MK1"]
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

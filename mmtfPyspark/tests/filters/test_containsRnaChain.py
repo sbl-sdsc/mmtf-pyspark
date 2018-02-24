@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import containsRnaChain
 from mmtfPyspark.mappers import *
 
@@ -20,7 +20,7 @@ class containsLRnaChainTest(unittest.TestCase):
         # 5UX0: 2 L-protein, 2 RNA, 2 DNA chains
         # 2NCQ: 2 RNA chains
         pdbIds = ['2ONX','1JLP','5X6H','5L2G','2MK1','5UX0','2NCQ']
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

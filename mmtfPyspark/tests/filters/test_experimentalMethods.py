@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import experimentalMethods
 from mmtfPyspark.mappers import *
 
@@ -12,7 +12,7 @@ class experimentalMethodsTest(unittest.TestCase):
         conf = SparkConf().setMaster("local[*]").setAppName('containsDProteinChainTest')
         pdbIds = ["2ONX","5VLN","5VAI","5JXV","5K7N","3PDM","5MNX","5I1R","5MON","5LCB","3J07"]
         self.sc = SparkContext(conf=conf)
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

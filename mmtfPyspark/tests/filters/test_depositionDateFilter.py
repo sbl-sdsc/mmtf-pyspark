@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import depositionDate
 
 class testDepositionDateFilter(unittest.TestCase):
@@ -16,7 +16,7 @@ class testDepositionDateFilter(unittest.TestCase):
         # 3VCO: deposited on 2012-01-04
         # 5N0Y: deposited on 2017-02-03
         pdbIds = ['1O6Y','4MYA','3VCO','5N0Y']
-        self.pdb = downloadMmtfFiles(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
 
     def test1(self):

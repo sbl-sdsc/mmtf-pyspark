@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import containsSequenceRegex
 from mmtfPyspark.mappers import *
 
@@ -16,7 +16,7 @@ class containsSequenceRegexTest(unittest.TestCase):
         # 1JLP: does not contain Zinc finger motif
         # 5VAI: contains Walker P loop
         pdbIds = ['5KE8','1JLP','5VAI']
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

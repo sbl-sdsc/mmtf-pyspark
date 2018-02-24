@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import advancedQuery
 from mmtfPyspark.mappers import structureToPolymerChains
 
@@ -20,7 +20,7 @@ class advancedQueryTest(unittest.TestCase):
 		# 5KHU many chains, chain Q is EC 2.7.11.1
 		# 1F3M entity 1: chains A,B, entity 2: chains B,C, all chains are EC 2.7.11.1
         pdbIds = ["1PEN","1OCZ","2ONX","5L6W","5KHU","1F3M"]
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):

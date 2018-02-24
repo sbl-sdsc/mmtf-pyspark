@@ -11,7 +11,7 @@ class testColumnarStructure(unittest.TestCase):
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('columnarStructure')
         self.sc = SparkContext(conf=conf)
-        self.pdb = MmtfReader.downloadMmtfFiles(['1STP'], self.sc)
+        self.pdb = MmtfReader.download_mmtf_files(['1STP'], self.sc)
 
         structure = self.pdb.values().first()
         self.cs = ColumnarStructure(structure, True)

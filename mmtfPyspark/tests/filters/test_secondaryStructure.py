@@ -2,7 +2,7 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import secondaryStructure
 from mmtfPyspark.mappers import structureToPolymerChains
 
@@ -17,7 +17,7 @@ class secondaryStructureTest(unittest.TestCase):
         # 1EM7: alpha + beta, 14 alpha + 23 beta out of 56 = 0.25 helical and 0.411 sheet
         # 2C7M: 2 chains, alpha + beta (DSSP in MMTF doesn't match DSSP on RCSB PDB website)
         pdbIds = ["1AIE","1E0N","1EM7","2C7M"]
-        self.pdb = downloadMmtfFiles(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
 
     def test1(self):

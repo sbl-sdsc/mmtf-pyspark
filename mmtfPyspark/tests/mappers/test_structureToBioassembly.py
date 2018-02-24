@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.mappers import structureToBioassembly
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles
+from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.filters import containsAlternativeLocations
 
 class structureToBioassemblyTest(unittest.TestCase):
@@ -21,7 +21,7 @@ class structureToBioassemblyTest(unittest.TestCase):
         # --------------------
         # tot: 10 chains ,"4HHB","1JLP","5X6H","5L2G","2MK1"
         pdbIds = ["1HV4"]
-        self.pdb = downloadMmtfFiles(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds,self.sc)
 
 
     def test1(self):
