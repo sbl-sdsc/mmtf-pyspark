@@ -27,7 +27,7 @@ def main():
                       .setAppName("filterByResolution")
     sc = SparkContext(conf = conf)
 
-    count = MmtfReader.readSequenceFile(path, sc) \
+    count = MmtfReader.read_sequence_file(path, sc) \
                       .filter(rFree(0.0,2.0)) \
                       .count()
 

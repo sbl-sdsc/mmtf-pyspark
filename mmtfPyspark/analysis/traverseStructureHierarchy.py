@@ -1,6 +1,6 @@
 from pyspark import SparkConf, SparkContext
 import sys
-from mmtfPyspark.io.MmtfReader import downloadMmtfFiles, readSequenceFile
+from mmtfPyspark.io.MmtfReader import downloadMmtfFiles, read_sequence_file
 from mmtfPyspark.filters import rFree
 from mmtfPyspark.filters import notFilter
 from mmtfPyspark.filters import resolution

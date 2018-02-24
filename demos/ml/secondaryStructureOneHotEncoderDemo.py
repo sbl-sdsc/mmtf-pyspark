@@ -51,7 +51,7 @@ def main():
 
 
     pdb = MmtfReader \
-            .readSequenceFile(path, sc) \
+            .read_sequence_file(path, sc) \
             .flatMap(structureToPolymerChains()) \
             .filter(pisces(sequenceIdentity, resolution)) \
             .filter(containsLProteinChain()) \

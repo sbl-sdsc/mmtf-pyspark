@@ -27,7 +27,7 @@ def main():
                       .setAppName("FilterByGroup")
 	sc = SparkContext(conf = conf)
 
-	count = MmtfReader.readSequenceFile(path, sc) \
+	count = MmtfReader.read_sequence_file(path, sc) \
                       .filter(containsGroup("ATP", "MG")) \
                       .count()
 

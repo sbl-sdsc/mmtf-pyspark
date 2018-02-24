@@ -34,7 +34,7 @@ def main(argv):
         if opt in ["-p","--path"]:
             path = arg
 
-    pdb = readSequenceFile(path,sc)
+    pdb = read_sequence_file(path,sc)
 
     print(f"path: {path}")
     print(f"structures: {pdb.count()} cores: {sc.defaultParallelism} partitions: {pdb.getNumPartitions()}")

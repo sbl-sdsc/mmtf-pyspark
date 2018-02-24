@@ -23,7 +23,7 @@ def main():
                       .setAppName("FilterByPolymerChainType")
 	sc = SparkContext(conf=conf)
 
-	count = MmtfReader.readSequenceFile(path, sc) \
+	count = MmtfReader.read_sequence_file(path, sc) \
                       .filter(containsPolymerChainType(containsPolymerChainType.DNA_LINKING, containsPolymerChainType.RNA_LINKING)) \
                       .filter(notFilter(containsLProteinChain())) \
                       .filter(notFilter(containsDSaccharideChain()))

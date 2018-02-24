@@ -23,7 +23,7 @@ def main():
                       .setAppName("FilterByreleaseDate")
 	sc = SparkContext(conf = conf)
 
-	count = MmtfReader.readSequenceFile(path, sc) \
+	count = MmtfReader.read_sequence_file(path, sc) \
                       .filter(releaseDate("2000-01-28","2017-02-28")) \
                       .count()
 
