@@ -1,1 +1,1 @@
-
+from ./mmtfStructure import MmtfStructure

@@ -16,7 +16,7 @@ from mmtf.utils import decoder_utils
 from mmtfPyspark.utils import mmtfDecoder
 
 
-class mmtfStructure(object):
+class MmtfStructure(object):
     model_counter = 0
     chain_counter = 0
     group_counter = 0
