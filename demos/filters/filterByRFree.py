@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-'''
-filterByRFree.py:
+'''filterByRFree.py:
 
 Example of reading an MMTF Hadoop Sequence file,
 filtering the entries by rFree, and counting the
@@ -18,22 +17,24 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io import MmtfReader
-from mmtfPyspark.filters import rFree
+from mmtfPyspark.filters import RFree
+
 
 def main():
     path = "../../resources/mmtf_reduced_sample/"
 
     conf = SparkConf().setMaster("local[*]") \
                       .setAppName("filterByResolution")
-    sc = SparkContext(conf = conf)
+    sc = SparkContext(conf=conf)
 
     count = MmtfReader.read_sequence_file(path, sc) \
-                      .filter(rFree(0.0,2.0)) \
+                      .filter(RFree(0.0, 2.0)) \
                       .count()
 
-    print("Number of structures : " +str(count))
+    print("Number of structures : " + str(count))
 
     sc.stop()
+
 
 if __name__ == "__main__":
     main()

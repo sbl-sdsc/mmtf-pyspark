@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-'''
-filterByDepositionDate.py:
+'''filterByDepositionDate.py:
 
 This example demonstrates how to filter structures with
-specified depositionDate range
+specified deposition date range
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -14,23 +13,25 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io import MmtfReader
-from mmtfPyspark.filters import depositionDate
+from mmtfPyspark.filters import DepositionDate
+
 
 def main():
-	path = "../../resources/mmtf_reduced_sample/"
+    path = "../../resources/mmtf_reduced_sample/"
 
-	conf = SparkConf().setMaster("local[*]") \
-                      .setAppName("FilterByDepositionDate")
-	sc = SparkContext(conf = conf)
+    conf = SparkConf().setMaster("local[*]") \
+        .setAppName("FilterByDepositionDate")
+    sc = SparkContext(conf=conf)
 
-	count = MmtfReader.read_sequence_file(path, sc) \
-                      .filter(depositionDate("2016-01-28","2017-02-28")) \
-                      .count()
+    count = MmtfReader.read_sequence_file(path, sc) \
+        .filter(DepositionDate("2016-01-28", "2017-02-28")) \
+        .count()
 
-	print("Number of structure desposited between 2016-01-28 and 2017-02-28 is : " +
-		str(count))
+    print("Number of structure desposited between 2016-01-28 and 2017-02-28 is : " +
+          str(count))
 
-	sc.stop()
+    sc.stop()
+
 
 if __name__ == "__main__":
-	main()
+    main()

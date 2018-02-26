@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-'''
-secondaryStructureElementDemo.py:
+'''secondaryStructureElementDemo.py:
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -11,8 +10,8 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io import MmtfReader
-from mmtfPyspark.mappers import structureToPolymerChains
-from mmtfPyspark.filters import containsLProteinChain
+from mmtfPyspark.mappers import StructureToPolymerChains
+from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureElementExtractor
 import time
 
@@ -26,8 +25,8 @@ def main():
 
     pdb = MmtfReader.download_mmtf_files(["1STP"],sc).cache()
 
-    pdb = pdb.flatMap(structureToPolymerChains()) \
-             .filter(containsLProteinChain())
+    pdb = pdb.flatMap(StructureToPolymerChains()) \
+             .filter(ContainsLProteinChain())
 
     ds = secondaryStructureElementExtractor.getDataset(pdb,"E", 6)
 

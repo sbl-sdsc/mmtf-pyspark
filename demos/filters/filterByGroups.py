@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-'''
-filterByGroups.py
+'''filterByGroups.py
 
 This example demonstrates how to filter structures with
 specified groups (residues).
@@ -18,23 +17,25 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io import MmtfReader
-from mmtfPyspark.filters import containsGroup
+from mmtfPyspark.filters import ContainsGroup
+
 
 def main():
-	path = "../../resources/mmtf_reduced_sample/""
+    path = "../../resources/mmtf_reduced_sample/""
 
-	conf = SparkConf().setMaster("local[*]") \
-                      .setAppName("FilterByGroup")
-	sc = SparkContext(conf = conf)
+    conf = SparkConf().setMaster("local[*]") \
+        .setAppName("FilterByGroup")
+    sc = SparkContext(conf=conf)
 
-	count = MmtfReader.read_sequence_file(path, sc) \
-                      .filter(containsGroup("ATP", "MG")) \
-                      .count()
+    count = MmtfReader.read_sequence_file(path, sc) \
+        .filter(ContainsGroup("ATP", "MG")) \
+        .count()
 
-	print("Number of structure with ATP + MG : " +
-		str(count))
+    print("Number of structure with ATP + MG : " +
+          str(count))
 
-	sc.stop()
+    sc.stop()
+
 
 if __name__ == "__main__":
-	main()
+    main()

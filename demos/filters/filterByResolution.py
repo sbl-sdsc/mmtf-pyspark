@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-'''
-filterByResolution.py:
+'''filterByResolution.py:
 
 Example of reading an MMTF Hadoop Sequence file,
 filtering the entires by resolution,
@@ -17,8 +16,9 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io import MmtfReader
-from mmtfPyspark.filters import resolution
+from mmtfPyspark.filters import Resolution
 import time
+
 
 def main():
     path = "../../resources/mmtf_reduced_sample/"
@@ -26,18 +26,19 @@ def main():
 
     conf = SparkConf().setMaster("local[*]") \
                       .setAppName("filterByResolution")
-    sc = SparkContext(conf = conf)
+    sc = SparkContext(conf=conf)
 
     count = MmtfReader.read_sequence_file(path, sc) \
-                      .filter(resolution(0.0,2.0)) \
+                      .filter(Resolution(0.0, 2.0)) \
                       .count()
 
-    print("Number of structures : " +str(count))
+    print("Number of structures : " + str(count))
 
     sc.stop()
 
     end = time.time()
-    print(str(end-start) + " sec.")
+    print(str(end - start) + " sec.")
+
 
 if __name__ == "__main__":
     main()

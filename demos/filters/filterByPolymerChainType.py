@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-'''
-FilterByPolymerChainType.py:
+'''FilterByPolymerChainType.py:
 
 This example demonstrates how to filter the PDB by polymer chain type.
 
@@ -24,9 +23,9 @@ def main():
 	sc = SparkContext(conf=conf)
 
 	count = MmtfReader.read_sequence_file(path, sc) \
-                      .filter(containsPolymerChainType(containsPolymerChainType.DNA_LINKING, containsPolymerChainType.RNA_LINKING)) \
-                      .filter(notFilter(containsLProteinChain())) \
-                      .filter(notFilter(containsDSaccharideChain()))
+                      .filter(ContainsPolymerChainType(ContainsPolymerChainType.DNA_LINKING, ContainsPolymerChainType.RNA_LINKING)) \
+                      .filter(NotFilter(ContainsLProteinChain())) \
+                      .filter(NotFilter(ContainsDSaccharideChain()))
                       .count()
 
     print("Number of pure DNA and RNA entires: " + str(count))

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-'''
-filterByReleaseDate.py:
+'''filterByReleaseDate.py:
 
 This example demonstrates how to filter structures with
 specified releaseDate range
@@ -14,23 +13,25 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io import MmtfReader
-from mmtfPyspark.filters import releaseDate
+from mmtfPyspark.filters import ReleaseDate
+
 
 def main():
-	path = "../../resources/mmtf_reduced_sample/""
+    path = "../../resources/mmtf_reduced_sample/""
 
-	conf = SparkConf().setMaster("local[*]") \
-                      .setAppName("FilterByreleaseDate")
-	sc = SparkContext(conf = conf)
+    conf = SparkConf().setMaster("local[*]") \
+        .setAppName("FilterByreleaseDate")
+    sc = SparkContext(conf=conf)
 
-	count = MmtfReader.read_sequence_file(path, sc) \
-                      .filter(releaseDate("2000-01-28","2017-02-28")) \
-                      .count()
+    count = MmtfReader.read_sequence_file(path, sc) \
+        .filter(ReleaseDate("2000-01-28", "2017-02-28")) \
+        .count()
 
-	print("Number of structure released between 2000-01-28 and 2017-02-28 is : " +
-		str(count))
+    print("Number of structure released between 2000-01-28 and 2017-02-28 is : " +
+          str(count))
 
-	sc.stop()
+    sc.stop()
+
 
 if __name__ == "__main__":
-	main()
+    main()

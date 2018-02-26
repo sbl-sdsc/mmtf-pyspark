@@ -9,7 +9,6 @@ Authorship information:
 import sys
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import *
-from mmtfPyspark.filters import resolution
 import getopt
 import time
 
