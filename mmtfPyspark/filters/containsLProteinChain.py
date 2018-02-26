@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-containsLProteinChain.py
+'''containsLProteinChain.py
 
 This filter returns entries that contain protein chain(s) made of L-amino acids.
 The default constructor returns entries that contain at least one
@@ -15,24 +14,27 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from mmtfPyspark.filters import containsPolymerChainType
+from mmtfPyspark.filters import ContainsPolymerChainType
 
-class containsLProteinChain(object):
-    '''Default constructor matches any entry that contains at least one L-protein chain.
-    As an example a L-protein/DNA complex passes this filter
 
-	Optional constructor that can be used to filter entries that exclusively contain L-protein chains.
-	For example, with "exclusive" set to true, a L-protein/DNA complex does not pass this filter.
+class ContainsLProteinChain(object):
+    '''Default constructor matches any entry that contains at least one
+    L-protein chain. As an example a L-protein/DNA complex passes this filter
 
-    Attributes:
-        exclusive (bool): if true, only return entries that are exclusively contain L-protein chains
+        Optional constructor that can be used to filter entries that exclusively
+    contain L-protein chains. For example, with "exclusive" set to true, a
+    L-protein/DNA complex does not pass this filter.
+
+    Attributes
+    ----------
+        exclusive (bool): if true, only return entries that are exclusively
+                          contain L-protein chains
     '''
 
-    def __init__(self, exclusive = False):
-        self.filter = containsPolymerChainType([
-            containsPolymerChainType.L_PEPTIDE_LINKING,
-            containsPolymerChainType.PEPTIDE_LINKING], exclusive = exclusive)
+    def __init__(self, exclusive=False):
+        self.filter = ContainsPolymerChainType([
+            ContainsPolymerChainType.L_PEPTIDE_LINKING,
+            ContainsPolymerChainType.PEPTIDE_LINKING], exclusive=exclusive)
 
-
-    def __call__(self,t):
+    def __call__(self, t):
         return self.filter(t)

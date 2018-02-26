@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-containsDnaChain.py
+'''containsDnaChain.py
 
 This filter passes entries that contain Dna chains. The default constructor
 passes entries that contain at least one Dna chain. If the "exclusive" flag is
@@ -13,22 +12,24 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
-from mmtfPyspark.filters import containsPolymerChainType
+from mmtfPyspark.filters import ContainsPolymerChainType
 
-class containsDnaChain(object):
+
+class ContainsDnaChain(object):
+    '''Default constructor matches any entry that contains at least one Dna chain.
+        As an example, an Dna-protein complex passes this filter.
+
+        Optional constructor that can be used to filter entries that exclusively contain DNA chains.
+        For example, with "exclusive" set to true, an Dna-protein complex complex does not pass this filter.
+
+    Attributes
+    ----------
+        exclusive (bool): if true, only return entries that contain Dna chains
     '''
-	Default constructor matches any entry that contains at least one Dna chain.
-	As an example, an Dna-protein complex passes this filter.
 
-	Optional constructor that can be used to filter entries that exclusively contain DNA chains.
-	For example, with "exclusive" set to true, an Dna-protein complex complex does not pass this filter.
+    def __init__(self, exclusive=False):
+        self.filter = ContainsPolymerChainType(
+            ContainsPolymerChainType.DNA_LINKING, exclusive)
 
-    Attributes:
-        exclusive (bool) if true, only return entries that contain Dna chains
-    '''
-    def __init__(self, exclusive = False):
-        self.filter = containsPolymerChainType(containsPolymerChainType.DNA_LINKING,exclusive)
-
-
-    def __call__(self,t):
+    def __call__(self, t):
         return self.filter(t)

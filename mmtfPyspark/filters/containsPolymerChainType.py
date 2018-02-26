@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-containsPolymerChainType.py
+'''containsPolymerChainType.py
 
 This filter returns entries that contain chains made of the specified
 monomer types. The default constructor returns entries that contain at least
@@ -17,13 +16,14 @@ Authorship information:
     __status__ = "Done"
 '''
 
-class containsPolymerChainType(object):
-    '''
-    Default constructor matches any entry that contains a chain with only
+
+class ContainsPolymerChainType(object):
+    '''Default constructor matches any entry that contains a chain with only
     the specified monomer type
 
-    Attributes:
-            monomer_type (list(str)): list of monomer types in a polymer chain
+    Attributes
+    ----------
+        monomer_type (list(str)): list of monomer types in a polymer chain
     '''
 
     D_PEPTIDE_COOH_CARBOXY_TERMINUS = "D-PEPTIDE COOH CARBOXY TERMINUS"
@@ -49,25 +49,25 @@ class containsPolymerChainType(object):
     OTHER = "OTHER"
     SACCHARIDE = "SACCHARIDE"
 
-    def __init__(self, monomer_type, exclusive = False):
+    def __init__(self, monomer_type, exclusive=False):
         if type(monomer_type) == str:
             monomer_type = monomer_type.split(',')
 
         self.exclusive = exclusive
         self.monomer_type = monomer_type
 
-
-    def __call__(self,t):
+    def __call__(self, t):
         structure = t[1]
         contrains_polymer = False
         global_match = False
-        num_chains = structure.chains_per_model[0] #get number of chains in first model, nessary?
+        # get number of chains in first model, nessary?
+        num_chains = structure.chains_per_model[0]
         group_counter = 0
 
         for i in range(num_chains):
             match = True
             chain_type = [chain['type'] for chain in structure.entity_list
-                         if i in chain['chainIndexList']][0]
+                          if i in chain['chainIndexList']][0]
             polymer = chain_type == "polymer"
 
             if polymer:

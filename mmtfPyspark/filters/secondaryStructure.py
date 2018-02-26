@@ -1,11 +1,10 @@
 #!/user/bin/env python
-'''
-secondaryStructure.py
+'''secondaryStructure.py
 
-This filter returns entries that contain polymer chain(s) with the specified fraction of
-secondary structure assignments, obtained by DSSP. Note, DSSP secondary structure
-in MMTF files is assigned by the BioJava implementation of DSSP. It may differ in some
-cases from the original DSSP implementation.
+This filter returns entries that contain polymer chain(s) with the specified
+fraction of secondary structure assignments, obtained by DSSP. Note, DSSP
+secondary structure in MMTF files is assigned by the BioJava implementation of
+DSSP. It may differ in some cases from the original DSSP implementation.
 
 
 Authorship information:
@@ -17,16 +16,26 @@ Authorship information:
 from mmtfPyspark.utils import dsspSecondaryStructure
 
 
-class secondaryStructure(object):
+class SecondaryStructure(object):
     '''The default constructor returns entries that contain at least one
-    polymer chain that matches the criteria. If the "exclusive" flag is set to true
-    in the constructor, all polymer chains must match the criteria. For a multi-model structure,
-    this filter only checks the first model.
+    polymer chain that matches the criteria. If the "exclusive" flag is set to
+    true in the constructor, all polymer chains must match the criteria. For a multi-model
+    structure, this filter only checks the first model.
+
+    Attributes
+    ----------
+        helixFractionMin (float): minimum value for helix fraction [0.0]
+        helixFractionMax (float): maximum value for helix fraction [1.0]
+        sheetFractionMin (float): minimum value for sheet fraction [0.0]
+        sheetFractionMax (float): maximum value for sheet fraction [1.0]
+        coilFractionMin (float): minimum value for coil fractions [0.0]
+        coilFractionMax (float): maximum value for coil fractions [1.0]
+        exclusive (bool): exclusive flag [False]
     '''
 
-    def __init__(self, helixFractionMin = 0.0, helixFractionMax = 1.0,
-                 sheetFractionMin = 0.0, sheetFractionMax = 1.0,
-                 coilFractionMin = 0.0, coilFractionMax = 1.0, exclusive = False):
+    def __init__(self, helixFractionMin=0.0, helixFractionMax=1.0,
+                 sheetFractionMin=0.0, sheetFractionMax=1.0,
+                 coilFractionMin=0.0, coilFractionMax=1.0, exclusive=False):
 
         self.helixFractionMax = helixFractionMax
         self.helixFractionMin = helixFractionMin
@@ -36,8 +45,7 @@ class secondaryStructure(object):
         self.coilFractionMin = coilFractionMin
         self.exclusive = exclusive
 
-
-    def __call__(self,t):
+    def __call__(self, t):
         structure = t[1]
         contains_polymer = False
         global_match = False
@@ -65,7 +73,8 @@ class secondaryStructure(object):
 
                 if match and polymer:
                     code = sec_struct[group_counter]
-                    secondary_structure = dsspSecondaryStructure.getQ3Code(code)
+                    secondary_structure = dsspSecondaryStructure.getQ3Code(
+                        code)
 
                     if secondary_structure == dsspSecondaryStructure.ALPHA_HELIX:
                         helix += 1
@@ -85,11 +94,11 @@ class secondaryStructure(object):
                 coil /= n
 
                 match = helix >= self.helixFractionMin and \
-                        helix <= self.helixFractionMax and \
-                        sheet >= self.sheetFractionMin and \
-                        sheet <= self.sheetFractionMax and \
-                        coil >= self.coilFractionMin and \
-                        coil <= self.coilFractionMax
+                    helix <= self.helixFractionMax and \
+                    sheet >= self.sheetFractionMin and \
+                    sheet <= self.sheetFractionMax and \
+                    coil >= self.coilFractionMin and \
+                    coil <= self.coilFractionMax
 
             if (polymer and match and not self.exclusive):
                 return True

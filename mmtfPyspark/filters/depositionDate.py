@@ -1,9 +1,8 @@
 #!/user/bin/env python
-'''
-depositionDate.py
+'''depositionDate.py
 
-this filter return turn if the deposition date for this
-structure is within the specified range
+this filter return true if the deposition date of this structure is within the
+specified range
 
 authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -14,14 +13,22 @@ authorship information:
 
 from dateutil.parser import parse
 
-class depositionDate(object):
+
+class DepositionDate(object):
 
     def __init__(self, startdate, enddate):
+        '''This filter return True if the deposition date of this structure is
+        within the specified range
+
+        Attributes
+        ----------
+            startdate (str): start of the deposition date range
+            enddate (str): end of the deposition date range
+        '''
         self.startdate = parse(startdate)
         self.enddate = parse(enddate)
 
-
-    def __call__(self,t):
+    def __call__(self, t):
         structure = t[1]
         depositiondate = parse(structure.deposition_date)
 

@@ -1,29 +1,32 @@
 #!/user/bin/env python
-'''
-rWork.py:
+'''rWork.py:
 
-This filter return turn if the r_work value for this structure is within the
+This filter returns True if the r_work value for this structure is within the
 specified range
 
 Authorship information:
-    __author__ = "Peter Rose"
+    __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
 
-class rWork(object):
-    '''
-    Attributes:
+
+class RWork(object):
+    '''This filter returns True if the rWork value for this structure is within
+    the specified range.
+
+    Attributes
+    ----------
         min_Rwork (float): The lower bound r_work value
         max_Rwork (float): The upper bound r_work value
     '''
+
     def __init__(self, minRwork, maxRwork):
         self.min_Rwork = minRwork
         self.max_Rwork = maxRwork
 
-
-    def __call__(self,t):
+    def __call__(self, t):
         if t[1].r_work == None:
             return False
 
