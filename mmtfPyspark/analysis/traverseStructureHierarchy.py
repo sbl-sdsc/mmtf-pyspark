@@ -1,10 +1,6 @@
 from pyspark import SparkConf, SparkContext
 import sys
 from mmtfPyspark.io.MmtfReader import download_mmtf_files, read_sequence_file
-from mmtfPyspark.filters import rFree
-from mmtfPyspark.filters import notFilter
-from mmtfPyspark.filters import resolution
-
 from mmtfPyspark.utils.dsspSecondaryStructure import *
 import getopt
 import sys
@@ -13,28 +9,29 @@ import sys
 # Create variables
 APP_NAME = "MMTF_Spark"
 
+
 def main(argv):
 
-    #Configure Spark
+    # Configure Spark
     conf = SparkConf().setAppName(APP_NAME)
     conf = conf.setMaster("local[*]")
     conf = conf.set("spark.executor.memory", "64g")
-    conf = conf.set("spark.driver.cores","32")
+    conf = conf.set("spark.driver.cores", "32")
     sc = SparkContext(conf=conf)
 
-    #Get command line input
-    try :
-        opts,args = getopt.getopt(argv,"p:",["--path="])
+    # Get command line input
+    try:
+        opts, args = getopt.getopt(argv, "p:", ["--path="])
     except getopt.GetoptError:
         print("traverse.py -p <path_to_mmtf>")
         sys.exit()
-    for opt,arg in opts:
-        if opt in ["-p","--path"]:
+    for opt, arg in opts:
+        if opt in ["-p", "--path"]:
             path = arg
 
-    #Mmtf sequence file reader
-    pdbIds = ['1AQ1','5GOD']
-    pdb = download_mmtf_files(pdbIds,sc)
+    # Mmtf sequence file reader
+    pdbIds = ['1AQ1', '5GOD']
+    pdb = download_mmtf_files(pdbIds, sc)
 
     def getChainToEntityIndex(structure):
         entityChainIndex = [0] * structure.num_chains
@@ -42,7 +39,6 @@ def main(argv):
             for j in structure.entity_list[i]["chainIndexList"]:
                 entityChainIndex[j] = i
         return entityChainIndex
-
 
     def listOfBytesToString(listOfBytes):
         newList = []
@@ -53,12 +49,11 @@ def main(argv):
     def listToString(temp):
         return("[" + ", ".join(map(str, temp)) + "]")
 
-
     def printMmtfInfo(structure):
         print("*** MMMTF INFO ***")
         print("MmtfProducer    : " + structure.mmtf_producer)
         print("MmtfVersion     : " + structure.mmtf_version)
-        print();
+        print()
 
     def printMetadata(structure):
         print("*** METADATA ***")
@@ -66,30 +61,35 @@ def main(argv):
         print("Title                 : " + structure.title)
         print("Deposition date       : " + structure.deposition_date)
         print("Release date          : " + structure.release_date)
-        print("Experimental method(s): " + listToString(listOfBytesToString(structure.experimental_methods)))
+        print("Experimental method(s): " +
+              listToString(listOfBytesToString(structure.experimental_methods)))
         print("Resolution            : " + str(structure.resolution))
         print("Rfree                 : " + str("%0.2f" % structure.r_free))
         print("Rwork                 : " + str("%0.2f" % structure.r_work))
         print()
 
-
     def printCrystallographicData(structure):
         print("*** CRYSTALLOGRAPHIC DATA ***")
-        print("Space group           : " + structure.space_group.decode('utf-8'))
-        print("Unit cell dimensions  : " + listToString(["%0.2f" % i for i in structure.unit_cell]))
+        print("Space group           : " +
+              structure.space_group.decode('utf-8'))
+        print("Unit cell dimensions  : " +
+              listToString(["%0.2f" % i for i in structure.unit_cell]))
         print()
 
     def printBioAssemblyData(structure):
         print("*** BIOASSEMBLY DATA ***")
         print("Number bioassemblies: " + str(len(structure.bio_assembly)))
         for i in range(0, len(structure.bio_assembly)):
-            print("bioassembly: " + structure.bio_assembly[i][b"name"].decode('utf-8'))
+            print("bioassembly: " +
+                  structure.bio_assembly[i][b"name"].decode('utf-8'))
             transformations = structure.bio_assembly[i][b"transformList"]
             print("  Number transformations: " + str(len(transformations)))
             for j in range(0, len(transformations)):
                 print("    transformation: " + str(j))
-                print("    chains:         " + str(transformations[j][b"chainIndexList"]))
-                print("    rotTransMatrix: " + str(transformations[j][b"matrix"]))
+                print("    chains:         " +
+                      str(transformations[j][b"chainIndexList"]))
+                print("    rotTransMatrix: " +
+                      str(transformations[j][b"matrix"]))
 
     def traverse(structure):
         print("*** STRUCTURE DATA ***")
@@ -118,12 +118,13 @@ def main(argv):
         print("Number of chains: " + str(structure.num_chains))
         chainIndex = 0
         for i in range(0, structure.num_models):
-            print("model: " + str(i+1))
+            print("model: " + str(i + 1))
             for j in range(0, structure.chains_per_model[i]):
                 chainName = structure.chain_name_list[chainIndex]
                 chainId = structure.chain_id_list[chainIndex]
                 groups = structure.groups_per_chain[chainIndex]
-                print("chainName: " + chainName + ", chainId: " + chainId + ", groups: " + str(groups))
+                print("chainName: " + chainName + ", chainId: " +
+                      chainId + ", groups: " + str(groups))
                 chainIndex = chainIndex + 1
         print()
 
@@ -132,12 +133,13 @@ def main(argv):
         chainIndex = 0
         groupIndex = 0
         for i in range(0, structure.num_models):
-            print("model: " + str(i+1))
+            print("model: " + str(i + 1))
             for j in range(0, structure.chains_per_model[i]):
                 chainName = structure.chain_name_list[chainIndex]
                 chainId = structure.chain_id_list[chainIndex]
                 groups = structure.groups_per_chain[chainIndex]
-                print("chainName: " + chainName + ", chainId: " + chainId + ", groups: " + str(groups))
+                print("chainName: " + chainName + ", chainId: " +
+                      chainId + ", groups: " + str(groups))
                 for k in range(0, structure.groups_per_chain[chainIndex]):
                     groupId = structure.group_id_list[groupIndex]
                     insertionCode = structure.ins_code_list[groupIndex]
@@ -149,8 +151,10 @@ def main(argv):
                     groupName = structure.group_list[groupType]["groupName"]
                     chemCompType = structure.group_list[groupType]["chemCompType"]
                     oneLetterCode = structure.group_list[groupType]["singleLetterCode"]
-                    numAtoms = len(structure.group_list[groupType]["atomNameList"])
-                    numBonds = len(structure.group_list[groupType]["bondOrderList"])
+                    numAtoms = len(
+                        structure.group_list[groupType]["atomNameList"])
+                    numBonds = len(
+                        structure.group_list[groupType]["bondOrderList"])
 
                     print("   groupName      : " + groupName)
                     print("   oneLetterCode  : " + oneLetterCode)
@@ -160,7 +164,8 @@ def main(argv):
                     print("   chemCompType   : " + chemCompType)
                     print("   groupId        : " + str(groupId))
                     print("   insertionCode  : " + insertionCode)
-                    print("   DSSP secStruct.: " + dsspSecondaryStructure.getDsspCode(secStruct).getOneLetterCode())
+                    print("   DSSP secStruct.: " +
+                          dsspSecondaryStructure.getDsspCode(secStruct).getOneLetterCode())
                     print()
                     groupIndex = groupIndex + 1
                 chainIndex = chainIndex + 1
@@ -173,12 +178,13 @@ def main(argv):
         groupIndex = 0
         atomIndex = 0
         for i in range(0, structure.num_models):
-            print("model: " + str(i+1))
+            print("model: " + str(i + 1))
             for j in range(0, structure.chains_per_model[i]):
                 chainName = structure.chain_name_list[chainIndex]
                 chainId = structure.chain_id_list[chainIndex]
                 groups = structure.groups_per_chain[chainIndex]
-                print("chainName: " + chainName + ", chainId: " + chainId + ", groups: " + str(groups))
+                print("chainName: " + chainName + ", chainId: " +
+                      chainId + ", groups: " + str(groups))
 
                 entityType = structure.entity_list[chainToEntityIndex[chainIndex]]["type"]
                 entityDescription = structure.entity_list[chainToEntityIndex[chainIndex]]["description"]
@@ -198,8 +204,10 @@ def main(argv):
                     groupName = structure.group_list[groupType]["groupName"]
                     chemCompType = structure.group_list[groupType]["chemCompType"]
                     oneLetterCode = structure.group_list[groupType]["singleLetterCode"]
-                    numAtoms = len(structure.group_list[groupType]["atomNameList"])
-                    numBonds = len(structure.group_list[groupType]["bondOrderList"])
+                    numAtoms = len(
+                        structure.group_list[groupType]["atomNameList"])
+                    numBonds = len(
+                        structure.group_list[groupType]["bondOrderList"])
 
                     print("   groupName      : " + groupName)
                     print("   oneLetterCode  : " + oneLetterCode)
@@ -209,7 +217,8 @@ def main(argv):
                     print("   chemCompType   : " + chemCompType)
                     print("   groupId        : " + str(groupId))
                     print("   insertionCode  : " + insertionCode)
-                    print("   DSSP secStruct.: " + dsspSecondaryStructure.getDsspCode(secStruct).getOneLetterCode())
+                    print("   DSSP secStruct.: " +
+                          dsspSecondaryStructure.getDsspCode(secStruct).getOneLetterCode())
                     print("   Atoms          : ")
 
                     for m in range(0, (len(structure.group_list[groupType]["atomNameList"]))):
@@ -225,15 +234,13 @@ def main(argv):
                         element = structure.group_list[groupType]["elementList"][m]
 
                         print("      " + str(atomId) + "\t" + atomName + "\t" + altLocId +
-                            "\t" + str(x) + "\t" + str(y) + "\t" + str(z) +
-                            "\t" + str(occupancy) + "\t" + str(bFactor) + "\t" + element)
+                              "\t" + str(x) + "\t" + str(y) + "\t" + str(z) +
+                              "\t" + str(occupancy) + "\t" + str(bFactor) + "\t" + element)
                         atomIndex = atomIndex + 1
-
 
                     groupIndex = groupIndex + 1
                 chainIndex = chainIndex + 1
         print()
-
 
     def TraverseStructureHierarchy(structure):
         structure = structure.set_alt_loc_list()
@@ -251,5 +258,5 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    #Execute Main functionality
+    # Execute Main functionality
     main(sys.argv[1:])
