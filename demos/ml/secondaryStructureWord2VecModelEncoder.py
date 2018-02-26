@@ -12,8 +12,8 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext, SQLContext
 from mmtfPyspark.ml import proteinSequenceEncoder
-from mmtfPyspark.mappers import structureToPolymerChains
-from mmtfPyspark.filters import containsLProteinChain
+from mmtfPyspark.mappers import StructureToPolymerChains
+from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor
 from mmtfPyspark.webfilters import pisces
 from mmtfPyspark.io import MmtfReader
@@ -23,8 +23,7 @@ import time
 # TODO need model file
 
 def main():
-    '''
-    This class creates a dataset of sequence segment derived from a
+    '''This class creates a dataset of sequence segment derived from a
     non-redundant set. The dataset contains the sequence segment, the DSSP
     Q8 and DSSP Q3 code of the center residue in a sequence segment, and a
     Word2Vec encoding of the sequence segment.
@@ -50,9 +49,9 @@ def main():
 
     pdb = MmtfReader \
             .read_sequence_file(path, sc) \
-            .flatMap(structureToPolymerChains()) \
+            .flatMap(StructureToPolymerChains()) \
             .filter(pisces(sequenceIdentity, resolution)) \
-            .filter(containsLProteinChain()) \
+            .filter(ContainsLProteinChain()) \
             .sample(False, fraction, seed)
 
     segmentLength = 11

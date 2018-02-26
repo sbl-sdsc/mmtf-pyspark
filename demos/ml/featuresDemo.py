@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-'''
-
-featuresDemo.py
+'''featuresDemo.py
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -13,8 +11,8 @@ Authorship information:
 from pyspark import SparkConf, SparkContext, SQLContext
 from pyspark.sql.functions import col, when
 from mmtfPyspark.ml import proteinSequenceEncoder
-from mmtfPyspark.mappers import structureToPolymerChains
-from mmtfPyspark.filters import containsLProteinChain
+from mmtfPyspark.mappers import StructureToPolymerChains
+from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureExtractor
 from mmtfPyspark.webfilters import pisces
 from mmtfPyspark.io import MmtfReader
@@ -22,8 +20,7 @@ import time
 
 
 def main():
-    '''
-    Demo to create a feature vector for protein fold classification.
+    '''Demo to create a feature vector for protein fold classification.
     In this demo we try to classify a protein chain as either an
     all alpha or all beta protein based on protein sequence. We use
     n-grams and Word2Vec representation of the protein sequence as a
@@ -46,9 +43,9 @@ def main():
     pdb = MmtfReader \
             .read_sequence_file(path, sc) \
             .filter(pisces(sequenceIdentity, resolution)) \
-            .flatMap(structureToPolymerChains()) \
+            .flatMap(StructureToPolymerChains()) \
             .filter(pisces(sequenceIdentity, resolution)) \
-            .filter(containsLProteinChain()) \
+            .filter(ContainsLProteinChain()) \
 
     # Get secondary structure content
     data = secondaryStructureExtractor.getDataset(pdb)
@@ -82,15 +79,15 @@ def main():
 
 
 def addProteinFoldType(data, minThreshold, maxThreshold):
-    '''
-    Adds a column "foldType" with three major secondary structure class:
+    '''Adds a column "foldType" with three major secondary structure class:
     "alpha", "beta", "alpha+beta", and "other" based upon the fraction of alpha/beta content.
 
     The simplified syntax used in this method relies on two imports:
         from pyspark.sql.functions import when
         from pyspark.sql.functions import col
 
-    Attributes:
+    Attributes
+    ----------
         data (Dataset<Row>): input dataset with alpha, beta composition
         minThreshold (float): below this threshold, the secondary structure is ignored
         maxThreshold (float): above this threshold, the secondary structure is ignored

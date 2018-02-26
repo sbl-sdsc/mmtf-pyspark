@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-'''
-customReportDemo.py:
+'''customReportDemo.py:
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -18,7 +17,7 @@ def main():
     start = time.time()
 
     conf = SparkConf().setMaster("local[*]") \
-                      .setAppName("secondaryStructureSegmentDemo")
+                      .setAppName("customReportDemo")
     sc = SparkContext(conf = conf)
     sqlContext = SQLContext(sc)
 
