@@ -89,7 +89,7 @@ ENV/
 .ropeproject
 
 # Spark metastore_db
-mmtfPyspark/src/main/metastore_db
+mmtfPyspark/metastore_db
 .
 
 # test file
