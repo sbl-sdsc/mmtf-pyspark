@@ -3,22 +3,23 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.filters import containsDProteinChain
+from mmtfPyspark.filters import ContainsDProteinChain
 from mmtfPyspark.mappers import *
 
-class containsDProteinChainTest(unittest.TestCase):
+
+class ContainsDProteinChainTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('containsDProteinChainTest')
+        conf = SparkConf().setMaster(
+            "local[*]").setAppName('containsDProteinChainTest')
         self.sc = SparkContext(conf=conf)
 
-
-        pdbIds = ['2ONX','1JLP','5X6H','5L2G','2MK1','2V5W','5XDP','5GOD']
-        self.pdb = download_mmtf_files(pdbIds,self.sc)
-
+        pdbIds = ['2ONX', '1JLP', '5X6H', '5L2G',
+                  '2MK1', '2V5W', '5XDP', '5GOD']
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
     def test1(self):
-        pdb_1 = self.pdb.filter(containsDProteinChain())
+        pdb_1 = self.pdb.filter(ContainsDProteinChain())
         results_1 = pdb_1.keys().collect()
         self.assertFalse('2ONX' in results_1)
         self.assertFalse('1JLP' in results_1)
@@ -29,9 +30,8 @@ class containsDProteinChainTest(unittest.TestCase):
         self.assertTrue('5XDP' in results_1)
         self.assertTrue('5GOD' in results_1)
 
-
     def test2(self):
-        pdb_2 = self.pdb.filter(containsDProteinChain(exclusive = True))
+        pdb_2 = self.pdb.filter(ContainsDProteinChain(exclusive=True))
         results_2 = pdb_2.keys().collect()
 
         self.assertFalse('2ONX' in results_2)
@@ -43,10 +43,9 @@ class containsDProteinChainTest(unittest.TestCase):
         self.assertFalse('5XDP' in results_2)
         self.assertFalse('5GOD' in results_2)
 
-
     def test3(self):
         pdb_3 = self.pdb.flatMap(structureToPolymerChains())
-        pdb_3 = pdb_3.filter(containsDProteinChain())
+        pdb_3 = pdb_3.filter(ContainsDProteinChain())
         results_3 = pdb_3.keys().collect()
 
         self.assertFalse('2ONX.A' in results_3)
@@ -64,7 +63,6 @@ class containsDProteinChainTest(unittest.TestCase):
         self.assertFalse('5GOD.B' in results_3)
         self.assertTrue('5GOD.C' in results_3)
         self.assertTrue('5GOD.D' in results_3)
-
 
     def tearDown(self):
         self.sc.stop()

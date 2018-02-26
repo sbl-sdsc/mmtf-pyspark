@@ -4,7 +4,6 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.mappers import structureToBioassembly
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.filters import containsAlternativeLocations
 
 class structureToBioassemblyTest(unittest.TestCase):
 

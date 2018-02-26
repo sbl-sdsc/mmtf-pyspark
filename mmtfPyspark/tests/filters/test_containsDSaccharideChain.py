@@ -3,13 +3,15 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.filters import containsDSaccharideChain
+from mmtfPyspark.filters import ContainsDSaccharideChain
 from mmtfPyspark.mappers import *
 
-class containsDSaccharideChainTest(unittest.TestCase):
+
+class ContainsDSaccharideChainTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('containsDSaccharideChainTest')
+        conf = SparkConf().setMaster(
+            "local[*]").setAppName('ContainsDSaccharideChainTest')
         self.sc = SparkContext(conf=conf)
 
         # 2ONX: only L-protein chain
@@ -18,12 +20,11 @@ class containsDSaccharideChainTest(unittest.TestCase):
         # 5L2G: L-DNA chain
         # 2MK1: As of V5 of PDBx/mmCIF, saccharides seem to be represented as monomers,
         #       instead of polysaccharides, so none of these tests returns true anymore.
-        pdbIds = ['2ONX','1JLP','5X6H','5L2G','2MK1']
-        self.pdb = download_mmtf_files(pdbIds,self.sc)
-
+        pdbIds = ['2ONX', '1JLP', '5X6H', '5L2G', '2MK1']
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
     def test1(self):
-        pdb_1 = self.pdb.filter(containsDSaccharideChain())
+        pdb_1 = self.pdb.filter(ContainsDSaccharideChain())
         results_1 = pdb_1.keys().collect()
 
         self.assertFalse('2ONX' in results_1)
@@ -32,10 +33,9 @@ class containsDSaccharideChainTest(unittest.TestCase):
         self.assertFalse('5L2G' in results_1)
         self.assertFalse('2MK1' in results_1)
 
-
     def test2(self):
-        pdb_2 = self.pdb.flatMap(structureToPolymerChains())
-        pdb_2 = pdb_2.filter(containsDSaccharideChain())
+        pdb_2 = self.pdb.flatMap(StructureToPolymerChains())
+        pdb_2 = pdb_2.filter(ContainsDSaccharideChain())
         results_2 = pdb_2.keys().collect()
 
         self.assertFalse('2ONX.A' in results_2)
@@ -44,7 +44,6 @@ class containsDSaccharideChainTest(unittest.TestCase):
         self.assertFalse('5L2G.A' in results_2)
         self.assertFalse('5L2G.B' in results_2)
         self.assertFalse('2MK1.A' in results_2)
-
 
     def tearDown(self):
         self.sc.stop()
