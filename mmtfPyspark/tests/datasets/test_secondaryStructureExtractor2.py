@@ -4,11 +4,10 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.datasets import secondaryStructureExtractor
-from mmtfPyspark.filters import containsLProteinChain
-from mmtfPyspark.mappers import structureToPolymerChains
+from mmtfPyspark.mappers import StructureToPolymerChains
 
 
-class secondaryStructureExtractorTest(unittest.TestCase):
+class SecondaryStructureExtractorTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('secondaryStructureExtractorTest')
@@ -19,7 +18,7 @@ class secondaryStructureExtractorTest(unittest.TestCase):
 
 
     def test1(self):
-        pdb = self.pdb.flatMap(structureToPolymerChains())
+        pdb = self.pdb.flatMap(StructureToPolymerChains())
 
         secStruct = secondaryStructureExtractor.getDataset(pdb)
 

@@ -4,9 +4,8 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.mappers import structureToBioassembly, structureToProteinDimers
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.filters import containsAlternativeLocations
 
-class structureToProteinDimersTest(unittest.TestCase):
+class StructureToProteinDimersTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('structureToProteinDimers')

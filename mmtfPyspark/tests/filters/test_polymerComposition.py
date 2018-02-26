@@ -3,13 +3,15 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.filters import polymerComposition
+from mmtfPyspark.filters import PolymerComposition
 from mmtfPyspark.mappers import *
 
-class polymerCompositionTest(unittest.TestCase):
+
+class PolymerCompositionTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('testContainsAlternativeLocations')
+        conf = SparkConf().setMaster(
+            "local[*]").setAppName('PolymerCompositionTest')
         self.sc = SparkContext(conf=conf)
 
         # 2ONX: only L-protein chain
@@ -20,12 +22,13 @@ class polymerCompositionTest(unittest.TestCase):
         # 5UZT: RNA chain (with std. nucleotides)
         # 1AA6: contains SEC, selenocysteine (21st amino acid)
         # 1NTH: contains PYL, pyrrolysine (22nd amino acid)
-        pdbIds = ["2ONX","1JLP","5X6H","5L2G","2MK1","5UZT","1AA6","1NTH"]
-        self.pdb = download_mmtf_files(pdbIds,self.sc)
-
+        pdbIds = ["2ONX", "1JLP", "5X6H", "5L2G",
+                  "2MK1", "5UZT", "1AA6", "1NTH"]
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
     def test1(self):
-        pdb_1 = self.pdb.filter(polymerComposition(polymerComposition.AMINO_ACIDS_20))
+        pdb_1 = self.pdb.filter(PolymerComposition(
+            PolymerComposition.AMINO_ACIDS_20))
         results_1 = pdb_1.keys().collect()
 
         self.assertTrue('2ONX' in results_1)
@@ -37,9 +40,9 @@ class polymerCompositionTest(unittest.TestCase):
         self.assertFalse('1AA6' in results_1)
         self.assertFalse('1NTH' in results_1)
 
-
     def test2(self):
-        pdb_2 = self.pdb.filter(polymerComposition(polymerComposition.AMINO_ACIDS_20, exclusive = True))
+        pdb_2 = self.pdb.filter(PolymerComposition(
+            PolymerComposition.AMINO_ACIDS_20, exclusive=True))
         results_2 = pdb_2.keys().collect()
 
         self.assertTrue('2ONX' in results_2)
@@ -51,10 +54,10 @@ class polymerCompositionTest(unittest.TestCase):
         self.assertFalse('1AA6' in results_2)
         self.assertFalse('1NTH' in results_2)
 
-
     def test3(self):
         pdb_3 = self.pdb.flatMap(structureToPolymerChains())
-        pdb_3 = pdb_3.filter(polymerComposition(polymerComposition.AMINO_ACIDS_20))
+        pdb_3 = pdb_3.filter(PolymerComposition(
+            PolymerComposition.AMINO_ACIDS_20))
         results_3 = pdb_3.keys().collect()
 
         self.assertTrue('2ONX.A' in results_3)
@@ -69,7 +72,8 @@ class polymerCompositionTest(unittest.TestCase):
 
     def test4(self):
         pdb_4 = self.pdb.flatMap(structureToPolymerChains())
-        pdb_4 = pdb_4.filter(polymerComposition(polymerComposition.AMINO_ACIDS_22))
+        pdb_4 = pdb_4.filter(PolymerComposition(
+            PolymerComposition.AMINO_ACIDS_22))
         results_4 = pdb_4.keys().collect()
 
         self.assertTrue('2ONX.A' in results_4)
@@ -82,9 +86,9 @@ class polymerCompositionTest(unittest.TestCase):
         self.assertTrue('1AA6.A' in results_4)
         self.assertTrue('1NTH.A' in results_4)
 
-
     def test5(self):
-        pdb_5 = self.pdb.filter(polymerComposition(polymerComposition.DNA_STD_NUCLEOTIDES))
+        pdb_5 = self.pdb.filter(PolymerComposition(
+            PolymerComposition.DNA_STD_NUCLEOTIDES))
         results_5 = pdb_5.keys().collect()
 
         self.assertFalse('2ONX' in results_5)
@@ -95,7 +99,8 @@ class polymerCompositionTest(unittest.TestCase):
         self.assertFalse('5UZT' in results_5)
 
     def test6(self):
-        pdb_6 = self.pdb.filter(polymerComposition(polymerComposition.RNA_STD_NUCLEOTIDES))
+        pdb_6 = self.pdb.filter(PolymerComposition(
+            PolymerComposition.RNA_STD_NUCLEOTIDES))
         results_6 = pdb_6.keys().collect()
 
         self.assertFalse('2ONX' in results_6)
@@ -104,7 +109,6 @@ class polymerCompositionTest(unittest.TestCase):
         self.assertFalse('5L2G' in results_6)
         self.assertFalse('2MK1' in results_6)
         self.assertTrue('5UZT' in results_6)
-
 
     def tearDown(self):
         self.sc.stop()

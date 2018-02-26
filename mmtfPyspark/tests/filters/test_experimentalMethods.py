@@ -3,20 +3,23 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.filters import experimentalMethods
+from mmtfPyspark.filters import ExperimentalMethods
 from mmtfPyspark.mappers import *
 
-class experimentalMethodsTest(unittest.TestCase):
+
+class ExperimentalMethodsTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('containsDProteinChainTest')
-        pdbIds = ["2ONX","5VLN","5VAI","5JXV","5K7N","3PDM","5MNX","5I1R","5MON","5LCB","3J07"]
+        conf = SparkConf().setMaster(
+            "local[*]").setAppName('ExperimentalMethodsTest')
+        pdbIds = ["2ONX", "5VLN", "5VAI", "5JXV", "5K7N",
+                  "3PDM", "5MNX", "5I1R", "5MON", "5LCB", "3J07"]
         self.sc = SparkContext(conf=conf)
-        self.pdb = download_mmtf_files(pdbIds,self.sc)
-
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
     def test1(self):
-        pdb_1 = self.pdb.filter(experimentalMethods(experimentalMethods.X_RAY_DIFFRACTION))
+        pdb_1 = self.pdb.filter(ExperimentalMethods(
+            ExperimentalMethods.X_RAY_DIFFRACTION))
         results_1 = pdb_1.keys().collect()
 
         self.assertTrue('2ONX' in results_1)
@@ -31,18 +34,18 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5LCB' in results_1)
         self.assertFalse('3J07' in results_1)
 
-
     def test1a(self):
-        pdb_1a = self.pdb.flatMap(structureToPolymerChains())
-        pdb_1a = pdb_1a.filter(experimentalMethods(experimentalMethods.X_RAY_DIFFRACTION))
+        pdb_1a = self.pdb.flatMap(StructureToPolymerChains())
+        pdb_1a = pdb_1a.filter(ExperimentalMethods(
+            ExperimentalMethods.X_RAY_DIFFRACTION))
         results_1a = pdb_1a.keys().collect()
 
         self.assertTrue('2ONX.A' in results_1a)
         self.assertFalse('5VLN.A' in results_1a)
 
-
     def test2(self):
-        pdb_2 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_NMR))
+        pdb_2 = self.pdb.filter(ExperimentalMethods(
+            ExperimentalMethods.SOLUTION_NMR))
         results_2 = pdb_2.keys().collect()
 
         self.assertFalse('2ONX' in results_2)
@@ -57,9 +60,9 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5LCB' in results_2)
         self.assertFalse('3J07' in results_2)
 
-
     def test3(self):
-        pdb_3 = self.pdb.filter(experimentalMethods(experimentalMethods.ELECTRON_MICROSCOPY))
+        pdb_3 = self.pdb.filter(ExperimentalMethods(
+            ExperimentalMethods.ELECTRON_MICROSCOPY))
         results_3 = pdb_3.keys().collect()
 
         self.assertFalse('2ONX' in results_3)
@@ -74,9 +77,9 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertTrue('5LCB' in results_3)
         self.assertTrue('3J07' in results_3)
 
-
     def test4(self):
-        pdb_4 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLID_STATE_NMR))
+        pdb_4 = self.pdb.filter(ExperimentalMethods(
+            ExperimentalMethods.SOLID_STATE_NMR))
         results_4 = pdb_4.keys().collect()
 
         self.assertFalse('2ONX' in results_4)
@@ -91,9 +94,9 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertTrue('5LCB' in results_4)
         self.assertTrue('3J07' in results_4)
 
-
     def test5(self):
-        pdb_5 = self.pdb.filter(experimentalMethods(experimentalMethods.ELECTRON_CRYSTALLOGRAPHY))
+        pdb_5 = self.pdb.filter(ExperimentalMethods(
+            ExperimentalMethods.ELECTRON_CRYSTALLOGRAPHY))
         results_2 = pdb_5.keys().collect()
 
         self.assertFalse('2ONX' in results_2)
@@ -108,9 +111,9 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5LCB' in results_2)
         self.assertFalse('3J07' in results_2)
 
-
     def test6(self):
-        pdb_6 = self.pdb.filter(experimentalMethods(experimentalMethods.FIBER_DIFFRACTION))
+        pdb_6 = self.pdb.filter(ExperimentalMethods(
+            ExperimentalMethods.FIBER_DIFFRACTION))
         results_6 = pdb_6.keys().collect()
 
         self.assertFalse('2ONX' in results_6)
@@ -125,9 +128,9 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5LCB' in results_6)
         self.assertFalse('3J07' in results_6)
 
-
     def test7(self):
-        pdb_7 = self.pdb.filter(experimentalMethods(experimentalMethods.NEUTRON_DIFFRACTION))
+        pdb_7 = self.pdb.filter(ExperimentalMethods(
+            ExperimentalMethods.NEUTRON_DIFFRACTION))
         results_7 = pdb_7.keys().collect()
 
         self.assertFalse('2ONX' in results_7)
@@ -142,10 +145,9 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5LCB' in results_7)
         self.assertFalse('3J07' in results_7)
 
-
     def test8(self):
-        pdb_8 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING))\
-                        .filter(experimentalMethods(experimentalMethods.SOLUTION_NMR))
+        pdb_8 = self.pdb.filter(ExperimentalMethods(ExperimentalMethods.SOLUTION_SCATTERING))\
+                        .filter(ExperimentalMethods(ExperimentalMethods.SOLUTION_NMR))
         results_1 = pdb_8.keys().collect()
 
         self.assertFalse('2ONX' in results_1)
@@ -160,10 +162,9 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5LCB' in results_1)
         self.assertFalse('3J07' in results_1)
 
-
     def test9(self):
-        pdb_9 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLUTION_NMR))\
-                        .filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING))
+        pdb_9 = self.pdb.filter(ExperimentalMethods(ExperimentalMethods.SOLUTION_NMR))\
+                        .filter(ExperimentalMethods(ExperimentalMethods.SOLUTION_SCATTERING))
         results_9 = pdb_9.keys().collect()
 
         self.assertFalse('2ONX' in results_9)
@@ -178,11 +179,10 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5LCB' in results_9)
         self.assertFalse('3J07' in results_9)
 
-
     def test10(self):
-        pdb_10 = self.pdb.filter(experimentalMethods(experimentalMethods.SOLID_STATE_NMR))\
-                         .filter(experimentalMethods(experimentalMethods.ELECTRON_MICROSCOPY))\
-                         .filter(experimentalMethods(experimentalMethods.SOLUTION_SCATTERING))
+        pdb_10 = self.pdb.filter(ExperimentalMethods(ExperimentalMethods.SOLID_STATE_NMR))\
+                         .filter(ExperimentalMethods(ExperimentalMethods.ELECTRON_MICROSCOPY))\
+                         .filter(ExperimentalMethods(ExperimentalMethods.SOLUTION_SCATTERING))
         results_10 = pdb_10.keys().collect()
 
         self.assertFalse('2ONX' in results_10)
@@ -196,7 +196,6 @@ class experimentalMethodsTest(unittest.TestCase):
         self.assertFalse('5MON' in results_10)
         self.assertFalse('5LCB' in results_10)
         self.assertTrue('3J07' in results_10)
-
 
     def tearDown(self):
         self.sc.stop()

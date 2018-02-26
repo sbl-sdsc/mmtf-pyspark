@@ -3,13 +3,14 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.filters import orFilter,containsDnaChain, containsRnaChain
+from mmtfPyspark.filters import OrFilter, ContainsDnaChain, ContainsRnaChain
 from mmtfPyspark.mappers import *
 
-class testOrFilter(unittest.TestCase):
+
+class OrFilterTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('testrFreeFilter')
+        conf = SparkConf().setMaster("local[*]").setAppName('OrFilterTest')
         self.sc = SparkContext(conf=conf)
 
         # 2ONX: only L-protein chain
@@ -20,13 +21,13 @@ class testOrFilter(unittest.TestCase):
         # 5UZT: RNA chain (with std. nucleotides)
         # 1AA6: contains SEC, selenocysteine (21st amino acid)
         # 1NTH: contains PYL, pyrrolysine (22nd amino acid)
-        pdbIds = ['2ONX','1JLP','5X6H','5L2G','2MK1','5UZT','1AA6','1NTH']
+        pdbIds = ['2ONX', '1JLP', '5X6H', '5L2G',
+                  '2MK1', '5UZT', '1AA6', '1NTH']
         self.pdb = download_mmtf_files(pdbIds, self.sc)
-
 
     def test1(self):
         pdb_1 = self.pdb.flatMap(structureToPolymerChains())
-        pdb_1 = pdb_1.filter(orFilter(containsDnaChain(),containsRnaChain()))
+        pdb_1 = pdb_1.filter(OrFilter(ContainsDnaChain(), ContainsRnaChain()))
         results_1 = pdb_1.keys().collect()
 
         self.assertFalse('2ONX.A' in results_1)
@@ -39,7 +40,6 @@ class testOrFilter(unittest.TestCase):
         self.assertTrue('5UZT.A' in results_1)
         self.assertFalse('1AA6.A' in results_1)
         self.assertFalse('1NTH.A' in results_1)
-
 
     def tearDown(self):
         self.sc.stop()
