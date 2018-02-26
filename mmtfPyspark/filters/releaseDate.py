@@ -1,8 +1,7 @@
 #!/user/bin/env python
-'''
-releaseDate.py
+'''releaseDate.py
 
-this filter return turn if the releaseDate date for this
+this filter returns true if the release date for this
 structure is within the specified range
 
 authorship information:
@@ -14,14 +13,22 @@ authorship information:
 
 from dateutil.parser import parse
 
-class releaseDate(object):
+
+class ReleaseDate(object):
 
     def __init__(self, startDate, endDate):
+        '''This filter retuns true if the release date for the structure is
+        within the specified range.
+
+        Attributes
+        ----------
+            startDate (str): start of the release date range
+            enddate (str): end of the the release date range
+        '''
         self.startDate = parse(startDate)
         self.endDate = parse(endDate)
 
-
-    def __call__(self,t):
+    def __call__(self, t):
         structure = t[1]
         releaseDate = parse(structure.release_date)
 

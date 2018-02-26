@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-experimentalMethods.py:
+'''experimentalMethods.py:
 
 This filter returns ture if any of the specified experimental methods
 match a PDB entry
@@ -15,9 +14,13 @@ Authorship information:
     __status__ = "Done"
 '''
 
-class experimentalMethods(object):
-    '''
-    Attributes:
+
+class ExperimentalMethods(object):
+    '''This filter returns True if any of the specified experimental methods
+    matched a PDB entry.
+
+    Attributes
+    ----------
         experimental_methods (list(string)): A list of experimental methods to check
     '''
 
@@ -38,7 +41,6 @@ class experimentalMethods(object):
 
     def __init__(self, *experimentalMethods):
         self.experimental_methods = experimentalMethods
-
 
     def __call__(self, t):
         structure = t[1]

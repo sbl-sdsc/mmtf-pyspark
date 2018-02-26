@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-containsSequenceRegex.py:
+'''containsSequenceRegex.py:
 
 This filter returns true if the polymer sequence motif matches the specified regular expression.
 Sequence motifs support the following one-letter codes:
@@ -41,15 +40,18 @@ Authorship information:
 
 import re
 
-class containsSequenceRegex(object):
-    '''
-    Attributes:
+
+class ContainsSequenceRegex(object):
+    '''This filter returns true if the polymer sequence motif matches the
+    specified regular expression.
+
+    Attributes
+    ----------
         regularExpression (String): The regular expression of protein sequence
     '''
 
     def __init__(self, regularExpression):
         self.regex = regularExpression
-
 
     def __call__(self, t):
         structure = t[1]
