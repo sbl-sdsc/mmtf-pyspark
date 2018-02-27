@@ -14,7 +14,7 @@ from mmtfPyspark.ml import proteinSequenceEncoder
 from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor
-from mmtfPyspark.webfilters import pisces
+from mmtfPyspark.webFilters import Pisces
 from mmtfPyspark.io import MmtfReader
 import time
 
@@ -48,7 +48,7 @@ def main():
     pdb = MmtfReader \
             .read_sequence_file(path, sc) \
             .flatMap(StructureToPolymerChains()) \
-            .filter(pisces(sequenceIdentity, resolution)) \
+            .filter(Pisces(sequenceIdentity, resolution)) \
             .filter(ContainsLProteinChain()) \
             .sample(False, fraction, seed)
 
