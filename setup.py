@@ -10,7 +10,7 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.ml',
                         'mmtfPyspark.utils',
                         'mmtfPyspark.webFilters',
-                        'mmtfPyspark.webservices',
+                        'mmtfPyspark.webServices',
                         'mmtfPyspark.dev'
                         ]
 
