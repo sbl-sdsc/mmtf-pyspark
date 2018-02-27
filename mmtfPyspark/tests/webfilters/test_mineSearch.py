@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.webfilters import PdbjMine
+from mmtfPyspark.webFilters import PdbjMine
 from mmtfPyspark.datasets import PdbjMineService
 from mmtfPyspark.mappers import StructureToPolymerChains
 

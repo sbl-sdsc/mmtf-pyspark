@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.webfilters import wildTypeQuery
+from mmtfPyspark.webFilters import WildTypeQuery
 
 
 class wildTypeTest(unittest.TestCase):
@@ -17,7 +17,7 @@ class wildTypeTest(unittest.TestCase):
 
 
     def test1(self):
-        pdb_1 = self.pdb.filter(wildTypeQuery(True, wildTypeQuery.SEQUENCE_COVERAGE_100))
+        pdb_1 = self.pdb.filter(WildTypeQuery(True, WildTypeQuery.SEQUENCE_COVERAGE_100))
         results_1 = pdb_1.keys().collect()
 
         self.assertTrue('1PEN' in results_1)
