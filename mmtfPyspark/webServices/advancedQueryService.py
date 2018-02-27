@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-advancedQueryService.py
+'''advancedQueryService.py
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -11,19 +10,23 @@ Authorship information:
 
 import urllib
 
-SERVICELOCATION="http://www.rcsb.org/pdb/rest/search"
+SERVICELOCATION = "http://www.rcsb.org/pdb/rest/search"
 
-def postQuery(xml):
-    '''
-    Post an XML query (PDB XML query format) to the RESTful
+
+def post_query(xml):
+    '''Post an XML query (PDB XML query format) to the RESTful
     RCSB web service
+
+    Attribute
+    ---------
+        xml (str): a string of xml query
     '''
 
     encodedXML = urllib.parse.quote(xml).encode('utf-8')
 
     url = urllib.request.Request(SERVICELOCATION)
 
-    with urllib.request.urlopen(url, data = encodedXML) as f:
+    with urllib.request.urlopen(url, data=encodedXML) as f:
 
         pdbIds = [str(l)[2:-3] for l in f.readlines()]
 
