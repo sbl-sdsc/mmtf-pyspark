@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-wildType.py
+'''wildType.py
 
 This filter returns entries that contain wild type protein chains.
 polymer chain(s) made of L-amino acids. If the "exclusive" flag is set to true
@@ -14,10 +13,10 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from mmtfPyspark.webfilters import advancedQuery
+from mmtfPyspark.webFilters import AdvancedQuery
 
 
-class wildTypeQuery(object):
+class WildTypeQuery(object):
 
     SEQUENCE_COVERAGE_100 = 100
     SEQUENCE_COVERAGE_95 = 95
@@ -30,10 +29,13 @@ class wildTypeQuery(object):
     SEQUENCE_COVERAGE_60 = 60
 
     def __init__(self, includeExpressionTags, percentSequenceCoverage=None):
-        '''
-        Default constructor maches an entry that contains at least one L-protein chain.
+        '''Default constructor maches an entry that contains at least one L-protein chain.
         As an example, an L-protein/DNA complex passes this filter
 
+        Attributes
+        ----------
+            includeExpressionTags (bool): flag to include expression tags
+            percentSequenceCoverage (int): percentage of sequence converage [NONE]
         '''
 
         query = "<orgPdbQuery><queryType>org.pdb.query.simple.WildTypeProteinQuery</queryType>"
@@ -48,7 +50,7 @@ class wildTypeQuery(object):
 
         query += "</orgPdbQuery>"
 
-        self.filter = advancedQuery(query)
+        self.filter = AdvancedQuery(query)
 
     def __call__(self, t):
         return self.filter(t)
