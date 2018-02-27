@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-'''
-
-secondaryStructureWord2VecEncoder.py
+'''secondaryStructureWord2VecEncoder.py
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -15,12 +13,13 @@ from mmtfPyspark.ml import proteinSequenceEncoder
 from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor
-from mmtfPyspark.webfilters import pisces
+from mmtfPyspark.webFilters import Pisces
 from mmtfPyspark.io import MmtfReader
 import time
 
 # TODO data count is more than Java
 # TODO need model file
+
 
 def main():
     '''This class creates a dataset of sequence segment derived from a
@@ -33,9 +32,9 @@ def main():
     start = time.time()
 
     conf = SparkConf() \
-            .setMaster("local[*]") \
-            .setAppName("secondaryStructureWord2VecEncodeDemo")
-    sc = SparkContext(conf = conf)
+        .setMaster("local[*]") \
+        .setAppName("secondaryStructureWord2VecEncodeDemo")
+    sc = SparkContext(conf=conf)
 
     # Read MMTF Hadoop sequence file and create a non-redundant set
     # (<=20% seq. identity) of L-protein chains
@@ -48,14 +47,15 @@ def main():
     seed = 123
 
     pdb = MmtfReader \
-            .read_sequence_file(path, sc) \
-            .flatMap(StructureToPolymerChains()) \
-            .filter(pisces(sequenceIdentity, resolution)) \
-            .filter(ContainsLProteinChain()) \
-            .sample(False, fraction, seed)
+        .read_sequence_file(path, sc) \
+        .flatMap(StructureToPolymerChains()) \
+        .filter(Pisces(sequenceIdentity, resolution)) \
+        .filter(ContainsLProteinChain()) \
+        .sample(False, fraction, seed)
 
     segmentLength = 11
-    data = secondaryStructureSegmentExtractor.getDataset(pdb, segmentLength).cache()
+    data = secondaryStructureSegmentExtractor.getDataset(
+        pdb, segmentLength).cache()
 
     # add Word2Vec encoded feature vector
     encoder = proteinSequenceEncoder(data)
@@ -68,9 +68,10 @@ def main():
 
     end = time.time()
 
-    print("Time: %f  sec." %(end-start))
+    print("Time: %f  sec." % (end - start))
 
     sc.stop()
+
 
 if __name__ == "__main__":
     main()

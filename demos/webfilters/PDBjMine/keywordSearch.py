@@ -14,7 +14,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.webfilters import PdbjMine
+from mmtfPyspark.webFilters import PdbjMine
 from mmtfPyspark.datasets import PdbjMineService
 from mmtfPyspark.io import MmtfReader
 
