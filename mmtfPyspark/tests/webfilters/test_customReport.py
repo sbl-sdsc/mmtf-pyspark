@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.webfilters import customReportQuery
+from mmtfPyspark.webFilters import CustomReportQuery
 from mmtfPyspark.mappers import StructureToPolymerChains
 
 
@@ -21,7 +21,7 @@ class CustomReportQueryTest(unittest.TestCase):
         # This test runs a chain levle query and compares the results at the PDB entry level
         whereClause = "WHERE ecNo='2.7.11.1' AND source='Homo sapiens'"
         fields = ["ecNo", "source"]
-        pdb_1 = self.pdb.filter(customReportQuery(whereClause, fields))
+        pdb_1 = self.pdb.filter(CustomReportQuery(whereClause, fields))
         results_1 = pdb_1.keys().collect()
 
         self.assertTrue('5JDE' in results_1)
@@ -36,7 +36,7 @@ class CustomReportQueryTest(unittest.TestCase):
 
         whereClause = "WHERE ecNo='2.7.11.1' AND source='Homo sapiens'"
         fields = ["ecNo", "source"]
-        pdb_2 = pdb_2.filter(customReportQuery(whereClause, fields))
+        pdb_2 = pdb_2.filter(CustomReportQuery(whereClause, fields))
         results_2 = pdb_2.keys().collect()
 
         self.assertTrue('5JDE.A' in results_2)

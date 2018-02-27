@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.webfilters import chemicalStructureQuery
+from mmtfPyspark.webFilters import ChemicalStructureQuery
 
 
 class ChemicalStructureQueryTest(unittest.TestCase):
@@ -19,7 +19,7 @@ class ChemicalStructureQueryTest(unittest.TestCase):
     def test1(self):
         smiles = "CC(=O)NC1C(O)OC(CO)C(O)C1O"
 
-        pdb_1 = self.pdb.filter(chemicalStructureQuery(smiles))
+        pdb_1 = self.pdb.filter(ChemicalStructureQuery(smiles))
         results_1 = pdb_1.keys().collect()
 
         self.assertTrue('1HYA' in results_1)
@@ -28,10 +28,10 @@ class ChemicalStructureQueryTest(unittest.TestCase):
 
     def test2(self):
         smiles = "OC(=O)CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@H]12"
-        queryType = chemicalStructureQuery.EXACT
+        queryType = ChemicalStructureQuery.EXACT
         percentSimilarity = 0
 
-        pdb_2 = self.pdb.filter(chemicalStructureQuery(smiles, queryType, percentSimilarity))
+        pdb_2 = self.pdb.filter(ChemicalStructureQuery(smiles, queryType, percentSimilarity))
         results_2 = pdb_2.keys().collect()
 
         self.assertFalse('1HYA' in results_2)
@@ -43,10 +43,10 @@ class ChemicalStructureQueryTest(unittest.TestCase):
 
     def test3(self):
         smiles = "OC(=O)CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@H]12"
-        queryType = chemicalStructureQuery.SUBSTRUCTURE
+        queryType = ChemicalStructureQuery.SUBSTRUCTURE
         percentSimilarity = 0
 
-        pdb_3 = self.pdb.filter(chemicalStructureQuery(smiles, queryType, percentSimilarity))
+        pdb_3 = self.pdb.filter(ChemicalStructureQuery(smiles, queryType, percentSimilarity))
         results_3 = pdb_3.keys().collect()
 
         self.assertFalse('1HYA' in results_3)
@@ -58,10 +58,10 @@ class ChemicalStructureQueryTest(unittest.TestCase):
 
     def test4(self):
         smiles = "OC(=O)CCCC[C@@H]1SC[C@@H]2NC(=O)N[C@H]12"
-        queryType = chemicalStructureQuery.SIMILAR
+        queryType = ChemicalStructureQuery.SIMILAR
         percentSimilarity = 70
 
-        pdb_4 = self.pdb.filter(chemicalStructureQuery(smiles, queryType, percentSimilarity))
+        pdb_4 = self.pdb.filter(ChemicalStructureQuery(smiles, queryType, percentSimilarity))
         results_4 = pdb_4.keys().collect()
 
         self.assertFalse('1HYA' in results_4)
@@ -73,10 +73,10 @@ class ChemicalStructureQueryTest(unittest.TestCase):
 
     def test5(self):
         smiles = "OC(=O)CCCC[C@H]1[C@H]2NC(=O)N[C@H]2C[S@@]1=O"
-        queryType = chemicalStructureQuery.SUPERSTRUCTURE
+        queryType = ChemicalStructureQuery.SUPERSTRUCTURE
         percentSimilarity = 0
 
-        pdb_5 = self.pdb.filter(chemicalStructureQuery(smiles, queryType, percentSimilarity))
+        pdb_5 = self.pdb.filter(ChemicalStructureQuery(smiles, queryType, percentSimilarity))
         results_5 = pdb_5.keys().collect()
 
         self.assertFalse('1HYA' in results_5)

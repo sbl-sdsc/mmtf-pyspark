@@ -6,11 +6,11 @@ from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.datasets import customReportService
 
 
-class CustomReportQueryTest(unittest.TestCase):
+class customReportServiceTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster(
-            "local[*]").setAppName('customReportQueryTest')
+            "local[*]").setAppName('customReportServiceTest')
         self.sc = SparkContext(conf=conf)
 
     def test1(self):

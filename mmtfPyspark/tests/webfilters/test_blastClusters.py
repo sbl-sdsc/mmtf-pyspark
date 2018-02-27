@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
-from mmtfPyspark.webfilters import blastCluster
+from mmtfPyspark.webFilters import BlastCluster
 from mmtfPyspark.mappers import StructureToPolymerChains
 
 
@@ -19,7 +19,7 @@ class BlastClustersTest(unittest.TestCase):
 
     def test1(self):
 
-        pdb_1 = self.pdb.filter(blastCluster(40))
+        pdb_1 = self.pdb.filter(BlastCluster(40))
         results_1 = pdb_1.keys().collect()
 
         self.assertTrue('1O06' in results_1)
@@ -28,7 +28,7 @@ class BlastClustersTest(unittest.TestCase):
 
     def test2(self):
 
-        pdb_2 = self.pdb.filter(blastCluster(40))
+        pdb_2 = self.pdb.filter(BlastCluster(40))
         pdb_2 = pdb_2.flatMap(StructureToPolymerChains())
         results_2 = pdb_2.keys().collect()
 
