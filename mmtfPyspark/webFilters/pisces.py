@@ -20,7 +20,7 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
-from mmtfPyspark.webservices import PiscesDownloader
+from mmtfPyspark.webServices import PiscesDownloader
 
 
 class Pisces(object):
@@ -40,7 +40,7 @@ class Pisces(object):
 
         pD = PiscesDownloader(sequenceIdentity, resolution)
 
-        for pdbId in pD.getStructureChainIds():
+        for pdbId in pD.get_structure_chain_ids():
             self.pdbIds.add(pdbId)
             self.pdbIds.add(pdbId[:4])
 
