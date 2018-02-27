@@ -24,7 +24,7 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from mmtfPyspark.webservices import advancedQueryService
+from mmtfPyspark.webServices.advancedQueryService import post_query
 
 
 class AdvancedQuery(object):
@@ -37,7 +37,7 @@ class AdvancedQuery(object):
 
     def __init__(self, xmlQuery):
 
-        results = advancedQueryService.postQuery(xmlQuery)
+        results = post_query(xmlQuery)
 
         self.entityLevel = (len(results) > 0) and (":" in results[0])
         self.structureIds = list(set(results))
