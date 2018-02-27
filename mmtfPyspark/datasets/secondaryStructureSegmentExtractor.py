@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-secondaryStructureSegmentExtractor.py:
+'''secondaryStructureSegmentExtractor.py:
 
 This class creates a dataset of sequence segments of specified length
 and associate secondary structure information. Sequence and secondary
@@ -17,19 +16,20 @@ Authorship information:
 '''
 
 from mmtfPyspark.datasets import secondaryStructureExtractor
-from mmtfPyspark.mappers import structureToSecondaryStructureSegments
+from mmtfPyspark.mappers import StructureToSecondaryStructureSegments
 from mmtfPyspark.ml import pythonRDDToDataset
 
 def getDataset(structureRDD, length):
-    '''
-    Returns a dataset of sequence segments of the specified length and
+    '''Returns a dataset of sequence segments of the specified length and
     the DSSP Q8 and Q3 code of the center residue in a segment.
 
-    Attributes:
+    Attributes
+    ----------
         structureRDD: structure
         length (int): segment length, must be an odd number
 
-    Returns:
+    Returns
+    -------
         dataset of segments
     '''
 
@@ -37,7 +37,7 @@ def getDataset(structureRDD, length):
         raise Exception("Segment length must be an odd number %i" % length)
 
     rows = secondaryStructureExtractor.getPythonRdd(structureRDD) \
-            .flatMap(structureToSecondaryStructureSegments(length))
+            .flatMap(StructureToSecondaryStructureSegments(length))
 
     colNames = ["structureChainId", "sequence", "labelQ8", "labelQ3"]
     return pythonRDDToDataset.getDataset(rows, colNames)
