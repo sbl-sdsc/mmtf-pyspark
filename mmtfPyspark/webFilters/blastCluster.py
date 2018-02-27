@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-blastCluster.py
+'''blastCluster.py
 
 This filter passes through representative structures from the RCSB PDB
 BlastCLust cluster. A sequence identity thresholds needs to be specified.
@@ -25,16 +24,16 @@ Authorship information:
 
 import urllib.request
 
-class blastCluster(object):
-    '''
-    Filters blast clusters
+class BlastCluster(object):
+    '''Filters blast clusters
 
-    Attributes:
-        sequenceIdentity (Int): sequence indentity for blast
+    Attributes
+    ----------
+        sequenceIdentity (int): sequence indentity for blast
     '''
     def __init__(self, sequenceIdentity):
 
-        clusters = self.getBlastCluster(sequenceIdentity)
+        clusters = self.get_blast_cluster(sequenceIdentity)
 
         self.pdbIds = set()
 
@@ -47,7 +46,7 @@ class blastCluster(object):
         return t[0] in self.pdbIds
 
 
-    def getBlastCluster(self, sequenceIdentity):
+    def get_blast_cluster(self, sequenceIdentity):
 
         if sequenceIdentity not in [30,40,50,70,90,95,100]:
             raise Exception(f"Error: representative chains are not availible for \

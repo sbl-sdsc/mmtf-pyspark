@@ -1,5 +1,4 @@
-'''
-customReportQuery.py
+'''customReportQuery.py
 
 This filter runs an SQL query on specified PDB metadata and annotation fields retrived using
 RCSB PDB RESTful web services. The fields are then queried and the resulting PDB IDs are
@@ -31,11 +30,12 @@ Authorship information:
 from mmtfPyspark.datasets import customReportService
 from pyspark.sql import SparkSession
 
-class customReportQuery(object):
-    '''
-    Filters using an SQL query on the specified fields
 
-    Attributes:
+class CustomReportQuery(object):
+    '''Filters using an SQL query on the specified fields
+
+    Attributes
+    ----------
         whereClause : WHERE Clause of SQL statement
         fields : one or more field names to be used in query
     '''
@@ -78,10 +78,9 @@ class customReportQuery(object):
             # For PDB entry level data
             sql = "SELECT structureId FROM table " + whereCaluse
             results = spark.sql(sql)
-            self.pdbIds = results.distinct().rdd.map(lambda x:x[0]).collect()
+            self.pdbIds = results.distinct().rdd.map(lambda x: x[0]).collect()
 
         self.pdbIds = list(set(self.pdbIds))
-
 
     def __call__(self, t):
 

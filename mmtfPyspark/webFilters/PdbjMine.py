@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-mineSearch.py
+'''PdbjMine.py
 
 This filter runs an PDBj Mine 2 Search web service using SQL query
 
@@ -19,13 +18,20 @@ import requests
 
 
 class PdbjMine(object):
-    '''
-    Fetch data using the PDBj Mine 2 SQL service
+    '''Fetch data using the PDBj Mine 2 SQL service
+
+    Attributes
+    ----------
+        sqlQuery (str): the sql query [None]
+        dataset: csv file of the target dataset [None]
+        pdbidField (str): field name of pdbIds [pdbid]
+        clainLevel (bool): flag to indicate chain level query
     '''
 
     URL = "https://pdbj.org/rest/mine2_sql"
 
-    def __init__(self, sqlQuery=None, dataset=None, pdbidField="pdbid", chainLevel=False):
+    def __init__(self, sqlQuery=None, dataset=None, pdbidField="pdbid",
+                 chainLevel=False):
 
         self.pdbidField = pdbidField
         self.chainLevel = chainLevel
@@ -33,22 +39,15 @@ class PdbjMine(object):
 
         if self.sqlQuery != None:
 
-
             encodedSQL = urllib.parse.quote(self.sqlQuery)
             tmp = tempfile.NamedTemporaryFile(delete=False)
 
             # URL retrive won't work on certain IP address
             urlretrieve(self.URL + "?format=csv&q=" + encodedSQL, tmp.name)
-            '''
-            url = self.URL + "?format=csv&q=" + encodedSQL
-            #print(requests.get(url).content)
-            with open(tmp.name, 'w') as t:
-                t.write(str(requests.get(url).content)[2:-1])
-            '''
 
             spark = SparkSession.builder.getOrCreate()
 
-                # TODO: Using self.dataset causes spark unable to use filter
+            # TODO: Using self.dataset causes spark unable to use filter
             dataset = spark.read.format("csv") \
                 .option("header", "true") \
                 .option("inferSchema", "true") \

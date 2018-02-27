@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-sequenceSimilarity.py
+'''sequenceSimilarity.py
 
 This filter returns entries that pass the sequence similarity search
 criteria. Searches protein and nucleic acid sequences using the BLAST.
@@ -38,19 +37,20 @@ Authorship information:
     __status__ = "Need unit test"
 '''
 
-from mmtfPyspark.webfilters import advancedQuery
+from mmtfPyspark.webFilters import AdvancedQuery
 
-class sequenceSimilarity(object):
+
+class SequenceSimilarity(object):
 
     BLAST = 'blast'
     PSI_BLAST = 'psi-blast'
 
-    def __init__(self, sequence, searchTool = BLAST, eValueCutoff = 10.0, \
-                 sequenceIdentityCutoff = 0, maskLowComplexity = True):
-        '''
-        Filters by squence similarity using all default parameters.
+    def __init__(self, sequence, searchTool=BLAST, eValueCutoff=10.0,
+                 sequenceIdentityCutoff=0, maskLowComplexity=True):
+        '''Filters by squence similarity using all default parameters.
 
-        Attribute:
+        Attribute
+        ---------
             sequence (str): query sequence
             searchTool (class variable): sequenceSimilarity.BLAST or sequenceSimilarity.PSI_BLAST
             eValueCutoff (float): maximun e-value
@@ -59,7 +59,8 @@ class sequenceSimilarity(object):
         '''
 
         if len(sequence) < 12:
-                raise ValueError("ERROR: the query sequence must be at least 12 residues long")
+            raise ValueError(
+                "ERROR: the query sequence must be at least 12 residues long")
 
         complexity = 'yes' if maskLowComplexity else 'no'
 
@@ -70,8 +71,7 @@ class sequenceSimilarity(object):
                 + "</eValueCutoff>" + "<sequenceIdentityCutoff>" + str(sequenceIdentityCutoff) \
                 + "</sequenceIdentityCutoff>" + "</orgPdbQuery>"
 
-        self.filter = advancedQuery(query)
-
+        self.filter = AdvancedQuery(query)
 
     def __call__(self, t):
         return self.filter(t)
