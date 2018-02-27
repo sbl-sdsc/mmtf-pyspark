@@ -1,42 +1,40 @@
 #!/user/bin/env python
-'''
-structureToPolymerSequences.py:
+'''structureToPolymerSequences.py:
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
-
 '''
 
-class structureToPolymerSequences(object):
+
+class StructureToPolymerSequences(object):
     '''This mapper maps a structure to it's polypeptides, polynucleotide chain sequences.
     For a multi-model structure, only the first model is considered.
-
-    Attributes:
     '''
-    def __init__(self, useChainIdInsteadOfChainName = False, removeDuplicates= False):
+
+    def __init__(self, useChainIdInsteadOfChainName=False, removeDuplicates=False):
         '''Extracts all polymer chains from a structure. If the argument is set to true,
         the assigned key is: <PDB ID.Chain ID>, where Chain ID is the unique identifier
         assigned to each molecular entity in an mmCIF file. This Chain ID corresponds to
         <a href="http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_atom_site.label_asym_id.html">
         _atom_site.label_asym_id</a> field in an mmCIF file.
 
-        Args:
+        Attributes
+        ----------
             useChainIdInsteadOfChainName if true, use the Chain Id in the key assignments
             removeDuplicates if true, return only one chain for each unique sequence= t[1]
         '''
         self.useChainIdInsteadOfChainName = useChainIdInsteadOfChainName
         self.removeDuplicates = removeDuplicates
 
-
     def __call__(self, t):
         structure = t[1]
         sequences = list()
         seqSet = set()
 
-        chainToEntityIndex = self._getChainToEntityIndex(structure)
+        chainToEntityIndex = self._get_chain_to_entity_index(structure)
 
         for i in range(structure.chains_per_model[0]):
             polymer = structure.entity_list[i]['type'] == 'polymer'
@@ -53,7 +51,8 @@ class structureToPolymerSequences(object):
                 else:
                     key += structure.chain_name_list[i]
 
-                sequences.append((key,structure.entity_list[chainToEntityIndex[i]]['sequence']))
+                sequences.append(
+                    (key, structure.entity_list[chainToEntityIndex[i]]['sequence']))
 
         # TODO double check
         if self.removeDuplicates:
@@ -61,10 +60,8 @@ class structureToPolymerSequences(object):
 
         return sequences
 
-
-
-    def _getChainToEntityIndex(self, structure):
-        entityChainIndex = [0]*structure.num_chains
+    def _get_chain_to_entity_index(self, structure):
+        entityChainIndex = [0] * structure.num_chains
 
         for i in range(len(structure.entity_list)):
 

@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-structureToBiopython.py:
+'''structureToBiopython.py:
 
 Maps a structure to BioPython Structure
 
@@ -8,14 +7,15 @@ Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "debug"
+    __status__ = "Error"
 '''
 from Bio.PDB.mmtf import DefaultParser
 from mmtf.utils import decoder_utils
 
 # TODO MMTFEncoder error
 
-class structureToBiopython(object):
+
+class StructureToBiopython(object):
 
     def __call__(self, t):
 
