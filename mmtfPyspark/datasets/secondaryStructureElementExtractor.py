@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-secondaryStructureElementExtractor.py:
+'''secondaryStructureElementExtractor.py:
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -10,7 +9,7 @@ Authorship information:
 '''
 
 from mmtfPyspark.ml import pythonRDDToDataset
-from mmtfPyspark.mappers import structureToSecondaryStructureElements
+from mmtfPyspark.mappers import StructureToSecondaryStructureElements
 from mmtfPyspark.datasets import secondaryStructureExtractor
 
 def getDataset(structure, label, length=None):
@@ -23,12 +22,12 @@ def getDataset(structure, label, length=None):
     if length == None:
 
         rows = secondaryStructureExtractor.getPythonRdd(structure) \
-               .flatMap(structureToSecondaryStructureElements(label))
+               .flatMap(StructureToSecondaryStructureElements(label))
 
         return pythonRDDToDataset.getDataset(rows, colNames)
     else :
 
         rows = secondaryStructureExtractor.getPythonRdd(structure) \
-               .flatMap(structureToSecondaryStructureElements(label, length))
+               .flatMap(StructureToSecondaryStructureElements(label, length))
 
         return pythonRDDToDataset.getDataset(rows, colNames)

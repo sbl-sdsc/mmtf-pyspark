@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-polymerSequenceExtractor.py:
+'''polymerSequenceExtractor.py:
 
 Creates a dataset of polymer sequences using the full sequence
 used in the experiment (i.e., the "SEQRES" record in PDB files).
@@ -13,7 +12,7 @@ Authorship information:
 '''
 
 from mmtfPyspark.ml import pythonRDDToDataset
-from mmtfPyspark.mappers import structureToPolymerSequences
+from mmtfPyspark.mappers import StructureToPolymerSequences
 from pyspark.sql import Row
 
 
@@ -29,9 +28,9 @@ def getDataset(structures):
         dataset with interacting residue and atom information
     '''
 
-    rows = structures.flatMap(structureToPolymerSequences()) \
+    rows = structures.flatMap(StructureToPolymerSequences()) \
                      .map(lambda x: Row(x[0],x[1]))
 
     colNames = ["structureChainId", "sequence"]
-    
+
     return pythonRDDToDataset.getDataset(rows, colNames)
