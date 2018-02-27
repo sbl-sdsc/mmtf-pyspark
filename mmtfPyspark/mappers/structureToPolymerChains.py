@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-structureToPolymerChain.py:
+'''structureToPolymerChain.py:
 
 Maps a structure to its individual polymer chains. Polymer chains
 include polypeptides, polynucleotides, and linear and branched polysaccharides.
@@ -16,15 +15,15 @@ from mmtf.utils import *
 from mmtf.api.mmtf_writer import MMTFEncoder
 from mmtfPyspark.io.mmtfStructure import MmtfStructure
 
-class structureToPolymerChains(object):
-    '''
-    Extracts all polymer chains from a structure. If the argument is set to true,
+class StructureToPolymerChains(object):
+    '''Extracts all polymer chains from a structure. If the argument is set to true,
 	the assigned key is: <PDB ID.Chain ID>, where Chain ID is the unique identifier
 	assigned to each molecular entity in an mmCIF file. This Chain ID corresponds to
 	<a href="http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_atom_site.label_asym_id.html">
 	_atom_site.label_asym_id</a> field in an mmCIF file.
 
-    Attributes:
+    Attributes
+    ----------
         useChainIdInsteadOfChainName (bool): if true, use Chain Id in the key assignments
         excludeDuplicates (bool): if true return only one chain for each sequence
     '''
@@ -43,8 +42,8 @@ class structureToPolymerChains(object):
 
         # Precalculate indices
         numChains = structure.chains_per_model[0]
-        chainToEntityIndex = self._getChainToEntityIndex(structure)
-        atomsPerChain, bondsPerChain = self._getNumAtomsAndBonds(structure)
+        chainToEntityIndex = self._get_chain_to_entity_index(structure)
+        atomsPerChain, bondsPerChain = self._get_num_atoms_and_bonds(structure)
 
         chainList = list()
         seqSet = set()
@@ -158,7 +157,7 @@ class structureToPolymerChains(object):
         return chainList
 
 
-    def _getNumAtomsAndBonds(self, structure):
+    def _get_num_atoms_and_bonds(self, structure):
         '''Gets the number of atoms and bonds per chain
         '''
         numChains = structure.chains_per_model[0]
@@ -177,10 +176,12 @@ class structureToPolymerChains(object):
         return atomsPerChain, bondsPerChain
 
 
-    def _getChainToEntityIndex(self, structure):
+    def _get_chain_to_entity_index(self, structure):
         '''Returns an list that maps a chain index to an entity index.
-        Args:
-            structureDataInterFace
+
+        Attributes
+        ----------
+            structure: structureDataInterFace
         '''
         entityChainIndex = [0] * structure.num_chains
 

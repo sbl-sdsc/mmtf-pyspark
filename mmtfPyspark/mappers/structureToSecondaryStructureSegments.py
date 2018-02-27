@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-structureToSecondaryStructureSegments.py:
+'''structureToSecondaryStructureSegments.py:
 
 Maps chain seuqnce to its sequence segments
 
@@ -12,9 +11,13 @@ Authorship information:
 '''
 from pyspark.sql import Row
 
-class structureToSecondaryStructureSegments(object):
-    '''
-    Constructor sets the segment length.
+
+class StructureToSecondaryStructureSegments(object):
+    '''Constructor sets the segment length.
+
+    Attributes
+    ----------
+        length (int): length of the secondary structure segments
     '''
 
     def __init__(self, length):
@@ -23,9 +26,7 @@ class structureToSecondaryStructureSegments(object):
 
         self.length = length
 
-
     def __call__(self, t):
-        # TODO double check indexing
         structureChainId = t[0]
         sequence = t[1]
         dsspQ3 = t[6]
@@ -35,13 +36,14 @@ class structureToSecondaryStructureSegments(object):
         sequences = []
 
         for i in range(len(sequence) - self.length):
-            currSeq = sequence[i:i+self.length]
+            currSeq = sequence[i:i + self.length]
 
-            #print(dsspQ3)
-            labelQ3 = dsspQ3[i+ int(self.length/2) : i + int(self.length/2) + 1]
-            labelQ8 = dsspQ8[i+ int(self.length/2) : i + int(self.length/2) + 1]
+            # print(dsspQ3)
+            labelQ3 = dsspQ3[i + int(self.length / 2): i + int(self.length / 2) + 1]
+            labelQ8 = dsspQ8[i + int(self.length / 2): i + int(self.length / 2) + 1]
 
             if (labelQ8 != "X" and labelQ3 != "X"):
-                sequences.append(Row(structureChainId, currSeq, labelQ8, labelQ3))
+                sequences.append(
+                    Row(structureChainId, currSeq, labelQ8, labelQ3))
 
         return sequences

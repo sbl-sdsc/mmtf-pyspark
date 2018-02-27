@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-structureToInteractingResidues.py:
+'''structureToInteractingResidues.py:
 
 Convert a full format of the file to a reduced format
 
@@ -8,35 +7,36 @@ Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "Done"
+    __status__ = "debug"
 '''
 from pyspark.sql import Row
 
-class structureToInteractingResidues(object):
+
+class StructureToInteractingResidues(object):
 
     def __init__(self, groupName, cutoffDistance):
         self.groupName = groupName
         self.cutoffDistance = cutoffDistance
 
-
     def __call__(self, t):
         structureId = t[0]
         structure = t[1]
-        groupIndices, groupNames = self._getGroupIndices(structure)
+        groupIndices, groupNames = self._get_group_indices(structure)
 
         neighbors = []
         for i in range(len(groupName)):
 
             if groupNames[i] == self.groupName:
                 matches = []
-                boundingBox = self._calcBondingBox(structure, groupIndices, i, self.cutoffDistance)
-                matches += self._findNeighbors(structure, index, boudingBox, groupIndices)
-                neighbors += self._getDistanceProfile(structureId,
-                                  matches, i, groupIndices, groupNames, structure)
+                boundingBox = self._calc_bonding_box(
+                    structure, groupIndices, i, self.cutoffDistance)
+                matches += self._find_neighbors(structure,
+                                                index, boudingBox, groupIndices)
+                neighbors += self._get_distance_profile(structureId,
+                                                        matches, i, groupIndices, groupNames, structure)
         return neighbors
 
-
-    def _getDistanceProfile(self, structureId, matches, index, groupIndices, groupNames, structure):
+    def _get_distance_profile(self, structureId, matches, index, groupIndices, groupNames, structure):
         cutoffDistanceSq = cutoffDistance * cutoffDistance
 
         x = structure.x_coord_list
@@ -49,18 +49,19 @@ class structureToInteractingResidues(object):
         rows = []
 
         for i in matches:
-            if i == index: continue
+            if i == index:
+                continue
 
             minDSq = float('inf')
             minIndex = -1
 
-            for j in range(groupIndices[i], groupIndices[i+1]):
+            for j in range(groupIndices[i], groupIndices[i + 1]):
 
                 for k in range(first, last):
                     dx = x[j] - x[k]
                     dy = y[j] - y[k]
                     dz = z[j] - z[k]
-                    dSq = dx*dx + dy*dy + dz*dz
+                    dSq = dx * dx + dy * dy + dz * dz
 
                     if (dSq <= cutoffDistanceSq and dSq < minDSq):
                         minDSq = min(minDSq, dSq)
@@ -78,8 +79,7 @@ class structureToInteractingResidues(object):
 
         return rows
 
-
-    def _findNeighbors(self, structure, index, boundingBox, groupIndices):
+    def _find_neighbors(self, structure, index, boundingBox, groupIndices):
         x = structure.x_coord_list
         y = structure.y_coord_list
         z = structure.z_coord_list
@@ -87,18 +87,17 @@ class structureToInteractingResidues(object):
         matches = []
         for i in range(len(groupIndices) - 1):
 
-            for j in range(groupIndices[i], groupIndices[i+1]):
+            for j in range(groupIndices[i], groupIndices[i + 1]):
 
                 if (x[j] >= boundingBox[0] and x[j] <= boundingBox[1] and
                     y[j] >= boundingBox[2] and y[j] <= boundingBox[3] and
-                    z[j] >= boundindBox[4] and z[j] <= boundingBox[5]):
+                        z[j] >= boundindBox[4] and z[j] <= boundingBox[5]):
                     matches.append(i)
                     break
 
         return matches
 
-
-    def _calcBondingBox(self, structure, groupIndices, i, cutoffDistance):
+    def _calc_bonding_box(self, structure, groupIndices, i, cutoffDistance):
         x = structure.x_coord_list
         y = structure.y_coord_list
         z = structure.z_coord_list
@@ -111,7 +110,7 @@ class structureToInteractingResidues(object):
         zMax = float('inf')
 
         first = groupIndices[i]
-        last = groupIndices[i+1]
+        last = groupIndices[i + 1]
 
         for i in range(first, last):
             xMin = min(xMin, x[i])
@@ -121,7 +120,7 @@ class structureToInteractingResidues(object):
             zMin = min(zMin, z[i])
             zMax = max(zMax, z[i])
 
-        boundingBox = [0]*6
+        boundingBox = [0] * 6
         boundingBox[0] = float(xMin - cutoffDistance)
         boundingBox[1] = float(xMax + cutoffDistance)
         boundingBox[2] = float(yMin - cutoffDistance)
@@ -131,8 +130,7 @@ class structureToInteractingResidues(object):
 
         return boundingBox
 
-
-    def _getGroupIndices(self, structure):
+    def _get_group_indices(self, structure):
         groupIndices = [0]
         groupNames = []
 
@@ -144,8 +142,10 @@ class structureToInteractingResidues(object):
 
             for j in range(structure.groups_per_chain[i]):
                 groupIndex = structure.group_type_list[groupCounter]
-                groupNames.append(structure.group_list[groupIndex]['groupName'])
-                atomCounter += len(structure.group_list[group_Index]['atomNameList'])
+                groupNames.append(
+                    structure.group_list[groupIndex]['groupName'])
+                atomCounter += len(
+                    structure.group_list[group_Index]['atomNameList'])
                 groupIndices.append(atomCounter)
                 groupCounter += 1
 

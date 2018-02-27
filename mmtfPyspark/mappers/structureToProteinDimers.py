@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-structureToProteinDimers.py:
+'''structureToProteinDimers.py:
 
 Maps a structure to its protein dimers
 
@@ -20,32 +19,41 @@ import time
 import numpy as np
 import math
 
-class structureToProteinDimers(object):
-    '''
-    Maps a protein structure to it's protein dimers
+
+class StructureToProteinDimers(object):
+    '''Maps a protein structure to it's protein dimers
+
+    Attributes
+    ----------
+        cutoffDistance (float): cutoff distance for protein dimers [8.0]
+        contacts (int): number of contacts [20]
+        useAllAtoms (bool): flag to use all atoms [False]
+        exclusive (bool): exclusive flag [False]
     '''
 
-    def __init__(self, cutoffDistance = 8.0, contacts = 20, useAllAtoms = False, exclusive = False):
+    def __init__(self, cutoffDistance=8.0, contacts=20,
+                 useAllAtoms=False, exclusive=False):
         self.cutoffDistance = cutoffDistance
         self.contacts = contacts
         self.useAllAtoms = useAllAtoms
         self.exclusive = exclusive
 
-
     def __call__(self, t):
         structure = t[1]
 
         # split structure into a list of chains
-        chains = self._splitToChains(structure)
-        chainVectors = self._getChainVectors(chains)
+        chains = self._split_to_chains(structure)
+        chainVectors = self._get_chain_vectors(chains)
         resList = []
 
         if self.useAllAtoms:
-            boxes = self._getAllAtomsDistanceBoxes(chains, self.cutoffDistance)
+            boxes = self._get_all_atoms_distance_boxes(
+                chains, self.cutoffDistance)
         else:
-            boxes = self._getCBetaAtomsDistanceBoxes(chains, self.cutoffDistance)
+            boxes = self._get_c_beta_atoms_distance_boxes(
+                chains, self.cutoffDistance)
 
-        self.exclusiveHashSet = np.empty([0,3])
+        self.exclusiveHashSet = np.empty([0, 3])
 
         for i in range(len(chains)):
 
@@ -53,83 +61,69 @@ class structureToProteinDimers(object):
 
             while j < i:
 
-                if self._checkPair(boxes[i], boxes[j], chains[i], chains[j], self.cutoffDistance, self.contacts):
+                if self._check_pair(boxes[i], boxes[j], chains[i], chains[j], self.cutoffDistance, self.contacts):
 
                     if self.exclusive:
 
                         newVec = chainVectors[i] - chainVectors[j]
-                        if not self._checkList(newVec, self.exclusiveHashSet):
+                        if not self._check_list(newVec, self.exclusiveHashSet):
 
-                            resList.append(self._combineChains(chains[i], chains[j]))
+                            resList.append(self._combine_chains(
+                                chains[i], chains[j]))
 
-                            self.exclusiveHashSet = np.append(self.exclusiveHashSet, [newVec], axis = 0)
-
-                        '''
-                        es1 = chains[i].entity_list[self._getChainToEntityIndex(chains[i])[0]]["sequence"]
-                        es2 = chains[j].entity_list[self._getChainToEntityIndex(chains[j])[0]]["sequence"]
-
-                        newTuple1 = (es1, es2)
-                        newTuple2 = (es2, es1)
-
-                        if (newTuple1 not in self.exclusiveHashSet) and (newTuple2 not in self.exclusiveHashSet):
-                            print(newTuple1)
-                            resList.append(self._combineChains(chains[i], chains[j]))
-                            exclusiveHashSet.add(newTuple1)
-                            exclusiveHashSet.add(newTuple2)
-                        '''
-
-                    else: resList.append(self._combineChains(chains[i], chains[j]))
+                            self.exclusiveHashSet = np.append(
+                                self.exclusiveHashSet, [newVec], axis=0)
+                    else:
+                        resList.append(self._combine_chains(
+                            chains[i], chains[j]))
 
                 j += 1
 
         return resList
 
-
-    def _checkList(self, vec, exclusiveList):
+    def _check_list(self, vec, exclusiveList):
 
         for point in exclusiveList:
 
-            if np.linalg.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1: return True
+            if np.linalg.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1:
+                return True
             vec = vec * -1
 
-            if np.linalg.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1: return True
+            if np.linalg.norm(vec - point) < 0.1 and self._angle(vec, point) < 0.1:
+                return True
             vec = vec * -1
 
         return False
 
-
     def _angle(self, a, b):
 
-      arccosInput = np.dot(a,b)/np.linagl.norm(a)/np.linagl.norm(b)
-      arccosInput = 1.0 if arccosInput > 1.0 else arccosInput
-      arccosInput = -1.0 if arccosInput < -1.0 else arccosInput
+        arccosInput = np.dot(a, b) / np.linagl.norm(a) / np.linagl.norm(b)
+        arccosInput = 1.0 if arccosInput > 1.0 else arccosInput
+        arccosInput = -1.0 if arccosInput < -1.0 else arccosInput
 
-      return math.acos(arccosInput)
+        return math.acos(arccosInput)
 
-
-    def _getChainVectors(self, chains):
+    def _get_chain_vectors(self, chains):
 
         chainVectors = []
 
         for chain in chains:
 
-            chainVectors.append(self._calcAverageVec(chain))
+            chainVectors.append(self._calc_average_vec(chain))
 
         return chainVectors
 
-
-    def _calcAverageVec(self, s1):
+    def _calc_average_vec(self, s1):
 
         totX, totY, totZ = 0, 0, 0
 
-        for i in range(s1.num_atoms): # TODO double check num atoms
+        for i in range(s1.num_atoms):  # TODO double check num atoms
 
             totX += s1.x_coord_list[i]
             totY += s1.y_coord_list[i]
             totZ += s1.z_coord_list[i]
 
-        return np.array([totX/s1.num_atoms, totY/s1.num_atoms, totZ/s1.num_atoms])
-
+        return np.array([totX / s1.num_atoms, totY / s1.num_atoms, totZ / s1.num_atoms])
 
     def _distance(self, s1, s2, index1, index2):
 
@@ -147,7 +141,7 @@ class structureToProteinDimers(object):
 
         return newPoint1.distance(newPoint2)
 
-    def _checkPair(self, box1, box2, s1, s2, cutoffDistance, contacts):
+    def _check_pair(self, box1, box2, s1, s2, cutoffDistance, contacts):
 
         pointsInBox2 = box1.getIntersection(box2)
         pointsInBox1 = box2.getIntersection(box1)
@@ -160,20 +154,21 @@ class structureToProteinDimers(object):
 
             for j in range(len(pointsInBox1)):
 
-                if (i in hs1) or (j in hs2): continue
+                if (i in hs1) or (j in hs2):
+                    continue
 
-                if self._distance(s1, s2, pointsInBox2[i], pointsInBox1[j]) < cutoffDistance :
+                if self._distance(s1, s2, pointsInBox2[i], pointsInBox1[j]) < cutoffDistance:
 
                     num += 1
                     hs1.add(i)
                     hs2.add(j)
 
-                if num > contacts: return True
+                if num > contacts:
+                    return True
 
         return False
 
-
-    def _getCBetaAtomsDistanceBoxes(self, chains, cutoffDistance):
+    def _get_c_beta_atoms_distance_boxes(self, chains, cutoffDistance):
         '''Get distance boxes for all atoms
         '''
         distanceBoxes = []
@@ -212,8 +207,7 @@ class structureToProteinDimers(object):
 
         return distanceBoxes
 
-
-    def _getAllAtomsDistanceBoxes(self, chains, cutoffDistance):
+    def _get_all_atoms_distance_boxes(self, chains, cutoffDistance):
         '''Get distance boxes for all atoms
         '''
         distanceBoxes = []
@@ -239,15 +233,14 @@ class structureToProteinDimers(object):
 
         return distanceBoxes
 
-
-    def _splitToChains(self, s):
+    def _split_to_chains(self, s):
         '''split structure to a list of chains
         '''
         chains = []
         numChains = s.chains_per_model[0]
 
-        chainToEntityIndex = self._getChainToEntityIndex(s)
-        atomsPerChain, bondsPerChain = self._getNumAtomsAndBonds(s)
+        chainToEntityIndex = self._get_chain_to_entity_index(s)
+        atomsPerChain, bondsPerChain = self._get_num_atoms_and_bonds(s)
 
         groupCounter = 0
         atomCounter = 0
@@ -258,9 +251,9 @@ class structureToProteinDimers(object):
             entityToChainIndex = chainToEntityIndex[i]
 
             structureId = s.structure_id + '.' +\
-                            s.chain_name_list[i] + '.' +\
-                            s.chain_id_list[i] + '.' +\
-                            str(entityToChainIndex + 1)
+                s.chain_name_list[i] + '.' +\
+                s.chain_id_list[i] + '.' +\
+                str(entityToChainIndex + 1)
 
             # Set header
             newChain.init_structure(bondsPerChain[i],
@@ -271,7 +264,7 @@ class structureToProteinDimers(object):
             decoder_utils.add_header_info(s, newChain)
 
             # Set model info (only one model: 0)
-            newChain.set_model_info(0,1)
+            newChain.set_model_info(0, 1)
 
             # Set entity and chain info
             newChain.set_entity_info([0],
@@ -285,15 +278,17 @@ class structureToProteinDimers(object):
 
             for j in range(s.groups_per_chain[i]):
                 groupIndex = s.group_type_list[groupCounter]
-                #print(s.group_type_list)
+                # print(s.group_type_list)
 
                 # Set group info
                 newChain.set_group_info(s.group_list[groupIndex]['groupName'],
                                         s.group_id_list[groupCounter],
                                         s.ins_code_list[groupCounter],
                                         s.group_list[groupIndex]['chemCompType'],
-                                        len(s.group_list[groupIndex]['atomNameList']),
-                                        len(s.group_list[groupIndex]['bondOrderList']),
+                                        len(s.group_list[groupIndex]
+                                            ['atomNameList']),
+                                        len(s.group_list[groupIndex]
+                                            ['bondOrderList']),
                                         s.group_list[groupIndex]['singleLetterCode'],
                                         s.sequence_index_list[groupCounter],
                                         s.sec_struct_list[groupCounter])
@@ -314,16 +309,16 @@ class structureToProteinDimers(object):
 
                 for l in range(len(s.group_list[groupIndex]['bondOrderList'])):
 
-                    bondIndOne = s.group_list[groupIndex]['bondAtomList'][l*2]
-                    bondIndTwo = s.group_list[groupIndex]['bondAtomList'][l*2+1]
+                    bondIndOne = s.group_list[groupIndex]['bondAtomList'][l * 2]
+                    bondIndTwo = s.group_list[groupIndex]['bondAtomList'][l * 2 + 1]
                     bondOrder = s.group_list[groupIndex]['bondOrderList'][l]
 
                     #newChain.set_group_bond(bondIndOne, bondIndTwo, bondOrder)
-                    newChain.current_group.bond_atom_list += [bondIndOne, bondIndTwo]
+                    newChain.current_group.bond_atom_list += [
+                        bondIndOne, bondIndTwo]
                     newChain.current_group.bond_order_list.append(bondOrder)
 
                 groupCounter += 1
-
 
                 # TODO skipping adding inter group bond info for now
 
@@ -333,7 +328,6 @@ class structureToProteinDimers(object):
             chain_type = [chain['type'] for chain in newChain.entity_list]
 
             polymer = "polymer" in chain_type
-
 
             if polymer:
 
@@ -347,14 +341,15 @@ class structureToProteinDimers(object):
                     if match:
                         _type = newChain.group_list[groupIndex]["chemCompType"]
 
-                        match = (_type == "L-PEPTIDE LINKING") or (_type == "PEPTIDE LINKING")
+                        match = (
+                            _type == "L-PEPTIDE LINKING") or (_type == "PEPTIDE LINKING")
 
-                if match: chains.append(newChain)
+                if match:
+                    chains.append(newChain)
 
         return chains
 
-
-    def _combineChains(self, s1, s2):
+    def _combine_chains(self, s1, s2):
 
         groupCounter = 0
         atomCounter = 0
@@ -372,15 +367,15 @@ class structureToProteinDimers(object):
         decoder_utils.add_header_info(s1, combinedStructure)
 
         # Set model info (only one model: 0)
-        combinedStructure.set_model_info(0,2)
+        combinedStructure.set_model_info(0, 2)
 
-        chainToEntityIndex = self._getChainToEntityIndex(s1)[0]
+        chainToEntityIndex = self._get_chain_to_entity_index(s1)[0]
 
         # Set entity and chain info
         combinedStructure.set_entity_info([0],
-                                     s1.entity_list[chainToEntityIndex]['sequence'],
-                                     s1.entity_list[chainToEntityIndex]['description'],
-                                     s1.entity_list[chainToEntityIndex]['type'])
+                                          s1.entity_list[chainToEntityIndex]['sequence'],
+                                          s1.entity_list[chainToEntityIndex]['description'],
+                                          s1.entity_list[chainToEntityIndex]['type'])
 
         combinedStructure.set_chain_info(s1.chain_id_list[0],
                                          s1.chain_name_list[0],
@@ -394,8 +389,10 @@ class structureToProteinDimers(object):
                                              s1.group_id_list[groupCounter],
                                              s1.ins_code_list[groupCounter],
                                              s1.group_list[groupIndex]['chemCompType'],
-                                             len(s1.group_list[groupIndex]['atomNameList']),
-                                             len(s1.group_list[groupIndex]['bondOrderList']),
+                                             len(s1.group_list[groupIndex]
+                                                 ['atomNameList']),
+                                             len(s1.group_list[groupIndex]
+                                                 ['bondOrderList']),
                                              s1.group_list[groupIndex]['singleLetterCode'],
                                              s1.sequence_index_list[groupCounter],
                                              s1.sec_struct_list[groupCounter])
@@ -417,20 +414,20 @@ class structureToProteinDimers(object):
             # TODO not sure if we should add bonds like this
             # TODO bondAtomList == getGroupBondIndices?
             for k in range(len(s1.group_list[groupIndex]["bondOrderList"])):
-                bondIndOne = s1.group_list[groupIndex]["bondAtomList"][k*2]
-                bondIndTwo = s1.group_list[groupIndex]["bondAtomList"][k*2 + 1]
+                bondIndOne = s1.group_list[groupIndex]["bondAtomList"][k * 2]
+                bondIndTwo = s1.group_list[groupIndex]["bondAtomList"][k * 2 + 1]
                 bondOrder = s1.group_list[groupIndex]["bondOrderList"][k]
-                combinedStructure.set_group_bond(bondIndOne, bondIndTwo, bondOrder)
+                combinedStructure.set_group_bond(
+                    bondIndOne, bondIndTwo, bondOrder)
 
             groupCounter += 1
 
-
         # Set entity and chain info for s2
-        chainToEntityIndex = self._getChainToEntityIndex(s2)[0]
+        chainToEntityIndex = self._get_chain_to_entity_index(s2)[0]
         combinedStructure.set_entity_info([1],
-                                     s2.entity_list[chainToEntityIndex]['sequence'],
-                                     s2.entity_list[chainToEntityIndex]['description'],
-                                     s2.entity_list[chainToEntityIndex]['type'])
+                                          s2.entity_list[chainToEntityIndex]['sequence'],
+                                          s2.entity_list[chainToEntityIndex]['description'],
+                                          s2.entity_list[chainToEntityIndex]['type'])
 
         combinedStructure.set_chain_info(s2.chain_id_list[0],
                                          s2.chain_name_list[0],
@@ -447,8 +444,10 @@ class structureToProteinDimers(object):
                                              s2.group_id_list[groupCounter],
                                              s2.ins_code_list[groupCounter],
                                              s2.group_list[groupIndex]['chemCompType'],
-                                             len(s2.group_list[groupIndex]['atomNameList']),
-                                             len(s2.group_list[groupIndex]['bondOrderList']),
+                                             len(s2.group_list[groupIndex]
+                                                 ['atomNameList']),
+                                             len(s2.group_list[groupIndex]
+                                                 ['bondOrderList']),
                                              s2.group_list[groupIndex]['singleLetterCode'],
                                              s2.sequence_index_list[groupCounter],
                                              s2.sec_struct_list[groupCounter])
@@ -470,18 +469,18 @@ class structureToProteinDimers(object):
             # TODO not sure if we should add bonds like this
             # TODO bondAtomList == getGroupBondIndices?
             for k in range(len(s2.group_list[groupIndex]["bondOrderList"])):
-                bondIndOne = s2.group_list[groupIndex]["bondAtomList"][k*2]
-                bondIndTwo = s2.group_list[groupIndex]["bondAtomList"][k*2 + 1]
+                bondIndOne = s2.group_list[groupIndex]["bondAtomList"][k * 2]
+                bondIndTwo = s2.group_list[groupIndex]["bondAtomList"][k * 2 + 1]
                 bondOrder = s2.group_list[groupIndex]["bondOrderList"][k]
-                combinedStructure.set_group_bond(bondIndOne, bondIndTwo, bondOrder)
+                combinedStructure.set_group_bond(
+                    bondIndOne, bondIndTwo, bondOrder)
 
             groupCounter += 1
 
         combinedStructure.finalize_structure()
         return (structureId, combinedStructure)
 
-
-    def _getNumAtomsAndBonds(self, structure):
+    def _get_num_atoms_and_bonds(self, structure):
         '''Gets the number of atoms and bonds per chain
         '''
         numChains = structure.chains_per_model[0]
@@ -493,17 +492,19 @@ class structureToProteinDimers(object):
 
             for j in range(structure.groups_per_chain[i]):
                 groupIndex = structure.group_type_list[groupCounter]
-                atomsPerChain[i] = len(structure.group_list[groupIndex]['atomNameList'])
-                bondsPerChain[i] = len(structure.group_list[groupIndex]['bondOrderList'])
+                atomsPerChain[i] = len(
+                    structure.group_list[groupIndex]['atomNameList'])
+                bondsPerChain[i] = len(
+                    structure.group_list[groupIndex]['bondOrderList'])
                 groupCounter += 1
 
         return atomsPerChain, bondsPerChain
 
-
-    def _getChainToEntityIndex(self, structure):
+    def _get_chain_to_entity_index(self, structure):
         '''Returns an list that maps a chain index to an entity index.
-        Args:
-            structureDataInterFace
+        Attributes
+        ----------
+            structure: structureDataInterFace
         '''
         entityChainIndex = [0] * structure.num_chains
 
