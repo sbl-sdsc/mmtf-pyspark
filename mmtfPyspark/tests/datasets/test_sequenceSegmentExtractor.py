@@ -4,26 +4,25 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor
-from mmtfPyspark.mappers import structureToPolymerChains
+from mmtfPyspark.mappers import StructureToPolymerChains
 
 
-class secondaryStructureSegmentExtractorTest(unittest.TestCase):
+class SecondaryStructureSegmentExtractorTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('secondaryStructureSegmentExtractorTest')
+        conf = SparkConf().setMaster(
+            "local[*]").setAppName('secondaryStructureSegmentExtractorTest')
         self.sc = SparkContext(conf=conf)
 
         pdbIds = ["1STP"]
-        self.pdb = download_mmtf_files(pdbIds,self.sc)
-
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
     def test1(self):
-        pdb = self.pdb.flatMap(structureToPolymerChains())
+        pdb = self.pdb.flatMap(StructureToPolymerChains())
 
-        seq = secondaryStructureSegmentExtractor.getDataset(pdb,25)
+        seq = secondaryStructureSegmentExtractor.getDataset(pdb, 25)
 
         self.assertTrue("DPSKDSKAQVSAAEAGITGTWYNQL" == seq.head()[1])
-
 
     def tearDown(self):
         self.sc.stop()

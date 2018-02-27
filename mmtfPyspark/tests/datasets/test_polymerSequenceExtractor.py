@@ -4,10 +4,10 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.datasets import polymerSequenceExtractor
-from mmtfPyspark.mappers import structureToPolymerChains
+from mmtfPyspark.mappers import StructureToPolymerChains
 
 
-class polymerSequenceExtractorTest(unittest.TestCase):
+class PolymerSequenceExtractorTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('polymerSequenceExtractorTest')
@@ -18,7 +18,7 @@ class polymerSequenceExtractorTest(unittest.TestCase):
 
 
     def test1(self):
-        pdb = self.pdb.flatMap(structureToPolymerChains())
+        pdb = self.pdb.flatMap(StructureToPolymerChains())
         seq = polymerSequenceExtractor.getDataset(pdb)
 
         self.assertTrue(seq.count() == 5)

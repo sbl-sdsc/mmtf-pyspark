@@ -55,7 +55,7 @@ class PolymerCompositionTest(unittest.TestCase):
         self.assertFalse('1NTH' in results_2)
 
     def test3(self):
-        pdb_3 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_3 = self.pdb.flatMap(StructureToPolymerChains())
         pdb_3 = pdb_3.filter(PolymerComposition(
             PolymerComposition.AMINO_ACIDS_20))
         results_3 = pdb_3.keys().collect()
@@ -71,7 +71,7 @@ class PolymerCompositionTest(unittest.TestCase):
         self.assertFalse('1NTH.A' in results_3)
 
     def test4(self):
-        pdb_4 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_4 = self.pdb.flatMap(StructureToPolymerChains())
         pdb_4 = pdb_4.filter(PolymerComposition(
             PolymerComposition.AMINO_ACIDS_22))
         results_4 = pdb_4.keys().collect()

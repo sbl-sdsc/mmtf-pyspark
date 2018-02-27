@@ -4,10 +4,10 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import advancedQuery
-from mmtfPyspark.mappers import structureToPolymerChains
+from mmtfPyspark.mappers import StructureToPolymerChains
 
 
-class advancedQueryTest(unittest.TestCase):
+class AdvancedQueryTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('advancedQueryTest')
@@ -78,7 +78,7 @@ class advancedQueryTest(unittest.TestCase):
 				    "<Enzyme_Classification>2.7.11.1</Enzyme_Classification>" + \
 				"</orgPdbQuery>"
 
-        pdb_4 = self.pdb.flatMap(structureToPolymerChains()) \
+        pdb_4 = self.pdb.flatMap(StructureToPolymerChains()) \
                         .filter(advancedQuery(query))
         results_4 = pdb_4.keys().collect()
 

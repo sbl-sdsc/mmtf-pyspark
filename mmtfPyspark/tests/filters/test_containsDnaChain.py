@@ -43,7 +43,7 @@ class ContainsDnaChainTest(unittest.TestCase):
         self.assertFalse("2MK1" in results_2)
 
     def test3(self):
-        pdb_3 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_3 = self.pdb.flatMap(StructureToPolymerChains())
         pdb_3 = pdb_3.filter(ContainsDnaChain())
         results_3 = pdb_3.keys().collect()
 
