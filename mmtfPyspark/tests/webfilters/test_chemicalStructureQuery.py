@@ -4,10 +4,9 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import chemicalStructureQuery
-from mmtfPyspark.mappers import structureToPolymerChains
 
 
-class chemicalStructureQueryTest(unittest.TestCase):
+class ChemicalStructureQueryTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('chemicalStructureQueryTest')

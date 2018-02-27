@@ -26,7 +26,7 @@ class OrFilterTest(unittest.TestCase):
         self.pdb = download_mmtf_files(pdbIds, self.sc)
 
     def test1(self):
-        pdb_1 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_1 = self.pdb.flatMap(StructureToPolymerChains())
         pdb_1 = pdb_1.filter(OrFilter(ContainsDnaChain(), ContainsRnaChain()))
         results_1 = pdb_1.keys().collect()
 

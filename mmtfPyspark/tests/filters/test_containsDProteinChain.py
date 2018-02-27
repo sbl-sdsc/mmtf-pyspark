@@ -44,7 +44,7 @@ class ContainsDProteinChainTest(unittest.TestCase):
         self.assertFalse('5GOD' in results_2)
 
     def test3(self):
-        pdb_3 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_3 = self.pdb.flatMap(StructureToPolymerChains())
         pdb_3 = pdb_3.filter(ContainsDProteinChain())
         results_3 = pdb_3.keys().collect()
 

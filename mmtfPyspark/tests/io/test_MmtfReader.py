@@ -13,15 +13,14 @@ __status__ = "Warning"
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io import MmtfReader
-from mmtfPyspark.mappers import structureToPolymerChains
 
 
-class testReadSequenceFile(unittest.TestCase):
+class ReadSequenceFileTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('read_sequence_file')
+        conf = SparkConf().setMaster(
+            "local[*]").setAppName('read_sequence_file')
         self.sc = SparkContext(conf=conf)
-
 
     def test_mmtf(self):
         path = './resources/files/'
@@ -31,6 +30,7 @@ class testReadSequenceFile(unittest.TestCase):
 
     def tearDown(self):
         self.sc.stop()
+
 
 if __name__ == '__main__':
     unittest.main()

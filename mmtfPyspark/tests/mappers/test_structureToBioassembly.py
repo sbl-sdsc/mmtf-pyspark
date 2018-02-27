@@ -2,13 +2,15 @@
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.mappers import structureToBioassembly
+from mmtfPyspark.mappers import StructureToBioassembly
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
 
-class structureToBioassemblyTest(unittest.TestCase):
+
+class StructureToBioassemblyTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('testContainsAlternativeLocations')
+        conf = SparkConf().setMaster(
+            "local[*]").setAppName('structureToBioassemblyTest')
         self.sc = SparkContext(conf=conf)
 
         # 1STP: 1 L-protein chain:
@@ -20,15 +22,13 @@ class structureToBioassemblyTest(unittest.TestCase):
         # --------------------
         # tot: 10 chains ,"4HHB","1JLP","5X6H","5L2G","2MK1"
         pdbIds = ["1HV4"]
-        self.pdb = download_mmtf_files(pdbIds,self.sc)
-
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
     def test1(self):
-        pdb_1 = self.pdb.flatMap(structureToBioassembly())
+        pdb_1 = self.pdb.flatMap(StructureToBioassembly())
         results_1 = pdb_1.keys().collect()
 
         self.assertTrue(len(results_1) == 2)
-
 
     def tearDown(self):
         self.sc.stop()

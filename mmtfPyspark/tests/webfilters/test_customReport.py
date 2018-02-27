@@ -4,18 +4,18 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.MmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import customReportQuery
-from mmtfPyspark.mappers import structureToPolymerChains
+from mmtfPyspark.mappers import StructureToPolymerChains
 
 
-class advancedQueryTest(unittest.TestCase):
+class CustomReportQueryTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('advancedQueryTest')
+        conf = SparkConf().setMaster(
+            "local[*]").setAppName('CustomReportQueryTest')
         self.sc = SparkContext(conf=conf)
 
         pdbIds = ["5JDE", "5CU4", "5L6W", "5UFU", "5IHB"]
-        self.pdb = download_mmtf_files(pdbIds,self.sc)
-
+        self.pdb = download_mmtf_files(pdbIds, self.sc)
 
     def test1(self):
         # This test runs a chain levle query and compares the results at the PDB entry level
@@ -30,10 +30,9 @@ class advancedQueryTest(unittest.TestCase):
         self.assertFalse('5UFU' in results_1)
         self.assertFalse('5IHB' in results_1)
 
-
     def test2(self):
         # This test runs a chain elvel query and compares chain level results
-        pdb_2 = self.pdb.flatMap(structureToPolymerChains())
+        pdb_2 = self.pdb.flatMap(StructureToPolymerChains())
 
         whereClause = "WHERE ecNo='2.7.11.1' AND source='Homo sapiens'"
         fields = ["ecNo", "source"]
@@ -52,7 +51,6 @@ class advancedQueryTest(unittest.TestCase):
         self.assertFalse('5IHB.B' in results_2)
         self.assertFalse('5IHB.C' in results_2)
         self.assertFalse('5IHB.D' in results_2)
-
 
     def tearDown(self):
         self.sc.stop()
