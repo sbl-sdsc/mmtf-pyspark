@@ -695,8 +695,8 @@ _refine_hist.d_res_low                        36.89
 # 
 loop_
 _refine_ls_restr.type 
-_refine_ls_restr.dev_ideal 
-_refine_ls_restr.dev_ideal_target 
+_refine_ls_restr.intertactions_ideal 
+_refine_ls_restr.intertactions_ideal_target 
 _refine_ls_restr.weight 
 _refine_ls_restr.number 
 _refine_ls_restr.pdbx_refine_id 

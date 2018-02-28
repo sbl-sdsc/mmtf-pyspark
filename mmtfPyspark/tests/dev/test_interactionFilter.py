@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from mmtfPyspark.dev import InteractionFilter
+from mmtfPyspark.intertactions import InteractionFilter
 
 class testInteractionFilter(unittest.TestCase):
 
