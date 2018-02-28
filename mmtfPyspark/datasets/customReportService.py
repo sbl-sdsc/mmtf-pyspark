@@ -2,7 +2,7 @@
 '''
 customReportService.py
 
-TODO: wtf is wrong with this docstring
+TODO: update docstring
 
 
 ThisclassusesRCSBPDBTabularReportRESTfulwebServicestoretrievemetadata
