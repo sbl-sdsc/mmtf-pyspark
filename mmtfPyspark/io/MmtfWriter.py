@@ -1,6 +1,6 @@
 #!/user/bin/env python
 '''
-MMTFWriter.py
+mmtfWriter.py
 
 Encodes and write MMTF encoded structure data to a Hadoop Sequence File
 
