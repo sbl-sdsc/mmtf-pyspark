@@ -16,7 +16,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.filters import ContainsGroup
 
 
@@ -27,7 +27,7 @@ def main():
         .setAppName("FilterByGroup")
     sc = SparkContext(conf=conf)
 
-    count = MmtfReader.read_sequence_file(path, sc) \
+    count = mmtfReader.read_sequence_file(path, sc) \
         .filter(ContainsGroup("ATP", "MG")) \
         .count()
 

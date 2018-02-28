@@ -8,7 +8,7 @@ Authorship information:
 
 import sys
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import *
+from mmtfPyspark.io.mmtfReader import *
 import getopt
 import time
 

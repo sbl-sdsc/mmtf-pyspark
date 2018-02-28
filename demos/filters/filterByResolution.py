@@ -15,7 +15,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.filters import Resolution
 import time
 
@@ -28,7 +28,7 @@ def main():
                       .setAppName("filterByResolution")
     sc = SparkContext(conf=conf)
 
-    count = MmtfReader.read_sequence_file(path, sc) \
+    count = mmtfReader.read_sequence_file(path, sc) \
                       .filter(Resolution(0.0, 2.0)) \
                       .count()
 

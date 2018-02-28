@@ -9,7 +9,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor, secondaryStructureExtractor
@@ -23,7 +23,7 @@ def main():
                       .setAppName("secondaryStructureSegmentDemo")
     sc = SparkContext(conf = conf)
 
-    pdb = MmtfReader.download_mmtf_files(["1STP"],sc)
+    pdb = mmtfReader.download_mmtf_files(["1STP"],sc)
 
     pdb = pdb.flatMap(StructureToPolymerChains()) \
              .filter(ContainsLProteinChain())

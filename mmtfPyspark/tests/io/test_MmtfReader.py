@@ -12,7 +12,7 @@ __status__ = "Warning"
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 
 
 class ReadSequenceFileTest(unittest.TestCase):
@@ -24,7 +24,7 @@ class ReadSequenceFileTest(unittest.TestCase):
 
     def test_mmtf(self):
         path = './resources/files/'
-        pdb = MmtfReader.readMmtfFiles(path, self.sc)
+        pdb = mmtfReader.readMmtfFiles(path, self.sc)
 
         self.assertTrue(pdb.count() == 3)
 

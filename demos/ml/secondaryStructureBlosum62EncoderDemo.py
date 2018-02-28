@@ -15,7 +15,7 @@ from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor
 from mmtfPyspark.webFilters import Pisces
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 import time
 
 # TODO data count is more than Java
@@ -45,7 +45,7 @@ def main():
     fraction = 0.1
     seed = 123
 
-    pdb = MmtfReader \
+    pdb = mmtfReader \
             .read_sequence_file(path, sc) \
             .flatMap(StructureToPolymerChains()) \
             .filter(Pisces(sequenceIdentity, resolution)) \

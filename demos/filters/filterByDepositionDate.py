@@ -12,7 +12,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.filters import DepositionDate
 
 
@@ -23,7 +23,7 @@ def main():
         .setAppName("FilterByDepositionDate")
     sc = SparkContext(conf=conf)
 
-    count = MmtfReader.read_sequence_file(path, sc) \
+    count = mmtfReader.read_sequence_file(path, sc) \
         .filter(DepositionDate("2016-01-28", "2017-02-28")) \
         .count()
 

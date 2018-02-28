@@ -3,7 +3,7 @@
 import unittest
 from mmtfPyspark.interactions import *
 from mmtfPyspark.utils import ColumnarStructure
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 from pyspark import SparkConf, SparkContext
 import numpy as np
 from math import isclose
@@ -14,7 +14,7 @@ class testCoordiateGeometry(unittest.TestCase):
         conf = SparkConf().setMaster("local[*]").setAppName('coordinateGeometry')
         self.sc = SparkContext(conf=conf)
 
-        self.pdb = MmtfReader.download_mmtf_files(['5Y20'], self.sc)
+        self.pdb = mmtfReader.download_mmtf_files(['5Y20'], self.sc)
 
 
     def get_coords(self, cs, index):

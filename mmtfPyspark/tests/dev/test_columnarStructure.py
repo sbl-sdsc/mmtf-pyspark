@@ -3,7 +3,7 @@
 import unittest
 from mmtfPyspark.interactions import *
 from mmtfPyspark.utils import ColumnarStructure
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 from pyspark import SparkConf, SparkContext
 import numpy as np
 
@@ -12,7 +12,7 @@ class testColumnarStructure(unittest.TestCase):
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('columnarStructure')
         self.sc = SparkContext(conf=conf)
-        self.pdb = MmtfReader.download_mmtf_files(['1STP'], self.sc)
+        self.pdb = mmtfReader.download_mmtf_files(['1STP'], self.sc)
 
         structure = self.pdb.values().first()
         self.cs = ColumnarStructure(structure, True)

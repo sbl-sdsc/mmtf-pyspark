@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.mappers import StructureToPolymerChains
-from mmtfPyspark.io.MmtfReader import download_mmtf_files
+from mmtfPyspark.io.mmtfReader import download_mmtf_files
 
 
 class StructureToPolymerChainsTest(unittest.TestCase):
