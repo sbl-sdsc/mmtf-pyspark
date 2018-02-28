@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from mmtfPyspark.intertactions import *
+from mmtfPyspark.interactions import *
 from mmtfPyspark.utils import ColumnarStructure
 from mmtfPyspark.io import MmtfReader
 from pyspark import SparkConf, SparkContext

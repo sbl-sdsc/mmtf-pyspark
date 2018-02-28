@@ -10,7 +10,7 @@ Authorship information:
     __status__ = "dev"
 '''
 
-from mmtfPyspark.intertactions import InteractionFilter, AtomInteraction, InteractionCenter
+from mmtfPyspark.interactions import InteractionFilter, AtomInteraction, InteractionCenter
 from mmtfPyspark.utils import ColumnarStructureX
 from mmtfPyspark.utils import DistanceBox
 import numpy as np
