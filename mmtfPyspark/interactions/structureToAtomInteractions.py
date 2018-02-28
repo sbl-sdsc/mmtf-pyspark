@@ -1,9 +1,7 @@
 #!/user/bin/env python
-'''
-structureToAtomInteraction.py
+'''structureToAtomInteraction.py
 
 Finds interactions that match the criteria specified by the InteractionFilter
-
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -17,8 +15,10 @@ from mmtfPyspark.utils import ColumnarStructureX
 from mmtfPyspark.utils import DistanceBox
 import numpy as np
 
+
 class StructureToAtomInteractions(object):
-    '''
+    '''Class that finds structure to atom intteractions.
+
     Attributes:
         bfilter (Class): Specifies the conditions for calculating interactions
         pairwise (bool): If True, results as one row per pair interactions.
@@ -26,11 +26,10 @@ class StructureToAtomInteractions(object):
                          atoms are returned as a single row.
     '''
 
-    def __init__(self, bfilter, pairwise = False):
+    def __init__(self, bfilter, pairwise=False):
 
         self.filter = bfilter.value
         self.pairwise = pairwise
-
 
     def __call__(self, t):
 
@@ -57,20 +56,32 @@ class StructureToAtomInteractions(object):
 
             # only add interations that are within the given limits of interations
             if interaction.get_num_interactions() >= self.filter.get_min_interactions() \
-            and interaction.get_num_interactions() <= self.filter.get_max_interactions():
+                    and interaction.get_num_interactions() <= self.filter.get_max_interactions():
 
                 # return interactions as either pairs or all interaction of
                 # one atom as a row
                 if self.pairwise:
                     interactions += interaction.get_pair_interactions_as_rows()
                 else:
-                    multiInteract = interaction.get_multiple_interactions_as_row(self.filter.get_max_interactions())
+                    multiInteract = interaction.get_multiple_interactions_as_row(
+                        self.filter.get_max_interactions())
                     interactions += multiInteract
 
         return interactions
 
-
     def _get_interactions(self, arrays, queryAtomIndex, box):
+        '''Get the interacting neighbors of an atom in a structure
+
+        Attributes
+        ----------
+            arrays (columnarStructure): structure in columnarStructure format
+            queryAtomIndex (int): the index of the querying atom
+            box (distanceBox): the distance box of the query atom
+
+        Returns
+        -------
+            an AtomInteraction class with interacting neighbors
+        '''
         interaction = AtomInteraction()
 
         # get the x,y,z coordinates of the structure
@@ -101,8 +112,8 @@ class StructureToAtomInteractions(object):
         # that are within cutoff distance of the query atom
         neighborIndices = box.get_neighbors(np.array([qx, qy, qz]))
         # TEST: flattern neighborIndices
-        neighborIndices = [n for neighbors in neighborIndices for n in neighbors]
-
+        neighborIndices = [
+            n for neighbors in neighborIndices for n in neighbors]
 
         # determine and record interactions with neighbor atoms
         for neighborIndex in neighborIndices:
@@ -121,8 +132,8 @@ class StructureToAtomInteractions(object):
                 # Exclude interactions with undesired groups and
                 # atoms with partial occupancy (< 1.0)
                 if self.filter.is_prohibited_target_group(groupNames[neighborIndex]) \
-                or self.filter.get_normalized_b_factor_cutoff() < normalizedbFactors[neighborIndex] \
-                or occupancies[neighborIndex] < float(1.0):
+                        or self.filter.get_normalized_b_factor_cutoff() < normalizedbFactors[neighborIndex] \
+                        or occupancies[neighborIndex] < float(1.0):
 
                     # return an empty atom interaction
                     return AtomInteraction()
@@ -137,10 +148,13 @@ class StructureToAtomInteractions(object):
 
         return interaction
 
-
     def _get_distance_box(self, arrays):
         '''Add atom indices on grid for rapid indexing of atom neighbors on a
         grid based on a cutoff distance
+
+        Attributes
+        ----------
+            arrays (columnarStructure): structure in columnarStructure format
         '''
 
         # Get required data
@@ -153,16 +167,19 @@ class StructureToAtomInteractions(object):
         box = DistanceBox(self.filter.get_distance_cutoff())
         for i in range(arrays.get_num_atoms()):
             if self.filter.is_target_group(groupNames[i]) \
-            and self.filter.is_target_element(elements[i]):
+                    and self.filter.is_target_element(elements[i]):
 
-                newPoint = np.array([x[i],y[i],z[i]])
-                box.add_point(newPoint,i)
+                newPoint = np.array([x[i], y[i], z[i]])
+                box.add_point(newPoint, i)
 
         return box
 
-
     def _get_query_atom_indices(self, arrays):
         '''Returns a list of indices to query atoms in the structure
+
+        Attributes
+        ----------
+            arrays (columnarStructure): structure in columnarStructure format
         '''
 
         # Get required data
@@ -178,12 +195,12 @@ class StructureToAtomInteractions(object):
         for i in range(arrays.get_num_groups()):
 
             start = groupStartIndices[i]
-            end = groupStartIndices[i+1]
+            end = groupStartIndices[i + 1]
 
             if self.filter.is_query_group(groupNames[start]):
-                indices += [j for j in range(start, end) \
-                            if self.filter.is_query_element(elements[j]) \
-                            and normalizedbFactors[j] < self.filter.get_normalized_b_factor_cutoff() \
+                indices += [j for j in range(start, end)
+                            if self.filter.is_query_element(elements[j])
+                            and normalizedbFactors[j] < self.filter.get_normalized_b_factor_cutoff()
                             and occupancies[j] >= 1.0]
 
         return indices
