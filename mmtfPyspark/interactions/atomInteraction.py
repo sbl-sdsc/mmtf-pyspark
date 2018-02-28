@@ -16,7 +16,7 @@ Authorship information:
     __status__ = "debug"
 '''
 
-from mmtfPyspark.dev import CoordinateGeometry, InteractionCenter
+from mmtfPyspark.intertactions import CoordinateGeometry, InteractionCenter
 from pyspark.sql import Row
 from pyspark.sql.types import *
 import numpy as np
