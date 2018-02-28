@@ -1,7 +1,6 @@
 from setuptools import setup
 
 mmtfPyspark_packages = ['mmtfPyspark',
-                        'mmtfPyspark.analysis',
                         'mmtfPyspark.datasets',
                         'mmtfPyspark.filters',
                         'mmtfPyspark.io',
