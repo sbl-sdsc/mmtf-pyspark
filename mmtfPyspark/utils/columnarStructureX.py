@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-columnarStructureX.py
+'''columnarStructureX.py
 
 Inheritance class of ColumnarStructure
 
@@ -8,7 +7,7 @@ Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "dev"
+    __status__ = "Done"
 '''
 import numpy as np
 from mmtfPyspark.utils import ColumnarStructure
@@ -16,6 +15,11 @@ from sympy import Point3D
 
 class ColumnarStructureX(ColumnarStructure):
     '''Inheritance of class ColumnarStructure with additional functions
+
+    Attributes
+    ----------
+        structure (mmtfStructure): mmtf structure
+        firstModelOnly (bool): flag to use only the first model of the structure
     '''
 
     def __init__(self, structure, firstModelOnly = True):
@@ -53,7 +57,9 @@ class ColumnarStructureX(ColumnarStructure):
         using the method of Liu et at. B-factors are normalized and scaled the
         90% Confidenceinterval of the B-factors to [-1,1]. Any value outside of
         the 90% confidence interval is set to either -1 or 1, whichever is closer.
-        Reference:
+
+        Reference
+        ---------
             Liu et al. BMC Bioinformatics 2014, 15(Suppl 16):S3,
             Use B-factor related features for accurate classification between
             protein binding interfaces and crystal packing contacts

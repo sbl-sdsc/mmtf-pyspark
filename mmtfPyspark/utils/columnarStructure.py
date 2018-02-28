@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-columnarStructure.py
+'''columnarStructure.py
 
 Provides efficient access to structure information in the form of atom-based arrays.
 Data are lazily initialized as needs.
@@ -9,7 +8,7 @@ Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com:
-    __status__ = "dev"
+    __status__ = "Done"
 '''
 
 import numpy as np
@@ -18,14 +17,13 @@ import numpy as np
 class ColumnarStructure(object):
     '''Column based data structure to efficiently access structure information
 
-    Attributes:
+    Attributes
+    ----------
         structure (mmtfStructure): mmtf structure
         firstModelOnly (bool): use only the first model in a structure if True
     '''
 
     def __init__(self, structure, firstModelOnly=True):
-
-        #raise NotImplementedError("columnarStructure still under development")
 
         # Set class variables
         self.numAtoms = 0
@@ -339,9 +337,10 @@ class ColumnarStructure(object):
         return self.sequencePositions
 
     def get_chain_to_entity_index(self):
-        '''
-        Returns an array that maps a chain index to an entity index
-        :return:
+        '''Returns an array that maps a chain index to an entity index
+
+        Returns
+        -------
             entityChainIndex [np.array] : index that maps chain index to an entity index
         '''
 
