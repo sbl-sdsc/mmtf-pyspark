@@ -1,9 +1,7 @@
 #!/user/bin/env python
-'''
-structureToAllInteractions.py:
+'''structureToAllInteractions.py:
 
-Finds interactions of a specified group within a specified
-cutoff distance
+Finds interactions of a specified group within a specified cutoff distance
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -11,7 +9,9 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
+
 from pyspark.sql import Row
+
 
 class structureToAllInteractions(object):
     def __init__(self, groupName, cutoffDistance):
