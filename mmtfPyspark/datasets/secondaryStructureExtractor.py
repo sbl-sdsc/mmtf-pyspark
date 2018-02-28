@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-secondaryStructureExtractor.py
+'''secondaryStructureExtractor.py
 
 Creates a dataset of 3-state secondary structure
 (alpha, beta, coil) derived from the DSSP secondary structure
@@ -16,13 +15,12 @@ Authorship information:
 '''
 
 from mmtfPyspark.ml import pythonRDDToDataset
-from mmtfPyspark.utils import dsspSecondaryStructure
+from mmtfPyspark.utils import DsspSecondaryStructure
 from pyspark.sql import Row
 
 
 def getDataset(structure):
-    '''
-    Returns a dataset of 3-state secondary structure
+    '''Returns a dataset of 3-state secondary structure
     '''
 
     rows = structure.map(lambda x: getSecStructFractions(x)) #Map or flatMap
@@ -70,10 +68,10 @@ def getSecStructFractions(t):
             dsspIndex += 1
 
         structureIndex += 1
-        dsspQ8 += dsspSecondaryStructure.getDsspCode(code).getOneLetterCode()
+        dsspQ8 += DsspSecondaryStructure.get_dssp_code(code).get_one_letter_code()
         dsspIndex += 1
 
-        q3 = dsspSecondaryStructure.getQ3Code(code).name
+        q3 = DsspSecondaryStructure.get_q3_code(code).name
         if q3 == "ALPHA_HELIX":
             helix += 1
             dsspQ3 += "H"

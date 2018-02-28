@@ -13,7 +13,7 @@ Authorship information:
     __email__ = "marshuang80@gmail.com:
     __status__ = "Done"
 '''
-from mmtfPyspark.utils import dsspSecondaryStructure
+from mmtfPyspark.utils import DsspSecondaryStructure
 
 
 class SecondaryStructure(object):
@@ -73,14 +73,14 @@ class SecondaryStructure(object):
 
                 if match and polymer:
                     code = sec_struct[group_counter]
-                    secondary_structure = dsspSecondaryStructure.getQ3Code(
+                    secondary_structure = DsspSecondaryStructure.get_q3_code(
                         code)
 
-                    if secondary_structure == dsspSecondaryStructure.ALPHA_HELIX:
+                    if secondary_structure == DsspSecondaryStructure.ALPHA_HELIX:
                         helix += 1
-                    elif secondary_structure == dsspSecondaryStructure.EXTENDED:
+                    elif secondary_structure == DsspSecondaryStructure.EXTENDED:
                         sheet += 1
-                    elif secondary_structure == dsspSecondaryStructure.COIL:
+                    elif secondary_structure == DsspSecondaryStructure.COIL:
                         coil += 1
                     else:
                         other += 1

@@ -1,7 +1,7 @@
 from pyspark import SparkConf, SparkContext
 import sys
 from mmtfPyspark.io.MmtfReader import download_mmtf_files, read_sequence_file
-from mmtfPyspark.utils.dsspSecondaryStructure import *
+from mmtfPyspark.utils.DsspSecondaryStructure import *
 import getopt
 import sys
 
@@ -30,8 +30,9 @@ def main(argv):
             path = arg
 
     # Mmtf sequence file reader
-    pdbIds = ['1AQ1', '5GOD']
-    pdb = download_mmtf_files(pdbIds, sc)
+    # pdbIds = ['1AQ1', '5GOD']
+    # pdb = download_mmtf_files(pdbIds, sc)
+    pdb = read_sequence_file(path, sc)
 
     def getChainToEntityIndex(structure):
         entityChainIndex = [0] * structure.num_chains
@@ -165,7 +166,7 @@ def main(argv):
                     print("   groupId        : " + str(groupId))
                     print("   insertionCode  : " + insertionCode)
                     print("   DSSP secStruct.: " +
-                          dsspSecondaryStructure.getDsspCode(secStruct).getOneLetterCode())
+                          DsspSecondaryStructure.get_dssp_code(secStruct).get_one_letter_code())
                     print()
                     groupIndex = groupIndex + 1
                 chainIndex = chainIndex + 1
@@ -218,7 +219,7 @@ def main(argv):
                     print("   groupId        : " + str(groupId))
                     print("   insertionCode  : " + insertionCode)
                     print("   DSSP secStruct.: " +
-                          dsspSecondaryStructure.getDsspCode(secStruct).getOneLetterCode())
+                          DsspSecondaryStructure.get_dssp_code(secStruct).get_one_letter_code())
                     print("   Atoms          : ")
 
                     for m in range(0, (len(structure.group_list[groupType]["atomNameList"]))):
