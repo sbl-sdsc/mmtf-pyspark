@@ -19,7 +19,7 @@ Authorship information:
 import os
 import msgpack
 import gzip
-from mmtfPyspark.io import MmtfStructure
+from mmtfPyspark.utils import MmtfStructure
 from mmtf.api import default_api
 from os import path, walk
 
