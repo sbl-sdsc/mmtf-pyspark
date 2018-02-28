@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-viewStructures.py
+'''viewStructures.py
 
 Simple wrapper functions that uses ipywidgets and py3Dmol to view a list of
 protein structures.
@@ -15,12 +14,12 @@ Authorship information:
 from ipywidgets import interact
 import py3Dmol
 
-def simpleStructureViewer(pdbIds, style = 'cartoon', color = 'spectrum'):
-    '''
-    A wrapper function that simply displays a list of protein structures using
+def simple_structure_viewer(pdbIds, style = 'cartoon', color = 'spectrum'):
+    '''A wrapper function that simply displays a list of protein structures using
     ipywidgets and py3Dmol
 
-    Attributes:
+    Attributes
+    ----------
         pdbIds (list<Strings>) : A list of PDBIDs to display
         style : Style of 3D structure (stick line cross sphere cartoon VDW MS)
         color : Color of 3D structure
@@ -30,11 +29,11 @@ def simpleStructureViewer(pdbIds, style = 'cartoon', color = 'spectrum'):
         pdbIds = [pdbIds]
 
     def view3d(i = 0):
-        '''
-        Simple structure viewer that uses py3Dmol to view PDB structure by
+        '''Simple structure viewer that uses py3Dmol to view PDB structure by
         indexing the list of PDBids
 
-        Attributes:
+        Attributes
+        ----------
             i (int): index of the protein if a list of PDBids
         '''
 
@@ -48,12 +47,12 @@ def simpleStructureViewer(pdbIds, style = 'cartoon', color = 'spectrum'):
     return interact(view3d, i=(0,len(pdbIds)-1))
 
 
-def interactionStructureViewer(pdbIds, interacting_atom = 'None', style = 'cartoon', color = 'spectrum'):
-    '''
-    A wrapper function that simply displays a list of protein structures using
+def interaction_structure_viewer(pdbIds, interacting_atom = 'None', style = 'cartoon', color = 'spectrum'):
+    '''A wrapper function that simply displays a list of protein structures using
     ipywidgets and py3Dmol and highlight specified interacting groups
 
-    Attributes:
+    Attributes
+    ----------
         pdbIds (list<Strings>) : A list of PDBIDs to display
         interacting_atom (String) : The interacting atom to highlight
         style : Style of 3D structure (stick line cross sphere cartoon VDW MS)
@@ -64,11 +63,11 @@ def interactionStructureViewer(pdbIds, interacting_atom = 'None', style = 'carto
         pdbIds = [pdbIds]
 
     def view3d(i = 0):
-        '''
-        Simple structure viewer that uses py3Dmol to view PDB structure by
+        '''Simple structure viewer that uses py3Dmol to view PDB structure by
         indexing the list of PDBids
 
-        Attributes:
+        Attributes
+        ----------
             i (int): index of the protein if a list of PDBids
         '''
 
@@ -87,12 +86,12 @@ def interactionStructureViewer(pdbIds, interacting_atom = 'None', style = 'carto
 
 
 
-def groupNeighborViewer(pdbIds = None, groups = None, chains = None, distance = 3.0):
-    '''
-    A wrapper function that zooms in to a group of a protein structure and highlight
+def group_neighbor_viewer(pdbIds = None, groups = None, chains = None, distance = 3.0):
+    '''A wrapper function that zooms in to a group of a protein structure and highlight
     its neighbors within a certain distance.
 
-    Attributes:
+    Attributes
+    ----------
         pdbIds (list<Strings>, String) : A list of PDBIDs to display
         groups (list<int>) : A list of groups to center at for each protein structure
         chains (list<char>) : A list of chains specified for each protein structure.
@@ -115,11 +114,11 @@ def groupNeighborViewer(pdbIds = None, groups = None, chains = None, distance = 
         chains = ['A'] * len(pdbIds)
 
     def view3d(i = 0):
-        '''
-        Simple structure viewer that zooms into a specified group and highlight
+        '''Simple structure viewer that zooms into a specified group and highlight
         its neighbors
 
-        Attributes:
+        Attributes
+        ----------
             i (int): index of the protein if a list of PDBids
         '''
 
