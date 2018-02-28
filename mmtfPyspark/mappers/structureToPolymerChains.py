@@ -13,7 +13,7 @@ Authorship information:
 '''
 from mmtf.utils import *
 from mmtf.api.mmtf_writer import MMTFEncoder
-from mmtfPyspark.io.mmtfStructure import MmtfStructure
+from mmtfPyspark.utils import MmtfStructure
 
 class StructureToPolymerChains(object):
     '''Extracts all polymer chains from a structure. If the argument is set to true,

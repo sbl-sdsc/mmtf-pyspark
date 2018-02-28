@@ -11,7 +11,7 @@ Authorship information:
     __status__ = "dev"
 '''
 import numpy as np
-from mmtfPyspark.dev import ColumnarStructure
+from mmtfPyspark.utils import ColumnarStructure
 from sympy import Point3D
 
 class ColumnarStructureX(ColumnarStructure):

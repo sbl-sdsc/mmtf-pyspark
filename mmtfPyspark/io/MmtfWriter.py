@@ -12,7 +12,7 @@ Authorship information:
 '''
 
 from mmtf.api.mmtf_writer import MMTFEncoder
-from mmtfPyspark.io import MmtfStructure
+from mmtfPyspark.utils import MmtfStructure
 import gzip
 import msgpack
 import os
