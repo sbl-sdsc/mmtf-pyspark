@@ -16,7 +16,7 @@ Authorship information:
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.webFilters import PdbjMine
 from mmtfPyspark.datasets import PdbjMineService
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 
 def main():
     path = "../../resources/mmtf_full_sample/" 
@@ -25,7 +25,7 @@ def main():
                       .setAppName("keywordSearch")
     sc = SparkContext(conf = conf)
 
-    pdb = MmtfReader.read_sequence_file(path, sc)
+    pdb = mmtfReader.read_sequence_file(path, sc)
     sql = "select pdbid, resolution, biol_species, db_uniprot, db_pfam, hit_score from keyword_search('porin') order by hit_score desc"
 
     search = PdbjMine(sql)

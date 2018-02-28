@@ -12,7 +12,7 @@ __status__ = "Warning"
 
 import unittest
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io.MmtfReader import read_sequence_file
+from mmtfPyspark.io.mmtfReader import read_sequence_file
 
 
 class testReadSequenceFile(unittest.TestCase):

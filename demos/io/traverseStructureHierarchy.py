@@ -1,6 +1,6 @@
 from pyspark import SparkConf, SparkContext
 import sys
-from mmtfPyspark.io.MmtfReader import download_mmtf_files, read_sequence_file
+from mmtfPyspark.io.mmtfReader import download_mmtf_files, read_sequence_file
 from mmtfPyspark.utils.DsspSecondaryStructure import *
 import getopt
 import sys

@@ -15,7 +15,7 @@ from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureExtractor
 from mmtfPyspark.webFilters import Pisces
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 import time
 
 
@@ -40,7 +40,7 @@ def main():
     sequenceIdentity = 40
     resolution = 2.0
 
-    pdb = MmtfReader \
+    pdb = mmtfReader \
             .read_sequence_file(path, sc) \
             .filter(Pisces(sequenceIdentity, resolution)) \
             .flatMap(StructureToPolymerChains()) \

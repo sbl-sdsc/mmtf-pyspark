@@ -12,7 +12,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.filters import ExperimentalMethods
 
 
@@ -23,7 +23,7 @@ def main():
         .setAppName("FilterByDExperimentalMethods")
     sc = SparkContext(conf=conf)
 
-    MmtfReader.read_sequence_file(path, sc) \
+    mmtfReader.read_sequence_file(path, sc) \
         .filter(ExperimentalMethods(ExperimentalMethods.NEUTRON_DIFFRACTION,
                                     ExperimentalMethods.X_RAY_DIFFRACTION)) \
         .keys() \

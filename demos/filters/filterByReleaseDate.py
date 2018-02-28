@@ -12,7 +12,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext
-from mmtfPyspark.io import MmtfReader
+from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.filters import ReleaseDate
 
 
@@ -23,7 +23,7 @@ def main():
         .setAppName("FilterByreleaseDate")
     sc = SparkContext(conf=conf)
 
-    count = MmtfReader.read_sequence_file(path, sc) \
+    count = mmtfReader.read_sequence_file(path, sc) \
         .filter(ReleaseDate("2000-01-28", "2017-02-28")) \
         .count()
 
