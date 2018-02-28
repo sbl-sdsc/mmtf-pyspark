@@ -2,11 +2,14 @@
 '''
 customReportService.py
 
-ThisclassusesRCSBPDBTabularReportRESTfulwebservicestoretrievemetadata
+TODO: wtf is wrong with this docstring
+
+
+ThisclassusesRCSBPDBTabularReportRESTfulwebServicestoretrievemetadata
 andannotationsforallcurrententriesintheProteinDataBank.
 See<ahref="http://www.rcsb.org/pdb/results/reportField.do">forlistofsupported
 fieldnames.</a>
-<p>Reference:TheRCSBProteinDataBank:redesignedwebsiteandwebservices2011
+<p>Reference:TheRCSBProteinDataBank:redesignedwebsiteandwebServices2011
 NucleicAcidsRes.39:D392-D401.
 See<ahref="https://dx.doi.org/10.1093/nar/gkq1021">doi:10.1093/nar/gkq1021</a>
 
