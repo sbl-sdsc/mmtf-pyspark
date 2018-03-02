@@ -15,7 +15,7 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.webFilters import PdbjMine
-from mmtfPyspark.datasets import PdbjMineService
+from mmtfPyspark.datasets import pdbjMineService
 from mmtfPyspark.io import mmtfReader
 
 def main():
@@ -32,7 +32,7 @@ def main():
     count = pdb.filter(search).keys().count()
     print(f"Number of entries using sql to filter: {count}")
 
-    dataset = PdbjMineService.getDataset(sql)
+    dataset = pdbjMineService.get_dataset(sql)
     dataset.show(10)
     search = PdbjMine(dataset = dataset)
     count = pdb.filter(search).keys().count()

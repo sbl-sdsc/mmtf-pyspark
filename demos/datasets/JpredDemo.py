@@ -11,7 +11,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
-from mmtfPyspark.datasets import JpredDataset
+from mmtfPyspark.datasets import jpredDataset
 import time
 
 
@@ -23,7 +23,7 @@ def main():
     sc = SparkContext(conf = conf)
 
     # Read Jpred Dataset
-    res = JpredDataset.getDataset()
+    res = jpredDataset.get_dataset()
     res.show(10)
 
     # Write to Json file

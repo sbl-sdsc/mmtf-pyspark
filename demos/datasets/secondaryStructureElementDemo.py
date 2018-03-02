@@ -28,7 +28,7 @@ def main():
     pdb = pdb.flatMap(StructureToPolymerChains()) \
              .filter(ContainsLProteinChain())
 
-    ds = secondaryStructureElementExtractor.getDataset(pdb,"E", 6)
+    ds = secondaryStructureElementExtractor.get_dataset(pdb,"E", 6)
 
     ds.show(50, False)
 
