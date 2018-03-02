@@ -1,13 +1,14 @@
-'''
-JpredDataset.py
+'''jpredDataset.py
 
-This class downloads the dataset used to train the
-<a href="http://www.compbio.dundee.ac.uk/jpred/about_RETR_JNetv231_details.shtml">JPred 4/JNet (v.2.3.1)</a>
-secondary structure predictor. It can be used as a reference
-dataset for machine learning applications.
-This dataset includes the ScopID, sequence, DSSP secondary
-structure assignment, and a flag that indicates if data point
-was part of the training set.
+This class downloads the dataset used to train the secondary structure predictor.
+It can be used as a reference dataset for machine learning applications.
+
+This dataset includes the ScopID, sequence, DSSP secondary structure assignment,
+and a flag that indicates if data point was part of the training set.
+
+Reference
+---------
+    <a href="http://www.compbio.dundee.ac.uk/jpred/about_RETR_JNetv231_details.shtml">JPred 4/JNet (v.2.3.1)</a>
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -23,11 +24,11 @@ from pyspark import SparkContext
 from mmtfPyspark.ml import pythonRDDToDataset
 
 
-def getDataset():
-    '''
-    Gets JPred 4/JNet (v.2.3.1) secondary structure dataset.
+def get_dataset():
+    '''Gets JPred 4/JNet (v.2.3.1) secondary structure dataset.
 
-    Return:
+    Return
+    ------
         secondaryStructure dataset
     '''
 
@@ -37,7 +38,7 @@ def getDataset():
     scopIds = set()
     res = []
 
-    with tarfile.open(fileobj=instream, mode = "r:gz") as tf:
+    with tarfile.open(fileobj=instream, mode="r:gz") as tf:
 
         for entry in tf:
             if entry.isdir():
@@ -45,14 +46,15 @@ def getDataset():
             br = tf.extractfile(entry)
 
             if ".dssp" in entry.name:
-                scopID = str(br.readline())[3:-3] # Remove newline and byte
-                secondaryStructure = str(br.readline())[2:-3] # Remove newline and byte
-                secondaryStructure = secondaryStructure.replace('-','C')
+                scopID = str(br.readline())[3:-3]  # Remove newline and byte
+                secondaryStructure = str(br.readline())[
+                    2:-3]  # Remove newline and byte
+                secondaryStructure = secondaryStructure.replace('-', 'C')
                 secondaryStructures[scopID] = secondaryStructure
 
             if ".fasta" in entry.name:
-                scopID = str(br.readline())[3:-3] # Remove newline and byte
-                sequence = str(br.readline())[2:-3] # Remove newline and byte
+                scopID = str(br.readline())[3:-3]  # Remove newline and byte
+                sequence = str(br.readline())[2:-3]  # Remove newline and byte
                 scopIds.add(scopID)
                 sequences[scopID] = sequence
 
@@ -62,11 +64,12 @@ def getDataset():
                     trained[scopID] = "false"
 
     for scopId in scopIds:
-        row = Row(scopId, sequences[scopId], secondaryStructures[scopId], trained[scopId])
+        row = Row(scopId, sequences[scopId],
+                  secondaryStructures[scopId], trained[scopId])
         res.append(row)
 
     sc = SparkContext.getOrCreate()
     data = sc.parallelize(res)
-    colNames = ["scopID","sequence", "secondaryStructure", "trained"]
+    colNames = ["scopID", "sequence", "secondaryStructure", "trained"]
 
     return pythonRDDToDataset.getDataset(data, colNames)

@@ -1,5 +1,17 @@
 #!/user/bin/env python
-'''secondaryStructureElementExtractor.py:
+'''secondaryStructureElementExtractor.py
+
+Returns a datset of continuous segments of protein sequence with the specified
+DSSP secondary structure code (E, H, C) of a minimum length.
+
+Example
+-------
+    +-------------+-----+
+    |sequence     |label|
+    +-------------+-----+
+    |TFIVTA       |E    |
+    |ALTGTYE      |E    |
+
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -12,22 +24,33 @@ from mmtfPyspark.ml import pythonRDDToDataset
 from mmtfPyspark.mappers import StructureToSecondaryStructureElements
 from mmtfPyspark.datasets import secondaryStructureExtractor
 
-def getDataset(structure, label, length=None):
-    '''
-    # TODO comment
+
+def get_dataset(structure, label, length=None):
+    '''Returns a dataset of continuous segments of protein sequence with the
+    specified DSSP secondary structure code (E, H, C) of a minimum length.
+
+    Attributes
+    ----------
+        structure: structure data
+        label (char): DSSP secondary structure label (E, H, C)
+        length (int): minimum length of secondary structure segment
+
+    Returns
+    -------
+        dataset of continuous segments of protein sequence
     '''
 
     colNames = ["sequence", "label"]
 
     if length == None:
 
-        rows = secondaryStructureExtractor.getPythonRdd(structure) \
-               .flatMap(StructureToSecondaryStructureElements(label))
+        rows = secondaryStructureExtractor.get_python_rdd(structure) \
+            .flatMap(StructureToSecondaryStructureElements(label))
 
         return pythonRDDToDataset.getDataset(rows, colNames)
-    else :
+    else:
 
-        rows = secondaryStructureExtractor.getPythonRdd(structure) \
-               .flatMap(StructureToSecondaryStructureElements(label, length))
+        rows = secondaryStructureExtractor.get_python_rdd(structure) \
+            .flatMap(StructureToSecondaryStructureElements(label, length))
 
         return pythonRDDToDataset.getDataset(rows, colNames)

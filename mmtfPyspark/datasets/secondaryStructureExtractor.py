@@ -1,11 +1,19 @@
 #!/user/bin/env python
 '''secondaryStructureExtractor.py
 
-Creates a dataset of 3-state secondary structure
-(alpha, beta, coil) derived from the DSSP secondary structure
-assignment. The dateset consists of three columns
-with the fraction of alpha, beta and coil within a chain.
-The input to this class must be a single protein chain.
+Creates a dataset of DSSP secondary structure assignments. The dataset
+includes protein sequence, the DSSP 3-state (Q3) and 8-state (Q8)
+assignments, and the fraction of alpha, beta, and coil within a chain. The
+input to this class must be a single protein chain.
+
+Example
+-------
+    get dataset of secondary structure assignments:
+
+    pdb.flatMapToPair(new StructureToPolymerChains())
+       .filter(new ContainsLProteinChain())
+    secStruct = SecondaryStructureExtractor.getDataset(pdb)
+    secStruct.show(10)
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -19,11 +27,20 @@ from mmtfPyspark.utils import DsspSecondaryStructure
 from pyspark.sql import Row
 
 
-def getDataset(structure):
-    '''Returns a dataset of 3-state secondary structure
+def get_dataset(structure):
+    '''Returns a dataset with protein sequence and secondary structure assignments.
+
+    Attributes
+    ----------
+        structure (mmtfStructure): single protein chain
+
+    Returns
+    -------
+        dataset with sequence and secondary structure assignments
     '''
 
-    rows = structure.map(lambda x: getSecStructFractions(x)) #Map or flatMap
+    rows = structure.map(
+        lambda x: _get_sec_struct_fractions(x))  # Map or flatMap
 
     # convert to dataset
     colNames = ["structureChainId", "sequence", "alpha", "beta",
@@ -32,23 +49,26 @@ def getDataset(structure):
     return pythonRDDToDataset.getDataset(rows, colNames)
 
 
-def getPythonRdd(structure):
-    '''
-    Returns a pythonRDD of 3-state secondary structure
+def get_python_rdd(structure):
+    '''Returns a pythonRDD of 3-state secondary structure
+
+    Attributes
+    ----------
+        structure (mmtfStructure)
     '''
 
-    return structure.map(lambda x: getSecStructFractions(x))
+    return structure.map(lambda x: _get_sec_struct_fractions(x))
 
 
-def getSecStructFractions(t):
-    '''
-    Get factions of alpha, beta and coil within a chain
+def _get_sec_struct_fractions(t):
+    '''Get factions of alpha, beta and coil within a chain
     '''
 
     key = t[0]
     structure = t[1]
     if structure.num_chains != 1:
-        raise Exception("This method can only be applied to single polyer chain.")
+        raise Exception(
+            "This method can only be applied to single polyer chain.")
 
     dsspQ8, dsspQ3 = '', ''
 
@@ -68,7 +88,8 @@ def getSecStructFractions(t):
             dsspIndex += 1
 
         structureIndex += 1
-        dsspQ8 += DsspSecondaryStructure.get_dssp_code(code).get_one_letter_code()
+        dsspQ8 += DsspSecondaryStructure.get_dssp_code(
+            code).get_one_letter_code()
         dsspIndex += 1
 
         q3 = DsspSecondaryStructure.get_q3_code(code).name
@@ -76,7 +97,7 @@ def getSecStructFractions(t):
             helix += 1
             dsspQ3 += "H"
         elif q3 == "EXTENDED":
-            sheet +=1
+            sheet += 1
             dsspQ3 += "E"
         elif q3 == "COIL":
             coil += 1

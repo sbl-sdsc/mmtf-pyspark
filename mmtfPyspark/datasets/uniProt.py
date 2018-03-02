@@ -1,25 +1,29 @@
-'''
-UniProt.py
+'''uniProt.py
 
-Thisclass<ahref="http://www.uniprot.org/downloads">downloads</a>andreads
-UniProtsequencefilesintheFASTAformatandconvertsthemtodatasets.This
-classreadsthefollowingfiles:SWISS_PROT,TREMBL,UNIREF50,UNIREF90,UNIREF100.
+This class downloads and reads UniProt sequence files in the FASTA format and
+converts them to datasets.This module reads the following files:
+    SWISS_PROT,
+    TREMBL,
+    UNIREF50,
+    UNIREF90,
+    UNIREF100.
 
-Thedatasetshavethefollowing
-<ahref="http://www.uniprot.org/help/fasta-headers">columns</a>.
+Reference
+---------
+    UniProt downloads
+    http://www.uniprot.org/downloads
 
-<p>
-Example:download,read,andsavetheSWISS_PROTdataset
+    The datasets have the following columns
+    http://www.uniprot.org/help/fasta-headers
 
-<pre>
-    {@code
-    Dataset<Row>ds=UniProt.getDataset(UniProtDataset.SWISS_PROT);
-    ds.printSchema();
-    ds.show(5);
-ds.write().mode("overwrite").format("parquet").save(fileName);
-}
-</pre>
+Example
+-------
+    Download, read, and save the SWISS_PROT dataset:
 
+    ds = uniProt.get_dataset(UniProtDataset.SWISS_PROT)
+    ds.printSchema()
+    ds.show(5)
+    ds.write().mode("overwrite").format("parquet").save(fileName)
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -36,9 +40,6 @@ from pyspark.sql import SparkSession
 from enum import Enum
 
 
-
-#class UniProtDataset(Enum):
-
 baseUrl = "ftp://ftp.uniprot.org/pub/databases/uniprot/"
 
 SWISS_PROT = baseUrl + "current_release/knowledgebase/complete/uniprot_sprot.fasta.gz"
@@ -48,7 +49,7 @@ UNIREF90 = baseUrl + "uniref/uniref90/uniref90.fasta.gz"
 UNIREF100 = baseUrl + "uniref/uniref100/uniref100.fasta.gz"
 
 
-def getUniprotDataset(dataType):
+def _get_uniprot_dataset(dataType):
     '''
     Get Uniprot Dataset
     '''
@@ -62,12 +63,12 @@ def getUniprotDataset(dataType):
     tempFile = tempfile.NamedTemporaryFile(delete=False)
     with open(tempFile.name, "w") as t:
 
-        t.writelines("db,uniqueIdentifier,entryName,proteinName,organismName,geneName,proteinExistence,sequenceVersion,sequence\n")
+        t.writelines(
+            "db,uniqueIdentifier,entryName,proteinName,organismName,geneName,proteinExistence,sequenceVersion,sequence\n")
 
-
-        inputStream = urllib.request.urlopen(dataType, timeout = 6000)
+        inputStream = urllib.request.urlopen(dataType, timeout=6000)
         rd = gzip.GzipFile(fileobj=inputStream)
-        
+
         for line in rd:  # TODO check rd output content after UNIPROT online
 
             line = str(line)[2:-3]
@@ -76,7 +77,8 @@ def getUniprotDataset(dataType):
                 line = line.replace(",", ";")
 
                 if not firstLine:
-                    t.writelines(f"{db},{uniqueIdentifier},{entryName},{proteinName},{organismName},{geneName},{proteinExistence},{sequenceVersion}, {sequence}\n".replace(' ',''))
+                    t.writelines(
+                        f"{db},{uniqueIdentifier},{entryName},{proteinName},{organismName},{geneName},{proteinExistence},{sequenceVersion}, {sequence}\n".replace(' ', ''))
 
                 firstLine = False
                 sequence = ""
@@ -94,7 +96,6 @@ def getUniprotDataset(dataType):
                 sv = tmp.split(" SV=")
                 tmp = sv[0]
                 sequenceVersion = sv[1] if len(sv) > 1 else ""
-
 
                 # Set proteinExistence
                 pe = tmp.split(" PE=")
@@ -127,7 +128,7 @@ def getUniprotDataset(dataType):
     return dataset
 
 
-def getUnirefDataset(dataType):
+def _get_uniref_dataset(dataType):
     '''
     Get Uniref Dataset
     '''
@@ -141,7 +142,8 @@ def getUnirefDataset(dataType):
     tempFile = tempfile.NamedTemporaryFile(delete=False)
     with open(tempFile.name, "w") as t:
 
-        t.writelines("uniqueIdentifier,clusterName,members,taxon,taxonID,representativeMember,sequence\n")
+        t.writelines(
+            "uniqueIdentifier,clusterName,members,taxon,taxonID,representativeMember,sequence\n")
 
         inputStream = urllib.request.urlopen(dataType)
         rd = gzip.GzipFile(fileobj=inputStream)
@@ -155,7 +157,8 @@ def getUnirefDataset(dataType):
                 line = line.replace(",", ";")
 
                 if not firstLine:
-                    t.writelines(f"{uniqueIdentifier},{clusterName},{members},{taxon},{taxonID},{representativeMember},{sequence}\n".replace(' ',''))
+                    t.writelines(
+                        f"{uniqueIdentifier},{clusterName},{members},{taxon},{taxonID},{representativeMember},{sequence}\n".replace(' ', ''))
 
                 firstLine = False
 
@@ -171,7 +174,6 @@ def getUnirefDataset(dataType):
                 tid = tmp.split(" TaxID=")
                 tmp = tid[0]
                 taxonID = tid[1] if len(tid) > 1 else ""
-
 
                 # Set taxon
                 tx = tmp.split(" Tax=")
@@ -198,24 +200,25 @@ def getUnirefDataset(dataType):
     return dataset
 
 
-def getDataset(UniProtDataset):
-    '''
-    Returns the specified UniProt dataset.
+def get_dataset(UniProtDataset):
+    '''Returns the specified UniProt dataset.
 
-    Attributes:
+    Attributes
+    ----------
         uniProtDataset (String): name of the UniProt dataset
 
-    Returns:
+    Returns
+    -------
         dataset with sequence and metadata
     '''
 
     if UniProtDataset.split('/')[-3] == "uniref":
 
-        return getUnirefDataset(UniProtDataset)
+        return _get_uniref_dataset(UniProtDataset)
 
     elif UniProtDataset.split('/')[-3] == "knowledgebase":
 
-        return getUniprotDataset(UniProtDataset)
+        return _get_uniprot_dataset(UniProtDataset)
 
     else:
 
