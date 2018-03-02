@@ -20,7 +20,7 @@ class SecondaryStructureExtractorTest(unittest.TestCase):
     def test1(self):
         pdb = self.pdb.flatMap(StructureToPolymerChains())
 
-        secStruct = secondaryStructureExtractor.getDataset(pdb)
+        secStruct = secondaryStructureExtractor.get_dataset(pdb)
 
         dsspQ8 = secStruct.first()["dsspQ8Code"]
         dsspQ3 = secStruct.first()["dsspQ3Code"]

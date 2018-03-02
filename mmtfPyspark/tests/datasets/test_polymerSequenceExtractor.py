@@ -19,7 +19,7 @@ class PolymerSequenceExtractorTest(unittest.TestCase):
 
     def test1(self):
         pdb = self.pdb.flatMap(StructureToPolymerChains())
-        seq = polymerSequenceExtractor.getDataset(pdb)
+        seq = polymerSequenceExtractor.get_dataset(pdb)
 
         self.assertTrue(seq.count() == 5)
 
