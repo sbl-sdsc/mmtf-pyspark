@@ -3,7 +3,6 @@ name: myBinder-environment
 dependencies:
   - python=3.6
   - biopython=1.70
-  - mmtf-python=1.0.12
   - numpy=1.13.3
   - requests=2.18.4
   - sympy=1.1.1
@@ -15,3 +14,4 @@ dependencies:
   - pip:
       - py3Dmol
       - git+https://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtf-pyspark[complete]
+      - git+https://github.com/rcsb/mmtf-python.git#egg=mmtf-python[complete]
