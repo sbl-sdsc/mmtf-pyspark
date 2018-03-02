@@ -48,7 +48,7 @@ def main():
             .filter(ContainsLProteinChain()) \
 
     # Get secondary structure content
-    data = secondaryStructureExtractor.getDataset(pdb)
+    data = secondaryStructureExtractor.get_dataset(pdb)
 
     # classify chains by secondary structure type
     minThreshold = 0.05

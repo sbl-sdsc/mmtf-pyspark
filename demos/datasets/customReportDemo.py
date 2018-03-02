@@ -24,7 +24,7 @@ def main():
     # retrive PDB annotation: Binding affinities (Ki, Kd)
     # group name of the ligand (hetId), and the
     # Enzyme Classification number (ecNo)
-    ds = customReportService.getDataset(["Ki","Kd","hetId","ecNo"])
+    ds = customReportService.get_dataset(["Ki","Kd","hetId","ecNo"])
 
     # Show schema of this dataset
     ds.printSchema()

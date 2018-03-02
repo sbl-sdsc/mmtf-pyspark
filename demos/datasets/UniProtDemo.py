@@ -10,7 +10,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
-from mmtfPyspark.datasets import UniProt
+from mmtfPyspark.datasets import uniProt
 import time
 
 
@@ -22,8 +22,8 @@ def main():
     sc = SparkContext(conf = conf)
 
     # Read Jpred Dataset
-    #ds = UniProt.getDataset(UniProt.SWISS_PROT)
-    ds = UniProt.getDataset(UniProt.UNIREF50)
+    #ds = uniProt.get_dataset(uniProt.SWISS_PROT)
+    ds = uniProt.get_dataset(uniProt.UNIREF50)
 
     ds.show(20, False)
 
