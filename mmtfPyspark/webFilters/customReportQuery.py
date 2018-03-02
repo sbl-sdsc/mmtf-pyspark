@@ -52,7 +52,7 @@ class CustomReportQuery(object):
                 fields = [fields]
 
         # Get requested data columns
-        dataset = customReportService.getDataset(fields)
+        dataset = customReportService.get_dataset(fields)
 
         # Check if the results contain chain level data
         self.chainLevel = "structureChainId" in dataset.columns
