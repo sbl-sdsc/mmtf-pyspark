@@ -23,7 +23,7 @@ class secondaryStructureExtractorTest(unittest.TestCase):
                       .flatMap(StructureToPolymerChains()) \
                       .filter(ContainsLProteinChain())
 
-        seq = secondaryStructureExtractor.getDataset(pdb)
+        seq = secondaryStructureExtractor.get_dataset(pdb)
 
         self.assertTrue(seq.count() == 5)
 
