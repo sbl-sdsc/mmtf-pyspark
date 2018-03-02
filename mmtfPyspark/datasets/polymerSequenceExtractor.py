@@ -16,15 +16,17 @@ from mmtfPyspark.mappers import StructureToPolymerSequences
 from pyspark.sql import Row
 
 
-def getDataset(structures):
-    '''
-    Returns a dataset of polymer sequence contained in PDB entries
+def get_dataset(structures):
+    '''Returns a dataset of polymer sequence contained in PDB entries
     using the full sequence used in the experimnet
     (i.e., the "SEQRES" record in PDB files)
 
-    Attributes:
+    Attributes
+    ----------
         structures (pythonRDD): a set of PDB structures
-    Returns:
+
+    Returns
+    -------
         dataset with interacting residue and atom information
     '''
 

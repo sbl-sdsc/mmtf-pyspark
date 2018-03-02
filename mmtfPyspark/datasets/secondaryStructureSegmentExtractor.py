@@ -36,7 +36,7 @@ def getDataset(structureRDD, length):
     if length % 2 == 0:
         raise Exception("Segment length must be an odd number %i" % length)
 
-    rows = secondaryStructureExtractor.getPythonRdd(structureRDD) \
+    rows = secondaryStructureExtractor.get_python_rdd(structureRDD) \
             .flatMap(StructureToSecondaryStructureSegments(length))
 
     colNames = ["structureChainId", "sequence", "labelQ8", "labelQ3"]
