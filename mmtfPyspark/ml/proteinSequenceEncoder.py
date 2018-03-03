@@ -1,5 +1,4 @@
-'''
-ProteinSequenceEncoder.py
+'''proteinSequenceEncoder.py
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -15,13 +14,20 @@ from pyspark.ml.feature import Word2Vec, Word2VecModel
 from mmtfPyspark.ml import sequenceNgrammer
 
 
-class proteinSequenceEncoder(object):
+class ProteinSequenceEncoder(object):
     '''
     This class encodes a protein sequence into a feature vector.
     The protein sequence must be present in the input data set,
     the default column name is "sequence". The default column name
     for the feature vector is "features".
+
+    Attributes
+    ----------
+        data (DataFrame): input data to be encoded [None]
+        inputCol (str): name of the input column [sequence]
+        outputCol (str): name of the output column [features]
     '''
+
     model = None
 
     AMINO_ACIDS21 = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', \
@@ -85,11 +91,17 @@ class proteinSequenceEncoder(object):
         self.outputCol = outputCol
 
 
-    def oneHotEncode(self, data = None, inputCol = None, outputCol = None):
+    def one_hot_encode(self, data = None, inputCol = None, outputCol = None):
         '''
         One-hot encodes a protein sequence. The one-hot encoding
         encodes the 20 natural amino acids, plus X for any other
         residue for a total of 21 elements per residue.
+
+        Attributes
+        ----------
+            data (DataFrame): input data to be encoded [None]
+            inputCol (str): name of the input column [None]
+            outputCol (str): name of the output column [None]
         '''
 
         # Setting class variables
@@ -136,14 +148,22 @@ class proteinSequenceEncoder(object):
         return data
 
 
-    def propertyEncode(self, data = None, inputCol = None, outputCol = None):
-        '''
-        Encodes a protein sequence by 7 physicochemical properties
+    def property_encode(self, data = None, inputCol = None, outputCol = None):
+        '''Encodes a protein sequence by 7 physicochemical properties
 
-        <p> See:  Meiler, J., Müller, M., Zeidler, A. et al. J Mol Model (2001) 7: 360. doi:
-    	<a href="https://link.springer.com/article/10.1007/s008940100038">10.1007/s008940100038</a>
+        Reference
+        ---------
+            Meiler, J., Müller, M., Zeidler, A. et al. J Mol Model (2001)
+    	    https://link.springer.com/article/10.1007/s008940100038
 
-        Returns:
+        Attributes
+        ----------
+            data (DataFrame): input data to be encoded [None]
+            inputCol (str): name of the input column [None]
+            outputCol (str): name of the output column [None]
+
+        Returns
+        -------
             dataset with feature vector appended
         '''
 
@@ -185,13 +205,22 @@ class proteinSequenceEncoder(object):
         return data
 
 
-    def blosum62Encode(self, data = None, inputCol = None, outputCol = None):
-        '''
-        Encodes a protein sequence by 7 Blosum62
+    def blosum62_encode(self, data = None, inputCol = None, outputCol = None):
+        '''Encodes a protein sequence by 7 Blosum62
 
-        <p> See: <a href="https://ftp.ncbi.nih.gov/repository/blocks/unix/blosum/BLOSUM/blosum62.blast.new">BLOSUM62 Matrix</a>
+        Reference
+        ---------
+            Blosum Matrix
+            https://ftp.ncbi.nih.gov/repository/blocks/unix/blosum/BLOSUM/blosum62.blast.new
 
-        Returns:
+        Attributes
+        ----------
+            data (DataFrame): input data to be encoded [None]
+            inputCol (str): name of the input column [None]
+            outputCol (str): name of the output column [None]
+
+        Returns
+        -------
             dataset with feature vector appended
         '''
 
@@ -232,26 +261,31 @@ class proteinSequenceEncoder(object):
         return data
 
 
-    def overlappingNgramWord2VecEncode(self, data = None, inputCol = None,
-                                       outpuCol = None, n = None,
-                                       windowSize = None, vectorSize = None,
-                                       fileName = None, sc = None):
-        '''
-        Encodes a protein sequence by converting it into n-grams and
+    def overlapping_ngram_word2vec_encode(self, data = None, inputCol = None,
+                                          outpuCol = None, n = None,
+                                          windowSize = None, vectorSize = None,
+                                          fileName = None, sc = None):
+        '''Encodes a protein sequence by converting it into n-grams and
         then transforming it into a Word2Vec feature vector.
 
         If given word2Vec file name, then this function encodes a protein
         sequence by converting it into n-grams and then transforming it using
         pre-trained word2Vec model read from that file
 
-        Attribute:
-            n (int): The number of words in an n-gram
+        Attribute
+        ---------
+            data (DataFrame): input data to be encoded [None]
+            inputCol (str): name of the input column [None]
+            outputCol (str): name of the output column [None]
+            n (int): The number of words in an n-gram [None]
             windowSize (int): width of the window used to slide across the \
-                              squence, context words from [-window,window]
-            vectorSize (int): dimension of the feature vector
-            fileName (str): filename of Word2Vec model
+                              squence, context words from -window to window \
+                              [None]
+            vectorSize (int): dimension of the feature vector [None]
+            fileName (str): filename of Word2Vec model [None]
 
-        Returns:
+        Returns
+        -------
             dataset with features vector added to original dataset
         '''
 
@@ -306,28 +340,36 @@ class proteinSequenceEncoder(object):
         return self.model.transform(data)
 
 
-    def shifted3GramWord2VecEncode(self, data = None, inputCol = None,
-                                   outputCol = None, windowSize = None,
-                                   vectorSize = None, fileName = None, sc = None):
-        '''
-        Encodes a protein sequence as three non-overlapping 3-grams,
+    def shifted_3gram_word2vec_encode(self, data = None, inputCol = None,
+                                      outputCol = None, windowSize = None,
+                                      vectorSize = None, fileName = None,
+                                      sc = None):
+        '''Encodes a protein sequence as three non-overlapping 3-grams,
         trains a Word2Vec model on the 3-grams, and then averages the
         three resulting freature vectors.
 
-    	<P> Asgari E, Mofrad MRK (2015) Continuous Distributed Representation
-	    of Biological Sequences for Deep Proteomics and Genomics.
-	    PLOS ONE 10(11): e0141287. doi:
-	    <a href="https://doi.org/10.1371/journal.pone.0141287">10.1371/journal.pone.0141287</a>
 
-        Attribute:
+        Attribute
+        ---------
+            data (DataFrame): input data to be encoded [None]
+            inputCol (str): name of the input column [None]
+            outputCol (str): name of the output column [None]
             windowSize (int): width of the window used to slide across the sequence
-                              context words from [-window, window]
-            vectorSize (int): dimension of the feature vector
-            fileName (string): filename of Word2VecModel
-            sc (SparkContext): spark context
+                              context words from -window to window
+            vectorSize (int): dimension of the feature vector [None]
+            fileName (string): filename of Word2VecModel [None]
+            sc (SparkContext): spark context [None]
 
-        Return:
+        Returns
+        -------
             dataset with features vector added to original dataset
+
+        References
+        ----------
+           Asgari E, Mofrad MRK (2015) Continuous Distributed Representation
+           of Biological Sequences for Deep Proteomics and Genomics.
+           PLOS ONE 10(11): e0141287. doi:
+           https://doi.org/10.1371/journal.pone.0141287
         '''
 
         if data is not None:
@@ -346,9 +388,9 @@ class proteinSequenceEncoder(object):
         # Create n-grams out of the sequence
         # e.g., 2-gram [IDCGH, ...] => [ID. DC, CG, GH,...]
 
-        data = sequenceNgrammer.shiftedNgram(self.data, 3, 0, "ngram0")
-        data = sequenceNgrammer.shiftedNgram(data, 3, 1, "ngram1")
-        data = sequenceNgrammer.shiftedNgram(data, 3, 2, "ngram2")
+        data = sequenceNgrammer.shifted_ngram(self.data, 3, 0, "ngram0")
+        data = sequenceNgrammer.shifted_ngram(data, 3, 1, "ngram1")
+        data = sequenceNgrammer.shifted_ngram(data, 3, 2, "ngram2")
         if not (windowSize == None and vectorSize == None):
 
             ngram0 = data.select("ngram0").withColumnRenamed("ngram0","ngram")
@@ -356,7 +398,6 @@ class proteinSequenceEncoder(object):
             ngram2 = data.select("ngram2").withColumnRenamed("ngram2","ngram")
 
             ngrams = ngram0.union(ngram1).union(ngram2)
-
 
             # Convert n-grams to W2V feature vector
             # [I D, D C, C G, G H, ... ] => [0.1234, 0.2394, .. ]
@@ -387,7 +428,6 @@ class proteinSequenceEncoder(object):
                             for function parameters")
             return
 
-
         #data = data.withColumn("feature0",self.model.transform(data.select('ngram0').withColumnRenamed("ngram0","ngram")))
         for i in reversed(range(3)):
             feature = self.model.transform(data.select('ngram' + str(i)).withColumnRenamed("ngram" + str(i),"ngram"))
@@ -395,7 +435,7 @@ class proteinSequenceEncoder(object):
             data = data.withColumnRenamed("feature", "feature" + str(i))
 
 
-        data = self.averageFeatureVectors(data, self.outputCol)
+        data = self._average_feature_vectors(data, self.outputCol)
         data.printSchema()
 
         cols = ['structureChainId','sequence','labelQ8','labelQ3','ngram0','ngram1',\
@@ -407,20 +447,24 @@ class proteinSequenceEncoder(object):
         return data
 
 
-    def getWord2VecModel(self):
-        '''
-        Returns a Word2VecModel created by overlappingNgramWord2VecEncode()
+    def get_word2vec_model(self):
+        '''Returns a Word2VecModel created by overlapping_ngram_word2vec_encode()
 
-        Returns:
+        Returns
+        -------
             overlapping Ngram Word2VecModel if available, otherwise None
         '''
 
         return self.model
 
 
-    def averageFeatureVectors(self, data, outputCol):
-        '''
-        Average the feature vectors
+    def _average_feature_vectors(self, data, outputCol):
+        '''Average the feature vectors
+
+        Attributes
+        ----------
+            data (DataFrame): input dataframe
+            outputCol (str): name of the output column
         '''
 
         session = SparkSession.builder.getOrCreate()

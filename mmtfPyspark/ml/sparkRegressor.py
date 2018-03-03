@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-'''
-
-sparkRegressor.py
+'''sparkRegressor.py
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -14,7 +12,7 @@ from pyspark.ml import Pipeline
 from pyspark.ml.evaluation import RegressionEvaluator
 from collections import OrderedDict
 
-class sparkRegressor(object):
+class SparkRegressor(object):
     '''
     '''
 
@@ -27,14 +25,15 @@ class sparkRegressor(object):
 
 
     def fit(self, data):
-        '''
-        Dataset must at least contain the following two columns:
+        '''Dataset must at least contain the following two columns:
             label : the class labels
             features : feature vector
 
-        Attribute:
+        Attribute
+        ---------
             data (Dataset<Row>)
-        Return:
+        Return
+        ------
             Dictionary with matrics
         '''
 

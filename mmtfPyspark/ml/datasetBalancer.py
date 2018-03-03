@@ -1,6 +1,5 @@
 #!/user/bin/env python
-'''
-dataBalancer.py:
+'''dataBalancer.py:
 
 Creates a balanced dataset for classification problems by either
 downsampling the majority classes or upsampling the  minority classes.
@@ -20,19 +19,17 @@ from functools import reduce
 import math
 
 
-def downsample(data, columnName, seed = 7):
-    '''
-    Returns a balanced dataset for the given column name by downsampling
+def downsample(data, columnName, seed=7):
+    '''Returns a balanced dataset for the given column name by downsampling
     the majority classes.
     The classification column must be of type String
 
-    Attributes:
+    Attributes
+    ----------
         data (Dataframe)
-        columnName (String): column to be balanced by
-        seed (Int): random number seed
+        columnName (str): column to be balanced by
+        seed (int): random number seed
     '''
-
-    # TODO specify max ratio between minority and majority class
 
     counts = data.groupby(columnName).count().collect()
 
@@ -40,23 +37,23 @@ def downsample(data, columnName, seed = 7):
     names = [y[0] for y in counts]
     minCount = min(count)
 
-    samples = [data.filter(columnName + "='%s'"%n) \
-               .sample(False,minCount/float(c),seed) \
-               for n,c in zip(names, count)]
+    samples = [data.filter(columnName + "='%s'" % n)
+               .sample(False, minCount / float(c), seed)
+               for n, c in zip(names, count)]
 
-    return reduce(lambda x,y: x.union(y), samples)
+    return reduce(lambda x, y: x.union(y), samples)
 
 
-def upsample(data, columnName, seed = 7):
-    '''
-    Returns a balanced dataset for the given column name by upsampling
+def upsample(data, columnName, seed=7):
+    '''Returns a balanced dataset for the given column name by upsampling
     the majority classes.
     The classification column must be of type String
 
-    Attributes:
+    Attributes
+    ----------
         data (Dataframe)
-        columnName (String): column to be balanced by
-        seed (Int): random number seed
+        columnName  (str): column to be balanced by
+        seed (int): random number seed
     '''
 
     counts = data.groupby(columnName).count().collect()
@@ -65,11 +62,11 @@ def upsample(data, columnName, seed = 7):
     names = [y[0] for y in counts]
     maxCount = max(count)
 
-    samples = [data.filter(columnName + "='%s'"%n) \
-               .sample(False,maxCount/float(c),seed) \
-               if abs(1-maxCount/float(c)) > 1.0 \
-               else data.filter(columnName + "='%s'"%n) \
-               for n,c in zip(names, count)
+    samples = [data.filter(columnName + "='%s'" % n)
+               .sample(False, maxCount / float(c), seed)
+               if abs(1 - maxCount / float(c)) > 1.0
+               else data.filter(columnName + "='%s'" % n)
+               for n, c in zip(names, count)
                ]
 
-    return reduce(lambda x,y: x.union(y), samples)
+    return reduce(lambda x, y: x.union(y), samples)

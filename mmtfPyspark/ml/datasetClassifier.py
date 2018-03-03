@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-'''
-
-datasetClassifier.py
+'''datasetClassifier.py
 
 Runs binary and multi-class classifiers on a given dataset.
 Dataset are read as Parquet file. The dataset must contain
@@ -16,7 +14,7 @@ Authorship information:
     __status__ = "Debug"
 '''
 
-from mmtfPyspark.ml import sparkMultiClassClassifier, datasetBalancer
+from mmtfPyspark.ml import SparkMultiClassClassifier, datasetBalancer
 from pyspark.sql import SparkSession
 from pyspark.ml.classification import DecisionTreeClassifier, LogisticRegression, MultilayerPerceptronClassifier, RandomForestClassifier
 import sys
@@ -55,19 +53,19 @@ def main(argv):
 
     # DecisionTree
     dtc = DecisionTreeClassifier()
-    mcc = sparkMultiClassClassifier(dtc, label, testFraction, seed)
+    mcc = SparkMultiClassClassifier(dtc, label, testFraction, seed)
     matrics = mcc.fit(data)
     for k,v in matrics.items(): print(f"{k}\t{v}")
 
     # RandomForest
     rfc = RandomForestClassifier()
-    mcc = sparkMultiClassClassifier(rfc, label, testFraction, seed)
+    mcc = SparkMultiClassClassifier(rfc, label, testFraction, seed)
     matrics = mcc.fit(data)
     for k,v in matrics.items(): print(f"{k}\t{v}")
 
     # LogisticRegression
     lr = LogisticRegression()
-    mcc = sparkMultiClassClassifier(lr, label, testFraction, seed)
+    mcc = SparkMultiClassClassifier(lr, label, testFraction, seed)
     matrics = mcc.fit(data)
     for k,v in matrics.items(): print(f"{k}\t{v}")
 
@@ -77,7 +75,7 @@ def main(argv):
                                           .setBlockSize(128) \
                                           .setSeed(1234) \
                                           .setMaxIter(200)
-    mcc = sparkMultiClassClassifier(mpc, label, testFraction, seed)
+    mcc = SparkMultiClassClassifier(mpc, label, testFraction, seed)
     matrics = mcc.fit(data)
     for k,v in matrics.items(): print(f"{k}\t{v}")
 

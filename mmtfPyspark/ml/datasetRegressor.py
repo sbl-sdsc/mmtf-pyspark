@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-'''
-datasetRegressor.py
+'''datasetRegressor.py
 
 Runs regression on a given dataset.
 Dataset are read as Parquet file. The dataset must contain
@@ -15,7 +14,7 @@ Authorship information:
     __status__ = "Debug"
 '''
 
-from mmtfPyspark.ml import sparkRegressor, datasetBalancer
+from mmtfPyspark.ml import SparkRegressor, datasetBalancer
 from pyspark.sql import SparkSession
 from pyspark.ml.regression import GBTRegressor, GeneralizedLinearRegression, LinearRegression
 import sys
@@ -48,14 +47,14 @@ def main(argv):
     # Linear Regression
     lr = LinearRegression().setLabelCol(label) \
                            .setFeaturesCol("features")
-    reg = sparkRegressor(lr, label, testFraction, seed)
+    reg = SparkRegressor(lr, label, testFraction, seed)
     matrics = reg.fit(data)
     for k,v in matrics.items(): print(f"{k}\t{v}")
 
     # GBTRegressor
     gbt = GBTRegressor().setLabelCol(label) \
                         .setFeaturesCol("features")
-    reg = sparkRegressor(gbt, label, testFraction, seed)
+    reg = SparkRegressor(gbt, label, testFraction, seed)
     matrics = reg.fit(data)
     for k,v in matrics.items(): print(f"{k}\t{v}")
 
@@ -66,7 +65,7 @@ def main(argv):
                                        .setLink("identity") \
                                        .setMaxIter(10) \
                                        .setRegParam(0.3)
-    reg = sparkRegressor(glr, label, testFraction, seed)
+    reg = SparkRegressor(glr, label, testFraction, seed)
     matrics = reg.fit(data)
     for k,v in matrics.items(): print(f"{k}\t{v}")
 
