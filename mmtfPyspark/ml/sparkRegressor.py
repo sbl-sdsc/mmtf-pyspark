@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 '''sparkRegressor.py
 
+Fits a regression model using an MLlib regression method and returns regression
+metrics
+
+
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
