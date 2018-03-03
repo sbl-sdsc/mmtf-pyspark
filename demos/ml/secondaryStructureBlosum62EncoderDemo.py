@@ -10,7 +10,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
-from mmtfPyspark.ml import proteinSequenceEncoder
+from mmtfPyspark.ml import ProteinSequenceEncoder
 from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor
@@ -62,8 +62,8 @@ def main():
     data = data.dropDuplicates(["sequence"])
     print(f"- duplicate seq  : {data.count()}")
 
-    encoder = proteinSequenceEncoder(data)
-    data = encoder.blosum62Encode()
+    encoder = ProteinSequenceEncoder(data)
+    data = encoder.blosum62_encode()
 
     data.printSchema()
     data.show(25, False)

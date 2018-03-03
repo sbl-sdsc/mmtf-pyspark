@@ -9,7 +9,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
-from mmtfPyspark.ml import proteinSequenceEncoder
+from mmtfPyspark.ml import ProteinSequenceEncoder
 from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor
@@ -57,11 +57,11 @@ def main():
         pdb, segmentLength).cache()
 
     # add Word2Vec encoded feature vector
-    encoder = proteinSequenceEncoder(data)
+    encoder = ProteinSequenceEncoder(data)
     n = 2
     windowSize = (segmentLength - 1) // 2
     vectorSize = 50
-    data = encoder.overlappingNgramWord2VecEncode(n, windowSize, vectorSize)
+    data = encoder.overlapping_ngram_word2vec_encode(n, windowSize, vectorSize)
 
     data.printSchema()
     data.show(25, False)
