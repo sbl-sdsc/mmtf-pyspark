@@ -40,4 +40,4 @@ def getDataset(structureRDD, length):
             .flatMap(StructureToSecondaryStructureSegments(length))
 
     colNames = ["structureChainId", "sequence", "labelQ8", "labelQ3"]
-    return pythonRDDToDataset.getDataset(rows, colNames)
+    return pythonRDDToDataset.get_dataset(rows, colNames)
