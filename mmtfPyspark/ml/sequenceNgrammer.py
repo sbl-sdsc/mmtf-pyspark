@@ -1,5 +1,4 @@
-'''
-sequenceNgrammer.py
+'''sequenceNgrammer.py
 
 This class contians methods for creating overlapping and non-overlapping
 n-grams of one-letter code sequence
@@ -16,18 +15,21 @@ from pyspark.sql import SparkSession, types
 
 
 def ngram(data, n, outputCol):
-    '''
-    Splits a one-letter sequence column (e.g., protein sequence)
+    '''Splits a one-letter sequence column (e.g., protein sequence)
     into array of overlapping n-grams.
 
-    <p> Example 2-gram: IDCGH ... => [ID, DC, CG, GH, ...]
+    Example
+    -------
+        2-gram: IDCGH ... => [ID, DC, CG, GH, ...]
 
-    Attribute:
+    Attribute
+    ---------
         data (dataset): input dataset with column "sequence"
         n (int): size of the n-gram
         outputCol (String): name of the output column
 
-    Return:
+    Returns
+    -------
         output dataset with appended ngram column
     '''
 
@@ -57,27 +59,32 @@ def ngram(data, n, outputCol):
     return data
 
 
-def shiftedNgram(data, n, shift, outputCol):
-    '''
-    Splits a one-letter sequence column (e.g., protein sequence)
+def shifted_ngram(data, n, shift, outputCol):
+    '''Splits a one-letter sequence column (e.g., protein sequence)
 	into array of non-overlapping n-grams. To generate all possible n-grams,
 	this method needs to be called n times with shift parameters {0, ..., n-1}.
 
-	<p> Example 3-gram(shift=0) : IDCGHTVEDQR ... => [IDC, GHT, VED, ...]
-	<p> Example 3-gram(shift=1) : IDCGHTVEDQR ... => [DCG, HTV, EDQ, ...]
-	<p> Example 3-gram(shift=2) : IDCGHTVEDQR ... => [CGH, TVE, DQR, ...]
+	Example
+    -------
+        3-gram(shift=0) : IDCGHTVEDQR ... => [IDC, GHT, VED, ...]
+	    3-gram(shift=1) : IDCGHTVEDQR ... => [DCG, HTV, EDQ, ...]
+	    3-gram(shift=2) : IDCGHTVEDQR ... => [CGH, TVE, DQR, ...]
 
-	<p>For an application of shifted n-grams see:
-	E Asgari, MRK Mofrad, PLoS One. 2015; 10(11): e0141287, doi:
-	<a href="https://dx.doi.org/10.1371/journal.pone.0141287">10.1371/journal.pone.0141287</a>
+    References
+    ----------
+	   For anapplication of shifted n-grams see:
+	   E Asgari, MRK Mofrad, PLoS One. 2015; 10(11): e0141287, doi:
+	   https://dx.doi.org/10.1371/journal.pone.0141287
 
-    Attribute:
+    Attribute
+    ---------
         data (dataset): input dataset with column "sequence"
         n (int): size of the n-gram
         shift(int): start index for the n-gram
         outputCol (String): name of the output column
 
-    Return:
+    Returns
+    -------
         output dataset with appended ngram column
     '''
 

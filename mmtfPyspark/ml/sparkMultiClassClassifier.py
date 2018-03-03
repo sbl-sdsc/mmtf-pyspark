@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-'''
-
-sparkMultiClassClassifier.py
+'''sparkMultiClassClassifier.py
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
@@ -16,7 +14,7 @@ from pyspark.mllib.evaluation import BinaryClassificationMetrics, MulticlassMetr
 from collections import OrderedDict
 
 
-class sparkMultiClassClassifier(object):
+class SparkMultiClassClassifier(object):
     '''
     '''
 
@@ -28,15 +26,16 @@ class sparkMultiClassClassifier(object):
         self.seed = seed
 
     def fit(self, data):
-        '''
-        Dataset must at least contain the following two columns:
+        '''Dataset must at least contain the following two columns:
         label: the class labels
         features: feature vector
 
-        Attribute:
+        Attributes
+        ----------
             data (Dataset<Row>): input data
 
-        Return:
+        Returns
+        -------
             map with metrics
         '''
 
