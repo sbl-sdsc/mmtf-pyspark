@@ -72,4 +72,4 @@ def get_dataset():
     data = sc.parallelize(res)
     colNames = ["scopID", "sequence", "secondaryStructure", "trained"]
 
-    return pythonRDDToDataset.getDataset(data, colNames)
+    return pythonRDDToDataset.get_dataset(data, colNames)

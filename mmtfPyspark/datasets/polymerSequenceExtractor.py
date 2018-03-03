@@ -35,4 +35,4 @@ def get_dataset(structures):
 
     colNames = ["structureChainId", "sequence"]
 
-    return pythonRDDToDataset.getDataset(rows, colNames)
+    return pythonRDDToDataset.get_dataset(rows, colNames)

@@ -46,7 +46,7 @@ def get_dataset(structure):
     colNames = ["structureChainId", "sequence", "alpha", "beta",
                 "coil", "dsspQ8Code", "dsspQ3Code"]
 
-    return pythonRDDToDataset.getDataset(rows, colNames)
+    return pythonRDDToDataset.get_dataset(rows, colNames)
 
 
 def get_python_rdd(structure):

@@ -47,10 +47,10 @@ def get_dataset(structure, label, length=None):
         rows = secondaryStructureExtractor.get_python_rdd(structure) \
             .flatMap(StructureToSecondaryStructureElements(label))
 
-        return pythonRDDToDataset.getDataset(rows, colNames)
+        return pythonRDDToDataset.get_dataset(rows, colNames)
     else:
 
         rows = secondaryStructureExtractor.get_python_rdd(structure) \
             .flatMap(StructureToSecondaryStructureElements(label, length))
 
-        return pythonRDDToDataset.getDataset(rows, colNames)
+        return pythonRDDToDataset.get_dataset(rows, colNames)
