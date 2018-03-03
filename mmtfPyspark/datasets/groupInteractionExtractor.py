@@ -13,7 +13,7 @@ Authorship information:
 '''
 
 from mmtfPyspark.ml import pythonRDDToDataset
-from mmtfPyspark.utils.structureToAllInteractions import *
+from mmtfPyspark.utils.StructureToAllInteractions import *
 
 class groupInteractionExtractor(object):
     '''Class that creates a dataset of interactions of a specifed gorup within
@@ -39,7 +39,7 @@ class groupInteractionExtractor(object):
             dataset with interacting residue and atom information
         '''
         # create a list of all residues with a threshold distance
-        rows = structures.flatMap(structureToAllInteractions(self.groupName, self.distance))
+        rows = structures.flatMap(StructureToAllInteractions(self.groupName, self.distance))
 
         # convert to a dataset
         colNames = ["structureId", "residue1", "atom1", "element1", "index1",

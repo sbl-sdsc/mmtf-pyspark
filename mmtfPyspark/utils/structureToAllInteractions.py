@@ -13,32 +13,41 @@ Authorship information:
 from pyspark.sql import Row
 
 
-class structureToAllInteractions(object):
+class StructureToAllInteractions(object):
+    '''Class that finds interactions of a specified group within a specified
+    cutoff distance
+
+    Attributes
+    ----------
+        groupName (str): specified group in structure
+        cutoffDistance (float): cutoff distance used during search
+    '''
+
     def __init__(self, groupName, cutoffDistance):
         self.groupName = groupName
         self.cutoffDistance = cutoffDistance
-
 
     def __call__(self, t):
         structureId = t[0]
         structure = t[1]
 
-        groupIndices, groupNames = self._getGroupIndices(structure)
+        groupIndices, groupNames = self._get_group_indices(structure)
         interactions = []
 
         for i in range(len(groupNames)):
 
             if groupNames[i] == self.groupName:
                 matches = []
-                boundingBox = self._calcBondingBox(structure, groupIndices, i,
-                                                   self.cutoffDistance)
-                matches += self._findNeighbors(structure, i, boundingBox, groupIndices)
-                interactions += self._getDistanceProfile(structureId, matches, i, groupIndices, groupNames, structure)
+                boundingBox = self._calc_bonding_box(structure, groupIndices, i,
+                                                     self.cutoffDistance)
+                matches += self._find_neighbors(structure,
+                                                i, boundingBox, groupIndices)
+                interactions += self._get_distance_profile(
+                    structureId, matches, i, groupIndices, groupNames, structure)
 
         return interactions
 
-
-    def _getDistanceProfile(self, structureId, matches, index, groupIndices, groupNames, structure):
+    def _get_distance_profile(self, structureId, matches, index, groupIndices, groupNames, structure):
         cutoffDistanceSq = self.cutoffDistance * self.cutoffDistance
 
         x = structure.x_coord_list
@@ -53,18 +62,19 @@ class structureToAllInteractions(object):
         rows = []
 
         for i in matches:
-            if i == index: continue
+            if i == index:
+                continue
 
-            for j in range(groupIndices[i], groupIndices[i+1]):
+            for j in range(groupIndices[i], groupIndices[i + 1]):
 
                 for k in range(first, last):
                     dx = x[j] - x[k]
                     dy = y[j] - y[k]
                     dz = z[j] - z[k]
-                    dSq = dx*dx + dy*dy + dz*dz
+                    dSq = dx * dx + dy * dy + dz * dz
 
                     if (dSq <= cutoffDistanceSq):
-                        aIndex1 = k-first
+                        aIndex1 = k - first
                         atomName1 = structure.group_list[groupIndex1]['atomNameList'][aIndex1]
                         element1 = structure.group_list[groupIndex1]['elementList'][aIndex1]
 
@@ -87,8 +97,7 @@ class structureToAllInteractions(object):
                         rows.append(row)
         return rows
 
-
-    def _findNeighbors(self, structure, index, boundingBox, groupIndices):
+    def _find_neighbors(self, structure, index, boundingBox, groupIndices):
         x = structure.x_coord_list
         y = structure.y_coord_list
         z = structure.z_coord_list
@@ -96,18 +105,17 @@ class structureToAllInteractions(object):
         matches = []
         for i in range(len(groupIndices) - 1):
 
-            for j in range(groupIndices[i], groupIndices[i+1]):
+            for j in range(groupIndices[i], groupIndices[i + 1]):
 
                 if (x[j] >= boundingBox[0] and x[j] <= boundingBox[1] and
                     y[j] >= boundingBox[2] and y[j] <= boundingBox[3] and
-                    z[j] >= boundingBox[4] and z[j] <= boundingBox[5]):
+                        z[j] >= boundingBox[4] and z[j] <= boundingBox[5]):
                     matches.append(i)
                     break
 
         return matches
 
-
-    def _calcBondingBox(self, structure, groupIndices, i, cutoffDistance):
+    def _calc_bonding_box(self, structure, groupIndices, i, cutoffDistance):
         x = structure.x_coord_list
         y = structure.y_coord_list
         z = structure.z_coord_list
@@ -120,7 +128,7 @@ class structureToAllInteractions(object):
         zMax = float('inf')
 
         first = groupIndices[i]
-        last = groupIndices[i+1]
+        last = groupIndices[i + 1]
 
         for i in range(first, last):
             xMin = min(xMin, x[i])
@@ -130,7 +138,7 @@ class structureToAllInteractions(object):
             zMin = min(zMin, z[i])
             zMax = max(zMax, z[i])
 
-        boundingBox = [0]*6
+        boundingBox = [0] * 6
         boundingBox[0] = float(xMin - cutoffDistance)
         boundingBox[1] = float(xMax + cutoffDistance)
         boundingBox[2] = float(yMin - cutoffDistance)
@@ -140,14 +148,13 @@ class structureToAllInteractions(object):
 
         return boundingBox
 
-
-    def _getGroupIndices(self, structure):
+    def _get_group_indices(self, structure):
         '''Creates an atom index to the first atom of each group
 
         Attributes:
             structure
         '''
-        groupIndices, groupNames = [0], [] # Start index for first group
+        groupIndices, groupNames = [0], []  # Start index for first group
         atomCounter, groupCounter = 0, 0
 
         # Consider only the first model
@@ -159,8 +166,10 @@ class structureToAllInteractions(object):
             # Loop over all groups in chains
             for j in range(structure.groups_per_chain[i]):
                 groupIndex = structure.group_type_list[groupCounter]
-                groupNames.append(structure.group_list[groupIndex]['groupName'])
-                atomCounter += len(structure.group_list[groupIndex]['atomNameList'])
+                groupNames.append(
+                    structure.group_list[groupIndex]['groupName'])
+                atomCounter += len(
+                    structure.group_list[groupIndex]['atomNameList'])
                 groupIndices.append(atomCounter)
                 groupCounter += 1
 
