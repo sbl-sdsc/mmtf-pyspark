@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 '''sparkMultiClassClassifier.py
 
+Fits a multi-class classification model using mllib classification method and
+returns classification metrics.
+
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
@@ -15,7 +18,15 @@ from collections import OrderedDict
 
 
 class SparkMultiClassClassifier(object):
-    '''
+    '''Fits a multi-class classification model using mllib classification method and
+    returns classification metrics.
+
+    Attributes
+    ----------
+        predictor: type of multi-class classifier
+        label (str): classification label
+        testFraction (float): test set fraction [0.3]
+        seed (int): random seed
     '''
 
     def __init__(self, predictor, label, testFraction=0.3, seed=1):
