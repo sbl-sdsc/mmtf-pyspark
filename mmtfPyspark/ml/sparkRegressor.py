@@ -13,7 +13,15 @@ from pyspark.ml.evaluation import RegressionEvaluator
 from collections import OrderedDict
 
 class SparkRegressor(object):
-    '''
+    '''Fits a regression model using an MLlib regression method and returns
+    regression metrics
+
+    Attributes
+    ----------
+        predictor: type of multi-class classifier
+        label (str): classification label
+        testFraction (float): test set fraction [0.3]
+        seed (int): random seed
     '''
 
     def __init__(self, predictor, label, testFraction = 0.3 , seed = 1):
