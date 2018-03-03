@@ -13,7 +13,7 @@ Authorship information:
 '''
 
 from mmtfPyspark.ml import pythonRDDToDataset
-from mmtfPyspark.utils.StructureToAllInteractions import *
+from mmtfPyspark.utils import StructureToAllInteractions
 
 class groupInteractionExtractor(object):
     '''Class that creates a dataset of interactions of a specifed gorup within
@@ -44,4 +44,4 @@ class groupInteractionExtractor(object):
         # convert to a dataset
         colNames = ["structureId", "residue1", "atom1", "element1", "index1",
                     "residue2", "atom2", "element2", "index2", "distance"]
-        return pythonRDDToDataset.getDataset(rows, colNames)
+        return pythonRDDToDataset.get_dataset(rows, colNames)
