@@ -10,7 +10,7 @@ Authorship information:
 
 from pyspark import SparkConf, SparkContext, SQLContext
 from pyspark.sql.functions import col, when
-from mmtfPyspark.ml import proteinSequenceEncoder
+from mmtfPyspark.ml import ProteinSequenceEncoder
 from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureExtractor
@@ -57,11 +57,11 @@ def main():
 
 
     # add Word2Vec encoded feature vector
-    encoder = proteinSequenceEncoder(data)
+    encoder = ProteinSequenceEncoder(data)
     n = 2 # Create 2-grams
     windowSize = 25 # 25-amino residue window size for Word2Vec
     vectorSize = 50 # dimension of feature vector
-    data = encoder.overlappingNgramWord2VecEncode(n, windowSize, vectorSize).cache()
+    data = encoder.overlapping_ngram_word2vec_encode(n, windowSize, vectorSize).cache()
 
     data.printSchema()
     data.show(25)

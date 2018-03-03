@@ -9,7 +9,7 @@ Authorship information:
 '''
 
 from pyspark import SparkConf, SparkContext, SQLContext
-from mmtfPyspark.ml import proteinSequenceEncoder
+from mmtfPyspark.ml import ProteinSequenceEncoder
 from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.datasets import secondaryStructureSegmentExtractor
@@ -55,10 +55,10 @@ def main():
     data = secondaryStructureSegmentExtractor.getDataset(pdb, segmentLength).cache()
 
     # add Word2Vec encoded feature vector
-    encoder = proteinSequenceEncoder(data)
+    encoder = ProteinSequenceEncoder(data)
     windowSize = (segmentLength -1) // 2
     vectorSize = 50
-    data = encoder.shifted3GramWord2VecEncode(windowSize, vectorSize).cache()
+    data = encoder.shifted_3gram_word2vec_encode(windowSize, vectorSize).cache()
 
     data.printSchema()
     data.show(10, False)
