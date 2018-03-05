@@ -29,7 +29,7 @@ class groupInteractionExtractor(object):
         self.distance = distance
 
 
-    def getDataset(self, structures):
+    def get_dataset(self, structures):
         '''Returns a dataset of residues that interact with specified group
         within a specified cutoff distance
 
