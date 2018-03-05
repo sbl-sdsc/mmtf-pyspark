@@ -20,7 +20,7 @@ class SecondaryStructureSegmentExtractorTest(unittest.TestCase):
     def test1(self):
         pdb = self.pdb.flatMap(StructureToPolymerChains())
 
-        seq = secondaryStructureSegmentExtractor.getDataset(pdb, 25)
+        seq = secondaryStructureSegmentExtractor.get_dataset(pdb, 25)
 
         self.assertTrue("DPSKDSKAQVSAAEAGITGTWYNQL" == seq.head()[1])
 

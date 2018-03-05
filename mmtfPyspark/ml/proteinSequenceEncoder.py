@@ -262,7 +262,7 @@ class ProteinSequenceEncoder(object):
 
 
     def overlapping_ngram_word2vec_encode(self, data = None, inputCol = None,
-                                          outpuCol = None, n = None,
+                                          outputCol = None, n = None,
                                           windowSize = None, vectorSize = None,
                                           fileName = None, sc = None):
         '''Encodes a protein sequence by converting it into n-grams and

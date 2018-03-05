@@ -19,7 +19,7 @@ from mmtfPyspark.datasets import secondaryStructureExtractor
 from mmtfPyspark.mappers import StructureToSecondaryStructureSegments
 from mmtfPyspark.ml import pythonRDDToDataset
 
-def getDataset(structureRDD, length):
+def get_dataset(structureRDD, length):
     '''Returns a dataset of sequence segments of the specified length and
     the DSSP Q8 and Q3 code of the center residue in a segment.
 

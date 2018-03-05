@@ -29,7 +29,7 @@ def main():
              .filter(ContainsLProteinChain())
 
     segmentLength = 25
-    ds = secondaryStructureSegmentExtractor.getDataset(pdb,segmentLength)
+    ds = secondaryStructureSegmentExtractor.get_dataset(pdb,segmentLength)
 
     ds.show(50, False)
 

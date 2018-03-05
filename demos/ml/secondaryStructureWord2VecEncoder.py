@@ -53,7 +53,7 @@ def main():
         .sample(False, fraction, seed)
 
     segmentLength = 11
-    data = secondaryStructureSegmentExtractor.getDataset(
+    data = secondaryStructureSegmentExtractor.get_dataset(
         pdb, segmentLength).cache()
 
     # add Word2Vec encoded feature vector

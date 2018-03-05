@@ -54,7 +54,7 @@ def main():
             .sample(False, fraction, seed)
 
     segmentLength = 11
-    data = secondaryStructureSegmentExtractor.getDataset(pdb, segmentLength).cache()
+    data = secondaryStructureSegmentExtractor.get_dataset(pdb, segmentLength).cache()
     print(f"original data   : {data.count()}")
 
     data = data.dropDuplicates(["labelQ3", "sequence"]).cache()

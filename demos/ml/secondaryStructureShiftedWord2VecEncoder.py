@@ -52,7 +52,7 @@ def main():
             .sample(False, fraction, seed)
 
     segmentLength = 25
-    data = secondaryStructureSegmentExtractor.getDataset(pdb, segmentLength).cache()
+    data = secondaryStructureSegmentExtractor.get_dataset(pdb, segmentLength).cache()
 
     # add Word2Vec encoded feature vector
     encoder = ProteinSequenceEncoder(data)
