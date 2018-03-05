@@ -47,8 +47,7 @@ def get_dataset():
 
             if ".dssp" in entry.name:
                 scopID = str(br.readline())[3:-3]  # Remove newline and byte
-                secondaryStructure = str(br.readline())[
-                    2:-3]  # Remove newline and byte
+                secondaryStructure = str(br.readline())[2:-3]  # Remove newline and byte
                 secondaryStructure = secondaryStructure.replace('-', 'C')
                 secondaryStructures[scopID] = secondaryStructure
 
