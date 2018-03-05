@@ -27,7 +27,7 @@ import requests
 
 
 def get_dataset(sqlQuery):
-    '''Runs a PDBj Mine 2 search web service using SQL query
+    '''Runs a PDBj Mine 2 search web service using an SQL query
 
     Attributes
     ----------
