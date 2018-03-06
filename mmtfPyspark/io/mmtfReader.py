@@ -42,7 +42,7 @@ def read_full_squence_file(sc, pdbId=None, fraction=None, seed=123):
         fraction (float): fraction of structure to read
         seed (int): random seed
     '''
-    return read_sequence_file(_get_mmtf_full_path(), sc, pdbId, fraction, seed)
+    return read_sequence_file(get_mmtf_full_path(), sc, pdbId, fraction, seed)
 
 
 def read_reduced_squence_file(sc, pdbId=None, fraction=None, seed=123):
@@ -60,7 +60,7 @@ def read_reduced_squence_file(sc, pdbId=None, fraction=None, seed=123):
         fraction (float): fraction of structure to read
         seed (int): random seed
     '''
-    return read_sequence_file(_get_mmtf_reduced_path(), sc, pdbId, fraction, seed)
+    return read_sequence_file(get_mmtf_reduced_path(), sc, pdbId, fraction, seed)
 
 
 def read_sequence_file(path, sc, pdbId=None, fraction=None, seed=123):
