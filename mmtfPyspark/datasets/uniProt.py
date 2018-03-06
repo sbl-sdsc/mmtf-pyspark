@@ -10,25 +10,24 @@ converts them to datasets.This module reads the following files:
 
 Reference
 ---------
-    UniProt downloads
-    http://www.uniprot.org/downloads
-
-    The datasets have the following columns
-    http://www.uniprot.org/help/fasta-headers
+    UniProt downloads:
+        http://www.uniprot.org/downloads
+    The datasets have the following columns:
+        http://www.uniprot.org/help/fasta-headers
 
 Example
 -------
     Download, read, and save the SWISS_PROT dataset:
-
-    ds = uniProt.get_dataset(UniProtDataset.SWISS_PROT)
-    ds.printSchema()
-    ds.show(5)
-    ds.write().mode("overwrite").format("parquet").save(fileName)
+        ds = uniProt.get_dataset(UniProtDataset.SWISS_PROT)
+        ds.printSchema()
+        ds.show(5)
+        ds.write().mode("overwrite").format("parquet").save(fileName)
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

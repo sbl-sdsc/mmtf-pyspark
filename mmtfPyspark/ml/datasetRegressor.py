@@ -10,7 +10,8 @@ on the command lines.
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.1"
     __status__ = "Done"
 '''
 

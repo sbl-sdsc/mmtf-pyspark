@@ -8,12 +8,14 @@ and a flag that indicates if data point was part of the training set.
 
 Reference
 ---------
-    <a href="http://www.compbio.dundee.ac.uk/jpred/about_RETR_JNetv231_details.shtml">JPred 4/JNet (v.2.3.1)</a>
+    JPred4:
+        http://www.compbio.dundee.ac.uk/jpred/about_RETR_JNetv231_details.shtml
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

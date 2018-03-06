@@ -6,7 +6,8 @@ Encodes and write MMTF encoded structure data to a Hadoop Sequence File
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

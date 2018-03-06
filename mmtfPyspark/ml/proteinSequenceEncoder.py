@@ -1,9 +1,14 @@
 '''proteinSequenceEncoder.py
 
+This class encodes a protein sequence into a feature vector.
+The protein sequence must be present in the input data set, the default column
+name is "sequence". The default column name for the feature vector is "features".
+
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

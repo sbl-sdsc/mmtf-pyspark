@@ -5,20 +5,22 @@ This filter passes through representative structures from the RCSB PDB
 BlastCLust cluster. A sequence identity thresholds needs to be specified.
 The representative for each cluster is the first chain in a cluster.
 
-<p>See <a href="http://www.rcsb.org/pdb/statistics/clusterStatistics.do"> BlastClust cluster.
-field names.</a>
+References
+----------
+    BlastClust cluster field names:
+        http://www.rcsb.org/pdb/statistics/clusterStatistics.do
 
-<p>Example: find representative PDB entries at 90% sequence identity.
-
-<pre><code>
-     int sequenceIdentity = 90;
-          pdb = pdb.filter(new BlastCluster(90));
-</code></pre>
+Example
+-------
+    Find representative PDB entries at 90% sequence identity:
+        sequenceIdentity = 90
+        pdb = pdb.filter(BlastCluster(90))
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

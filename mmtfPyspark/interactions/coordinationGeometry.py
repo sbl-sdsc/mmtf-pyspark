@@ -7,8 +7,9 @@ for atoms coordinated to a central atom
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
-    __status__ = "dev"
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
+    __status__ = "done"
 '''
 
 import numpy as np

@@ -7,12 +7,11 @@ one chain that matches the conditions. If the "exclusive" flag is set to true
 in the constructor, all chains must match the conditions. For a multi-model
 structure, this filter only checks the first model.
 
-http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_chem_comp.type.html
-
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

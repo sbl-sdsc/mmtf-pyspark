@@ -1,13 +1,14 @@
 #!/user/bin/env python
 '''depositionDate.py
 
-this filter return true if the deposition date of this structure is within the
+This filter return true if the deposition date of this structure is within the
 specified range
 
 authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

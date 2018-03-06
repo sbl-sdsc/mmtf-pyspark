@@ -3,14 +3,17 @@
 
 This filter returns entries that contain groups with specified chemical structures (SMILES string).
 This chemical structure query supports for query: exact, similar, substructure, and superstructure.
-For details see:
+For details see references.
 
-<a href="http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html">Chemical Structure Search</a>.
+References:
+    Chemical Structure Search:
+        http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

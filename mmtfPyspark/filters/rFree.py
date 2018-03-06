@@ -4,13 +4,16 @@
 This filter returns true if the rFree value for this structure is within the
 specified range
 
-See: <a href="http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/r-value-and-r-free">rfree</a>
-
+References
+----------
+    rFree:
+        http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/r-value-and-r-free
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

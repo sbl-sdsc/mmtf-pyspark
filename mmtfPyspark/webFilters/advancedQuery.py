@@ -4,23 +4,27 @@
 This filter runs an RCSB PDB Advanced Search web service using an XML query
 description.
 
-<p>See <a href="https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html"> Advanced Search</a>
+References
+----------
+    Advanced Search Query
+        https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html
 
-<p>Example: find PDB entries that contain the word "mutant" in the structure title:
-<pre><code>
-      JavaPairRDD<String, StructureDataInterface> pdb = ...
-      String query = "<orgPdbQuery>
-                           "<queryType>org.pdb.query.simple.StructTitleQuery</queryType>" +
-                           "<struct.title.comparator>contains</struct.title.comparator>" +
-                           "<struct.title.value>mutant</struct.title.value" +
-                      "</orgPdbQuery>";
-      pdb = pdb.filter(new RcsbAdvancedSearch(query));
-</code></pre>
+Example
+-------
+    Find PDB entries that contain the word "mutant" in the structure title:
+
+        query = "<orgPdbQuery>" + \
+                "<queryType>org.pdb.query.simple.StructTitleQuery</queryType>" + \
+                "<struct.title.comparator>contains</struct.title.comparator>" + \
+                "<struct.title.value>mutant</struct.title.value" + \
+                "</orgPdbQuery>"
+        pdb = pdb.filter(AdvancedSearch(query));
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

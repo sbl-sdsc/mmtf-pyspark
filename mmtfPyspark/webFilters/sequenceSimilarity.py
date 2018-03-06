@@ -21,20 +21,23 @@ similarity. The cutoff value is a percentage value between 0 to 100.
 Note: sequences must be at least 12 residues long. For shorter sequences try
 the Sequence Motif Search.
 
-References:
-<li>BLAST: Sequence searching using NCBI's BLAST (Basic Local Alignment
-Search Tool) Program , Altschul, S.F., Gish, W., Miller, W., Myers, E.W. and
-Lipman, D.J. Basic local alignment search tool. J. Mol. Biol. 215: 403-410
-(1990)
-<li>PSI-BLAST: Sequence searching to detect distantly related evolutionary
-relationships using NCBI's PSI-BLAST (Position-Specific Iterated BLAST).
-</ul>
+References
+----------
+    BLAST:
+        BLAST: Sequence searching using NCBI's BLAST (Basic Local Alignment
+        Search Tool) Program , Altschul, S.F., Gish, W., Miller, W., Myers, E.W.
+        and Lipman, D.J. Basic local alignment search tool. J. Mol. Biol. 215:
+        403-410 (1990)
+    PSI-BLAST:
+        Sequence searching to detect distantly related evolutionary
+        relationships using NCBI's PSI-BLAST (Position-Specific Iterated BLAST).
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
-    __status__ = "Need unit test"
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
+    __status__ = "done"
 '''
 
 from mmtfPyspark.webFilters import AdvancedQuery

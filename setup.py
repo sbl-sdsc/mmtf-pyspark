@@ -23,7 +23,7 @@ mmtfPyspark_dependencies = ['pyspark',
                             ]
 
 setup(name='mmtfPyspark',
-      version='0.1',
+      version='0.2.0',
       description='Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark',
       url='https://github.com/sbl-sdsc/mmtf-pyspark',
       author='Mars (Shih-Cheng) Huang (Shih-Cheng)',

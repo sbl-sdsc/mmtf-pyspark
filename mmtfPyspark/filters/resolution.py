@@ -4,12 +4,16 @@
 This filter returns true if the resolution value for this
 structure is within the sepcified range
 
-See: <a href="http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/resolution">resolution</a>
+References
+----------
+    Resolution:
+        http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/resolution
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 

@@ -5,11 +5,13 @@ RCSB PDB RESTful web services. The fields are then queried and the resulting PDB
 used to filter the data. The input to the filter consists of an SQL WHERE clause, and list
 data columns availible from RCSB PDB web services.
 
-<p>See <a href="http://www.rcsb.org/pdb/results/reportField.do"> list of supported
-field names.</a>
+References
+----------
+    List of supported field names:
+        http://www.rcsb.org/pdb/results/reportField.do
+    Examples of SQL WHERE clauses:
+        https://www.w3schools.com/sql/sql_where.asp
 
-<p>See <a href="https://www.w3schools.com/sql/sql_where.asp"> for examples of
-SQL WHERE clauses.</a>
 
 <p>Example: find PDB entries with Enzyme classification number 2.7.11.1
 and source organism Homo sapiens:

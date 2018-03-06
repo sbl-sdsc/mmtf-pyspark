@@ -6,25 +6,23 @@ metadata and annotations for all current entries in the ProteinDataBank.
 
 References
 ----------
-    See <ahref="http://www.rcsb.org/pdb/results/reportField.do">
-    for list of supported fieldnames.</a>
-    <p>Reference:The RCSB Protein Data Bank:redesignedwebsiteandwebServices2011
-    NucleicAcidsRes.39:D392-D401.
-
-    See<ahref="https://dx.doi.org/10.1093/nar/gkq1021">doi:10.1093/nar/gkq1021</a>
+    List of supported fieldnames:
+        http://www.rcsb.org/pdb/results/reportField.do
+    The RCSB Protein Data Bank:redesignedwebsiteandwebServices2011NucleicAcidsRes.39:D392-D401.
+        https://dx.doi.org/10.1093/nar/gkq1021
 
 Example
 -------
     Retrieve PubMedCentral, PubMedID, and Depositiondate:
-
-    ds = CustomReportService.getDataset("pmc","pubmedId","depositionDate")
-    ds.printSchema()
-    ds.show(5)
+        ds = CustomReportService.getDataset("pmc","pubmedId","depositionDate")
+        ds.printSchema()
+        ds.show(5)
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
     __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
+    __email__ = "marshuang80@gmail.com"
+    __version__ = "0.2.0"
     __status__ = "Done"
 '''
 
