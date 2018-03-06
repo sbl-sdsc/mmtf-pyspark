@@ -17,6 +17,6 @@ export PYSPARK_SUBMIT_ARGS="--master local[*] pyspark-shell"
 
 # set mmtf_full & mmtf_reduced as environmental variables
 cd
-touch .bashrc
-echo "export MMTF_REDUCED=/home/jovyan/mmtf-pyspark/resources/mmtf_reduced_sample" >> .bashrc
-echo "export MMTF_FULL=/home/jovyan/mmtf-pyspark/resources/mmtf_full_sample" >> .bashrc
+echo "export MMTF_REDUCED=~/mmtf-pyspark/resources/mmtf_reduced_sample" >> .bashrc
+echo "export MMTF_FULL=~/mmtf-pyspark/resources/mmtf_full_sample" >> .bashrc
+source ~/.bashrc
