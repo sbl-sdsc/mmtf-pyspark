@@ -16,7 +16,7 @@ export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
 export PYSPARK_SUBMIT_ARGS="--master local[*] pyspark-shell"
 
 # set mmtf_full & mmtf_reduced as environmental variables
-cd
-echo "export MMTF_REDUCED=~/mmtf-pyspark/resources/mmtf_reduced_sample/" | cat - .bashrc > temp && mv temp .bashrc
-echo "export MMTF_FULL=~/mmtf-pyspark/resources/mmtf_full_sample" | cat - .bashrc > temp && mv temp .bashrc
-source ~/.bashrc
+# cd
+# echo "export MMTF_REDUCED=~/mmtf-pyspark/resources/mmtf_reduced_sample/" | cat - .bashrc > temp && mv temp .bashrc
+# echo "export MMTF_FULL=~/mmtf-pyspark/resources/mmtf_full_sample" | cat - .bashrc > temp && mv temp .bashrc
+# source ~/.bashrc
