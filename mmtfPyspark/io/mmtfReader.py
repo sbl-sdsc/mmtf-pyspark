@@ -237,7 +237,7 @@ def _get_files(user_path):
     return files
 
 
-def _get_mmtf_full_path():
+def get_mmtf_full_path():
     '''Returns the path to the full MMTF-Hadoop sequence file.
     It looks for the environmental variable "MMTF_FULL", if not set, an error
     message will be shown.
@@ -255,7 +255,7 @@ def _get_mmtf_full_path():
         raise EnvironmentError("Environmental variable 'MMTF_FULL not set'")
 
 
-def _get_mmtf_reduced_path():
+def get_mmtf_reduced_path():
     '''Returns the path to the reduced MMTF-Hadoop sequence file.
     It looks for the environmental variable "MMTF_REDUCED", if not set, an error
     message will be shown.
