@@ -9,7 +9,7 @@ References
         https://pdbj.org/help/mine2-sql
     Queries can be designed with the interactive PDBj Mine 2 query service:
         https://pdbj.org/mine/sql
-    PDB metadata are described in the PDB mmCIF Dictionary: 
+    PDB metadata are described in the PDB mmCIF Dictionary:
         http://mmcif.wwpdb.org/
 
 Authorship information:
@@ -23,6 +23,7 @@ Authorship information:
 import urllib
 import tempfile
 from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, lit, upper, concat
 from urllib.request import urlretrieve
 import requests
 
@@ -43,10 +44,22 @@ def get_dataset(sqlQuery):
 
     spark = SparkSession.builder.getOrCreate()
 
-    dataset = spark.read.format("csv") \
+    ds = spark.read.format("csv") \
         .option("header", "true") \
         .option("inferSchema", "true") \
         .option("parserLib", "UNIVOCITY") \
         .load(tmp.name)
 
-    return dataset
+    # rename.concatenate columns to assign
+    # consistent primary keys to datasets
+    if "pdbid" in ds.columns:
+        # this project uses upper case pdbids
+        ds = ds.withColumn("pdbid", upper(col("pdbid")))
+
+        if "chain" in ds.columns:
+            ds = ds.withColumn("structureChainId", \
+                               concat(col("pdbid"), lit("."), col("chain")))
+        else:
+            ds = ds.withColumn("pdbid", "structureChainId")
+
+    return ds
