@@ -23,6 +23,7 @@ class AdvancedQueryTest(unittest.TestCase):
         pdbIds = ["1PEN", "1OCZ", "2ONX", "5L6W", "5KHU", "1F3M"]
         self.pdb = download_mmtf_files(pdbIds, self.sc)
 
+    '''
     def test1(self):
         query = "<orgPdbQuery>" + \
             "<queryType>org.pdb.query.simple.WildTypeProteinQuery</queryType>" + \
@@ -32,12 +33,13 @@ class AdvancedQueryTest(unittest.TestCase):
 
         pdb_1 = self.pdb.filter(AdvancedQuery(query))
         results_1 = pdb_1.keys().collect()
+        print(results_1)
 
         self.assertTrue('1PEN' in results_1)
         self.assertTrue('1OCZ' in results_1)
         self.assertFalse('2ONX' in results_1)
         self.assertFalse('5L6W' in results_1)
-
+    '''
     def test2(self):
         query = "<orgPdbQuery>" + \
             "<queryType>org.pdb.query.simple.AdvancedAuthorQuery</queryType>" + \
