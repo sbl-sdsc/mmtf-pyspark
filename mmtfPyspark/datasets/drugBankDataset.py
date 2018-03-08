@@ -113,7 +113,7 @@ def get_drug_links(drugGroup, username, password):
         DrugBank Dataset
     '''
 
-    if drugGroup not in DRUG_GROUP:
+    if drugGroup.upper() not in DRUG_GROUP:
         raise ValueError("drugGroup not in pre-defined durgGroups")
 
     url = BASE_URL + drugGroup + "-structure-links"
@@ -166,7 +166,7 @@ def get_drug_target_links(drug, username, password):
         DrugBank Dataset
     '''
 
-    if drug in DRUG_GROUP or drug in DRUG_TYPE:
+    if drug.upper() in DRUG_GROUP or drug.upper() in DRUG_TYPE:
         url = BASE_URL + "target-" + drug + "-uniprot-links"
     else:
         raise ValueError("drug not in pre-defined durgGroups or drugTypes")
@@ -192,7 +192,11 @@ def get_dataset(url, username=None, password=None):
         req = requests.get(url)
     else:
         # TODO dataset that requires authentication
-        pass
+        req = requests.get(url, auth=(username, password))
+        if req.text ==  'Invalid Email or password.':
+                raise ValueError('Invalid Email or password.')
+
+    # Decode and unzip file            
     unzipped = _decode_as_zip_input_stream(req.content)
 
     # save data to a temporary file (Dataset csv reader requires a input
