@@ -59,7 +59,8 @@ def get_dataset(sqlQuery):
         if "chain" in ds.columns:
             ds = ds.withColumn("structureChainId", \
                                concat(col("pdbid"), lit("."), col("chain")))
+            ds.drop("pdbid","chain")
         else:
-            ds = ds.withColumn("pdbid", "structureChainId")
+            ds = ds.withColumnRenamed("pdbid", "structureId")
 
     return ds
