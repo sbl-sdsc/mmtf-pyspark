@@ -1,7 +1,7 @@
 #!/user/bin/env python
 '''drugBankDatset.py
 
-This class provides access to DrugBank containing drug structure and drug target
+This module provides access to DrugBank containing drug structure and drug target
 imformation. These datasets contain identifiers and names for integration with
 other data resources.
 
@@ -18,7 +18,7 @@ Authorship information:
     __maintainer__ = "Mars (Shih-Cheng) Huang"
     __email__ = "marshuang80@gmail.com"
     __version__ = "0.2.0"
-    __status__ = "Dev"
+    __status__ = "Done"
 '''
 
 import requests
@@ -196,7 +196,7 @@ def get_dataset(url, username=None, password=None):
         if req.text ==  'Invalid Email or password.':
                 raise ValueError('Invalid Email or password.')
 
-    # Decode and unzip file            
+    # Decode and unzip file
     unzipped = _decode_as_zip_input_stream(req.content)
 
     # save data to a temporary file (Dataset csv reader requires a input
@@ -250,6 +250,10 @@ def _read_csv(inputFileName):
     Attributes
     ----------
         fileName(str): name of the input csv fileName
+
+    Returns
+    -------
+        a spark dataset
     '''
     spark = SparkSession.builder.getOrCreate()
     dataset = spark.read.format("csv") \
