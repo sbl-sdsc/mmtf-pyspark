@@ -6,7 +6,7 @@ from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.webFilters import WildTypeQuery
 
 
-class wildTypeTest(unittest.TestCase):
+class WildTypeTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('wildTypeTest')

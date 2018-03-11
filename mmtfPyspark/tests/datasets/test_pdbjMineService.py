@@ -6,7 +6,7 @@ from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.datasets import pdbjMineService
 
 
-class pdbjMineDatasetTest(unittest.TestCase):
+class PdbjMineDatasetTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]") \

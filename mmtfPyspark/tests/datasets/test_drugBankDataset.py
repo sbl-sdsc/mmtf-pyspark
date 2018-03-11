@@ -5,7 +5,7 @@ from pyspark.sql import SparkSession
 from mmtfPyspark.datasets import drugBankDataset
 
 
-class durgBankDatasetTest(unittest.TestCase):
+class DurgBankDatasetTest(unittest.TestCase):
 
     def setUp(self):
         self.spark = SparkSession.builder\

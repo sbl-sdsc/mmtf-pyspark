@@ -8,7 +8,7 @@ from mmtfPyspark.filters import ContainsLProteinChain
 from mmtfPyspark.mappers import StructureToPolymerChains
 
 
-class secondaryStructureExtractorTest(unittest.TestCase):
+class SecondaryStructureExtractorTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('secondaryStructureExtractorTest')

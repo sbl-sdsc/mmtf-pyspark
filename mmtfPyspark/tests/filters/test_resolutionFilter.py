@@ -6,7 +6,7 @@ from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import Resolution
 
 
-class testResolutionFilter(unittest.TestCase):
+class ResolutionFilterTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster(

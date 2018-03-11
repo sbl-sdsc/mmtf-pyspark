@@ -6,7 +6,7 @@ from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.datasets import customReportService
 
 
-class customReportServiceTest(unittest.TestCase):
+class CustomReportServiceTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster(

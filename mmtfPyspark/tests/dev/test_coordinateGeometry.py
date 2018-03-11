@@ -8,7 +8,7 @@ from pyspark import SparkConf, SparkContext
 import numpy as np
 from math import isclose
 
-class testCoordiateGeometry(unittest.TestCase):
+class CoordiateGeometryTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('coordinateGeometry')

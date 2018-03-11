@@ -3,7 +3,7 @@
 import unittest
 from mmtfPyspark.interactions import InteractionFilter
 
-class testInteractionFilter(unittest.TestCase):
+class InteractionFilterTest(unittest.TestCase):
 
     def setUp(self):
         pass

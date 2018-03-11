@@ -7,7 +7,7 @@ from mmtfPyspark.io import mmtfReader
 from pyspark import SparkConf, SparkContext
 import numpy as np
 
-class testColumnarStructure(unittest.TestCase):
+class ColumnarStructureTest(unittest.TestCase):
 
     def setUp(self):
         conf = SparkConf().setMaster("local[*]").setAppName('columnarStructure')

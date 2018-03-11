@@ -15,7 +15,7 @@ from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.mmtfReader import read_sequence_file
 
 
-class testReadSequenceFile(unittest.TestCase):
+class ReadSequenceFileTest(unittest.TestCase):
 
     def setUp(self):
         path = 'resources/sample_rdd'
