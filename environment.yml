@@ -6,6 +6,7 @@ dependencies:
   - numpy=1.13.3
   - requests=2.18.4
   - sympy=1.1.1
+  - matplotlib=2.2.0
   - nose
   - ipywidgets
   - pyspark
