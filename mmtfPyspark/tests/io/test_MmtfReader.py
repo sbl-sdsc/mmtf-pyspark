@@ -22,11 +22,20 @@ class ReadSequenceFileTest(unittest.TestCase):
             "local[*]").setAppName('read_sequence_file')
         self.sc = SparkContext(conf=conf)
 
+    '''
     def test_mmtf(self):
         path = './resources/files/'
-        pdb = mmtfReader.readMmtfFiles(path, self.sc)
-
+        pdb = mmtfReader.read_mmtf_files(path, self.sc)
         self.assertTrue(pdb.count() == 3)
+    '''
+
+    def test_read_local_full_sequence(self):
+        pdb = mmtfReader.read_full_squence_file(self.sc)
+        self.assertTrue(pdb.count() == 4394)
+
+    def test_read_local_reduced_sequence(self):
+        pdb = mmtfReader.read_reduced_squence_file(self.sc)
+        self.assertTrue(pdb.count() == 5395)
 
     def tearDown(self):
         self.sc.stop()
