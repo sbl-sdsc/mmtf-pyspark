@@ -8,3 +8,7 @@ install:
     - pip install -r requirements.txt
 # command to run tests
 script: nosetests
+# environmental variables
+env:
+    -MMTF_REDUCED=~/mmtf-pyspark/resources/mmtf_reduced_sample/
+    -MMTF_FULL=~/mmtf-pyspark/resources/mmtf_full_sample/
