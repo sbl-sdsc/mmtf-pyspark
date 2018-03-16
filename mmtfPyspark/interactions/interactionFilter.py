@@ -30,8 +30,8 @@ class InteractionFilter(object):
         maxInteractions (int): maximum number of interactions [10]
     '''
 
-    def __init__(self, distanceCutoff=sys.float_info.max,
-                 normalizedbFactorCutoff=sys.float_info.max,
+    def __init__(self, distanceCutoff=sys.float_info.max -1,
+                 normalizedbFactorCutoff=sys.float_info.max -1,
                  minInteractions=1, maxInteractions=10):
 
         # Set interaction criteria
@@ -179,6 +179,8 @@ class InteractionFilter(object):
         if self._queryElements is not None:
             raise ValueError("ERROR: QueryElements have already been set.")
 
+        if type(elements) == str:
+            elements = [elements]
         self._includeQueryElements = include
         self._queryElements = set(elements)
 
@@ -209,6 +211,8 @@ class InteractionFilter(object):
         if self._targetElements is not None:
             raise ValueError("ERROR: TargetElements have already been set.")
 
+        if type(elements) == str:
+            elements = [elements]
         self._includeTargetElements = include
         self._targetElements = set(elements)
 
@@ -238,6 +242,8 @@ class InteractionFilter(object):
         if self._queryGroups is not None:
             raise ValueError("ERROR: QueryGroups have already been set.")
 
+        if type(groups) == str:
+            groups = [groups]
         self._includeQueryGroups = include
         self._queryGroups = set(groups)
 
@@ -267,6 +273,8 @@ class InteractionFilter(object):
         if self._targetGroups is not None:
             raise ValueError("ERROR: QueryGroups have already been set.")
 
+        if type(groups) == str:
+            groups = [groups]
         self._includeTargetGroups = include
         self._targetGroups = set(groups)
 
@@ -285,8 +293,9 @@ class InteractionFilter(object):
         ----------
             groups(list): one or more group names to be prohibited
         '''
-
-        self._prohibitedTargetGroups = groups
+        if type(groups) == str:
+            groups = [groups]
+        self._prohibitedTargetGroups = set(groups)
 
     def is_query_element(self, element):
         '''Returns True if the specified elements matches the query conditions.
