@@ -216,7 +216,7 @@ class CoordinateGeometry(object):
         n = 0
         for i in range(len(self.vectors) - 1):
             for j in range(i + 1, len(self.vectors)):
-                self.angles[n] = self._angle(i, j)
+                self.angles[n] = self._angle(self.vectors[i], self.vectors[j])
                 n += 1
 
     def _calc_dot_products(self):
@@ -248,7 +248,6 @@ class CoordinateGeometry(object):
             a: point a
             b: point b
         '''
-
         arccosInput = np.dot(a, b) / np.linalg.norm(a) / np.linalg.norm(b)
         arccosInput = 1.0 if arccosInput > 1.0 else arccosInput
         arccosInput = -1.0 if arccosInput < -1.0 else arccosInput
