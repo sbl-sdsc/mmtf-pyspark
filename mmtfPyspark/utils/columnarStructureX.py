@@ -11,8 +11,10 @@ Authorship information:
     __status__ = "Done"
 '''
 import numpy as np
+import sys
 from mmtfPyspark.utils import ColumnarStructure
 from sympy import Point3D
+
 
 class ColumnarStructureX(ColumnarStructure):
     '''Inheritance of class ColumnarStructure with additional functions
@@ -43,12 +45,16 @@ class ColumnarStructureX(ColumnarStructure):
 
             self.get_entity_types()
             self.bFactors = self.get_b_factors()
+            self.entityTypes = self.get_entity_types()
             # Filter out DOD and HOH
             stats = np.array([self.bFactors[i] for i in range(self.get_num_atoms())\
-                              if self.entityTypes[i] == 'WAT'])
+                              if self.entityTypes[i] is not 'WAT'])
             # Define normalize function
             normalize = lambda x: (x - stats.mean()) / stats.std()
-            self.normalizedbFactors = [float(n) for n in normalize(self.bFactors)]
+            if stats.std() != 0:
+                self.normalizedbFactors = [float(n) for n in normalize(self.bFactors)]
+            else:
+                self.normalizedbFactors = [sys.float_info.max] * len(self.bFactors)
 
         return self.normalizedbFactors
 
