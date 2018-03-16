@@ -134,7 +134,7 @@ class AtomInteraction(object):
         # calculate angles among all interacting atoms with the central atom
         numInteraction = int(maxInteraction * (maxInteraction - 1) / 2)
         ang = geom.get_angles()
-        self.angles = [0.0] * numInteraction
+        self.angles = [np.NaN] * numInteraction
         self.angles[:len(ang[:numInteraction])] = ang[:numInteraction]
 
         # TODO: points or neighbor points
