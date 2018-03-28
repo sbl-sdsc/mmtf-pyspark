@@ -12,7 +12,7 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from ipywidgets import interact
+from ipywidgets import interact, IntSlider
 import py3Dmol
 
 def simple_structure_viewer(pdbIds, style = 'cartoon', color = 'spectrum'):
@@ -137,3 +137,58 @@ def group_neighbor_viewer(pdbIds = None, groups = None, chains = None, distance 
         return viewer.show()
 
     return interact(view3d, i = (0,len(pdbIds)-1))
+
+
+def group_interaction_viewer(df):
+    '''A wrapper function that zooms in to a group in a protein structure and
+    highlight its interacting atoms. The input dataframe should be generated
+    from the GroupInteractionExtractor class.
+
+    References
+    ----------
+        GroupInteractionExtractor:
+        https://github.com/sbl-sdsc/mmtf-pyspark/blob/master/mmtfPyspark/interactions/groupInteractionExtractor.py
+
+    Attributes
+    ----------
+        df (dataframe): the dataframe generated from GroupIneteractionExtractor
+    '''
+
+    structures = df['pdbId'].iloc
+    groups = df['groupNum0'].iloc
+    chains = df['chain0'].iloc
+    elements = df['element0'].iloc
+
+    def get_neighbors_chain(i):
+        return [df[f'chain{j}'].iloc[i] for j in range(1,7) if df[f'element{j}'] is not None]
+
+    def get_neighbors_group(i):
+        return [df[f'groupNum{j}'].iloc[i] for j in range(1,7) if df[f'element{j}'] is not None]
+
+    def get_neighbors_elements(i):
+        elements = [df[f'element{j}'].iloc[i] for j in range(1,7) if df[f'element{j}'] is not None]
+        return [str(e).upper() for e in elements]
+
+    def view3d(i = 0):
+        '''Simple structure viewer that uses py3Dmol to view PDB structure by
+        indexing the list of PDBids
+        Attributes
+        ----------
+        i (int): index of the protein if a list of PDBids
+        '''
+
+        print("PDBId: " + structures[i] + " chain: " + chains[i] + " element: " + elements[i])
+        viewer = py3Dmol.view(query='pdb:'+structures[i],width=700,height=700)
+
+        neighbors = {'resi':get_neighbors_group(i), 'chain':get_neighbors_chain(i)}
+        metal = {'resi':groups[i], 'atom':str(elements[i]).upper(), 'chain':chains[i]}
+
+        viewer.setStyle(neighbors,{'stick':{'colorscheme':'orangeCarbon'}})
+        viewer.setStyle(metal,{'sphere':{'radius':0.5,'color':'gray'}})
+
+        viewer.zoomTo(neighbors)
+        return viewer.show();
+
+    s_widget = IntSlider(min=0,max=df.shape[0]-1,description='Structure',continuous_update=False)
+
+    return interact(view3d, i=s_widget);
