@@ -119,13 +119,13 @@ class InteractionFilter(object):
 
         return self._minInteractions
 
-    def set_min_interactions(self, minInteraction):
+    def set_min_interactions(self, minInteractions):
         '''Sets the minimum number of interactions per atom. Atoms that interact
         with fewer atoms will be discarded
 
         Attribute
         ---------
-            minInteraction (int): minimum number of interactions per atom
+            minInteractions (int): minimum number of interactions per atom
         '''
 
         self._minInteractions = minInteraction
@@ -141,13 +141,13 @@ class InteractionFilter(object):
 
         return self._maxInteractions
 
-    def set_max_interactions(self, maxInteraction):
+    def set_max_interactions(self, maxInteractions):
         '''Sets the maximum number of interactions per atom. Atoms that interact
         with fewer atoms will be discarded
 
         Attribute
         ---------
-            maxInteraction (int): minimum number of interactions per atom
+            maxInteractions (int): minimum number of interactions per atom
         '''
 
         self._maxInteractions = maxInteraction
