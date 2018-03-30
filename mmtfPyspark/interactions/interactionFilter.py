@@ -128,7 +128,7 @@ class InteractionFilter(object):
             minInteractions (int): minimum number of interactions per atom
         '''
 
-        self._minInteractions = minInteraction
+        self._minInteractions = minInteractions
 
     def get_max_interactions(self):
         '''Returns the maximum number of interactions per atom. Atoms that interact
@@ -150,7 +150,7 @@ class InteractionFilter(object):
             maxInteractions (int): minimum number of interactions per atom
         '''
 
-        self._maxInteractions = maxInteraction
+        self._maxInteractions = maxInteractions
 
     def set_query_elements(self, include, elements):
         '''Sets the elements to either be included or excluded in the query.
