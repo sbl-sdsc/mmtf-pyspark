@@ -12,7 +12,9 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from ipywidgets import interact, IntSlider
+from ipywidgets import interact, IntSlider, Dropdown
+import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 import py3Dmol
 
@@ -213,3 +215,26 @@ def group_interaction_viewer(df, sortBy, metal = None):
         return viewer.show()
 
     return interact(view3d, i=i_widget)
+
+
+def metal_distance_widget(df_concat):
+    '''Plot an violinplot of metal-element distances with ipywidgets
+
+    Attributes
+    ----------
+        df_concat (Dataframe): dataframe of metal-elements distances
+    '''
+    metals = df_concat['Metal'].unique().tolist()
+    m_widget = Dropdown(options = metals, description = "Metals")
+
+    def metal_distance_violinplot(metal):
+        df_metal = df_concat[df_concat["Metal"] == metal]
+        df_metal['Element'] = df_metal['Element'].apply(lambda x: metal+"-"+x)
+
+        # Set fonts
+        fig, ax = plt.subplots()
+        fig.set_size_inches(15,6)
+        subplot = sns.violinplot(x="Element", y="Distance", palette="muted", data=df_metal, ax=ax)
+        subplot.set(xlabel="Metal Interactions", ylabel="Distance", title=f"{metal} to Elements Distances Violin Plot")
+
+    return interact(metal_distance_violinplot, metal=m_widget);
