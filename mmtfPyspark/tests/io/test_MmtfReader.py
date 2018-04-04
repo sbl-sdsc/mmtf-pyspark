@@ -23,7 +23,7 @@ class ReadSequenceFileTest(unittest.TestCase):
         self.sc = SparkContext(conf=conf)
 
     def test_mmtf(self):
-        path = './resources/files/'
+        path = '../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path, self.sc)
         self.assertTrue(pdb.count() == 3)
 
