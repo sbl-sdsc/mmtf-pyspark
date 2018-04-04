@@ -48,19 +48,19 @@ class StructureToBioassembly(object):
         for i in range(numBioassembly):
             bioAssembly = MMTFEncoder()
             structureId = structure.structure_id + '-BioAssembly' + \
-                bioassemblies[i][b'name'].decode('utf-8')
+                bioassemblies[i]['name']
             totAtoms = 0
             totBonds = 0
             totGroups = 0
             totChains = 0
             totModels = structure.num_models
-            numTrans = len(bioassemblies[i][b'transformList'])
+            numTrans = len(bioassemblies[i]['transformList'])
             bioChainList = [[]] * numTrans
             transMatrix = [[]] * numTrans
             for ii in range(numTrans):
 
-                bioChainList[ii] = bioassemblies[i][b'transformList'][ii][b'chainIndexList']
-                transMatrix[ii] = bioassemblies[i][b'transformList'][ii][b'matrix']
+                bioChainList[ii] = bioassemblies[i]['transformList'][ii]['chainIndexList']
+                transMatrix[ii] = bioassemblies[i]['transformList'][ii]['matrix']
 
                 for j in range(totModels):
                     totChains = totChains + len(bioChainList[ii])
