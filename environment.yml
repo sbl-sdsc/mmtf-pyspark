@@ -9,6 +9,7 @@ dependencies:
   - matplotlib=2.2.0
   - nose
   - ipywidgets
+  - seaborn
   - pyspark
   - py4j
   - python-dateutil
