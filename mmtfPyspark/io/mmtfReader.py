@@ -192,7 +192,7 @@ def _call_sequence_file(t):
     '''Call function for hadoop sequence files'''
     # TODO: check if all sequence files are gzipped
     data = default_api.ungzip_data(t[1])
-    unpack = msgpack.unpackb(data.read())
+    unpack = msgpack.unpackb(data.read(), raw=False)
     decoder = MmtfStructure(unpack)
     return (str(t[0]), decoder)
 
@@ -204,14 +204,14 @@ def _call_mmtf(f):
         name = f.split('/')[-1].split('.')[0].upper()
 
         data = gzip.open(f, 'rb')
-        unpack = msgpack.unpack(data)
+        unpack = msgpack.unpack(data, raw=False)
         decoder = MmtfStructure(unpack)
         return (name, decoder)
 
     elif ".mmtf" in f:
         name = f.split('/')[-1].split('.')[0].upper()
 
-        unpack = msgpack.unpack(open(f, "rb"))
+        unpack = msgpack.unpack(open(f, "rb"), raw=False)
         decoder = MmtfStructure(unpack)
         return (name, decoder)
 
