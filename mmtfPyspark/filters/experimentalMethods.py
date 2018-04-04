@@ -47,5 +47,5 @@ class ExperimentalMethods(object):
 
     def __call__(self, t):
         structure = t[1]
-        methods = [b.decode().upper() for b in structure.experimental_methods]
+        methods = [b.upper() for b in structure.experimental_methods]
         return sum([1 for m in self.experimental_methods if m in methods]) > 0
