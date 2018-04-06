@@ -202,7 +202,6 @@ def _call_mmtf(f):
 
     if ".mmtf.gz" in f:
         name = f.split('/')[-1].split('.')[0].upper()
-
         data = gzip.open(f, 'rb')
         unpack = msgpack.unpack(data, raw=False)
         decoder = MmtfStructure(unpack)
@@ -210,7 +209,6 @@ def _call_mmtf(f):
 
     elif ".mmtf" in f:
         name = f.split('/')[-1].split('.')[0].upper()
-
         unpack = msgpack.unpack(open(f, "rb"), raw=False)
         decoder = MmtfStructure(unpack)
         return (name, decoder)
