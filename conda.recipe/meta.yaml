@@ -1,6 +1,6 @@
 package:
   name: mmtfPyspark
-  version: "0.1"
+  version: "0.2.0"
 
 source:
   git_url: https://github.com/sbl-sdsc/mmtf-pyspark
@@ -31,5 +31,5 @@ test:
     - mmtfPyspark
 
 about:
-  hone: https://github.com/sbl-sdsc/mmtf-pyspark
+  home: https://github.com/sbl-sdsc/mmtf-pyspark
   license: Apache License 2.0
