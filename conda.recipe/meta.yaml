@@ -1,5 +1,5 @@
 package:
-  name: mmtfPyspark
+  name: mmtfpyspark
   version: "0.2.0"
 
 source:
@@ -11,7 +11,7 @@ requirements:
     - setuptools
     - numpy x.x
     - pyspark
-    - Biopython
+    - biopython
     - msgpack-python
     - mmtf-python
     - sympy
@@ -20,7 +20,7 @@ requirements:
     - python
     - numpy x.x
     - pyspark
-    - Biopython
+    - biopython
     - msgpack-python
     - mmtf-python
     - sympy
@@ -33,3 +33,4 @@ test:
 about:
   home: https://github.com/sbl-sdsc/mmtf-pyspark
   license: Apache License 2.0
+  description: Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark
