@@ -107,7 +107,7 @@ def group_neighbor_viewer(pdbIds=None, groups=None, chains=None, distance=3.0):
                                  of specified group
     '''
 
-    if pdbIds == None or groups == None:
+    if pdbIds is None or groups is None:
         raise ValueError("PdbIds and groups need to be specified")
 
     if len(pdbIds) != len(groups):
@@ -117,7 +117,7 @@ def group_neighbor_viewer(pdbIds=None, groups=None, chains=None, distance=3.0):
     if type(pdbIds) == str and groups == str:
         pdbIds, groups = [pdbIds], [groups]
 
-    if chains == None:
+    if chains is None:
         chains = ['A'] * len(pdbIds)
 
     def view3d(i=0):
@@ -132,15 +132,21 @@ def group_neighbor_viewer(pdbIds=None, groups=None, chains=None, distance=3.0):
         print(
             f"PDB: {pdbIds[i]}, group: {groups[i]}, chain: {chains[i]}, cutoffDistance: {distance}")
 
-        center = {'resi': groups[i], 'chain': chains[i]}
-        neighbors = {'resi': groups[i], 'chain': chains[i],
-                     'byres': 'true', 'expand': distance}
+        if type(groups[i]) == int:
+            center = {'resi': groups[i], 'chain': chains[i]}
+            neighbors = {'resi': groups[i], 'chain': chains[i],
+                         'byres': 'true', 'expand': distance}
+        else:
+            center = {'resn': groups[i], 'chain': chains[i]}
+            neighbors = {'resn': groups[i], 'chain': chains[i],
+                         'byres': 'true', 'expand': distance}
+
 
         viewer = py3Dmol.view(query='pdb:' + pdbIds[i])
         viewer.zoomTo(center)
         viewer.setStyle(neighbors, {'stick': {}});
-        viewer.setStyle(center, {'sphere': {'color': 'red'}})
-        viewer.zoom(0.2, 1000)
+        viewer.setStyle(center, {'sphere': {'colorscheme': 'orangeCarbon'}})
+        viewer.zoom(0.3, 1000)
 
         return viewer.show()
 
