@@ -134,14 +134,12 @@ def _get_data(variationId, structureId, chainId):
         url = G2S_REST_URL + variationId + '/pdb/' + structureId + '_' \
               + chainId + '/residueMapping'
     else:
-        # TODO: double check logic flow
         raise Exception("Both structureId and chainId have to be provided")
 
     try:
         req = requests.get(url)
     except:
         print(f"WARNING: could not load data for: {variationId}")
-        print("************************************************")
         return data
 
     if b"\"error\":\"Not Found\"" in req.content:
