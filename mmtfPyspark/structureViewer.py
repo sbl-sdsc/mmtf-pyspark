@@ -92,7 +92,7 @@ def interaction_structure_viewer(pdbIds, interacting_atom='None', style='cartoon
     return interact(view3d, i=(0, len(pdbIds) - 1))
 
 
-def group_neighbor_viewer(pdbIds=None, groups=None, chains=None, distance=3.0):
+def view_binding_site(pdbIds=None, groups=None, chains=None, distance=3.0):
     '''A wrapper function that zooms in to a group of a protein structure and highlight
     its neighbors within a certain distance.
 
