@@ -88,6 +88,24 @@ class InteractionFilterTest(unittest.TestCase):
         self.assertFalse(inFilter.is_target_element('N'))
         self.assertTrue(inFilter.is_target_element('S'))
 
+    def test10(self):
+        inFilter = InteractionFilter()
+        inFilter.set_query_atom_names(True, ["CA","CB"])
+
+        self.assertFalse(inFilter.is_query_atom_name('C'))
+        self.assertFalse(inFilter.is_query_atom_name('CG'))
+        self.assertTrue(inFilter.is_query_atom_name('CA'))
+        self.assertTrue(inFilter.is_query_atom_name('CB'))
+
+    def test11(self):
+        inFilter = InteractionFilter()
+        inFilter.set_target_atom_names(True, ["CA","CB"])
+
+        self.assertFalse(inFilter.is_target_atom_name('C'))
+        self.assertFalse(inFilter.is_target_atom_name('CG'))
+        self.assertTrue(inFilter.is_target_atom_name('CA'))
+        self.assertTrue(inFilter.is_target_atom_name('CB'))
+
 
     def tearDown(self):
         pass

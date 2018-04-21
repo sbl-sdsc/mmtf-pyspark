@@ -43,10 +43,12 @@ class InteractionFilter(object):
         # Query criteria
         self._queryGroups = None
         self._queryElements = None
+        self._queryAtomNames = None
 
         # Target criteria
         self._targetGroups = None
         self._targetElements = None
+        self._targetAtomNames = None
         self._prohibitedTargetGroups = None
 
     def get_distance_cutoff(self):
@@ -278,6 +280,68 @@ class InteractionFilter(object):
         self._includeTargetGroups = include
         self._targetGroups = set(groups)
 
+    def set_query_atom_names(self, include, atomNames):
+        '''Set atom names to either be included or excluded in the query
+
+        Examples
+        --------
+            Find interaction with C-alpha and C-beta atoms.
+
+                filter = InteractionFilter()
+                filter.set_query_atom_names(True, ['CA', 'CB'])
+
+            Exclude backbone atoms, but consider all other atom names: e.g,
+            amino acid side chains.
+
+                filter.set_query_atom_names(False, ['N', 'CA', 'C', 'O'])
+
+        Attributes
+        ----------
+            include (bool): if True, uses set of atom names in query, if False,
+                            ignores atoms with the specified names and uses all
+                            other atoms
+            atom_names (list): atoms to be included or excluded in the query
+        '''
+
+        if self._queryAtomNames is not None:
+            raise ValueError("ERROR: QueryGroups have already been set.")
+
+        if type(atomNames) == str:
+            atomNames = [atomNames]
+        self._includeQueryAtomNames = include
+        self._queryAtomNames = set(atomNames)
+
+    def set_target_atom_names(self, include, atomNames):
+        '''Set atom names to either be included or excluded in the target.
+
+        Examples
+        --------
+            Find interaction with C-alpha and C-beta atoms.
+
+                filter = InteractionFilter()
+                filter.set_target_atom_names(True, ['CA', 'CB'])
+
+            Exclude backbone atoms, but consider all other atom names: e.g,
+            amino acid side chains.
+
+                filter.set_target_atom_names(False, ['N', 'CA', 'C', 'O'])
+
+        Attributes
+        ----------
+            include (bool): if True, uses set of atom names in target, if False,
+                            ignores atoms with the specified names and uses all
+                            other atoms
+            atom_names (list): atoms to be included or excluded in the target
+        '''
+
+        if self._targetAtomNames is not None:
+            raise ValueError("ERROR: QueryGroups have already been set.")
+
+        if type(atomNames) == str:
+            atomNames = [atomNames]
+        self._includeTargetAtomNames = include
+        self._targetAtomNames = set(atomNames)
+
     def set_prohibited_target_groups(self, groups):
         '''Sets groups that must not appear in interactions. Any interactions that
         involves the specified groups will be excluded from the results.
@@ -343,7 +407,7 @@ class InteractionFilter(object):
             group (string): the group to be checked
         Returns
         -------
-            True if element matches query conditinos, else False
+            True if group matches query conditinos, else False
         '''
 
         if self._queryGroups is None:
@@ -362,7 +426,7 @@ class InteractionFilter(object):
             group (string): the group to be checked
         Returns
         -------
-            True if element matches target conditinos, else False
+            True if group matches target conditinos, else False
         '''
 
         if self._targetGroups is None:
@@ -372,6 +436,44 @@ class InteractionFilter(object):
             return group in self._targetGroups
         else:
             return group not in self._targetGroups
+
+    def is_query_atom_name(self, atomName):
+        '''Returns True if the specified atom matches the query conditions.
+
+        Attributes
+        ----------
+            atomName (string): the atom name to be checked
+        Returns
+        -------
+            True if atom matches query conditinos, else False
+        '''
+
+        if self._queryAtomNames is None:
+            return True
+
+        if self._includeQueryAtomNames:
+            return atomName in self._queryAtomNames
+        else:
+            return atomName not in self._queryAtomNames
+
+    def is_target_atom_name(self, atomName):
+        '''Returns True if the specified atom matches the target conditions.
+
+        Attributes
+        ----------
+            atomName (string): the atom to be checked
+        Returns
+        -------
+            True if atom matches target conditinos, else False
+        '''
+
+        if self._targetAtomNames is None:
+            return True
+
+        if self._includeTargetAtomNames:
+            return atomName in self._targetAtomNames
+        else:
+            return atomName not in self._targetAtomNames
 
     def is_prohibited_target_group(self, group):
         '''Returns True if the specified group must not occur in an interactions.
