@@ -78,9 +78,16 @@ class DistanceBox(object):
 
     def get_box_two(self, location):
 
+        box_two = []
+        for off in self.offset:
+            if (location + off) in self.hashMap:
+                box_two += self.hashMap[location + off]
+
+        return box_two
+        '''
         return [self.hashMap[location + off] for off in self.offset
                 if (location + off) in self.hashMap]
-
+        '''
     def getIntersection(self, distanceBox):
 
         intersection = []
