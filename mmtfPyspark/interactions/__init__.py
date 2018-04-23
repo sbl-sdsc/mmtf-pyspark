@@ -4,3 +4,6 @@ from .coordinationGeometry import CoordinateGeometry
 from .atomInteraction import AtomInteraction
 from .structureToAtomInteractions import StructureToAtomInteractions
 from .groupInteractionExtractor import GroupInteractionExtractor
+from .ligandInteractionFingerprint import LigandInteractionFingerprint
+from .polymerInteractionFingerprint import PolymerInteractionFingerprint
+from .interactionFingerprinter import InteractionFingerprinter
