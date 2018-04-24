@@ -154,7 +154,7 @@ def download_full_mmtf_files(pdbIds, sc):
     return sc.parallelize(set(pdbIds)).map(lambda t: _get_structure(t, False))
 
 
-def download_full_mmtf_files(pdbIds, sc):
+def download_reduced_mmtf_files(pdbIds, sc):
     '''Download and reads the specified PDB entries in reduced mmtf format using
     <a href="http://mmtf.rcsb.org/download.html">MMTF web services</a>.
 
@@ -183,7 +183,7 @@ def _get_structure(pdbId, reduced):
         tuble of pdbID and deccoder
     '''
 
-    unpack = default_api.get_raw_data_from_url(pdbId)
+    unpack = default_api.get_raw_data_from_url(pdbId, reduced)
     decoder = MmtfStructure(unpack)
     return (pdbId, decoder)
 
