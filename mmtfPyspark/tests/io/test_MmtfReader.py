@@ -28,11 +28,11 @@ class ReadSequenceFileTest(unittest.TestCase):
         self.assertTrue(pdb.count() == 3)
 
     def test_read_local_full_sequence(self):
-        pdb = mmtfReader.read_full_squence_file(self.sc)
+        pdb = mmtfReader.read_full_sequence_file(self.sc)
         self.assertTrue(pdb.count() == 4394)
 
     def test_read_local_reduced_sequence(self):
-        pdb = mmtfReader.read_reduced_squence_file(self.sc)
+        pdb = mmtfReader.read_reduced_sequence_file(self.sc)
         self.assertTrue(pdb.count() == 5395)
 
     def tearDown(self):

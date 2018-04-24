@@ -27,7 +27,7 @@ text = "org.apache.hadoop.io.Text"
 byteWritable = "org.apache.hadoop.io.BytesWritable"
 
 
-def read_full_squence_file(sc, pdbId=None, fraction=None, seed=123):
+def read_full_sequence_file(sc, pdbId=None, fraction=None, seed=123):
     '''Reads a MMTF-Hadoop Sequence file using the default file location.
     The default file location is determined by {mmtfReader.get_mmtf_full_path}
 
@@ -45,7 +45,7 @@ def read_full_squence_file(sc, pdbId=None, fraction=None, seed=123):
     return read_sequence_file(get_mmtf_full_path(), sc, pdbId, fraction, seed)
 
 
-def read_reduced_squence_file(sc, pdbId=None, fraction=None, seed=123):
+def read_reduced_sequence_file(sc, pdbId=None, fraction=None, seed=123):
     '''Reads a MMTF-Hadoop Sequence file using the default file location.
     The default file location is determined by {mmtfReader.get_mmtf_reduced_path}
 
