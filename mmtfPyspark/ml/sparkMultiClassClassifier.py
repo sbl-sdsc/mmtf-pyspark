@@ -16,6 +16,7 @@ from pyspark.ml.feature import StringIndexer, IndexToString
 from pyspark.ml import Pipeline
 from pyspark.mllib.evaluation import BinaryClassificationMetrics, MulticlassMetrics
 from collections import OrderedDict
+import time
 
 
 class SparkMultiClassClassifier(object):
@@ -50,6 +51,8 @@ class SparkMultiClassClassifier(object):
         -------
             map with metrics
         '''
+
+        start = time.time()
 
         classCount = int(data.select(self.label).distinct().count())
 
@@ -116,5 +119,8 @@ class SparkMultiClassClassifier(object):
         metrics["False Positive Rase"] = str(m.weightedFalsePositiveRate)
         metrics["True Positive Rate"] = str(m.weightedTruePositiveRate)
         metrics[""] = f"\nConfusion Matrix\n{labels}\n{m.confusionMatrix()}"
+
+        end = time.time()
+        print(f"Total time taken: {end-start}")
 
         return metrics
