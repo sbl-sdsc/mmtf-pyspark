@@ -19,7 +19,7 @@ import numpy as np
 import py3Dmol
 
 
-def simple_structure_viewer(pdbIds, style='cartoon', color='spectrum'):
+def view_structure(pdbIds, bioAssembly = False, style='cartoon', color='spectrum'):
     '''A wrapper function that simply displays a list of protein structures using
     ipywidgets and py3Dmol
 
@@ -41,11 +41,19 @@ def simple_structure_viewer(pdbIds, style='cartoon', color='spectrum'):
         ----------
             i (int): index of the protein if a list of PDBids
         '''
-
         print(f"PdbID: {pdbIds[i]}, Style: {style}")
 
-        viewer = py3Dmol.view(query='pdb:' + pdbIds[i])
-        viewer.setStyle({style: {'color': color}})
+
+        if '.' not in pdbIds[i]:
+            viewer = py3Dmol.view(query='pdb:' + pdbIds[i], options={'doAssembly': bioAssembly})
+            viewer.setStyle({style: {'color': color}})
+
+        else:
+            pdbid,chainid = pdbIds[i].split('.')
+            viewer = py3Dmol.view(query='pdb:' + pdbid, options={'doAssembly': bioAssembly})
+            viewer.setStyle({})
+            viewer.setStyle({'chain'}, {style: {'color': color}})
+            viewer.zoomTo({'chain': chainid})
 
         return viewer.show()
 
