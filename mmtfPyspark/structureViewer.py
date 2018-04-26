@@ -52,7 +52,7 @@ def simple_structure_viewer(pdbIds, style='cartoon', color='spectrum'):
     return interact(view3d, i=(0, len(pdbIds) - 1))
 
 
-def interaction_structure_viewer(pdbIds, interacting_atom='None', style='cartoon', color='spectrum'):
+def view_group_interaction(pdbIds, interacting_group='None', style='cartoon', color='spectrum'):
     '''A wrapper function that simply displays a list of protein structures using
     ipywidgets and py3Dmol and highlight specified interacting groups
 
@@ -77,7 +77,7 @@ def interaction_structure_viewer(pdbIds, interacting_atom='None', style='cartoon
         '''
 
         print(
-            f"PdbID: {pdbIds[i]}, Interactions: {interacting_atom}, Style: {style}")
+            f"PdbID: {pdbIds[i]}, Interactions: {interacting_group}, Style: {style}")
 
         viewer = py3Dmol.view(query='pdb:' + pdbIds[i])
         viewer.setStyle({style: {'color': color}})
