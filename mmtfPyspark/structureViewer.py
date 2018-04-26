@@ -82,9 +82,9 @@ def view_group_interaction(pdbIds, interacting_group='None', style='cartoon', co
         viewer = py3Dmol.view(query='pdb:' + pdbIds[i])
         viewer.setStyle({style: {'color': color}})
 
-        if interacting_atom != "None":
+        if interacting_group != "None":
 
-            viewer.setStyle({'resn': interacting_atom}, {
+            viewer.setStyle({'resn': interacting_group}, {
                             'sphere': {}})
 
         return viewer.show()
