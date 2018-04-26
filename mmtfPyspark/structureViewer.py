@@ -84,10 +84,10 @@ def interaction_structure_viewer(pdbIds, interacting_atom='None', style='cartoon
 
         if interacting_atom != "None":
 
-            viewer.setStyle({'atom': interacting_atom}, {
-                            'sphere': {'color': 'gray'}})
+            viewer.setStyle({'resn': interacting_atom}, {
+                            'sphere': {}})
 
-        return viewer.animate()
+        return viewer.show()
 
     return interact(view3d, i=(0, len(pdbIds) - 1))
 
