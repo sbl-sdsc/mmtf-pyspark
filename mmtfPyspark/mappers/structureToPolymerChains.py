@@ -144,17 +144,17 @@ class StructureToPolymerChains(object):
                 chId = structure.chain_name_list[i]
                 if self.useChainIdInsteadOfChainName :
                     chId = structure.chain_id_list[i]
-                '''
                 if self.excludeDuplicates:
                     if structure.entity_list[chainToEntityIndex[i]] in seqSet:
                         continue
                     seqSet.add(structure.entity_list[chainToEntityIndex[i]])
-                '''
                 chainList.append((structure.structure_id + "." + chId, polymerChain))
+
+        '''
         # TODO double check with python version
         if self.excludeDuplicates:
             return list(set(chainList))
-
+        '''
         return chainList
 
 
