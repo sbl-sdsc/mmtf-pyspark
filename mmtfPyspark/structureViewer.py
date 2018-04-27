@@ -161,7 +161,8 @@ def view_binding_site(pdbIds=None, groups=None, chains=None, distance=3.0):
 
         return viewer.show()
 
-    return interact(view3d, i=(0, len(pdbIds) - 1))
+    s_widget = IntSlider(min=0, max=len(pdbIds)-1, description='Structure', continuous_update=False)
+    return interact(view3d, i=s_widget)
 
 
 def group_interaction_viewer(df, sortBy, metal = None):
