@@ -26,6 +26,7 @@ def view_structure(pdbIds, bioAssembly = False, style='cartoon', color='spectrum
     Attributes
     ----------
         pdbIds (list<Strings>) : A list of PDBIDs to display
+        bioAssembly (Bool): display bioAssembly
         style : Style of 3D structure (stick line cross sphere cartoon VDW MS)
         color : Color of 3D structure
     '''
@@ -57,7 +58,8 @@ def view_structure(pdbIds, bioAssembly = False, style='cartoon', color='spectrum
 
         return viewer.show()
 
-    return interact(view3d, i=(0, len(pdbIds) - 1))
+    s_widget = IntSlider(min=0, max=len(pdbIds)-1, description='Structure', continuous_update=False)
+    return interact(view3d, i=s_widget)
 
 
 def view_group_interaction(pdbIds, interacting_group='None', style='cartoon', color='spectrum'):
@@ -97,7 +99,8 @@ def view_group_interaction(pdbIds, interacting_group='None', style='cartoon', co
 
         return viewer.show()
 
-    return interact(view3d, i=(0, len(pdbIds) - 1))
+    s_widget = IntSlider(min=0, max=len(pdbIds)-1, description='Structure', continuous_update=False)
+    return interact(view3d, i=s_widget)
 
 
 def view_binding_site(pdbIds=None, groups=None, chains=None, distance=3.0):
