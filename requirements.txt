@@ -1,5 +1,5 @@
 biopython==1.70
-mmtf-python==1.1.0
+mmtf-python==1.1.1
 numpy==1.13.3
 requests==2.18.4
 sympy==1.1.1
