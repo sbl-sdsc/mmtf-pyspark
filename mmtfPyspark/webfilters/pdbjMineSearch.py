@@ -1,5 +1,5 @@
 #!/user/bin/env python
-'''PdbjMine.py
+'''PdbjMineSearch.py
 
 This filter runs an PDBj Mine 2 Search web service using SQL query
 
@@ -18,7 +18,7 @@ from urllib.request import urlretrieve
 import requests
 
 
-class PdbjMine(object):
+class PdbjMineSearch(object):
     '''Fetch data using the PDBj Mine 2 SQL service
 
     Attributes

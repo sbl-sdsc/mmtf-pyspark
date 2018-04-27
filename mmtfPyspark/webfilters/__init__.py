@@ -5,4 +5,4 @@ from .sequenceSimilarity import SequenceSimilarity
 from .wildTypeQuery import WildTypeQuery
 from .customReportQuery import CustomReportQuery
 from .blastCluster import BlastCluster
-from .PdbjMine import PdbjMine
+from .pdbjMineSearch import PdbjMineSearch

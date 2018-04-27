@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
-from mmtfPyspark.webfilters import PdbjMine
+from mmtfPyspark.webfilters import PdbjMineSearch
 from mmtfPyspark.datasets import pdbjMineService
 from mmtfPyspark.mappers import StructureToPolymerChains
 
@@ -27,7 +27,7 @@ class MineSearchTest(unittest.TestCase):
     def test2(self):
         sql = "select distinct entity.pdbid from entity join entity_src_gen on entity_src_gen.pdbid=entity.pdbid where pdbx_ec='2.7.11.1' and pdbx_gene_src_scientific_name='Homo sapiens'"
 
-        pdb = self.pdb.filter(PdbjMine(sql))
+        pdb = self.pdb.filter(PdbjMineSearch(sql))
         matches = pdb.keys().collect()
 
         self.assertTrue("5JDE" in matches)
@@ -40,7 +40,7 @@ class MineSearchTest(unittest.TestCase):
         sql = "select distinct concat(entity_poly.pdbid, '.', unnest(string_to_array(entity_poly.pdbx_strand_id, ','))) as \"structureChainId\" from entity_poly join entity_src_gen on entity_src_gen.pdbid=entity_poly.pdbid and entity_poly.entity_id=entity_poly.entity_id join entity on entity.pdbid=entity_poly.pdbid and entity.id=entity_poly.entity_id where pdbx_ec='2.7.11.1' and pdbx_gene_src_scientific_name='Homo sapiens'"
 
         pdb = self.pdb.flatMap(StructureToPolymerChains()) \
-                      .filter(PdbjMine(sql, pdbidField="structureChainId", chainLevel=True))
+                      .filter(PdbjMineSearch(sql, pdbidField="structureChainId", chainLevel=True))
 
         matches = pdb.keys().collect()
 
