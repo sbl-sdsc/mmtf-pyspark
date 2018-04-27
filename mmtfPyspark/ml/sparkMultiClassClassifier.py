@@ -107,10 +107,10 @@ class SparkMultiClassClassifier(object):
 
         metrics = OrderedDict()
         metrics["Method"] = str(self.predictor).split('_')[0]
-        if classCount == 2:
-            b = BinaryClassificationMetrics(pred)
-            metrics["AUC"] = str(b.areaUnderROC())
 
+        if classCount == 2:
+            b = BinaryClassificationMetrics(pred.rdd)
+            metrics["AUC"] = str(b.areaUnderROC)
         m = MulticlassMetrics(pred.rdd)
         metrics["F"] = str(m.weightedFMeasure())
         metrics["Accuracy"] = str(m.accuracy)
