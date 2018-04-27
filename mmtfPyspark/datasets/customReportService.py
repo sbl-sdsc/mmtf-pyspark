@@ -1,14 +1,14 @@
 #!/user/bin/env python
 '''customReportService.py
 
-This class uses RCSB PDB Tabular Report RESTful webServices to retrieve
+This class uses RCSB PDB Tabular Report RESTful webservices to retrieve
 metadata and annotations for all current entries in the ProteinDataBank.
 
 References
 ----------
     List of supported fieldnames:
         http://www.rcsb.org/pdb/results/reportField.do
-    The RCSB Protein Data Bank:redesignedwebsiteandwebServices2011NucleicAcidsRes.39:D392-D401.
+    The RCSB Protein Data Bank:redesignedwebsiteandwebservices2011NucleicAcidsRes.39:D392-D401.
         https://dx.doi.org/10.1093/nar/gkq1021
 
 Example

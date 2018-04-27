@@ -23,7 +23,7 @@ Authorship information:
     __version__ = "0.2.0"
     __status__ = "Done"
 '''
-from mmtfPyspark.webServices import PiscesDownloader
+from mmtfPyspark.webservices import PiscesDownloader
 
 
 class Pisces(object):
