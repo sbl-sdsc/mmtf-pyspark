@@ -1,5 +1,5 @@
 #!/user/bin/env python
-'''pdbjMineService.py
+'''pdbjMineDataset.py
 
 This filter runs an PDBj Mine 2 Search web service using SQL query
 
