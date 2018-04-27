@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
-from mmtfPyspark.datasets import pdbjMineService
+from mmtfPyspark.datasets import pdbjMineDataset
 
 
 class PdbjMineSearchDatasetTest(unittest.TestCase):
@@ -16,7 +16,7 @@ class PdbjMineSearchDatasetTest(unittest.TestCase):
     def test1(self):
 
         sql = "SELECT * FROM sifts.pdb_chain_uniprot LIMIT 10"
-        ds = pdbjMineService.get_dataset(sql)
+        ds = pdbjMineDataset.get_dataset(sql)
 
         count = ds.filter("structureChainId == '101M.A'").count()
         self.assertTrue(count == 1)

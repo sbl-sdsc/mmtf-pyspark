@@ -37,6 +37,7 @@ class PdbjMineSearch(object):
         self.pdbidField = pdbidField
         self.chainLevel = chainLevel
         self.sqlQuery = sqlQuery
+        self.pdbIds = []
 
         if self.sqlQuery != None:
 
@@ -58,6 +59,8 @@ class PdbjMineSearch(object):
         if dataset == None:
             raise Exception(
                 "Dataset empty. Either provide an sql query or a dataset")
+
+        print(dataset.columns)
 
         # Check if there is a pdbID file
         if self.pdbidField in dataset.columns:

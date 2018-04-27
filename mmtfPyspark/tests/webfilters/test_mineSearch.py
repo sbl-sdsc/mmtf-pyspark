@@ -4,7 +4,7 @@ import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import PdbjMineSearch
-from mmtfPyspark.datasets import pdbjMineService
+from mmtfPyspark.datasets import pdbjMineDataset
 from mmtfPyspark.mappers import StructureToPolymerChains
 
 
@@ -20,7 +20,7 @@ class MineSearchTest(unittest.TestCase):
     def test1(self):
         sql = "select count(*) from brief_summary"
 
-        search = pdbjMineService.get_dataset(sql)
+        search = pdbjMineDataset.get_dataset(sql)
 
         self.assertTrue(search.head()[0] > 100000)
 
