@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
-from mmtfPyspark.webFilters import Pisces
+from mmtfPyspark.webfilters import Pisces
 from mmtfPyspark.mappers import *
 
 

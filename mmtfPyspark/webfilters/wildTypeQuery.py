@@ -14,7 +14,7 @@ Authorship information:
     __status__ = "Done"
 '''
 
-from mmtfPyspark.webFilters import AdvancedQuery
+from mmtfPyspark.webfilters import AdvancedQuery
 
 
 class WildTypeQuery(object):

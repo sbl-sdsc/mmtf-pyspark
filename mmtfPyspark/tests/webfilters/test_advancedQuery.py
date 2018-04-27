@@ -3,7 +3,7 @@
 import unittest
 from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
-from mmtfPyspark.webFilters import AdvancedQuery
+from mmtfPyspark.webfilters import AdvancedQuery
 from mmtfPyspark.mappers import StructureToPolymerChains
 
 

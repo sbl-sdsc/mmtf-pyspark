@@ -40,7 +40,7 @@ Authorship information:
     __status__ = "done"
 '''
 
-from mmtfPyspark.webFilters import AdvancedQuery
+from mmtfPyspark.webfilters import AdvancedQuery
 
 
 class SequenceSimilarity(object):
