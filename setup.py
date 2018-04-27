@@ -7,8 +7,8 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.mappers',
                         'mmtfPyspark.ml',
                         'mmtfPyspark.utils',
-                        'mmtfPyspark.webFilters',
-                        'mmtfPyspark.webServices',
+                        'mmtfPyspark.webfilters',
+                        'mmtfPyspark.webservices',
                         'mmtfPyspark.interactions'
                         ]
 
