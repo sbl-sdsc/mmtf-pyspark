@@ -19,10 +19,10 @@ from numpy import *
 
 class StructureToBioassembly(object):
     '''Extracts all polymer chains from a structure. If the argument is set to true,
-        the assigned key is: <PDB ID.Chain ID>, where Chain ID is the unique identifier
-        assigned to each molecular entity in an mmCIF file. This Chain ID corresponds to
-        <a href="http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_atom_site.label_asym_id.html">
-        _atom_site.label_asym_id</a> field in an mmCIF file.
+    the assigned key is: <PDB ID.Chain ID>, where Chain ID is the unique identifier
+    assigned to each molecular entity in an mmCIF file. This Chain ID corresponds to
+    <a href="http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_atom_site.label_asym_id.html">
+    _atom_site.label_asym_id</a> field in an mmCIF file.
 
     Attributes
     ----------
@@ -95,6 +95,7 @@ class StructureToBioassembly(object):
             groupIndex = 0
             atomIndex = 0
             chainCounter = 0
+            description = {}
 
             for ii in range(totModels):
                 numChainsPerModel = structure.chains_per_model[modelIndex] * numTrans
@@ -121,10 +122,15 @@ class StructureToBioassembly(object):
 
                         if addThisChain:
                             entityToChainIndex = chainToEntityIndex[chainIndex]
-                            bioAssembly.set_entity_info([chainCounter],
-                                                        structure.entity_list[entityToChainIndex]['sequence'],
-                                                        structure.entity_list[entityToChainIndex]['description'],
-                                                        structure.entity_list[entityToChainIndex]['type'])
+                            if structure.entity_list[entityToChainIndex]['description'] in description:
+                                index = description[structure.entity_list[entityToChainIndex]['description']]
+                                bioAssembly.entity_list[index]['chainIndexList'].append(chainCounter)
+                            else:
+                                bioAssembly.set_entity_info([chainCounter],
+                                                            structure.entity_list[entityToChainIndex]['sequence'],
+                                                            structure.entity_list[entityToChainIndex]['description'],
+                                                            structure.entity_list[entityToChainIndex]['type'])
+                                description[bioAssembly.entity_list[-1]['description']] = len(bioAssembly.entity_list)-1
                             bioAssembly.set_chain_info(structure.chain_id_list[chainIndex],
                                                        structure.chain_name_list[chainIndex],
                                                        structure.groups_per_chain[chainIndex])
