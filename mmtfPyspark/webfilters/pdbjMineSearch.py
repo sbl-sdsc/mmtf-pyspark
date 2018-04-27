@@ -14,6 +14,7 @@ Authorship information:
 import urllib
 import tempfile
 from pyspark.sql import SparkSession
+from mmtfPyspark.datasets import pdbjMineDataset
 from urllib.request import urlretrieve
 import requests
 
@@ -24,49 +25,31 @@ class PdbjMineSearch(object):
     Attributes
     ----------
         sqlQuery (str): the sql query [None]
-        dataset: csv file of the target dataset [None]
-        pdbidField (str): field name of pdbIds [pdbid]
-        clainLevel (bool): flag to indicate chain level query
     '''
 
     URL = "https://pdbj.org/rest/mine2_sql"
 
-    def __init__(self, sqlQuery=None, dataset=None, pdbidField="pdbid",
-                 chainLevel=False):
+    def __init__(self, sqlQuery):
 
-        self.pdbidField = pdbidField
-        self.chainLevel = chainLevel
-        self.sqlQuery = sqlQuery
+        self.chainLevel = False
         self.pdbIds = []
 
-        if self.sqlQuery != None:
-
-            encodedSQL = urllib.parse.quote(self.sqlQuery)
-            tmp = tempfile.NamedTemporaryFile(delete=False)
-
-            # URL retrive won't work on certain IP address
-            urlretrieve(self.URL + "?format=csv&q=" + encodedSQL, tmp.name)
-
-            spark = SparkSession.builder.getOrCreate()
-
-            # TODO: Using self.dataset causes spark unable to use filter
-            dataset = spark.read.format("csv") \
-                .option("header", "true") \
-                .option("inferSchema", "true") \
-                .option("parserLib", "UNIVOCITY") \
-                .load(tmp.name)
+        dataset = pdbjMineDataset.get_dataset(sqlQuery)
 
         if dataset == None:
             raise Exception(
                 "Dataset empty. Either provide an sql query or a dataset")
 
-        print(dataset.columns)
-
         # Check if there is a pdbID file
-        if self.pdbidField in dataset.columns:
+        if 'structureId' in dataset.columns:
+            self.chainLevel = False
+            self.pdbIds = [a[0] for a in dataset.select('structureId').collect()]
 
-            self.pdbIds = [a[0].upper()
-                           for a in dataset.select(self.pdbidField).collect()]
+        if 'structureChainId' in dataset.columns:
+            self.chainLevel = True
+            ids = [a[0] for a in dataset.select('structureChainId').collect()]
+            ids_sub = [i[:4] for i in ids]
+            self.pdbIds = ids + ids_sub
 
     def __call__(self, t):
         match = t[0] in self.pdbIds
