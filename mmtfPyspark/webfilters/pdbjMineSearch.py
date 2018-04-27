@@ -1,7 +1,19 @@
 #!/user/bin/env python
 '''PdbjMineSearch.py
 
-This filter runs an PDBj Mine 2 Search web service using SQL query
+This filter runs an PDBj Mine 2 Search web service using an SQL query.
+
+References
+----------
+Each category represents a table, and fields represent database columns, see
+available tables and columns:
+    https://pdbj.org/mine-rdb-docs
+
+Data are provided through, Mine 2 SQL:
+    https://pdbj.org/help/mine2-sql
+
+Queries can be designed with the interactive PDBjMine2 query service:
+    https://pdbj.org/mine/sql
 
 Authorship information:
     __author__ = "Mars (Shih-Cheng) Huang"
