@@ -41,7 +41,7 @@ class StructureToPolymerSequences(object):
         chainToEntityIndex = self._get_chain_to_entity_index(structure)
 
         for i in range(structure.chains_per_model[0]):
-            polymer = structure.entity_list[i]['type'] == 'polymer'
+            polymer = structure.entity_list[chainToEntityIndex[i]]['type'] == 'polymer'
 
             if polymer:
                 key = t[0]
