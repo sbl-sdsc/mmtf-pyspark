@@ -12,14 +12,14 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.interactions'
                         ]
 
-mmtfPyspark_dependencies = ['pyspark',
-                            'Biopython',
-                            'msgpack-python',
-                            'numpy',
-                            'ipywidgets',
-                            'mmtf-python',
-                            'sympy',
-                            'requests'
+mmtfPyspark_dependencies = ['pyspark>=2.3.0',
+                            'Biopython>=1.7.1',
+                            'msgpack-python>=0.5.6',
+                            'numpy>=1.14.2',
+                            'ipywidgets>=7.2.1',
+                            'mmtf-python==1.1.1',
+                            'sympy==1.1.1',
+                            'requests>=0.8.0'
                             ]
 
 setup(name='mmtfPyspark',
