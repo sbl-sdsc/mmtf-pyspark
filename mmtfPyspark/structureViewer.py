@@ -55,7 +55,7 @@ def view_structure(pdbIds, bioAssembly = False, style='cartoon', color='spectrum
             viewer = py3Dmol.view(query='pdb:' + pdbid, options={'doAssembly': bioAssembly})
             viewer.setStyle({})
             viewer.setStyle({'chain': chainid}, {style: {'color': color}})
-            viewer.setStyle({'hetflag': True},{'stick':{'singleBond':False}})
+            viewer.setStyle({'chain': chainid, 'hetflag': True},{'stick':{'singleBond':False}})
             viewer.zoomTo({'chain': chainid})
 
         return viewer.show()
