@@ -48,8 +48,6 @@ class StructureToPolymerChains(object):
 
         chainList = list()
         seqSet = set()
-        groupCounter = 0
-        atomCounter = 0
 
         for i in range(numChains):
             polymerChain = MMTFEncoder()
@@ -57,9 +55,11 @@ class StructureToPolymerChains(object):
             entityToChainIndex = chainToEntityIndex[i]
 
             chain_type = [chain['type'] for chain in structure.entity_list
-                         if i in chain['chainIndexList']][0]
+                         if entityToChainIndex in chain['chainIndexList']][0]
             polymer = chain_type == "polymer"
             polymerAtomCount = 0
+            groupCounter = 0
+            atomCounter = 0
 
             atomMap = {}
 
@@ -125,8 +125,6 @@ class StructureToPolymerChains(object):
 
                     atomCounter += 1
 
-                groupCounter += 1
-
                 if polymer:
                     # Add intra-group bond info
                     for l in range(len(structure.group_list[groupIndex]['bondOrderList'])):
@@ -135,6 +133,8 @@ class StructureToPolymerChains(object):
                         bondOrder = structure.group_list[groupIndex]['bondOrderList'][l]
 
                         polymerChain.set_group_bond(bondIndOne, bondIndTwo, bondOrder)
+
+                groupCounter += 1
 
             if polymer:
                 # TODO skipping adding inter group bond info for now
@@ -170,8 +170,8 @@ class StructureToPolymerChains(object):
 
             for j in range(structure.groups_per_chain[i]):
                 groupIndex = structure.group_type_list[groupCounter]
-                atomsPerChain[i] = len(structure.group_list[groupIndex]['atomNameList'])
-                bondsPerChain[i] = len(structure.group_list[groupIndex]['bondOrderList'])
+                atomsPerChain[i] += len(structure.group_list[groupIndex]['atomNameList'])
+                bondsPerChain[i] += len(structure.group_list[groupIndex]['bondOrderList'])
                 groupCounter += 1
 
         return atomsPerChain, bondsPerChain
