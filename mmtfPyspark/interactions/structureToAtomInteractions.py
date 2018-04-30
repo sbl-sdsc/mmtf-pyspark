@@ -113,8 +113,9 @@ class StructureToAtomInteractions(object):
         # that are within cutoff distance of the query atom
         neighborIndices = box.get_neighbors(np.array([qx, qy, qz]))
         # TEST: flattern neighborIndices
-        neighborIndices = [
-            n for neighbors in neighborIndices for n in neighbors]
+        if type(neighborIndices[0]) == list:
+            neighborIndices = [
+                n for neighbors in neighborIndices for n in neighbors]
 
         # determine and record interactions with neighbor atoms
         for neighborIndex in neighborIndices:
