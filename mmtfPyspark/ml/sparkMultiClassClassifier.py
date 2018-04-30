@@ -116,7 +116,7 @@ class SparkMultiClassClassifier(object):
         metrics["Accuracy"] = str(m.accuracy)
         metrics["Precision"] = str(m.weightedPrecision)
         metrics["Recall"] = str(m.weightedRecall)
-        metrics["False Positive Rase"] = str(m.weightedFalsePositiveRate)
+        metrics["False Positive Rate"] = str(m.weightedFalsePositiveRate)
         metrics["True Positive Rate"] = str(m.weightedTruePositiveRate)
         metrics[""] = f"\nConfusion Matrix\n{labels}\n{m.confusionMatrix()}"
 
