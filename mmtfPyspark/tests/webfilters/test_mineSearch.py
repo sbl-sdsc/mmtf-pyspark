@@ -25,7 +25,7 @@ class MineSearchTest(unittest.TestCase):
         self.assertTrue(search.head()[0] > 100000)
 
     def test2(self):
-        sql = "select distinct entity.pdbid from entity join entity_src_gen on entity_src_gen.pdbid=entity.pdbid where pdbx_ec='2.7.11.1' and pdbx_gene_src_scientific_name='Homo sapiens'"
+        sql = "SELECT pdbid, chain FROM sifts.pdb_chain_enzyme WHERE ec_number = '2.7.11.1'"
 
         pdb = self.pdb.filter(PdbjMineSearch(sql))
         matches = pdb.keys().collect()
@@ -33,14 +33,15 @@ class MineSearchTest(unittest.TestCase):
         self.assertTrue("5JDE" in matches)
         self.assertTrue("5CU4" in matches)
         self.assertTrue("5L6W" in matches)
-        self.assertFalse("5UFU" in matches)
+        self.assertTrue("5UFU" in matches)
         self.assertFalse("5IHB" in matches)
+        self.assertFalse("1FIN" in matches)
 
     def test3(self):
-        sql = "select distinct concat(entity_poly.pdbid, '.', unnest(string_to_array(entity_poly.pdbx_strand_id, ','))) as \"structureChainId\" from entity_poly join entity_src_gen on entity_src_gen.pdbid=entity_poly.pdbid and entity_poly.entity_id=entity_poly.entity_id join entity on entity.pdbid=entity_poly.pdbid and entity.id=entity_poly.entity_id where pdbx_ec='2.7.11.1' and pdbx_gene_src_scientific_name='Homo sapiens'"
 
+        sql = "SELECT e.pdbid, e.chain FROM sifts.pdb_chain_enzyme AS e WHERE e.ec_number = '2.7.11.1'"
         pdb = self.pdb.flatMap(StructureToPolymerChains()) \
-                      .filter(PdbjMineSearch(sql, pdbidField="structureChainId", chainLevel=True))
+                      .filter(PdbjMineSearch(sql))
 
         matches = pdb.keys().collect()
 
@@ -49,7 +50,7 @@ class MineSearchTest(unittest.TestCase):
         self.assertTrue("5CU4.A" in matches)
         self.assertTrue("5L6W.L" in matches)
         self.assertFalse("5L6W.C" in matches)
-        self.assertFalse("5UFU.A" in matches)
+        self.assertTrue("5UFU.A" in matches)
         self.assertFalse("5UFU.B" in matches)
         self.assertFalse("5UFU.C" in matches)
         self.assertFalse("5IHB.A" in matches)
