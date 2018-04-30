@@ -156,10 +156,9 @@ def view_binding_site(pdbIds=None, groups=None, chains=None, distance=3.0):
 
 
         viewer = py3Dmol.view(query='pdb:' + pdbIds[i])
-        viewer.zoomTo(center)
         viewer.setStyle(neighbors, {'stick': {}});
         viewer.setStyle(center, {'sphere': {'colorscheme': 'orangeCarbon'}})
-        viewer.zoom(0.3, 1000)
+        viewer.zoomTo(neighbors)
 
         return viewer.show()
 
