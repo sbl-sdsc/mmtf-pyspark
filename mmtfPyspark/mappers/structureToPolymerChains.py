@@ -49,13 +49,15 @@ class StructureToPolymerChains(object):
         chainList = list()
         seqSet = set()
 
+        
+
         for i in range(numChains):
             polymerChain = MMTFEncoder()
 
             entityToChainIndex = chainToEntityIndex[i]
 
-            chain_type = [chain['type'] for chain in structure.entity_list
-                         if entityToChainIndex in chain['chainIndexList']][0]
+            chain_type = structure.entity_list[entityToChainIndex]['type']
+
             polymer = chain_type == "polymer"
             polymerAtomCount = 0
             groupCounter = 0
