@@ -17,6 +17,9 @@ class ContainsAlternativeLocations(object):
     def __call__(self, t):
         structure = t[1]
 
+        if not structure.alt_loc_set:
+            structure = structure.set_alt_loc_list()    
+
         for c in structure.alt_loc_list:
             if c != '\0':
                 return True

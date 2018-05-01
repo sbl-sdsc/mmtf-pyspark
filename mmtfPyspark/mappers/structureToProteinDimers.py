@@ -352,6 +352,11 @@ class StructureToProteinDimers(object):
 
     def _combine_chains(self, s1, s2):
 
+        if not s1.alt_loc_set:
+            s1 = s1.set_alt_loc_list()
+        if not s2.alt_loc_set:
+            s2 = s2.set_alt_loc_list()
+
         groupCounter = 0
         atomCounter = 0
 
