@@ -42,7 +42,7 @@ class GroupInteractionExtractor(object):
         '''
 
         spark = SparkSession.builder.getOrCreate()
-        sc = SparkContext(spark.SparkContext())
+        sc = spark.sparkContext
 
         # calculate interactions
         pairwise = True
