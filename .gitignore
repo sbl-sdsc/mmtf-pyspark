@@ -90,6 +90,7 @@ ENV/
 
 # Spark metastore_db
 mmtfPyspark/metastore_db
+*.crc
 .
 
 # test file
