@@ -247,7 +247,7 @@ def metal_distance_widget(df_concat):
     m_widget = Dropdown(options = metals, description = "Metals")
 
     def metal_distance_violinplot(metal):
-        df_metal = df_concat[df_concat["Metal"] == metal]
+        df_metal = df_concat[df_concat["Metal"] == metal].copy()
         df_metal['Element'] = df_metal['Element'].apply(lambda x: metal+"-"+x)
 
         # Set fonts
