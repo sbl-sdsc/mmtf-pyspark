@@ -84,6 +84,18 @@ def print_bioassembly_data(structure):
             print("    chains:         " + str(transformations[j]["chainIndexList"]))
             print("    rotTransMatrix: " + str(transformations[j]["matrix"]))
 
+def print_entity_info(structure):
+    '''Prints information about unique entities (molecules) in a structure
+    '''
+    print("*** ENTITY DATA ***")
+
+    for i,e in enumerate(structure.entity_list):
+        print(f"entity type            : {i} {e['type']}")
+        print(f"entity description     : {i} {e['description']}")
+        print(f"entity sequence        : {i} {e['sequence']}")
+    print('\n')
+
+
 def print_structure_data(structure):
     structure = _check_structure_or_tuple(structure)
 
