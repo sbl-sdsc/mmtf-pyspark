@@ -19,7 +19,12 @@ mmtfPyspark_dependencies = ['pyspark>=2.3.0',
                             'ipywidgets>=7.2.1',
                             'mmtf-python==1.1.1',
                             'sympy==1.1.1',
-                            'requests>=0.8.0'
+                            'requests>=0.8.0',
+                            'matplotlib>=2.2.0',
+                            'seaborn>=0.7.1',
+                            'py3Dmol>=0.6.3',
+                            'scipy>=1.0.0',
+                            'scikit-learn>=0.13.0'
                             ]
 
 setup(name='mmtfPyspark',
