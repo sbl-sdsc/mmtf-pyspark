@@ -48,8 +48,8 @@ class StructureToPolymerChains(object):
 
         chainList = list()
         seqSet = set()
-
-        
+        groupCounter = 0
+        atomCounter = 0
 
         for i in range(numChains):
             polymerChain = MMTFEncoder()
@@ -60,8 +60,6 @@ class StructureToPolymerChains(object):
 
             polymer = chain_type == "polymer"
             polymerAtomCount = 0
-            groupCounter = 0
-            atomCounter = 0
 
             atomMap = {}
 
