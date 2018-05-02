@@ -18,7 +18,7 @@ class StructureToPolymerSequences(object):
     For a multi-model structure, only the first model is considered.
     '''
 
-    def __init__(self, useChainIdInsteadOfChainName=False, removeDuplicates=False):
+    def __init__(self, useChainIdInsteadOfChainName=False, excludeDuplicates=False):
         '''Extracts all polymer chains from a structure. If the argument is set to true,
         the assigned key is: <PDB ID.Chain ID>, where Chain ID is the unique identifier
         assigned to each molecular entity in an mmCIF file. This Chain ID corresponds to
@@ -28,10 +28,10 @@ class StructureToPolymerSequences(object):
         Attributes
         ----------
             useChainIdInsteadOfChainName if true, use the Chain Id in the key assignments
-            removeDuplicates if true, return only one chain for each unique sequence= t[1]
+            excludeDuplicates if true, return only one chain for each unique sequence= t[1]
         '''
         self.useChainIdInsteadOfChainName = useChainIdInsteadOfChainName
-        self.removeDuplicates = removeDuplicates
+        self.excludeDuplicates = excludeDuplicates
 
     def __call__(self, t):
         structure = t[1]
@@ -55,12 +55,13 @@ class StructureToPolymerSequences(object):
                 else:
                     key += structure.chain_name_list[i]
 
+                if self.excludeDuplicates:
+                    if chainToEntityIndex[i] in seqSet:
+                        continue
+                    seqSet.add(chainToEntityIndex[i])
+
                 sequences.append(
                     (key, structure.entity_list[chainToEntityIndex[i]]['sequence']))
-
-        # TODO double check
-        if self.removeDuplicates:
-            return list(set(sequences))
 
         return sequences
 
