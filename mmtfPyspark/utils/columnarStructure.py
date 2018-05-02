@@ -48,6 +48,10 @@ class ColumnarStructure(object):
         self.polymer = None
         self.sequencePositions = None
         self.structure = structure
+        self.groupToAtomIndices = None
+        self.chainToAtomIndices = None
+        self.chainToGroupIndices = None
+
 
         if firstModelOnly:
             self.numModels = 1
@@ -55,8 +59,19 @@ class ColumnarStructure(object):
             self.numModels = structure.num_models
 
     def get_group_to_atom_indices(self):
-        self.get_indices()
+        if self.groupToAtomIndices is None:
+            self.get_indices()
         return self.groupToAtomIndices
+
+    def get_chain_to_atom_indices(self):
+        if self.chainToAtomIndices is None:
+            self.get_indices()
+        return self.chainToAtomIndices
+
+    def get_chain_to_group_indices(self):
+        if self.chainToGroupIndices is None:
+            self.get_indices
+        return self.chainToGroupIndices
 
     def get_num_atoms(self):
         self.get_indices()
