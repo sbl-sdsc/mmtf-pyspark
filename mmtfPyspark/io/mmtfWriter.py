@@ -16,6 +16,7 @@ from mmtfPyspark.utils import MmtfStructure
 import gzip
 import msgpack
 import os
+import base64
 
 
 def write_sequence_file(path, sc, structure, compressed=True):
@@ -30,9 +31,7 @@ def write_sequence_file(path, sc, structure, compressed=True):
     '''
     # Can't apply first() function on list
     if type(structure.first()[1]) == MmtfStructure:
-        structure = structure.map(lambda s: (s[0], s[1].set_alt_loc_list())
-                                  if not s[1].alt_loc_set
-                                  else s) \
+        structure = structure.map(lambda s: (s[0], s[1].set_alt_loc_list()))
 
     structure.map(lambda t: (t[0], _to_byte_array(t[1], compressed)))\
              .saveAsHadoopFile(path,
@@ -46,7 +45,7 @@ def write_mmtf_files(path, sc, structure):
 
     Attributes
     ----------
-        path (str): Path to Hadoop file directory)
+        path (str): Path to Hadoop file directory
         sc (Spark context)
         structure (tuple): structure data to be written
     '''
@@ -57,11 +56,25 @@ def write_mmtf_files(path, sc, structure):
     if not os.path.exists(path):
         os.makedirs(path)
 
-    structure = structure.map(lambda s: (s[0], s[1].set_alt_loc_list())
-                              if not s[1].alt_loc_set
-                              else s) \
-        .map(lambda t: (t[0], _to_byte_array(t[1], False))) \
-        .foreach(lambda t: gzip.open(path + t[0] + '.mmtf.gz', mode='wb').write(t[1]))
+    structure = structure.map(lambda s: (s[0], s[1].set_alt_loc_list())) \
+                         .map(lambda t: (t[0], _to_byte_array(t[1], False))) \
+                         .foreach(lambda t: gzip.open(path + t[0] + '.mmtf.gz', mode='wb').write(t[1]))
+
+
+def to_mmtf_base64(structure):
+    '''Encodes a mmtfStructure to base64 byte array
+
+    Attributes
+    ----------
+        structure (mmtfStructure): structure to be encoded to base64 byte array
+
+    Returns
+    -------
+        base64 byte array
+    '''
+
+    byteArray = _to_byte_array(structure, compressed=False)
+    return base64.b64encode(byteArray).decode()
 
 
 def _to_byte_array(structure, compressed):
@@ -71,6 +84,9 @@ def _to_byte_array(structure, compressed):
     -------
         MMTF encoded and optionally gzipped structure data
     '''
+
+    if not structure.alt_loc_set:
+        structure = structure.set_alt_loc_list()
 
     byte_array = bytearray(msgpack.packb(MMTFEncoder.encode_data(structure), use_bin_type = True))
 
