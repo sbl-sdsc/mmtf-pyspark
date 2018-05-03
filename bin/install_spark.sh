@@ -10,7 +10,7 @@ curl http://mirror.cogentco.com/pub/apache/spark/spark-$SPARK_VERSION/spark-$SPA
 cd /tmp && tar -xvzf /tmp/spark.tgz
 
 # set spark home and pyspark paths
-echo "SPARK_HOME=/tmp/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION" >> ~/.bashrc
+echo "export SPARK_HOME=/tmp/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION" >> ~/.bashrc
 echo "export PATH=$SPARK_HOME/bin:$PATH" >> ~/.bashrc
 echo "export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH" >> ~/.bashrc
-#export PYSPARK_SUBMIT_ARGS="--master local[*] pyspark-shell"
+source ~/.bashrc
