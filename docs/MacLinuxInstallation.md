@@ -60,7 +60,19 @@ mmtfPyspark can be installed using two different ways:
    pip install ./mmtf-pyspark/
    ```
 
+If there are any errors installing package, try upgrading your pip by:
+
+   ```
+   pip install --upgrade pip    
+   ```
+
 By cloning the Github repository using the pip install method, sample jupyter notebooks and tutorials can be found in the *mmtf-pyspark/demos* directory.
+
+If there are any errors installing package, try upgrading your pip by:
+
+   ```
+   pip install --upgrade pip    
+   ```
 
 
 ### Testing installation
