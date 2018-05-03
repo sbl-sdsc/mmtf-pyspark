@@ -1,4 +1,4 @@
-# Mmtf-pyspark
+# MMTF PySpark
 
 [![Build Status](https://travis-ci.org/sbl-sdsc/mmtf-pyspark.svg?branch=master)](https://travis-ci.org/sbl-sdsc/mmtf-pyspark)
 [![GitHub license](https://img.shields.io/github/license/sbl-sdsc/mmtf-pyspark.svg)](https://github.com/sbl-sdsc/mmtf-pyspark/blob/master/LICENSE)
@@ -22,19 +22,23 @@ To try out our jupyter notebook demos without any installation, please click on 
 It can take a few minutes for Binder to setup the environment.
 
 ## Installation
+### Python
+We strongly recommend that you have [anaconda](https://docs.continuum.io/anaconda/install/) and we require at least python 3.6 installed. To check your python version:
+```
+python --version
+```
+
+### mmtfPyspark and dependencies
 mmtfPyspark is now on PyPI, and can be installed with:
 ```
 pip install mmtfPyspark
 ```
 
-Since mmtfPyspark uses parallel computing to ensure high-performance, it requires additional dependencies such as Apache Spark. Therefore, please read the installation instructions for your OS system carefully:
+Since mmtfPyspark uses parallel computing to ensure high-performance, it requires additional dependencies such as Apache Spark. Therefore, please read follow the installation instructions for your OS system carefully:
 
 [MacOS and LINUX](docs/MacLinuxInstallation.md)
 
 [Windows](docs/WindowsInstallation,md)
-
-### anaconda
-We strongly recommend that you have [anaconda](https://docs.continuum.io/anaconda/install/) and we require at least python 3.6 installed
 
 
 ## Hadoop Sequence Files
@@ -43,6 +47,10 @@ The Hadoop sequence files can be downloaded by:
 ```
 curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
 tar -xvf full.tar
+
+curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
+tar -xvf reduced.tar
+
 ```
 
 For Mac and Linux, the Hadoop sequence files can be downloaded and saved as environmental variables by running the following command:
