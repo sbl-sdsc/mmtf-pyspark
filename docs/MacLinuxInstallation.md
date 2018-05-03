@@ -19,6 +19,8 @@ To check if you have git installed, type the following line on your terminal:
 git --version
 ```
 
+[Download and install Git](https://git-scm.com/downloads)
+
 
 ### Install Spark
 To install and setup Apache Spark 2.3 and Hadoop 2.7, run the following commands on your terminal:
@@ -42,13 +44,13 @@ sudo easy_install pip
 
 For linux machines, please visit the following website:
 
-[Intall pip on linux](https://packaging.python.org/guides/installing-using-linux-tools/)
+[Install pip on linux](https://packaging.python.org/guides/installing-using-linux-tools/)
 
 mmtfPyspark can be installed using two different ways:
  * PyPI install (from the python packaging index):
 
    ```
-   pip intall mmtfPyspark
+   pip install mmtfPyspark
    ```
 
  * pip install (cloning github repository and do a local installation):
@@ -58,7 +60,7 @@ mmtfPyspark can be installed using two different ways:
    pip install ./mmtf-pyspark/
    ```
 
-By cloning the Github repository using the pip install method, sample jupyter notebooks and tutorials can be found in the directory.
+By cloning the Github repository using the pip install method, sample jupyter notebooks and tutorials can be found in the *mmtf-pyspark/demos* directory.
 
 
 ### Testing installation
@@ -74,7 +76,7 @@ If the metadata of 1AQ1 is printed, you have successfully intalled mmtfPyspark.
 
 
 ### [OPTIONAL] Hadoop Sequence Files
-Hadoop sequence files of all PDB structures can be downloaded and saved as environmental variables for you by running the following command:
+Hadoop sequence files of all PDB structures can be downloaded and environmental variables can be set by running the following command:
 ```
 curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/download_mmtf_files.sh -o download_mmtf_files.sh
 . ./download_mmtf_files.sh
