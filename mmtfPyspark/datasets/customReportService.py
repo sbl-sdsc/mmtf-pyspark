@@ -32,9 +32,9 @@ import tempfile
 from pyspark.sql import SparkSession
 
 
-SERVICELOCATIONS = ["http://www.rcsb.org/pdb/rest/customReport",
-                    "http://www1.rcsb.org/pdb/rest/customReport",
-                    "http://www2.rcsb.org/pdb/rest/customReport"]
+SERVICELOCATIONS = ["https://www.rcsb.org/pdb/rest/customReport",
+                    "https://www1.rcsb.org/pdb/rest/customReport",
+                    "https://www2.rcsb.org/pdb/rest/customReport"]
 
 
 CURRENT_URL = "?pdbids=*&service=wsfile&format=csv&primaryOnly=1&customReportColumns="
