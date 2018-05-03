@@ -11,4 +11,5 @@ tar -xvf reduced.tar
 echo "export MMTF_REDUCED=/tmp/reduced/" >> ~/.bashrc
 echo "export MMTF_FULL=/tmp/full/" >> ~/.bashrc
 
+cd ~
 source ~/.bashrc
