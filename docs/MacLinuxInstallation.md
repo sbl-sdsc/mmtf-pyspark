@@ -31,6 +31,8 @@ curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/install_
 
 
 ### Install mmtfPyspark
+If you do not have anaconda installed, all the following `pip ...` should be replaced with `python -m pip ...`
+
 To install mmtfPyspark, make sure you have pip:
 
 ```

@@ -50,7 +50,6 @@ tar -xvf full.tar
 
 curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
 tar -xvf reduced.tar
-
 ```
 
 For Mac and Linux, the Hadoop sequence files can be downloaded and saved as environmental variables by running the following command:
