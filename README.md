@@ -38,7 +38,7 @@ Since mmtfPyspark uses parallel computing to ensure high-performance, it require
 
 [MacOS and LINUX](docs/MacLinuxInstallation.md)
 
-[Windows](docs/WindowsInstallation,md)
+[Windows](docs/WindowsInstallation.md)
 
 
 ## Hadoop Sequence Files
