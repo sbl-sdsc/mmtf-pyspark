@@ -24,7 +24,8 @@ mmtfPyspark_dependencies = ['pyspark>=2.3.0',
                             'seaborn>=0.7.1',
                             'py3Dmol>=0.6.3',
                             'scipy>=1.0.0',
-                            'scikit-learn>=0.13.0'
+                            'scikit-learn>=0.13.0',
+                            'py4j>=0.10.6'
                             ]
 
 setup(name='mmtfPyspark',
