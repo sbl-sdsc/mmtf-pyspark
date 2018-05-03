@@ -1,6 +1,6 @@
 #!/bin/bash
 # define hadoop and spark version
-SPARK_VERSION='2.2.1'
+SPARK_VERSION='2.3.0'
 HADOOP_VERSION='2.7'
 
 # download spark from mirror image
