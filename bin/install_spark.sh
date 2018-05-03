@@ -13,4 +13,6 @@ cd /tmp && tar -xvzf /tmp/spark.tgz
 echo "export SPARK_HOME=/tmp/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION" >> ~/.bashrc
 echo "export PATH=$SPARK_HOME/bin:$PATH" >> ~/.bashrc
 echo "export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH" >> ~/.bashrc
+
+cd ~
 source ~/.bashrc
