@@ -32,7 +32,11 @@ import tempfile
 from pyspark.sql import SparkSession
 
 
-SERVICELOCATION = "http://www.rcsb.org/pdb/rest/customReport"
+SERVICELOCATIONS = ["http://www.rcsb.org/pdb/rest/customReport",
+                    "http://www1.rcsb.org/pdb/rest/customReport",
+                    "http://www2.rcsb.org/pdb/rest/customReport"]
+
+
 CURRENT_URL = "?pdbids=*&service=wsfile&format=csv&primaryOnly=1&customReportColumns="
 
 
@@ -54,17 +58,39 @@ def get_dataset(columnNames):
         columnNames = [columnNames]
 
     query = CURRENT_URL + ','.join(columnNames)
-    inStream = _post_query(query)
 
-    tmp = tempfile.NamedTemporaryFile(delete=False)
+    dataset = _get_dataset(query, columnNames)
 
-    with open(tmp.name, "w") as t:
-        for l in inStream:
-            t.writelines(str(l)[2:-3] + '\n')
+    return dataset
 
-    spark = SparkSession.builder.getOrCreate()
 
-    dataset = _read_csv(spark, tmp.name)
+def _get_dataset(query, columnNames):
+    '''Get dataset using different service locations
+    '''
+
+    dataset = None
+
+    for SERVICELOCATION in SERVICELOCATIONS:
+        while True:
+            try:
+                inStream = _post_query(SERVICELOCATION, query)
+
+                tmp = tempfile.NamedTemporaryFile(delete=False)
+
+                with open(tmp.name, "w") as t:
+                    for l in inStream:
+                        t.writelines(str(l)[2:-3] + '\n')
+
+                spark = SparkSession.builder.getOrCreate()
+
+                dataset = _read_csv(spark, tmp.name)
+            except:
+                continue
+            break
+
+    if dataset is None:
+        print("ERROR: cannot connect to service location")
+        return dataset
 
     return _concat_ids(spark, dataset, columnNames)
 
@@ -92,12 +118,13 @@ def _concat_ids(spark, dataset, columnNames):
     return dataset
 
 
-def _post_query(query):
+def _post_query(service, query):
     '''Post PDB Ids and fields in a query string to the RESTful RCSB web service
 
     Attributes
     ----------
         query (string): RESTful query urlopen
+        service (str): service location
 
     Returns
     -------
@@ -105,7 +132,7 @@ def _post_query(query):
     '''
 
     encodedQuery = urllib.parse.quote(query).encode('utf-8')
-    url = request.Request(SERVICELOCATION)
+    url = request.Request(service)
     stream = urllib.request.urlopen(url, data=encodedQuery)
 
     return stream
