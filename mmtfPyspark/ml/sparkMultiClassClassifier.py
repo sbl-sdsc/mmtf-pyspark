@@ -96,7 +96,7 @@ class SparkMultiClassClassifier(object):
 
         # Display some sample predictions
         print(f"\nSample predictions: {str(self.predictor).split('_')[0]}") # TODO predictor.getClass().getSimpleName()
-        predictions.sample(False, 0.1, self.seed).show(25)
+        predictions.sample(False, 0.1, self.seed).show(5)
 
         predictions = predictions.withColumnRenamed(self.label, "stringLabel")
         predictions = predictions.withColumnRenamed("indexedLabel", self.label)
@@ -121,6 +121,6 @@ class SparkMultiClassClassifier(object):
         metrics[""] = f"\nConfusion Matrix\n{labels}\n{m.confusionMatrix()}"
 
         end = time.time()
-        print(f"Total time taken: {end-start}")
+        print(f"Total time taken: {end-start}\n")
 
         return metrics
