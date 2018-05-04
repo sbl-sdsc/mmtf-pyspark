@@ -1,7 +1,7 @@
 # Installation on Windows
 
 ## Prerequisites
-The following libraries and tools are required to install mmtf-spark. Except for Java, you need to choose an installation directory, for example your home directory C:\Users\USER_NAME. This directory is a placeholder for a location of your choice.
+The following libraries and tools are required to install mmtf-spark. Except for Java, you need to choose an installation directory, for example your home directory `C:\Users\USER_NAME`. This directory is a placeholder for a location of your choice.
 
 
 ### Install Java SE Development Toolkit (JDK 1.8)
@@ -101,15 +101,15 @@ mmtfPyspark can be installed using two different ways:
 
 If there are any errors installing package, try upgrading your pip by:
 
-    ```
-    pip install --upgrade pip    
-    ```
+```
+pip install --upgrade pip    
+```
 
 By cloning the Github repository using the pip install method, sample jupyter notebooks and tutorials can be found in the *mmtf-pyspark/demos* directory. All the demos requires jupyter notebooks 5.4+. To check if you have jupyter 5.4+ installed:
 
-    ```
-    jupyter notebook --version    
-    ```
+```
+jupyter notebook --version    
+```
 
 If you do not have jupyter installed:
     ```

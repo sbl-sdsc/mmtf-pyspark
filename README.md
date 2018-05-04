@@ -29,11 +29,6 @@ python --version
 ```
 
 ### mmtfPyspark and dependencies
-mmtfPyspark is now on PyPI, and can be installed with:
-```
-pip install mmtfPyspark
-```
-
 Since mmtfPyspark uses parallel computing to ensure high-performance, it requires additional dependencies such as Apache Spark. Therefore, please read follow the installation instructions for your OS system carefully:
 
 [MacOS and LINUX](docs/MacLinuxInstallation.md)
