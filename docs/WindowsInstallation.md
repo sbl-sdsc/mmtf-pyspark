@@ -125,7 +125,7 @@ If you have a version lower than 5.4:
 To test if the installation is successful:
 
 ```
-curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/test_mmtfPyspark.py -o test_mmtfPyspark.py
+curl -k https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/test_mmtfPyspark.py -o test_mmtfPyspark.py
 
 python test_mmtfPyspark.py
 ```
