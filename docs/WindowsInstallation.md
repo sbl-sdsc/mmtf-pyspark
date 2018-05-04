@@ -86,7 +86,7 @@ pip --version
 Pip should be included if you have python 3.4+
 
 mmtfPyspark can be installed using two different ways:
- * PyPI install (from the python packaging index):
+ * [PyPI](https://pypi.org/project/mmtfPyspark/) install (from the python packaging index):
 
     ```
     pip install mmtfPyspark

@@ -49,7 +49,7 @@ For linux machines, please visit the following website:
 [Install pip on linux](https://packaging.python.org/guides/installing-using-linux-tools/)
 
 mmtfPyspark can be installed using two different ways:
- * PyPI install (from the python packaging index):
+ * [PyPI](https://pypi.org/project/mmtfPyspark/) install (from the python packaging index):
 
    ```
    pip install mmtfPyspark
