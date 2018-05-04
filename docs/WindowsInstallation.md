@@ -1,7 +1,7 @@
 # Installation on Windows
 
 ## Prerequisites
-The following libraries and tools are required to install mmtf-spark. Except for Java, you need to choose an installation directory, for example your home directory `C:\Users\USER_NAME`. This directory is a placeholder for a location of your choice.
+The following libraries and tools are required to install mmtfPyspark. Except for Java, you need to choose an installation directory, for example your home directory `C:\Users\USER_NAME`. This directory is a placeholder for a location of your choice.
 
 
 ### Install Java SE Development Toolkit (JDK 1.8)
@@ -18,9 +18,9 @@ The Git version control system is used to download repositories from Github.
 
 ## Install Spark
 
-As an example in following steps, _YOUR_DIRECTORY_ could be `C:\spark`, _YOUR_SPARK_VERSION_ could be `spark-2.3.0-bin-hadoop2.7`.
+As an example in following steps, `_YOUR_DIRECTORY_` could be `C:\spark`, `_YOUR_SPARK_VERSION_` could be `spark-2.3.0-bin-hadoop2.7`.
 
-1.  Using GOW:
+1.  Download GOW:
 
     GOW allows you to use linux commands on windows. In this install, we will need curl, gzip, tar which GOW provides.
 
@@ -29,31 +29,31 @@ As an example in following steps, _YOUR_DIRECTORY_ could be `C:\spark`, _YOUR_SP
 2. Download Apache Spark 2.3  
     Go to the Apache Spark website [link](http://spark.apache.org/downloads.html)
 
-    a) Choose a Spark version 2.3
+    a) Choose Spark version 2.3
 
     b) Choose a package type: Pre-build for Apache Hadoop 2.7 and later
 
     c) Click on the Download Spark link
 
-    d) Move the file to YOUR_DIRECTORY
+    d) Move the file to `_YOUR_DIRECTORY_`
 
     e) Unzip the file with the following commands:
 
     ```
     cd _YOUR_DIRECTORY_
 
-    gzip -d YOUR_SPARK_VERSION.tgz
+    gzip -d _YOUR_SPARK_VERSION_.tgz
 
-    tar xvf YOUR_SPARK_VERSION.tar
+    tar xvf _YOUR_SPARK_VERSION_.tar
     ```
 
-3.  Download winutils.exe into `_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_\bin` using following command.
+3.  Download winutils.exe into `_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_\bin` using the following command.
 
     ```
     curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.7.1/bin/winutils.exe?raw=true
     ```
 
-4.  Next, we will edit our environmental variables.
+4.  Next, edit the environmental variables.
 
     **Find environmental variables:**
 
@@ -63,21 +63,21 @@ As an example in following steps, _YOUR_DIRECTORY_ could be `C:\spark`, _YOUR_SP
 
 	c) Click Environment Variables.
 
-	d) In the section User Variables find the environment variables and select it. Click Edit. If the environment variable does not exist, click New.
+	d) In the section User Variables find the environment variables and select it. Click new to set the following environmental variables.
 
-    **Set environmental variables:**
+        **Set environmental variables:**
 
-	a) set "SPARK_HOME" to `_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_`
+	   * Set *"SPARK_HOME"* to `_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_`
 
-	b) set "HADOOP_HOME" to `_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_`
+       * Set *"HADOOP_HOME"* to `_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_`
 
-	c) Add `;_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_\bin` to your "PATH".
+       * Add `;_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_\bin` to your *"PATH"*.
 
 
 ### Install mmtfPyspark
 If you do not have anaconda installed, all the following `pip ...` should be replaced with `python -m pip ...`
 
-To install mmtfPyspark, make sure you have pip:
+To install mmtfPyspark, make sure you have pip installed:
 
 ```
 pip --version
@@ -99,7 +99,7 @@ mmtfPyspark can be installed using two different ways:
     pip install ./mmtf-pyspark/
     ```
 
-If there are any errors installing package, try upgrading your pip by:
+If there are any errors installing the package, try grading pip by:
 
 ```
 pip install --upgrade pip    
@@ -136,9 +136,17 @@ If the metadata of 1AQ1 is printed, you have successfully intalled mmtfPyspark.
 ### [OPTIONAL] Hadoop Sequence Files
 Hadoop sequence files of all PDB structures can be downloaded and environmental variables can be set by running the following command:
 ```
+cd _YOUR_DIRECTORY_
+
 curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
 tar -xvf full.tar
 
 curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
 tar -xvf reduced.tar
 ```
+
+Set environmental variables:
+
+    a) Set *"MMTF_FULL"* to `_YOUR_DIRECTORY_\full`
+
+    b) Set *"MMTF_REDUCED"* to `_YOUR_DIRECTORY_\reduced`
