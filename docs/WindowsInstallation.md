@@ -147,6 +147,6 @@ tar -xvf reduced.tar
 
 Set environmental variables:
 
-    a) Set *"MMTF_FULL"* to `_YOUR_DIRECTORY_\full`
+a) Set *"MMTF_FULL"* to `_YOUR_DIRECTORY_\full`
 
-    b) Set *"MMTF_REDUCED"* to `_YOUR_DIRECTORY_\reduced`
+b) Set *"MMTF_REDUCED"* to `_YOUR_DIRECTORY_\reduced`
