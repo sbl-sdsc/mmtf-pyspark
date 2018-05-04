@@ -33,13 +33,13 @@ curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/install_
 ### Install mmtfPyspark
 If you do not have anaconda installed, all the following `pip ...` should be replaced with `python -m pip ...`
 
-To install mmtfPyspark, make sure you have pip:
+To install mmtfPyspark, make sure you have pip installed:
 
 ```
 pip --version
 ```
 
-To install pip on your mac:
+To install pip on MacOS:
 ```
 sudo easy_install pip
 ```
@@ -48,7 +48,7 @@ For linux machines, please visit the following website:
 
 [Install pip on linux](https://packaging.python.org/guides/installing-using-linux-tools/)
 
-mmtfPyspark can be installed using two different ways:
+mmtfPyspark can be installed in two different ways:
  * [PyPI](https://pypi.org/project/mmtfPyspark/) install (from the python packaging index):
 
    ```
@@ -62,19 +62,13 @@ mmtfPyspark can be installed using two different ways:
    pip install ./mmtf-pyspark/
    ```
 
-If there are any errors installing package, try upgrading your pip by:
+If there are any errors installing mmtfPyspark, try upgrading pip by:
 
    ```
    pip install --upgrade pip    
    ```
 
 By cloning the Github repository using the pip install method, sample jupyter notebooks and tutorials can be found in the *mmtf-pyspark/demos* directory.
-
-If there are any errors installing package, try upgrading your pip by:
-
-   ```
-   pip install --upgrade pip    
-   ```
 
 
 ### Testing installation
@@ -86,11 +80,11 @@ curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/test_mmtfPys
 python test_mmtfPyspark.py
 ```
 
-If the metadata of 1AQ1 is printed, you have successfully intalled mmtfPyspark.
+If the metadata of 1AQ1 is printed, you have successfully installed mmtfPyspark.
 
 
 ### [OPTIONAL] Hadoop Sequence Files
-Hadoop sequence files of all PDB structures can be downloaded and environmental variables can be set by running the following command:
+MMTF Hadoop sequence files of all PDB structures can be downloaded and environmental variables can be set by running the following command:
 ```
 curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/download_mmtf_files.sh -o download_mmtf_files.sh
 . ./download_mmtf_files.sh
