@@ -28,9 +28,14 @@ mmtfPyspark_dependencies = ['pyspark>=2.3.0',
                             'py4j>=0.10.6'
                             ]
 
+LONG_DESCRIPTION = """
+**mmtfPyspark** is a python package that provides APIs and sample applications for distributed analysis and scalable mining of 3D biomacromolecular structures, such as the Protein Data Bank (PDB) archive. mmtfPyspark uses Big Data technologies to enable high-performance parallel processing of macromolecular structures.
+"""
+
 setup(name='mmtfPyspark',
-      version='0.2.0',
+      version='0.2.2',
       description='Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark',
+      long_description=LONG_DESCRIPTION,
       url='https://github.com/sbl-sdsc/mmtf-pyspark',
       author='Mars Huang (Shih-Cheng)',
       author_email='marshuang80@gmail.com',
