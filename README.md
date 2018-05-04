@@ -38,7 +38,7 @@ Since mmtfPyspark uses parallel computing to ensure high-performance, it require
 
 ## Hadoop Sequence Files
 
-The Hadoop sequence files can be downloaded by:
+The MMTF Hadoop sequence files of all PDB structures can be downloaded by:
 ```
 curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
 tar -xvf full.tar
