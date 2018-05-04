@@ -134,7 +134,7 @@ If the metadata of 1AQ1 is printed, you have successfully intalled mmtfPyspark.
 
 
 ### [OPTIONAL] Hadoop Sequence Files
-Hadoop sequence files of all PDB structures can be downloaded and environmental variables can be set by running the following command:
+MMTF Hadoop sequence files of all PDB structures can be downloaded and environmental variables can be set by running the following command:
 ```
 cd _YOUR_DIRECTORY_
 
