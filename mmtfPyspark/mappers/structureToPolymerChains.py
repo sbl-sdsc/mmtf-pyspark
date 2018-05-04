@@ -150,11 +150,6 @@ class StructureToPolymerChains(object):
                     seqSet.add(chainToEntityIndex[i])
                 chainList.append((structure.structure_id + "." + chId, polymerChain))
 
-        '''
-        # TODO double check with python version
-        if self.excludeDuplicates:
-            return list(set(chainList))
-        '''
         return chainList
 
 
