@@ -85,8 +85,9 @@ def _to_byte_array(structure, compressed):
         MMTF encoded and optionally gzipped structure data
     '''
 
-    if not structure.alt_loc_set:
-        structure = structure.set_alt_loc_list()
+    if type(structure) == MmtfStructure:
+        if not structure.alt_loc_set:
+            structure = structure.set_alt_loc_list()
 
     byte_array = bytearray(msgpack.packb(MMTFEncoder.encode_data(structure), use_bin_type = True))
 
