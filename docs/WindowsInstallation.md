@@ -20,6 +20,8 @@ The Git version control system is used to download repositories from Github.
 
 As an example in following steps, `_YOUR_DIRECTORY_` could be `C:\spark`, `_YOUR_SPARK_VERSION_` could be `spark-2.3.0-bin-hadoop2.7`.
 
+If *anaconda* is installed, skip step 1 and run all of the commands on anaconda prompt. Else, open your command prompt and follow the instructions from step 1.
+
 1.  Download GOW:
 
     GOW allows you to use linux commands on windows. In this install, we will need curl, gzip, tar which GOW provides.
@@ -122,6 +124,8 @@ If you have a version lower than 5.4:
     ```
 
 ### Testing installation
+Before testing the installation, close and reopen your Anaconda/Command prompt.
+
 To test if the installation is successful:
 
 ```
