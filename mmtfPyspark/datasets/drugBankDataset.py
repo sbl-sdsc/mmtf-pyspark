@@ -223,7 +223,7 @@ def _decode_as_zip_input_stream(content):
     '''
 
     zipfile = ZipFile(BytesIO(content))
-    return [line.decode('utf-8') for line \
+    return [line.decode() for line \
             in zipfile.open(zipfile.namelist()[0]).readlines()]
 
 
