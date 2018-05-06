@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file, following the suggestions of [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.2.4 - 2018-05-06
+### Final updates before MMTF Workshop 2018
+- Included all modules in __init__ files
+
 ## v0.2.2 - 2018-05-04
 ### Using Wheel for better packaging
 - Using wheel to package
