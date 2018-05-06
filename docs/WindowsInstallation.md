@@ -20,7 +20,7 @@ The Git version control system is used to download repositories from Github.
 
 As an example in following steps, `_YOUR_DIRECTORY_` could be `C:\spark`, `_YOUR_SPARK_VERSION_` could be `spark-2.3.0-bin-hadoop2.7`.
 
-If *anaconda* is installed, skip step 1 and run all of the commands on anaconda prompt. Else, open your command prompt and follow the instructions from step 1.
+If **Anaconda** is installed, skip step 1 and run all of the commands on **Anaconda prompt**. Else, open your command prompt and follow the instructions from step 1.
 
 1.  Download GOW:
 
@@ -87,18 +87,11 @@ pip --version
 
 Pip should be included if you have python 3.4+
 
-mmtfPyspark can be installed using two different ways:
+mmtfPyspark can be installed using:
  * [PyPI](https://pypi.org/project/mmtfPyspark/) install (from the python packaging index):
 
     ```
     pip install mmtfPyspark
-    ```
-
- * pip install (cloning github repository and do a local installation):
-
-    ```
-    git clone https://github.com/sbl-sdsc/mmtf-pyspark.git
-    pip install ./mmtf-pyspark/
     ```
 
 If there are any errors installing the package, try grading pip by:
