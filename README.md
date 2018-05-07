@@ -28,6 +28,11 @@ We strongly recommend that you have [anaconda](https://docs.continuum.io/anacond
 python --version
 ```
 
+If **Anaconda** is installed, and if you have python 3.6, the above command should return:
+```
+Python 3.6.4 :: Anaconda, Inc.
+```
+
 ### mmtfPyspark and dependencies
 Since mmtfPyspark uses parallel computing to ensure high-performance, it requires additional dependencies such as Apache Spark. Therefore, please read follow the installation instructions for your OS carefully:
 

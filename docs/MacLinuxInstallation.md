@@ -33,6 +33,8 @@ curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/install_
 ### Install mmtfPyspark
 If you do not have anaconda installed, all the following `pip ...` should be replaced with `python -m pip ...`
 
+If you have both python 2 and python 3 installed, replace all the following `python ...` with `python3 ...`
+
 To install mmtfPyspark, make sure you have pip installed:
 
 ```
@@ -48,18 +50,11 @@ For linux machines, please visit the following website:
 
 [Install pip on linux](https://packaging.python.org/guides/installing-using-linux-tools/)
 
-mmtfPyspark can be installed in two different ways:
+mmtfPyspark can be installed in the following way:
  * [PyPI](https://pypi.org/project/mmtfPyspark/) install (from the python packaging index):
 
    ```
    pip install mmtfPyspark
-   ```
-
- * pip install (cloning github repository and do a local installation):
-
-   ```
-   git clone https://github.com/sbl-sdsc/mmtf-pyspark.git
-   pip install ./mmtf-pyspark/
    ```
 
 If there are any errors installing mmtfPyspark, try upgrading pip by:
@@ -86,6 +81,30 @@ If the metadata of 1AQ1 is printed, you have successfully installed mmtfPyspark.
 ### [OPTIONAL] Hadoop Sequence Files
 MMTF Hadoop sequence files of all PDB structures can be downloaded and environmental variables can be set by running the following command:
 ```
-curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/download_mmtf_files.sh -o download_mmtf_files.sh
 . ./download_mmtf_files.sh
 ```
+
+### Tips:
+#### Exception: Python in worker has different version than in driver.
+Find the path to your python3 by the following command:
+```
+which python3
+```
+
+Add the following lines to your `~/.basrc` file
+
+```
+export PYSPARK_PYTHON = <path to your python3>
+export PYSPARK_DRIVER_PYTHON = <path to your python3>
+```
+
+#### [SSL: CERTIFICATE_VERIFY_FAILED]
+On your Mac, go to `Applications` > `Python 3.6` and click on `InstallCertificates.command`
+
+#### If you are not using the root account
+Add the --user flag during pip install:
+```
+pip install --user mmtfPyspark
+```
+
+Again, we strongly recommend you to have **Anaconda** installed. 
