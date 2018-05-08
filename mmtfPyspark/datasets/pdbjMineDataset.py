@@ -21,6 +21,7 @@ Authorship information:
 '''
 
 import urllib
+import ssl
 import tempfile
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, lit, upper, concat
@@ -35,12 +36,20 @@ def get_dataset(sqlQuery):
     ----------
         sqlQuery (str): the sql query for the web service
     '''
+    # Create SSl certificate
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
 
+    # encode SQL
     encodedSQL = urllib.parse.quote(sqlQuery)
-    tmp = tempfile.NamedTemporaryFile(delete=False)
-
     URL = "https://pdbj.org/rest/mine2_sql"
-    urlretrieve(URL + "?format=csv&q=" + encodedSQL, tmp.name)
+
+    # Download results to file
+    infile = urllib.request.urlopen(URL + "?format=csv&q=" + encodedSQL, context=ctx)
+    tmp = tempfile.NamedTemporaryFile(delete=False)
+    with open(tmp.name, 'wb') as output:
+        output.write(infile.read())
 
     spark = SparkSession.builder.getOrCreate()
 
