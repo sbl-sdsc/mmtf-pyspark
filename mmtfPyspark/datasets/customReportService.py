@@ -6,25 +6,24 @@ metadata and annotations for all current entries in the ProteinDataBank.
 
 References
 ----------
-    List of supported fieldnames:
-        http://www.rcsb.org/pdb/results/reportField.do
-    The RCSB Protein Data Bank:redesignedwebsiteandwebservices2011NucleicAcidsRes.39:D392-D401.
-        https://dx.doi.org/10.1093/nar/gkq1021
+List of supported fieldnames:
+    http://www.rcsb.org/pdb/results/reportField.do
+The RCSB Protein Data Bank:redesignedwebsiteandwebservices2011NucleicAcidsRes.39:D392-D401.
+    https://dx.doi.org/10.1093/nar/gkq1021
 
-Example
--------
-    Retrieve PubMedCentral, PubMedID, and Depositiondate:
-        ds = CustomReportService.getDataset("pmc","pubmedId","depositionDate")
-        ds.printSchema()
-        ds.show(5)
+Examples
+--------
+Retrieve PubMedCentral, PubMedID, and Depositiondate:
+>>> ds = CustomReportService.getDataset("pmc","pubmedId","depositionDate")
+>>> ds.printSchema()
+>>> ds.show(5)
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 import urllib
 from urllib import request
@@ -47,11 +46,13 @@ def get_dataset(columnNames):
 
     Attributes
     ----------
-        columnNames: names of columns for the dataset
+    columnNames : str, list
+       names of columns for the dataset
 
     Returns
     -------
-        dataset with the specified columns
+    dataset
+       dataset with the specified columns
     '''
 
     if type(columnNames) == str:
@@ -101,9 +102,10 @@ def _concat_ids(spark, dataset, columnNames):
 
     Attributes
     ----------
-        spark (SparkSession)
-        dataset (Dataframe)
-        columnNames (list): columnNames
+    spark : SparkSession
+    dataset : Dataframe
+    columnNames : list
+       columnNames
     '''
 
     if "chainId" in dataset.columns:
@@ -123,11 +125,14 @@ def _post_query(service, query):
 
     Attributes
     ----------
-        query (string): RESTful query urlopen
-        service (str): service location
+    query : str
+       RESTful query urlopen
+    service :str 
+       service location
 
     Returns
     -------
+    stream
         input stream to response
     '''
 
@@ -143,8 +148,9 @@ def _read_csv(spark, inputFileName):
 
     Attributes
     ----------
-        spark (Spark Context)
-        inputFileName (str): directory path for the input file
+    spark : Spark Context
+    inputFileName : str
+       directory path for the input file
     '''
 
     dataset = spark.read \

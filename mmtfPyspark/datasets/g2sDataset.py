@@ -16,26 +16,24 @@ References
     protein structures (2018) Bioinformatics,
         https://doi.org/10.1093/bioinformatics/bty047
 
-Example
--------
-    variantIds = ["chr7:g.140449098T>C", "chr7:g.140449100T>C"]
-    ds = g2sDataset.get_position_dataset(variantIds, "3TV4", "A")
-    ds.show()
+Examples
+--------
+>>> variantIds = ["chr7:g.140449098T>C", "chr7:g.140449100T>C"]
+>>> ds = g2sDataset.get_position_dataset(variantIds, "3TV4", "A")
+>>> ds.show()
++-----------+-------+-----------+------------+-----------+-------------------+
+|structureId|chainId|pdbPosition|pdbAminoAcid|  refGenome|        variationId|
++-----------+-------+-----------+------------+-----------+-------------------+
+|       3TV4|      A|        661|           N|hgvs-grch37|chr7:g.140449098T>C|
+|       3TV4|      A|        660|           N|hgvs-grch37|chr7:g.140449100T>C|
++-----------+-------+-----------+------------+-----------+-------------------+
 
-    +-----------+-------+-----------+------------+-----------+-------------------+
-    |structureId|chainId|pdbPosition|pdbAminoAcid|  refGenome|        variationId|
-    +-----------+-------+-----------+------------+-----------+-------------------+
-    |       3TV4|      A|        661|           N|hgvs-grch37|chr7:g.140449098T>C|
-    |       3TV4|      A|        660|           N|hgvs-grch37|chr7:g.140449100T>C|
-    +-----------+-------+-----------+------------+-----------+-------------------+
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from pyspark.sql.functions import col, explode, upper
 from pyspark.sql import SparkSession

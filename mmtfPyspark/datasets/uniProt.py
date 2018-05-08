@@ -8,28 +8,27 @@ converts them to datasets.This module reads the following files:
     UNIREF90,
     UNIREF100.
 
-Reference
----------
-    UniProt downloads:
-        http://www.uniprot.org/downloads
-    The datasets have the following columns:
-        http://www.uniprot.org/help/fasta-headers
+References
+----------
+UniProt downloads:
+    http://www.uniprot.org/downloads
+The datasets have the following columns:
+    http://www.uniprot.org/help/fasta-headers
 
-Example
--------
-    Download, read, and save the SWISS_PROT dataset:
-        ds = uniProt.get_dataset(UniProtDataset.SWISS_PROT)
-        ds.printSchema()
-        ds.show(5)
-        ds.write().mode("overwrite").format("parquet").save(fileName)
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
+Examples
+--------
+Download, read, and save the SWISS_PROT dataset:
+>>> ds = uniProt.get_dataset(UniProtDataset.SWISS_PROT)
+>>> ds.printSchema()
+>>> ds.show(5)
+>>> ds.write().mode("overwrite").format("parquet").save(fileName)
 '''
+
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from collections import namedtuple
 import tempfile
@@ -204,11 +203,13 @@ def get_dataset(UniProtDataset):
 
     Attributes
     ----------
-        uniProtDataset (String): name of the UniProt dataset
+    uniProtDataset : str
+       name of the UniProt dataset
 
     Returns
     -------
-        dataset with sequence and metadata
+    dataset
+       dataset with sequence and metadata
     '''
 
     if UniProtDataset.split('/')[-3] == "uniref":

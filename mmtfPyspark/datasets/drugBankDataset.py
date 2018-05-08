@@ -7,19 +7,18 @@ other data resources.
 
 References
 ----------
-    Drug Bank:
-        https://www.drugbank.ca
-    Wishart DS, et al., DrugBank 5.0: a major update to the DrugBank database
-    for 2018. Nucleic Acids Res. 2017 Nov 8 :
-        https://dx.doi.org/10.1093/nar/gkx1037
+Drug Bank:
+    https://www.drugbank.ca
+Wishart DS, et al., DrugBank 5.0: a major update to the DrugBank database
+for 2018. Nucleic Acids Res. 2017 Nov 8 :
+    https://dx.doi.org/10.1093/nar/gkx1037
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 import requests
 import tempfile
@@ -47,23 +46,25 @@ def get_open_drug_links():
 
     References
     ----------
-        Open Data dataset:
-            https://www.drugbank.ca/releases/latest#open-data
+    Open Data dataset:
+        https://www.drugbank.ca/releases/latest#open-data
 
-    Example
-    -------
-        Get DrugBank open dataset:
-            openDrugLinks = DrugBankDataset.get_open_drug_links()
-            openDrugLinks.show()
-        +----------+--------------------+-----------+--------------------+
-        |DrugBankID|          Commonname|        CAS|    StandardInChIKey|
-        +----------+--------------------+-----------+--------------------+
-        |   DB00006|         Bivalirudin|128270-60-0|OIRCOABEOLEUMC-GE...|
-        |   DB00014|           Goserelin| 65807-02-5|BLCLNMBMMGCOAS-UR...|
+    Examples
+    --------
+    Get DrugBank open dataset:
+    >>> openDrugLinks = DrugBankDataset.get_open_drug_links()
+    >>> openDrugLinks.show()
+    +----------+--------------------+-----------+--------------------+
+    |DrugBankID|          Commonname|        CAS|    StandardInChIKey|
+    +----------+--------------------+-----------+--------------------+
+    |   DB00006|         Bivalirudin|128270-60-0|OIRCOABEOLEUMC-GE...|
+    |   DB00014|           Goserelin| 65807-02-5|BLCLNMBMMGCOAS-UR...|
 
-    Retruns
+    Returns
     -------
-        DrugBank Dataset
+    dataset
+       DrugBank Dataset
+
     '''
 
     url = BASE_URL + "all-drugbank-vocabulary"
@@ -90,27 +91,30 @@ def get_drug_links(drugGroup, username, password):
 
     References
     ----------
-        External Drug Links:
-            https://www.drugbank.ca/releases/latest#external-links
+    External Drug Links:
+        https://www.drugbank.ca/releases/latest#external-links
 
-    Example
-    -------
-        Get dataset of external links and identifiers of approved drugs:
-            username = "<your DrugBank username>"
-            String password = "<your DrugBank password>"
-            drugLinks = get_drug_links("APPROVED", username, password)
-            drugLinks.show()
+    Examples
+    --------
+    Get dataset of external links and identifiers of approved drugs:
+    >>> username = "<your DrugBank username>"
+    >>> String password = "<your DrugBank password>"
+    >>> drugLinks = get_drug_links("APPROVED", username, password)
+    >>> drugLinks.show()
 
     Attributes
     ----------
-        durgGroup (str): specific dataset to be downloaded, has to be in the
-                         pre-defined DURG_GROUP list
-        usesrname (str): DurgBank username
-        password (str): DurgBank password
+    durgGroup : str
+       specific dataset to be downloaded, has to be in the pre-defined DURG_GROUP list
+    usesrname : str
+       DrugBank username
+    password : str
+       DrugBank password
 
-    Retruns
+    Returns
     -------
-        DrugBank Dataset
+    dataset
+       DrugBank Dataset
     '''
 
     if drugGroup.upper() not in DRUG_GROUP:
@@ -139,31 +143,34 @@ def get_drug_target_links(drug, username, password):
 
     References
     ----------
-        Target Drug-UniProt:
-            https://www.drugbank.ca/releases/latest#external-links
+    Target Drug-UniProt:
+        https://www.drugbank.ca/releases/latest#external-links
 
-    Example
-    -------
-        Get dataset of drug target external links and identifiers of all drugs
-        in DrugBank:
-            username = "<your DrugBank username>"
-            password = "<your DrugBank password>"
-            drugTargetLinks = get_drug_target_links("ALL",
-                                                    username,
-                                                    password)
-            drugTargetLinks.show()
+    Examples
+    --------
+    Get dataset of drug target external links and identifiers of all drugs
+    in DrugBank:
+    >>> username = "<your DrugBank username>"
+    >>> password = "<your DrugBank password>"
+    >>> drugTargetLinks = get_drug_target_links("ALL",
+    ...                                         username,
+    ...                                         password)
+    >>> drugTargetLinks.show()
 
     Attributes
     ----------
-        durg (str): specific dataset to be downloaded, has to be either in
-                    the DrugGroup list OR DrugType list.
+    durg : str 
+       specific dataset to be downloaded, has to be either in
+       the DrugGroup list OR DrugType list.
+    usesrname : str
+       DrugBank username
+    password : str
+       DrugBank password
 
-        usesrname (str): DurgBank username
-        password (str): DurgBank password
-
-    Retruns
+    Returns
     -------
-        DrugBank Dataset
+    dataset
+       DrugBank Dataset
     '''
 
     if drug.upper() in DRUG_GROUP or drug.upper() in DRUG_TYPE:
@@ -179,13 +186,17 @@ def get_dataset(url, username=None, password=None):
 
     Attributes
     ----------
-        url (str): DrugBank dataset download links
-        username (str): DrugBank username <None>
-        password (str): DrugBank password <None>
+    url : str
+       DrugBank dataset download links
+    username : str
+       DrugBank username <None>
+    password : str
+       DrugBank password <None>
 
     Returns
     -------
-        DrugBank dataset
+    dataset 
+       DrugBank dataset
     '''
     if username is None and password is None:
         # get input stream to first zip entry
@@ -215,11 +226,13 @@ def _decode_as_zip_input_stream(content):
 
     Attributes
     ----------
-        content (inputStream): inputStream content from request
+    content : inputStream
+       inputStream content from request
 
     Returns
     -------
-        unzipped InputStream
+    inputStream
+       unzipped InputStream
     '''
 
     zipfile = ZipFile(BytesIO(content))
@@ -232,11 +245,13 @@ def _save_temp_file(unzipped):
 
     Attributes
     ----------
-        unzipped (list): list of unzipped content
+    unzipped : list
+       list of unzipped content
 
     Returns
     -------
-        path to the tempfile
+    str
+       path to the tempfile
     '''
     tempFile = tempfile.NamedTemporaryFile(delete=False)
     with open (tempFile.name, "w") as t:
@@ -249,11 +264,13 @@ def _read_csv(inputFileName):
 
     Attributes
     ----------
-        fileName(str): name of the input csv fileName
+    fileName : str
+       name of the input csv fileName
 
     Returns
     -------
-        a spark dataset
+    dataset
+       a spark dataset
     '''
     spark = SparkSession.builder.getOrCreate()
     dataset = spark.read.format("csv") \
@@ -268,11 +285,13 @@ def _remove_spaces_from_column_names(original):
 
     Attributes
     ----------
-        original (Dataset): the original dataset
+    original : dataset
+       the original dataset
 
     Returns
     -------
-        dataset with columns renamed
+    dataset
+       dataset with columns renamed
     '''
 
     for existingName in original.columns:

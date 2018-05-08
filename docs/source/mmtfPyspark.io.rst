@@ -1,30 +1,16 @@
-mmtfPyspark\.io package
-=======================
-
-Submodules
-----------
-
-mmtfPyspark\.io\.mmtfReader module
-----------------------------------
-
-.. automodule:: mmtfPyspark.io.mmtfReader
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-mmtfPyspark\.io\.mmtfWriter module
-----------------------------------
-
-.. automodule:: mmtfPyspark.io.mmtfWriter
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
-Module contents
----------------
+mmtfPyspark.io package
+======================
 
 .. automodule:: mmtfPyspark.io
     :members:
     :undoc-members:
     :show-inheritance:
+
+Submodules
+----------
+
+.. toctree::
+
+   mmtfPyspark.io.mmtfReader
+   mmtfPyspark.io.mmtfWriter
+
