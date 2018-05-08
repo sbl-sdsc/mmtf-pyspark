@@ -22,12 +22,11 @@ and source organism Homo sapiens:
     pdb = pdb.filter(new RcsbWebserviceFilter(whereClause, "ecNo","source"));
 </code></pre>
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com:
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__status__ = "Done"
 
 from mmtfPyspark.datasets import customReportService
 from pyspark.sql import SparkSession
@@ -38,8 +37,11 @@ class CustomReportQuery(object):
 
     Attributes
     ----------
-        whereClause : WHERE Clause of SQL statement
-        fields : one or more field names to be used in query
+    whereClause : str
+       WHERE Clause of SQL statement
+    fields : 
+       one or more field names to be used in query
+
     '''
 
     def __init__(self, whereClause, fields):

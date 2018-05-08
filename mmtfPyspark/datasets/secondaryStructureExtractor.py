@@ -6,22 +6,20 @@ includes protein sequence, the DSSP 3-state (Q3) and 8-state (Q8)
 assignments, and the fraction of alpha, beta, and coil within a chain. The
 input to this class must be a single protein chain.
 
-Example
--------
-    get dataset of secondary structure assignments:
+Examples
+--------
+get dataset of secondary structure assignments:
+>>> pdb.flatMapToPair(new StructureToPolymerChains())
+...    .filter(new ContainsLProteinChain())
+>>> secStruct = SecondaryStructureExtractor.getDataset(pdb)
+>>> secStruct.show(10)
 
-    pdb.flatMapToPair(new StructureToPolymerChains())
-       .filter(new ContainsLProteinChain())
-    secStruct = SecondaryStructureExtractor.getDataset(pdb)
-    secStruct.show(10)
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from mmtfPyspark.ml import pythonRDDToDataset
 from mmtfPyspark.utils import DsspSecondaryStructure
@@ -33,11 +31,13 @@ def get_dataset(structure):
 
     Attributes
     ----------
-        structure (mmtfStructure): single protein chain
+    structure : mmtfStructure
+       single protein chain
 
     Returns
     -------
-        dataset with sequence and secondary structure assignments
+    dataset
+       dataset with sequence and secondary structure assignments
     '''
 
     rows = structure.map(
@@ -55,7 +55,7 @@ def get_python_rdd(structure):
 
     Attributes
     ----------
-        structure (mmtfStructure)
+    structure : mmtfStructure
     '''
 
     return structure.map(lambda x: _get_sec_struct_fractions(x))

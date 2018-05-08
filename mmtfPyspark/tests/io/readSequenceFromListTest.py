@@ -2,13 +2,11 @@
 '''
 readSequenceFromListTest.py: Example reading a list of PDB IDs from a local MMTF Hadoop sequence \
 file into a tubleRDD.
-
-Authorship information:
+'''
 __author__ = "Mars (Shih-Cheng) Huang"
 __maintainer__ = "Mars (Shih-Cheng) Huang"
-__email__ = "marshuang80@gmail.com:
+__email__ = "marshuang80@gmail.com"
 __status__ = "Warning"
-'''
 
 import unittest
 from pyspark import SparkConf, SparkContext

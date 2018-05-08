@@ -3,22 +3,20 @@
 
 A class that prints of hierachy information about a structure
 
-Example
--------
+Examples
+--------
+>>> pdb = mmtfReader.download_mmtf_files(['1STP'], sc)
+>>> pdb.foreach(lambda t: traverseStructureHierarchy.printMmtfInfo(t[1]) )
 
-    pdb = mmtfReader.download_mmtf_files(['1STP'], sc)
-    pdb.foreach(lambda t: traverseStructureHierarchy.printMmtfInfo(t[1]) )
+>>> structure = mmtfReader.download_mmtf_files(['1STP'], sc).collect()[0]
+>>> traverseStructureHierarchy.print_mmtf_info(structure[1])
 
-    structure = mmtfReader.download_mmtf_files(['1STP'], sc).collect()[0]
-    traverseStructureHierarchy.print_mmtf_info(structure[1])
-
-Authorship information:
-    __author__ = "Yue Yu"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Yue Yu"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from mmtfPyspark.utils.dsspSecondaryStructure import *
 

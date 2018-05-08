@@ -7,13 +7,12 @@ query (e.g. a metal ion) and the target (e.g. amino acid redisudes).
 Interaction criteria such as distance cutoff limit the nature of interactions to
 be considered.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 import sys
 
@@ -158,24 +157,25 @@ class InteractionFilter(object):
         '''Sets the elements to either be included or excluded in the query.
         Element strings are case sensitive (e.g., "Zn" for Zinc).
 
-        Example: Only use elements O, N, S in the query groups in find polar
+        Examples
+        --------
+        Only use elements O, N, S in the query groups in find polar
         interactions
+        >>> filter = InteractionFilter()
+        >>> filter.set_query_elements(True, ["O", "N", "S"])
 
-            filter = InteractionFilter()
-            filter.set_query_elements(True, ["O", "N", "S"])
-
-        Example: Exclude non-polar elements and hydrogen in query groups and use
+        Exclude non-polar elements and hydrogen in query groups and use
         all other elements to find interactions.
-
-            elements = ['C', 'H', 'P']
-            filter.set_query_elements(False, elements)
+        >>> elements = ['C', 'H', 'P']
+        >>> filter.set_query_elements(False, elements)
 
         Attributes
         ----------
-            include (bool): if True, uses the specifed elements in the query,
-                            if False, ignores the specified elemetns and use all
-                            other elements
-            elements (list): list of elements to be included or excluded in query
+        include : bool
+           if True, uses the specifed elements in the query,
+           if False, ignores the specified elemetns and use all other elements
+        elements : list
+           list of elements to be included or excluded in query
         '''
 
         if self._queryElements is not None:
@@ -222,23 +222,24 @@ class InteractionFilter(object):
         '''Sets groups to either be included or excluded in the query. Group names
         must be upper case (e.g. 'ZN' for Zinc)
 
-        Example: Find interactions with ATP and ADP
+        Examples
+        --------
+        Find interactions with ATP and ADP
+        >>> filter = InteractionFilter()
+        >>> filter.set_query_groups(True, ['ATP', 'ADP'])
 
-            filter = InteractionFilter()
-            filter.set_query_groups(True, ['ATP', 'ADP'])
-
-        Example: Exclude water and heavy water and use all other groups to find
-        interactions.
-
-            groups = ["HOH", "DOD"]
-            filter.set_query_groups(False, groups)
+        Exclude water and heavy water and use all other groups to find interactions.
+        >>> groups = ["HOH", "DOD"]
+        >>> filter.set_query_groups(False, groups)
 
         Attributes
         ----------
-            include (bool): if True, uses the specified groups in the query,
-                            if False, ignores the specified groups and uses all
-                            other groups
-            groups (list): groups to be included or excluded in query
+        include : bool
+           if True, uses the specified groups in the query,
+           if False, ignores the specified groups and uses all other groups
+        groups : list
+           groups to be included or excluded in query
+
         '''
 
         if self._queryGroups is not None:
@@ -253,23 +254,23 @@ class InteractionFilter(object):
         '''Sets groups to either be included or excluded in the target. Group names
         must be upper case (e.g. 'ZN' for Zinc)
 
-        Example: Find interactions with specific amino acid groups.
+        Examples
+        --------
+        Find interactions with specific amino acid groups.
+        >>> filter = InteractionFilter()
+        >>> filter.set_target_groups(True, ['CYS','HIS','ASP','GLU'])
 
-            filter = InteractionFilter()
-            filter.set_target_groups(True, ['CYS','HIS','ASP','GLU'])
-
-        Example: Exclude water and heavy water and use all other groups to find
-        interactions.
-
-            groups = ["HOH", "DOD"]
-            filter.set_target_groups(False, groups)
+        Exclude water and heavy water and use all other groups to find interactions.
+        >>> groups = ["HOH", "DOD"]
+        >>> filter.set_target_groups(False, groups)
 
         Attributes
         ----------
-            include (bool): if True, uses the specified groups in the target,
-                            if False, ignores the specified groups and uses all
-                            other groups
-            groups (list): groups to be included or excluded in query
+        include : bool
+           if True, uses the specified groups in the target,
+           if False, ignores the specified groups and uses all other groups
+        groups : list
+           groups to be included or excluded in query
         '''
 
         if self._targetGroups is not None:
@@ -285,22 +286,21 @@ class InteractionFilter(object):
 
         Examples
         --------
-            Find interaction with C-alpha and C-beta atoms.
+        Find interaction with C-alpha and C-beta atoms.
+        >>> filter = InteractionFilter()
+        >>> filter.set_query_atom_names(True, ['CA', 'CB'])
 
-                filter = InteractionFilter()
-                filter.set_query_atom_names(True, ['CA', 'CB'])
-
-            Exclude backbone atoms, but consider all other atom names: e.g,
-            amino acid side chains.
-
-                filter.set_query_atom_names(False, ['N', 'CA', 'C', 'O'])
+        Exclude backbone atoms, but consider all other atom names: e.g,
+        amino acid side chains.
+        >>> filter.set_query_atom_names(False, ['N', 'CA', 'C', 'O'])
 
         Attributes
         ----------
-            include (bool): if True, uses set of atom names in query, if False,
-                            ignores atoms with the specified names and uses all
-                            other atoms
-            atom_names (list): atoms to be included or excluded in the query
+        include : bool
+           if True, uses set of atom names in query, 
+           if False, ignores atoms with the specified names and uses all other atoms
+        atom_names : list
+           atoms to be included or excluded in the query
         '''
 
         if self._queryAtomNames is not None:
@@ -316,22 +316,21 @@ class InteractionFilter(object):
 
         Examples
         --------
-            Find interaction with C-alpha and C-beta atoms.
+        Find interaction with C-alpha and C-beta atoms.
+        >>> filter = InteractionFilter()
+        >>> filter.set_target_atom_names(True, ['CA', 'CB'])
 
-                filter = InteractionFilter()
-                filter.set_target_atom_names(True, ['CA', 'CB'])
-
-            Exclude backbone atoms, but consider all other atom names: e.g,
-            amino acid side chains.
-
-                filter.set_target_atom_names(False, ['N', 'CA', 'C', 'O'])
+        Exclude backbone atoms, but consider all other atom names: e.g,
+        amino acid side chains.
+        >>> filter.set_target_atom_names(False, ['N', 'CA', 'C', 'O'])
 
         Attributes
         ----------
-            include (bool): if True, uses set of atom names in target, if False,
-                            ignores atoms with the specified names and uses all
-                            other atoms
-            atom_names (list): atoms to be included or excluded in the target
+        include : bool
+           if True, uses set of atom names in target, 
+           if False, ignores atoms with the specified names and uses all other atoms
+        atom_names : list
+           atoms to be included or excluded in the target
         '''
 
         if self._targetAtomNames is not None:
@@ -346,16 +345,18 @@ class InteractionFilter(object):
         '''Sets groups that must not appear in interactions. Any interactions that
         involves the specified groups will be excluded from the results.
 
-        Example Find Zinc interactions, but discard any interactions where the
+        Examples
+        --------
+        Find Zinc interactions, but discard any interactions where the
         metal is involved in an interaction with water.
-
-            filter = InteractionFilter()
-            filter.set_query_groups(True, 'ZN')
-            filter.set_prohibited_target_groups(["HOH"])
+        >>> filter = InteractionFilter()
+        >>> filter.set_query_groups(True, 'ZN')
+        >>> filter.set_prohibited_target_groups(["HOH"])
 
         Attributes
         ----------
-            groups(list): one or more group names to be prohibited
+        groups : list
+           one or more group names to be prohibited
         '''
         if type(groups) == str:
             groups = [groups]
@@ -366,10 +367,12 @@ class InteractionFilter(object):
 
         Attributes
         ----------
-            element (string): the element to be checked
+        element: str
+           the element to be checked
         Returns
         -------
-            True if element matches query conditinos, else False
+        bool
+           True if element matches query conditinos, else False
         '''
 
         if self._queryElements is None:
@@ -385,10 +388,13 @@ class InteractionFilter(object):
 
         Attributes
         ----------
-            element (string): the element to be checked
+        element : str
+           the element to be checked
+
         Returns
         -------
-            True if element matches target conditinos, else False
+        bool
+           True if element matches target conditinos, else False
         '''
 
         if self._targetElements is None:
@@ -404,10 +410,14 @@ class InteractionFilter(object):
 
         Attributes
         ----------
-            group (string): the group to be checked
+        group : str
+           the group to be checked
+
         Returns
         -------
-            True if group matches query conditinos, else False
+        bool
+           True if group matches query conditinos, else False
+
         '''
 
         if self._queryGroups is None:
@@ -423,10 +433,13 @@ class InteractionFilter(object):
 
         Attributes
         ----------
-            group (string): the group to be checked
+        group : str
+           the group to be checked
+
         Returns
         -------
-            True if group matches target conditinos, else False
+        bool
+           True if group matches target conditinos, else False
         '''
 
         if self._targetGroups is None:
@@ -442,10 +455,13 @@ class InteractionFilter(object):
 
         Attributes
         ----------
-            atomName (string): the atom name to be checked
+        atomName : str
+           the atom name to be checked
+
         Returns
         -------
-            True if atom matches query conditinos, else False
+        bool
+           True if atom matches query conditinos, else False
         '''
 
         if self._queryAtomNames is None:
@@ -461,10 +477,14 @@ class InteractionFilter(object):
 
         Attributes
         ----------
-            atomName (string): the atom to be checked
+        atomName : str 
+           the atom to be checked
+
         Returns
         -------
-            True if atom matches target conditinos, else False
+        bool
+           True if atom matches target conditinos, else False
+           
         '''
 
         if self._targetAtomNames is None:
@@ -480,10 +500,13 @@ class InteractionFilter(object):
 
         Attributes
         ----------
-            group (str): group that must not occur in interactions
+        group : str
+           group that must not occur in interactions
+
         Returns
         -------
-            True if group is prohibited else False
+        bool
+           True if group is prohibited else False
         '''
 
         if self._prohibitedTargetGroups is None:

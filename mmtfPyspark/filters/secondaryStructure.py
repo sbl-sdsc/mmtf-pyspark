@@ -6,14 +6,13 @@ fraction of secondary structure assignments, obtained by DSSP. Note, DSSP
 secondary structure in MMTF files is assigned by the BioJava implementation of
 DSSP. It may differ in some cases from the original DSSP implementation.
 
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
+
 from mmtfPyspark.utils import DsspSecondaryStructure
 
 

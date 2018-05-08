@@ -1,6 +1,11 @@
 mmtfPyspark package
 ===================
 
+.. automodule:: mmtfPyspark
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 Subpackages
 -----------
 
@@ -20,19 +25,7 @@ Subpackages
 Submodules
 ----------
 
-mmtfPyspark\.structureViewer module
------------------------------------
+.. toctree::
 
-.. automodule:: mmtfPyspark.structureViewer
-    :members:
-    :undoc-members:
-    :show-inheritance:
+   mmtfPyspark.structureViewer
 
-
-Module contents
----------------
-
-.. automodule:: mmtfPyspark
-    :members:
-    :undoc-members:
-    :show-inheritance:

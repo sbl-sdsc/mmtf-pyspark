@@ -6,46 +6,42 @@ web services for a list of UniProt ids.
 
 References
 ----------
-    For more information:
-        http://myvariant.info
-    Query syntax:
-        http://myvariant.info/docs/
-    Xin J, Mark A, Afrasiabi C, Tsueng G, Juchler M, Gopal N, Stupp GS, Putman
-    TE, Ainscough BJ, Griffith OL, Torkamani A, Whetzel PL, Mungall CJ, Mooney
-    SD, Su AI, Wu C (2016) High-performance web services for querying gene and
-    variant annotation. Genome Biology 17(1):1-7
-        https://doi.org/10.1186/s13059-016-0953-9
+For more information: 
+   http://myvariant.info
+Query syntax: 
+   http://myvariant.info/docs/
+Xin J, Mark A, Afrasiabi C, Tsueng G, Juchler M, Gopal N, Stupp GS, Putman
+TE, Ainscough BJ, Griffith OL, Torkamani A, Whetzel PL, Mungall CJ, Mooney
+SD, Su AI, Wu C (2016) High-performance web services for querying gene and
+variant annotation. Genome Biology 17(1):1-7. https://doi.org/10.1186/s13059-016-0953-9
 
 
-Example
--------
-    Get all missense variations for a list of Uniprot Ids:
-        uniprotIds = ['P15056']    # BRAF
-        ds = MyVariantDataset.get_variations(uniprotIds)
-        ds.show()
+Examples
+--------
+Get all missense variations for a list of Uniprot Ids:
+>>> uniprotIds = ['P15056']    # BRAF
+>>> ds = MyVariantDataset.get_variations(uniprotIds)
+>>> ds.show()
 
-    Return missense variations that match a query
-        uniprotIds = ['P15056']    # BRAF
-        query = "clinivar.rcv.clinical_significance:pathogenic" \
-                + "OR linivar.rcv.clinical_significance:likely pathogenic"
-        ds = MyVariantDataset.get_variations(uniprotIds, query)
-        ds.show()
+Return missense variations that match a query
+>>> uniprotIds = ['P15056']    # BRAF
+>>> query = "clinivar.rcv.clinical_significance:pathogenic" \
+...       + "OR linivar.rcv.clinical_significance:likely pathogenic"
+>>> ds = MyVariantDataset.get_variations(uniprotIds, query)
+>>> ds.show()
++-------------------+---------+
+|        variationId|uniprotId|
++-------------------+---------+
+|chr7:g.140454006G>T|   P15056|
+|chr7:g.140453153A>T|   P15056|
+|chr7:g.140477853C>A|   P15056|
 
-        +-------------------+---------+
-        |        variationId|uniprotId|
-        +-------------------+---------+
-        |chr7:g.140454006G>T|   P15056|
-        |chr7:g.140453153A>T|   P15056|
-        |chr7:g.140477853C>A|   P15056|
-
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, explode
@@ -67,8 +63,8 @@ def get_variations(uniprotIds, query = ''):
         query syntax
             http://myvariant.info/docs/
 
-    Example
-    -------
+    Examples
+    --------
         uniprotIds = ['P15056']    # BRAF
         query = "clinivar.rcv.clinical_significance:pathogenic" \
                 + "OR linivar.rcv.clinical_significance:likely pathogenic"

@@ -4,22 +4,20 @@
 Returns a datset of continuous segments of protein sequence with the specified
 DSSP secondary structure code (E, H, C) of a minimum length.
 
-Example
--------
-    +-------------+-----+
-    |sequence     |label|
-    +-------------+-----+
-    |TFIVTA       |E    |
-    |ALTGTYE      |E    |
+Examples
+--------
++-------------+-----+
+|sequence     |label|
++-------------+-----+
+|TFIVTA       |E    |
+|ALTGTYE      |E    |
 
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from mmtfPyspark.ml import pythonRDDToDataset
 from mmtfPyspark.mappers import StructureToSecondaryStructureElements
@@ -32,12 +30,15 @@ def get_dataset(structure, label, length=None):
 
     Attributes
     ----------
-        structure: structure data
-        label (char): DSSP secondary structure label (E, H, C)
-        length (int): minimum length of secondary structure segment
+    structure : structure
+    label : str 
+       DSSP secondary structure label (E, H, C)
+    length : int
+       minimum length of secondary structure segment
 
     Returns
     -------
+    dataset
         dataset of continuous segments of protein sequence
     '''
 

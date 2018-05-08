@@ -5,25 +5,24 @@ This module provides access to SWISS-MODEL datasets containing homology models.
 
 References
 ----------
-    SWISS-MODEL API:
-        https://swissmodel.expasy.org/docs/repository_help#smr_api
-    Bienert S, Waterhouse A, de Beer TA, Tauriello G, Studer G, Bordoli L,
-    Schwede T (2017). The SWISS-MODEL Repository - new features and
-    functionality, Nucleic Acids Res. 45(D1):D313-D319.
-        https://dx.doi.org/10.1093/nar/gkw1132
-    Biasini M, Bienert S, Waterhouse A, Arnold K, Studer G, Schmidt T, Kiefer F,
-    Gallo Cassarino T, Bertoni M, Bordoli L, Schwede T(2014). The SWISS-MODEL
-    Repository - modelling protein tertiary and quaternary structure using
-    evolutionary information, Nucleic Acids Res. 42(W1):W252–W258.
-        https://doi.org/10.1093/nar/gku340
+SWISS-MODEL API:
+    https://swissmodel.expasy.org/docs/repository_help#smr_api
+Bienert S, Waterhouse A, de Beer TA, Tauriello G, Studer G, Bordoli L,
+Schwede T (2017). The SWISS-MODEL Repository - new features and
+functionality, Nucleic Acids Res. 45(D1):D313-D319.
+    https://dx.doi.org/10.1093/nar/gkw1132
+Biasini M, Bienert S, Waterhouse A, Arnold K, Studer G, Schmidt T, Kiefer F,
+Gallo Cassarino T, Bertoni M, Bordoli L, Schwede T(2014). The SWISS-MODEL
+Repository - modelling protein tertiary and quaternary structure using
+evolutionary information, Nucleic Acids Res. 42(W1):W252–W258.
+    https://doi.org/10.1093/nar/gku340
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 import requests
 import tempfile
@@ -39,27 +38,28 @@ def get_swiss_models(uniProtIds):
     '''Downloads metadata for SWISS-MODEL homology models for alist of
     UniProtIds. The original data schema is flatterened into a row-based schema.
 
-    Example
-    -------
-        uniProtIds = ["P36575", "P24539", "O00244"]
-        ds = swissProtDataset.get_swiss_models(uniProtIds)
-        ds.show()
-
-        +------+--------+----+---+-----+----------+----+--------+-----------+--------+--------+--------+----------+-----------+
-        |    ac|sequence|from| to|qmean|qmean_norm|gmqe|coverage|oligo-state|  method|template|identity|similarity|coordinates|
-        +------+--------+----+---+-----+----------+----+--------+-----------+--------+--------+-- -----+----------+-----------+
-        |P36575|MSKVF...|   2|371|-3.06|0.66345522|0.75|0.953608|    monomer|Homology|1suj.1.A|68.66484|0.50463312|https://...|
-        |P24539|MLSRV...|  76|249|-2.51|0.67113881|0.65|0.679687|    monomer|Homology|5ara.1.S|84.48275|0.54788881|https://...|
-        |O00244|MPKHE...|   1| 68| 1.04|0.84233218|0.98|     1.0| homo-2-mer|Homology|1fe4.1.A|   100.0|0.60686457|https://...|
-        +------+--------+----+---+-----+----------+----+--------+-----------+--------+--------+--------+----------+-----------+
+    Examples
+    --------
+    >>> uniProtIds = ["P36575", "P24539", "O00244"]
+    >>> ds = swissProtDataset.get_swiss_models(uniProtIds)
+    >>> ds.show()
+    +------+--------+----+---+-----+----------+----+--------+-----------+--------+--------+--------+----------+-----------+
+    |    ac|sequence|from| to|qmean|qmean_norm|gmqe|coverage|oligo-state|  method|template|identity|similarity|coordinates|
+    +------+--------+----+---+-----+----------+----+--------+-----------+--------+--------+-- -----+----------+-----------+
+    |P36575|MSKVF...|   2|371|-3.06|0.66345522|0.75|0.953608|    monomer|Homology|1suj.1.A|68.66484|0.50463312|https://...|
+    |P24539|MLSRV...|  76|249|-2.51|0.67113881|0.65|0.679687|    monomer|Homology|5ara.1.S|84.48275|0.54788881|https://...|
+    |O00244|MPKHE...|   1| 68| 1.04|0.84233218|0.98|     1.0| homo-2-mer|Homology|1fe4.1.A|   100.0|0.60686457|https://...|
+    +------+--------+----+---+-----+----------+----+--------+-----------+--------+--------+--------+----------+-----------+
 
     Attributes
     ----------
-        uniProtIds (list): list of UniProt Ids
+    uniProtIds : list
+       list of UniProt Ids
 
     Returns
     -------
-        SwissModel dataset
+    dataset
+       SwissModel dataset
     '''
 
     dataset = get_swiss_models_raw_data(uniProtIds)
@@ -72,11 +72,13 @@ def get_swiss_models_raw_data(uniProtIds):
 
     Attributes
     ----------
-        uniProtIds (list): list of UniProt Ids
+    uniProtIds : list
+       list of UniProt Ids
 
     Returns
     -------
-        SwissModel dataset in original data schema
+    dataset
+       SwissModel dataset in original data schema
     '''
 
     paths = []
@@ -104,11 +106,13 @@ def _flatten_dataset(ds):
 
     Attributes
     ----------
-        ds (dataset): the original spark dataset
+    ds : dataset
+       the original spark dataset
 
     Returns
     -------
-        flattened dataset
+    dataset
+       flattened dataset
     '''
 
     ds = ds.withColumn("structures", explode(ds.result.structures))
@@ -126,11 +130,13 @@ def _save_temp_file(inputStream):
 
     Attributes
     ----------
-        inputStream (str): inputStream from swiss model
+    inputStream : str
+       inputStream from swiss model
 
     Returns
     -------
-        path to the tempfile
+    str
+       path to the tempfile
     '''
     tempFile = tempfile.NamedTemporaryFile(delete=False)
     with open (tempFile.name, "w") as t:
@@ -143,11 +149,13 @@ def _read_json_files(paths):
 
     Attributes
     ----------
-        paths (list): a list of paths to temporary json files
+    paths : list
+       a list of paths to temporary json files
 
     Returns
     -------
-        a sparkdataset
+    dataset
+       a sparkdataset
     '''
     spark = SparkSession.builder.getOrCreate()
     dataset = spark.read \

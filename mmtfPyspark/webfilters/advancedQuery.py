@@ -6,27 +6,26 @@ description.
 
 References
 ----------
-    Advanced Search Query
-        https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html
+Advanced Search Query
+    https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html
 
-Example
--------
-    Find PDB entries that contain the word "mutant" in the structure title:
+Examples
+--------
+Find PDB entries that contain the word "mutant" in the structure title:
 
-        query = "<orgPdbQuery>" + \
-                "<queryType>org.pdb.query.simple.StructTitleQuery</queryType>" + \
-                "<struct.title.comparator>contains</struct.title.comparator>" + \
-                "<struct.title.value>mutant</struct.title.value" + \
-                "</orgPdbQuery>"
-        pdb = pdb.filter(AdvancedSearch(query));
+>>> query = "<orgPdbQuery>" + \
+...         "<queryType>org.pdb.query.simple.StructTitleQuery</queryType>" + \
+...         "<struct.title.comparator>contains</struct.title.comparator>" + \
+...         "<struct.title.value>mutant</struct.title.value" + \
+... "</orgPdbQuery>"
+>>> pdb = pdb.filter(AdvancedSearch(query));
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from mmtfPyspark.webservices.advancedQueryService import post_query
 
@@ -34,8 +33,8 @@ from mmtfPyspark.webservices.advancedQueryService import post_query
 class AdvancedQuery(object):
     '''Filters using the RCSB PDB Advanced Search web service
 
-    Attribute
-    ---------
+    Attributes
+    ----------
         xmlQuery (String): query in RCSB PDB XML format
     '''
 

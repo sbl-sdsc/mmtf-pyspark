@@ -4,13 +4,12 @@ This class encodes a protein sequence into a feature vector.
 The protein sequence must be present in the input data set, the default column
 name is "sequence". The default column name for the feature vector is "features".
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from pyspark.sql import SparkSession
 from pyspark.ml.linalg import Vectors
@@ -28,9 +27,12 @@ class ProteinSequenceEncoder(object):
 
     Attributes
     ----------
-        data (DataFrame): input data to be encoded [None]
-        inputCol (str): name of the input column [sequence]
-        outputCol (str): name of the output column [features]
+    data : DataFrame
+       input data to be encoded [None]
+    inputCol : str
+       name of the input column [sequence]
+    outputCol : str
+       name of the output column [features]
     '''
 
     model = None
@@ -104,9 +106,12 @@ class ProteinSequenceEncoder(object):
 
         Attributes
         ----------
-            data (DataFrame): input data to be encoded [None]
-            inputCol (str): name of the input column [None]
-            outputCol (str): name of the output column [None]
+        data : DataFrame
+           input data to be encoded [None]
+        inputCol : str
+           name of the input column [None]
+        outputCol : str
+           name of the output column [None]
         '''
 
         # Setting class variables
@@ -156,20 +161,24 @@ class ProteinSequenceEncoder(object):
     def property_encode(self, data = None, inputCol = None, outputCol = None):
         '''Encodes a protein sequence by 7 physicochemical properties
 
-        Reference
-        ---------
-            Meiler, J., Müller, M., Zeidler, A. et al. J Mol Model (2001)
-    	    https://link.springer.com/article/10.1007/s008940100038
+        References
+        ----------
+        Meiler, J., Müller, M., Zeidler, A. et al. J Mol Model (2001)
+        https://link.springer.com/article/10.1007/s008940100038
 
         Attributes
         ----------
-            data (DataFrame): input data to be encoded [None]
-            inputCol (str): name of the input column [None]
-            outputCol (str): name of the output column [None]
+        data : DataFrame
+           input data to be encoded [None]
+        inputCol : str
+           name of the input column [None]
+        outputCol : str
+           name of the output column [None]
 
         Returns
         -------
-            dataset with feature vector appended
+        dataset
+           dataset with feature vector appended
         '''
 
         # Setting class variables
@@ -213,20 +222,24 @@ class ProteinSequenceEncoder(object):
     def blosum62_encode(self, data = None, inputCol = None, outputCol = None):
         '''Encodes a protein sequence by 7 Blosum62
 
-        Reference
-        ---------
-            Blosum Matrix
-            https://ftp.ncbi.nih.gov/repository/blocks/unix/blosum/BLOSUM/blosum62.blast.new
+        References
+        ----------
+        Blosum Matrix
+        https://ftp.ncbi.nih.gov/repository/blocks/unix/blosum/BLOSUM/blosum62.blast.new
 
         Attributes
         ----------
-            data (DataFrame): input data to be encoded [None]
-            inputCol (str): name of the input column [None]
-            outputCol (str): name of the output column [None]
+        data : DataFrame
+           input data to be encoded [None]
+        inputCol : str
+           name of the input column [None]
+        outputCol : str
+           name of the output column [None]
 
         Returns
         -------
-            dataset with feature vector appended
+        dataset
+           dataset with feature vector appended
         '''
 
         if data is not None:
@@ -277,21 +290,27 @@ class ProteinSequenceEncoder(object):
         sequence by converting it into n-grams and then transforming it using
         pre-trained word2Vec model read from that file
 
-        Attribute
-        ---------
-            data (DataFrame): input data to be encoded [None]
-            inputCol (str): name of the input column [None]
-            outputCol (str): name of the output column [None]
-            n (int): The number of words in an n-gram [None]
-            windowSize (int): width of the window used to slide across the \
-                              squence, context words from -window to window \
-                              [None]
-            vectorSize (int): dimension of the feature vector [None]
-            fileName (str): filename of Word2Vec model [None]
+        Attributes
+        ----------
+        data : DataFrame
+           input data to be encoded [None]
+        inputCol : str
+           name of the input column [None]
+        outputCol : str
+           name of the output column [None]
+        n : int
+           The number of words in an n-gram [None]
+        windowSize : int
+           width of the window used to slide across the  squence, context words from -window to window  [None]
+        vectorSize :int
+           dimension of the feature vector [None]
+        fileName : str
+           filename of Word2Vec model [None]
 
         Returns
         -------
-            dataset with features vector added to original dataset
+        dataset
+           dataset with features vector added to original dataset
         '''
 
         if data is not None:
@@ -354,27 +373,31 @@ class ProteinSequenceEncoder(object):
         three resulting freature vectors.
 
 
-        Attribute
-        ---------
-            data (DataFrame): input data to be encoded [None]
-            inputCol (str): name of the input column [None]
-            outputCol (str): name of the output column [None]
-            windowSize (int): width of the window used to slide across the sequence
-                              context words from -window to window
-            vectorSize (int): dimension of the feature vector [None]
-            fileName (string): filename of Word2VecModel [None]
-            sc (SparkContext): spark context [None]
+        Attributes
+        ----------
+        data : DataFrame
+           input data to be encoded [None]
+        inputCol : str
+           name of the input column [None]
+        outputCol : str
+           name of the output column [None]
+        windowSize : int
+           width of the window used to slide across the sequence context words from -window to window 
+        vectorSize : int
+           dimension of the feature vector [None]
+        fileName : str
+           filename of Word2VecModel [None]
+        sc : SparkContext
+           spark context [None]
 
         Returns
         -------
-            dataset with features vector added to original dataset
+        dataset
+           dataset with features vector added to original dataset
 
         References
         ----------
-           Asgari E, Mofrad MRK (2015) Continuous Distributed Representation
-           of Biological Sequences for Deep Proteomics and Genomics.
-           PLOS ONE 10(11): e0141287. doi:
-           https://doi.org/10.1371/journal.pone.0141287
+        Asgari E, Mofrad MRK (2015) Continuous Distributed Representation of Biological Sequences for Deep Proteomics and Genomics.  PLOS ONE 10(11): e0141287. doi: https://doi.org/10.1371/journal.pone.0141287
         '''
 
         if data is not None:
@@ -457,7 +480,8 @@ class ProteinSequenceEncoder(object):
 
         Returns
         -------
-            overlapping Ngram Word2VecModel if available, otherwise None
+        model
+           overlapping Ngram Word2VecModel if available, otherwise None
         '''
 
         return self.model
@@ -468,8 +492,10 @@ class ProteinSequenceEncoder(object):
 
         Attributes
         ----------
-            data (DataFrame): input dataframe
-            outputCol (str): name of the output column
+        data : DataFrame
+           input dataframe
+        outputCol : str
+           name of the output column
         '''
 
         session = SparkSession.builder.getOrCreate()
