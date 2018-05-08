@@ -9,15 +9,11 @@ applications for distributed analysis and scalable mining of 3D
 biomacromolecular structures, such as the Protein Data Bank (PDB)
 archive. mmtfPyspark uses Big Data technologies to enable
 high-performance parallel processing of macromolecular structures.
-mmtfPyspark use the following technology stack: \* `Apache
-Spark <https://spark.apache.org/>`__ a fast and general engine for
-large-scale distributed data processing. \*
-`MMTF <https://mmtf.rcsb.org/>`__ the Macromolecular Transmission Format
-for compact data storage, transmission and high-performance parsing \*
-`Hadoop Sequence File <https://wiki.apache.org/hadoop/SequenceFile>`__ a
-Big Data file format for parallel I/O \* `Apache
-Parquet <https://parquet.apache.org/>`__ a columnar data format to store
-dataframes
+mmtfPyspark use the following technology stack: 
+    * `Apache Spark <https://spark.apache.org/>`__ a fast and general engine for large-scale distributed data processing. 
+    * `MMTF <https://mmtf.rcsb.org/>`__ the Macromolecular Transmission Format for compact data storage, transmission and high-performance parsing 
+    * `Hadoop Sequence File <https://wiki.apache.org/hadoop/SequenceFile>`__ a Big Data file format for parallel I/O 
+    * `Apache Parquet <https://parquet.apache.org/>`__ a columnar data format to store dataframes
 
 This project is still currently under development.
 
