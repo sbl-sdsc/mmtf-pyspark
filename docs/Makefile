@@ -20,4 +20,4 @@ help:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 apidoc:
-	sphinx-apidoc -e -f -l -M -o source ../mmtfPyspark
+	sphinx-apidoc -e -f -l -M -o source ../mmtfPyspark ../mmtfPyspark/tests/*
