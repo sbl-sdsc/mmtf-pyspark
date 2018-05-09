@@ -4,13 +4,12 @@
 This mapper maps a structure to it's polypeptides, polynucleotide chain sequences.
 For a multi-model structure, only the first model is considered.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 
 class StructureToPolymerSequences(object):
@@ -22,13 +21,15 @@ class StructureToPolymerSequences(object):
         '''Extracts all polymer chains from a structure. If the argument is set to true,
         the assigned key is: <PDB ID.Chain ID>, where Chain ID is the unique identifier
         assigned to each molecular entity in an mmCIF file. This Chain ID corresponds to
-        <a href="http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_atom_site.label_asym_id.html">
-        _atom_site.label_asym_id</a> field in an mmCIF file.
+        `_atom_site.label_asym_id <http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_atom_site.label_asym_id.html>`_ 
+        field in an mmCIF file.
 
         Attributes
         ----------
-            useChainIdInsteadOfChainName if true, use the Chain Id in the key assignments
-            excludeDuplicates if true, return only one chain for each unique sequence= t[1]
+        useChainIdInsteadOfChainName : bool
+           if true, use the Chain Id in the key assignments
+        excludeDuplicates : bool 
+           if true, return only one chain for each unique sequence= t[1]
         '''
         self.useChainIdInsteadOfChainName = useChainIdInsteadOfChainName
         self.excludeDuplicates = excludeDuplicates

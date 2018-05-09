@@ -7,14 +7,9 @@ the HGVS sequence variant nomenclature.
 
 References
 ----------
-    HGVS sequence variant nomenclature
-        http://varnomen.hgvs.org/
-    G2S Web Services
-        https://g2s.genomenexus.org/
-    Juexin Wang, Robert Sheridan, S Onur Sumer, Nikolaus Schultz, Dong Xu,
-    Jianjiong Gao; G2S: a web-service for annotating genomic variants on 3D
-    protein structures (2018) Bioinformatics,
-        https://doi.org/10.1093/bioinformatics/bty047
+HGVS sequence variant nomenclature http://varnomen.hgvs.org/
+G2S Web Services https://g2s.genomenexus.org/
+Juexin Wang, Robert Sheridan, S Onur Sumer, Nikolaus Schultz, Dong Xu, Jianjiong Gao; G2S: a web-service for annotating genomic variants on 3D protein structures (2018) Bioinformatics. https://doi.org/10.1093/bioinformatics/bty047
 
 Examples
 --------
@@ -50,13 +45,17 @@ def get_position_dataset(variationIds, structureId = None, chainId = None):
 
     Attributes
     ----------
-        variationIds (list): genomic variation ids, e.g. chr7:g.140449103A>C
-        structureId (str): specific PDB structure used for mapping [None]
-        chainId (str): specific chain used for mapping [None]
+    variationIds : list
+       genomic variation ids, e.g. chr7:g.140449103A>C
+    structureId : str
+       specific PDB structure used for mapping [None]
+    chainId : str
+       specific chain used for mapping [None]
 
     Returns
     -------
-        dataset with PDB mapping information
+    dataset
+       dataset with PDB mapping information
     '''
 
     dataset = _get_dataset(variationIds, structureId, chainId)
@@ -74,13 +73,17 @@ def get_full_dataset(variationIds, structureId = None, chainId = None):
 
     Attributes
     ----------
-        variationIds (list): genomic variation ids, e.g. chr7:g.140449103A>C
-        structureId (str): specific PDB structure used for mapping [None]
-        chainId (str): specific chain used for mapping [None]
+    variationIds : list
+       genomic variation ids, e.g. chr7:g.140449103A>C
+    structureId : str
+       specific PDB structure used for mapping [None]
+    chainId : str
+       specific chain used for mapping [None]
 
     Returns
     -------
-        dataset with PDB mapping information
+    dataset
+       dataset with PDB mapping information
     '''
 
     return _get_dataset(variationIds, structureId, chainId)
@@ -91,13 +94,17 @@ def _get_dataset(variationIds, structureId, chainId):
 
     Attributes
     ----------
-        variationIds (list): genomic variation ids, e.g. chr7:g.140449103A>C
-        structureId (str): specific PDB structure used for mapping
-        chainId (str): specific chain used for mapping
+    variationIds : list
+       genomic variation ids, e.g. chr7:g.140449103A>C
+    structureId : str
+       specific PDB structure used for mapping
+    chainId : str
+       specific chain used for mapping
 
     Returns
     -------
-        dataset with PDB mapping information
+    dataset
+       dataset with PDB mapping information
     '''
 
     # Get a spark context
@@ -122,8 +129,7 @@ def _get_dataset(variationIds, structureId, chainId):
 
 
 def _get_data(variationId, structureId, chainId):
-    '''Downloads PDB residue mappings for a list of genomic variations
-    '''
+    '''Downloads PDB residue mappings for a list of genomic variations'''
     data = []
 
     if structureId is None and chainId is None:
@@ -158,9 +164,12 @@ def _add_variant_id(json, refGenome, variationId):
 
     Attributes
     ----------
-        json: list of original json strings
-        refGenome: reference genome
-        variationId: variation identifier
+    json : list
+       list of original json strings
+    refGenome 
+       reference genome
+    variationId : str
+       variation identifier
     '''
 
     ids = "\"refGenome\":\"" + refGenome + "\"," + "\"variationId\":\"" \
@@ -169,8 +178,7 @@ def _add_variant_id(json, refGenome, variationId):
 
 
 def _standardize_data(df):
-    '''Standardize data and column names to be consistent
-    '''
+    '''Standardize data and column names to be consistent'''
     return df.withColumn("structureId", upper(col("pdbId"))) \
              .withColumnRenamed("chain", "chainId")
 

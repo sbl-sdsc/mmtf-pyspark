@@ -4,13 +4,12 @@
 Fits a multi-class classification model using mllib classification method and
 returns classification metrics.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from pyspark.ml.feature import StringIndexer, IndexToString
 from pyspark.ml import Pipeline
@@ -25,10 +24,14 @@ class SparkMultiClassClassifier(object):
 
     Attributes
     ----------
-        predictor: type of multi-class classifier
-        label (str): classification label
-        testFraction (float): test set fraction [0.3]
-        seed (int): random seed
+    predictor
+       type of multi-class classifier
+    label : str
+       classification label
+    testFraction : float
+       test set fraction [0.3]
+    seed : int
+       random seed
     '''
 
     def __init__(self, predictor, label, testFraction=0.3, seed=1):
@@ -45,11 +48,13 @@ class SparkMultiClassClassifier(object):
 
         Attributes
         ----------
-            data (Dataset<Row>): input data
+        data : Dataset<Row>
+           input data
 
         Returns
         -------
-            map with metrics
+        dict
+           map with metrics
         '''
 
         start = time.time()

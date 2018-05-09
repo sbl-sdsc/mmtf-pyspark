@@ -6,13 +6,12 @@ downsampling the majority classes or upsampling the  minority classes.
 It randomly samples each class and returns a dataset with approximately
 the same number of samples in each class
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from pyspark.sql import DataFrame
 from pyspark.sql import Row
@@ -27,9 +26,11 @@ def downsample(data, columnName, seed=7):
 
     Attributes
     ----------
-        data (Dataframe)
-        columnName (str): column to be balanced by
-        seed (int): random number seed
+    data : Dataframe
+    columnName : str
+       column to be balanced by
+    seed : int
+       random number seed
     '''
 
     counts = data.groupby(columnName).count().collect()
@@ -52,9 +53,11 @@ def upsample(data, columnName, seed=7):
 
     Attributes
     ----------
-        data (Dataframe)
-        columnName  (str): column to be balanced by
-        seed (int): random number seed
+    data : Dataframe)
+    columnName : str
+       column to be balanced by
+    seed : int
+       random number seed
     '''
 
     counts = data.groupby(columnName).count().collect()

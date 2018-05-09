@@ -18,6 +18,7 @@ The datasets have the following columns:
 Examples
 --------
 Download, read, and save the SWISS_PROT dataset:
+
 >>> ds = uniProt.get_dataset(UniProtDataset.SWISS_PROT)
 >>> ds.printSchema()
 >>> ds.show(5)

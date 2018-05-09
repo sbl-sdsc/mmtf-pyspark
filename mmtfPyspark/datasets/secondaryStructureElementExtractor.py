@@ -11,6 +11,7 @@ Examples
 +-------------+-----+
 |TFIVTA       |E    |
 |ALTGTYE      |E    |
++-------------+-----+
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

@@ -3,13 +3,12 @@
 
 Maps a structure to its protein dimers
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 from mmtf.utils import *
 from mmtf.api.mmtf_writer import MMTFEncoder
@@ -26,10 +25,14 @@ class StructureToProteinDimers(object):
 
     Attributes
     ----------
-        cutoffDistance (float): cutoff distance for protein dimers [8.0]
-        contacts (int): number of contacts [20]
-        useAllAtoms (bool): flag to use all atoms [False]
-        exclusive (bool): exclusive flag [False]
+    cutoffDistance : float
+       cutoff distance for protein dimers [8.0]
+    contacts : int
+       number of contacts [20]
+    useAllAtoms : bool
+       flag to use all atoms [False]
+    exclusive : bool
+       exclusive flag [False]
     '''
 
     def __init__(self, cutoffDistance=8.0, contacts=20,
@@ -508,9 +511,10 @@ class StructureToProteinDimers(object):
 
     def _get_chain_to_entity_index(self, structure):
         '''Returns an list that maps a chain index to an entity index.
+
         Attributes
         ----------
-            structure: structureDataInterFace
+        structure: structureDataInterFace
         '''
         entityChainIndex = [0] * structure.num_chains
 

@@ -8,13 +8,12 @@ segment length. The dataset contains the sequence segment and the DSP Q8 and
 DSSP Q3 secondary structure annotation of the cneter residue. Therefore, the segment
 length must be an odd number
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from mmtfPyspark.datasets import secondaryStructureExtractor
 from mmtfPyspark.mappers import StructureToSecondaryStructureSegments
@@ -26,12 +25,20 @@ def get_dataset(structureRDD, length):
 
     Attributes
     ----------
-        structureRDD: structure
-        length (int): segment length, must be an odd number
+    structureRDD : structure
+    length : int
+       segment length, must be an odd number
 
     Returns
     -------
-        dataset of segments
+    dataset
+       dataset of segments
+
+    Raises
+    ------
+    Exception
+        Segment length must be an odd number
+
     '''
 
     if length % 2 == 0:

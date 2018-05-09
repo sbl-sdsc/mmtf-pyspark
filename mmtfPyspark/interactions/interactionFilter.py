@@ -23,10 +23,14 @@ class InteractionFilter(object):
 
     Attributes
     ----------
-        distanceCutoff (float): cutoff distance for filter [float max]
-        normalizedbFactorCutoff (float) normalized bFactor cutoff for filter [float max]
-        minInteractions (int): minimum number of interactions [1]
-        maxInteractions (int): maximum number of interactions [10]
+    distanceCutoff : float
+       cutoff distance for filter [default: float max]
+    normalizedbFactorCutoff : float
+       normalized bFactor cutoff for filter [default: float max]
+    minInteractions : int
+       minimum number of interactions [default: 1]
+    maxInteractions : int
+       maximum number of interactions [default: 10]
     '''
 
     def __init__(self, distanceCutoff=sys.float_info.max -1,
@@ -56,7 +60,8 @@ class InteractionFilter(object):
 
         Returns
         -------
-            maximum interaction distance
+        int
+           maximum interaction distance
         '''
         return self._distanceCutoff
 
@@ -65,7 +70,8 @@ class InteractionFilter(object):
 
         Attributes
         ----------
-            distanceCutoff (float): the maximum distance for interacting atoms
+        distanceCutoff : float
+           the maximum distance for interacting atoms
         '''
 
         self._distanceCutoff = distanceCutoff
@@ -76,7 +82,8 @@ class InteractionFilter(object):
 
         Returns
         -------
-            maximum normalized b-factor cutoff
+        float
+           maximum normalized b-factor cutoff
         '''
 
         return self._normalizedbFactorCutoff
@@ -98,13 +105,14 @@ class InteractionFilter(object):
         For example, to include all interactions within the 90% confidence
         interval, set the normalized b-factor to +1.645
 
-        Attribute
-        ---------
-            normalizedbFactorCutoff (float): maximum normalized b-factor
+        Attributes
+        ----------
+        normalizedbFactorCutoff : float
+           maximum normalized b-factor
 
-        Reference
-        ---------
-            Z-score: https://en.wikipedia.org/wiki/Standard_score
+        References
+        ----------
+        Z-score: https://en.wikipedia.org/wiki/Standard_score
         '''
 
         self._normalizedbFactorCutoff = normalizedbFactorCutoff
@@ -115,7 +123,8 @@ class InteractionFilter(object):
 
         Returns
         -------
-            minimum number of interactions per atom
+        int
+           minimum number of interactions per atom
         '''
 
         return self._minInteractions
@@ -126,7 +135,8 @@ class InteractionFilter(object):
 
         Attribute
         ---------
-            minInteractions (int): minimum number of interactions per atom
+        minInteractions : int
+           minimum number of interactions per atom
         '''
 
         self._minInteractions = minInteractions
@@ -137,7 +147,8 @@ class InteractionFilter(object):
 
         Returns
         -------
-            maximum number of interactions per atom
+        int
+           maximum number of interactions per atom
         '''
 
         return self._maxInteractions
@@ -146,9 +157,10 @@ class InteractionFilter(object):
         '''Sets the maximum number of interactions per atom. Atoms that interact
         with fewer atoms will be discarded
 
-        Attribute
-        ---------
-            maxInteractions (int): minimum number of interactions per atom
+        Attributes
+        ----------
+        maxInteractions : int
+           minimum number of interactions per atom
         '''
 
         self._maxInteractions = maxInteractions
@@ -159,13 +171,14 @@ class InteractionFilter(object):
 
         Examples
         --------
-        Only use elements O, N, S in the query groups in find polar
-        interactions
+        Only use elements O, N, S in the query groups in find polar interactions
+
         >>> filter = InteractionFilter()
         >>> filter.set_query_elements(True, ["O", "N", "S"])
 
         Exclude non-polar elements and hydrogen in query groups and use
         all other elements to find interactions.
+
         >>> elements = ['C', 'H', 'P']
         >>> filter.set_query_elements(False, elements)
 
@@ -190,24 +203,26 @@ class InteractionFilter(object):
         '''Sets the elements to either be included or excluded in the target.
         Element strings are case sensitive (e.g., "Zn" for Zinc).
 
-        Example: Only use elements O, N, S in the target groups in find polar
-        interactions
+        Examples
+        --------
+        Only use elements O, N, S in the target groups in find polar interactions
 
-            filter = InteractionFilter()
-            filter.set_target_elements(True, ["O", "N", "S"])
+        >>> filter = InteractionFilter()
+        >>> filter.set_target_elements(True, ["O", "N", "S"])
 
-        Example: Exclude non-polar elements and hydrogen in target groups and use
+        Exclude non-polar elements and hydrogen in target groups and use
         all other elements to find interactions.
 
-            elements = ['C', 'H', 'P']
-            filter.set_query_elements(False, elements)
+        >>> elements = ['C', 'H', 'P']
+        >>> filter.set_query_elements(False, elements)
 
         Attributes
         ----------
-            include (bool): if True, uses the specifed elements in the target,
-                            if False, ignores the specified elemetns and use all
-                            other elements
-            elements (list): list of elements to be included or excluded in target
+        include : bool
+           if True, uses the specifed elements in the target,
+           if False, ignores the specified elemetns and use all other elements
+        elements : list
+           list of elements to be included or excluded in target
         '''
 
         if self._targetElements is not None:
@@ -225,10 +240,12 @@ class InteractionFilter(object):
         Examples
         --------
         Find interactions with ATP and ADP
+        
         >>> filter = InteractionFilter()
         >>> filter.set_query_groups(True, ['ATP', 'ADP'])
 
         Exclude water and heavy water and use all other groups to find interactions.
+
         >>> groups = ["HOH", "DOD"]
         >>> filter.set_query_groups(False, groups)
 
@@ -257,10 +274,12 @@ class InteractionFilter(object):
         Examples
         --------
         Find interactions with specific amino acid groups.
+
         >>> filter = InteractionFilter()
         >>> filter.set_target_groups(True, ['CYS','HIS','ASP','GLU'])
 
         Exclude water and heavy water and use all other groups to find interactions.
+
         >>> groups = ["HOH", "DOD"]
         >>> filter.set_target_groups(False, groups)
 
@@ -287,11 +306,13 @@ class InteractionFilter(object):
         Examples
         --------
         Find interaction with C-alpha and C-beta atoms.
+        
         >>> filter = InteractionFilter()
         >>> filter.set_query_atom_names(True, ['CA', 'CB'])
 
         Exclude backbone atoms, but consider all other atom names: e.g,
         amino acid side chains.
+
         >>> filter.set_query_atom_names(False, ['N', 'CA', 'C', 'O'])
 
         Attributes
@@ -317,11 +338,13 @@ class InteractionFilter(object):
         Examples
         --------
         Find interaction with C-alpha and C-beta atoms.
+
         >>> filter = InteractionFilter()
         >>> filter.set_target_atom_names(True, ['CA', 'CB'])
 
         Exclude backbone atoms, but consider all other atom names: e.g,
         amino acid side chains.
+
         >>> filter.set_target_atom_names(False, ['N', 'CA', 'C', 'O'])
 
         Attributes
@@ -349,6 +372,7 @@ class InteractionFilter(object):
         --------
         Find Zinc interactions, but discard any interactions where the
         metal is involved in an interaction with water.
+
         >>> filter = InteractionFilter()
         >>> filter.set_query_groups(True, 'ZN')
         >>> filter.set_prohibited_target_groups(["HOH"])

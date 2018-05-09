@@ -7,13 +7,12 @@ a feature vector named "features" and a classification column.
 The column name of the classification column must be specified
 on the command lines.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from mmtfPyspark.ml import SparkMultiClassClassifier, datasetBalancer
 from pyspark.sql import SparkSession
