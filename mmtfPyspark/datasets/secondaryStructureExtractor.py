@@ -9,6 +9,7 @@ input to this class must be a single protein chain.
 Examples
 --------
 get dataset of secondary structure assignments:
+
 >>> pdb.flatMapToPair(new StructureToPolymerChains())
 ...    .filter(new ContainsLProteinChain())
 >>> secStruct = SecondaryStructureExtractor.getDataset(pdb)

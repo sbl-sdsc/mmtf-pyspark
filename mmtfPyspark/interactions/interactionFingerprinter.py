@@ -37,12 +37,15 @@ class InteractionFingerprinter(object):
 
         Attributes
         ----------
-            structures (PythonRDD): a set of PDB structures
-            interactionFilter (InteractionFilter): interaction criteria
+        structures : PythonRDD
+           a set of PDB structures
+        interactionFilter : InteractionFilter
+           interaction criteria
 
         Returns
         -------
-            dataset with interacting residue information
+        dataset
+           dataset with interacting residue information
         '''
 
         # find sll interactions
@@ -79,12 +82,15 @@ class InteractionFingerprinter(object):
 
         Attributes
         ----------
-            structures (PythonRDD): a set of PDB structures
-            interactionFilter (InteractionFilter): interaction criteria
+        structures : PythonRDD
+           a set of PDB structures
+        interactionFilter : InteractionFilter
+           interaction criteria
 
         Returns
         -------
-            dataset with interacting residue information
+        dataset
+           dataset with interacting residue information
         '''
 
         # find all interactions

@@ -8,13 +8,12 @@ Supported operations and file formats:
     - Download MMTF full and reduced representations using web service (mmtf.rcsb.org)
     - Read directory of MMTF files (.mmtf, mmtf.gz)
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 import os
 import msgpack
@@ -29,36 +28,39 @@ byteWritable = "org.apache.hadoop.io.BytesWritable"
 
 def read_full_sequence_file(sc, pdbId=None, fraction=None, seed=123):
     '''Reads a MMTF-Hadoop Sequence file using the default file location.
-    The default file location is determined by {mmtfReader.get_mmtf_full_path}
+    The default file location is determined by :func:`get_mmtf_full_path() <mmtfPyspark.io.mmtfReader.get_mmtf_full_path>`
 
-    Downloads
-    ---------
-        To download mmtf files: {https://mmtf.rcsb.org/download.htm}
+    To download mmtf files: https://mmtf.rcsb.org/download.html
 
     Attributes
     ----------
-        sc (Spark Context):
-        pdbID (list(str)): List of structures to read
-        fraction (float): fraction of structure to read
-        seed (int): random seed
+    sc : Spark Context
+    pdbID : list, optional
+       List of structures to read
+    fraction : float, optional
+       fraction of structure to read
+    seed : int, optional
+       random seed
     '''
     return read_sequence_file(get_mmtf_full_path(), sc, pdbId, fraction, seed)
 
 
 def read_reduced_sequence_file(sc, pdbId=None, fraction=None, seed=123):
     '''Reads a MMTF-Hadoop Sequence file using the default file location.
-    The default file location is determined by {mmtfReader.get_mmtf_reduced_path}
+    The default file location is determined by :func:`get_mmtf_reduced_path()
+    <mmtfPyspark.io.mmtfReader.get_mmtf_reducedget_mmtf_reduced_path>`
 
-    Downloads
-    ---------
-        To download mmtf files: {https://mmtf.rcsb.org/download.htm}
+    To download mmtf files: {https://mmtf.rcsb.org/download.htm}
 
     Attributes
     ----------
-        sc (Spark Context):
-        pdbID (list(str)): List of structures to read
-        fraction (float): fraction of structure to read
-        seed (int): random seed
+    sc : Spark Context
+    pdbID : list, optional
+       List of structures to read
+    fraction : float, optional
+       fraction of structure to read
+    seed : int, optional
+       random seed
     '''
     return read_sequence_file(get_mmtf_reduced_path(), sc, pdbId, fraction, seed)
 
@@ -70,11 +72,21 @@ def read_sequence_file(path, sc, pdbId=None, fraction=None, seed=123):
 
     Attributes
     ----------
-        path (str): path to file directory
-        sc (Spark Context):
-        pdbID (list(str)): List of structures to read
-        fraction (float): fraction of structure to read
-        seed (int): random seed
+    path : str
+       path to file directory
+    sc : Spark Context
+    pdbID : list
+       List of structures to read
+    fraction : float
+       fraction of structure to read
+    seed : int
+       random seed
+
+    Raises
+    ------
+    Exception
+       file path does not exist
+
     '''
 
     if not os.path.exists(path):
@@ -104,12 +116,14 @@ def read_mmtf_files(path, sc):
 
     Attributes
     ----------
-        path (str): Path to MMTF files
-        sc (Spark context)
+    path : str
+       Path to MMTF files
+    sc : Spark context
 
     Returns
     -------
-        structure data as keywork/value pairs
+    data
+       structure data as keywork/value pairs
     '''
 
     if not os.path.exists(path):
@@ -119,53 +133,59 @@ def read_mmtf_files(path, sc):
 
 
 def download_mmtf_files(pdbIds, sc, reduced=False):
-    '''Download and reads the specified PDB entries using
-    <a href="http://mmtf.rcsb.org/download.html">MMTF web services</a>.
+    '''Download and reads the specified PDB entries using `MMTF web services <http://mmtf.rcsb.org/download.html>`_
     with either full or reduced format
 
     Attributes
     ----------
-        path (str): Path to PDB files
-        sc (Spark context)
-        reduced (bool): flag to indicate reduced or full file format
+    path : str
+       Path to PDB files
+    sc : Spark context
+    reduced : bool
+       flag to indicate reduced or full file format
 
     Returns
     -------
-        structure data as keywork/value pairs
+    data
+       structure data as keywork/value pairs
     '''
 
     return sc.parallelize(set(pdbIds)).map(lambda t: _get_structure(t, reduced))
 
 
 def download_full_mmtf_files(pdbIds, sc):
-    '''Download and reads the specified PDB entries in full mmtf format using
-    <a href="http://mmtf.rcsb.org/download.html">MMTF web services</a>.
+    '''Download and reads the specified PDB entries in full mmtf format using `MMTF web services
+    <http://mmtf.rcsb.org/download.html>`_
 
     Attributes
     ----------
-        path (str): Path to PDB files
-        sc (Spark context)
+    path : str
+       Path to PDB files
+    sc : Spark context
 
     Returns
     -------
-        structure data as keywork/value pairs
+    data
+       structure data as keywork/value pairs
     '''
 
     return sc.parallelize(set(pdbIds)).map(lambda t: _get_structure(t, False))
 
 
 def download_reduced_mmtf_files(pdbIds, sc):
-    '''Download and reads the specified PDB entries in reduced mmtf format using
-    <a href="http://mmtf.rcsb.org/download.html">MMTF web services</a>.
+    '''Download and reads the specified PDB entries in reduced mmtf format using `MMTF web services
+    <http://mmtf.rcsb.org/download.html>`_
 
     Attributes
     ----------
-        path (str): Path to PDB files
-        sc (Spark context)
+    path : str
+       Path to PDB files
+    sc : Spark context
 
     Returns
     -------
-        structure data as keywork/value pairs
+    data
+       structure data as keywork/value pairs
     '''
 
     return sc.parallelize(set(pdbIds)).map(lambda t: _get_structure(t, True))
@@ -176,11 +196,13 @@ def _get_structure(pdbId, reduced):
 
     Attributes
     ----------
-        pdbID (List(str)): List of structures to download
+    pdbID : list
+       List of structures to download
 
     Returns
     -------
-        tuble of pdbID and deccoder
+    tuple
+       pdbID and deccoder
     '''
 
     unpack = default_api.get_raw_data_from_url(pdbId, reduced)
@@ -219,11 +241,13 @@ def _get_files(user_path):
 
     Attributes
     ----------
-        user_path (str): File path
+    user_path : str
+       File path
 
     Returns
     -------
-        files (List(str)): list of files in path
+    list
+       files in path
     '''
     files = []
     for dirpath, dirnames, filenames in walk(user_path):
@@ -242,7 +266,8 @@ def get_mmtf_full_path():
 
     Returns
     -------
-        path to the mmtf_full directory
+    str
+       path to the mmtf_full directory
     '''
 
     if 'MMTF_FULL' in os.environ:
@@ -260,7 +285,8 @@ def get_mmtf_reduced_path():
 
     Returns
     -------
-        path to the mmtf_reduced directory
+    str
+       path to the mmtf_reduced directory
     '''
 
     if 'MMTF_REDUCED' in os.environ:

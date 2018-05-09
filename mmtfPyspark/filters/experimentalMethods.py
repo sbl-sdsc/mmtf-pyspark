@@ -6,8 +6,7 @@ match a PDB entry
 
 References
 ----------
-    The current list of support experimental method types can be found here:
-        http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Items/_exptl.method.html
+The current list of support experimental method types can be found here: http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Items/_exptl.method.html
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"
@@ -23,7 +22,8 @@ class ExperimentalMethods(object):
 
     Attributes
     ----------
-        experimental_methods (list(string)): A list of experimental methods to check
+    experimental_methods : list
+       A list of experimental methods to check
     '''
 
     # constants to be used as arguments to the Experimental Methods filter

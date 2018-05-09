@@ -9,6 +9,7 @@ __author__ = "Mars (Shih-Cheng) Huang"
 __maintainer__ = "Mars (Shih-Cheng) Huang"
 __email__ = "marshuang80@gmail.com"
 __version__ = "0.2.0"
+__status__ = "Done"
 
 import numpy as np
 
@@ -357,7 +358,7 @@ class ColumnarStructure(object):
 
         Returns
         -------
-        entityChainIndex : np.array
+        :obj:`array <numpy.ndarray>`
            index that maps chain index to an entity index
         '''
 

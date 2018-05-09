@@ -2,8 +2,8 @@
 
 References
 ----------
-    D3R Project:
-        https://github.com/drugdata/D3R/blob/master/d3r/filter/filtering_sets.py
+D3R Project: https://github.com/drugdata/D3R/blob/master/d3r/filter/filtering_sets.py
+
 '''
 
 METAL_CONTAINING = set(['CP', 'NFU', 'NFR', 'NFE', 'NFV', 'FSO', 'WCC', 'TCN', 'FS2',

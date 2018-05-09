@@ -4,14 +4,12 @@
 Fits a regression model using an MLlib regression method and returns regression
 metrics
 
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from pyspark.ml import Pipeline
 from pyspark.ml.evaluation import RegressionEvaluator
@@ -23,10 +21,14 @@ class SparkRegressor(object):
 
     Attributes
     ----------
-        predictor: type of multi-class classifier
-        label (str): classification label
-        testFraction (float): test set fraction [0.3]
-        seed (int): random seed
+    predictor
+       type of multi-class classifier
+    label : str
+       classification label
+    testFraction : float
+       test set fraction [0.3]
+    seed : int
+       random seed
     '''
 
     def __init__(self, predictor, label, testFraction = 0.3 , seed = 1):
@@ -42,12 +44,15 @@ class SparkRegressor(object):
             label : the class labels
             features : feature vector
 
-        Attribute
-        ---------
-            data (Dataset<Row>)
-        Return
-        ------
-            Dictionary with matrics
+        Attributes
+        ----------
+        data : Dataset<Row>
+
+        Returns
+        -------
+        dict
+           mapping of metrics
+
         '''
 
         # Split the data into training and test sets (30% held out for testing)

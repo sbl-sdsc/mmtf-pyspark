@@ -7,13 +7,12 @@ a feature vector named "features" and a prediction column.
 The column name of the prediction column must be specified
 on the command lines.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.1"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.1"
+__status__ = "Done"
 
 from mmtfPyspark.ml import SparkRegressor, datasetBalancer
 from pyspark.sql import SparkSession

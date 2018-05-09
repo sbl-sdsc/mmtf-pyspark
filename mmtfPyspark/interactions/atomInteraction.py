@@ -8,13 +8,12 @@ such as distance, angles, and order parameters for the interacting atoms.
 Finally, it provides methods for creating row-rise representations of the data
 in Spark Datasets.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 from mmtfPyspark.interactions import CoordinateGeometry, InteractionCenter
 from pyspark.sql import Row
@@ -42,7 +41,9 @@ class AtomInteraction(object):
 
         Attributes
         ----------
-            structureId (str): the structure identifier
+        structureId : str
+           the structure identifier
+
         '''
 
         self.structureId = structureId
@@ -52,7 +53,9 @@ class AtomInteraction(object):
 
         Returns
         -------
-            structure identifier
+        str
+           structure identifier
+
         '''
 
         return self.structureId
@@ -62,9 +65,10 @@ class AtomInteraction(object):
 
         Attributes
         ----------
-            center (InteractionCenter): central atom information
-        '''
+        center : InteractionCenter
+           central atom information
 
+        '''
         self.center = center
 
     def get_center(self):
@@ -72,7 +76,8 @@ class AtomInteraction(object):
 
         Returns
         -------
-            centeral atom information
+        list
+           centeral atom information
         '''
 
         return self.center
@@ -82,7 +87,9 @@ class AtomInteraction(object):
 
         Attributes
         ----------
-            neighbor (InteractionCenter): an interation with the central atom
+        neighbor : InteractionCenter
+           an interation with the central atom
+
         '''
 
         self.neighbors.append(neighbor)
@@ -92,20 +99,21 @@ class AtomInteraction(object):
 
         Returns
         -------
-            interaction centers
-        '''
+        list
+           interaction centers
 
+        '''
         return self.neighbors
 
     def get_num_interactions(self):
-        '''Returns the number of neighboring atoms that interact with the central
-        atom
+        '''Returns the number of neighboring atoms that interact with the central atom
 
         Returns
         -------
-            number of neighboring atoms that interact with the central atom
-        '''
+        int
+           number of neighboring atoms that interact with the central atom
 
+        '''
         return len(self.neighbors)
 
     def calc_coordination_geometry(self, maxInteraction):
@@ -116,9 +124,10 @@ class AtomInteraction(object):
 
         Attributes
         ----------
-            maxInteraction (int): maximum number of interaction
-        '''
+        maxInteraction : int
+           maximum number of interaction
 
+        '''
         neighborPoints = [n.get_coordinates() for n in self.neighbors
                           if n.get_coordinates() is not None]
 
@@ -152,7 +161,9 @@ class AtomInteraction(object):
 
         Returns
         -------
-            row of itneractions and geometric information
+        int
+           row of itneractions and geometric information
+
         '''
         while self.get_num_interactions() < maxInteractions:
             self.neighbors.append(InteractionCenter())
@@ -181,9 +192,10 @@ class AtomInteraction(object):
 
         Returns
         -------
-            rows of pairwise interactions with the central atom
-        '''
+        list
+           rows of pairwise interactions with the central atom
 
+        '''
         rows = []
         length = InteractionCenter.get_length()
         self.calc_coordination_geometry()
@@ -197,9 +209,16 @@ class AtomInteraction(object):
         '''Returns the schema for a row of atom interaction inforamtion. The schema
         is used to create a Dataset<Row> from the row information.
 
+        Attributes
+        ----------
+        maxInteraction : int
+           maximum number of interactions
+
         Returns
         -------
-            return schema for dataset
+        pyspark.sql.types.StructType
+           schema for dataset
+
         '''
 
         sf = []
@@ -231,7 +250,9 @@ class AtomInteraction(object):
 
         Return
         ------
-            return schema for dataset
+        pyspark.sql.types.StructType
+           schema for dataset
+
         '''
 
         sf = []
@@ -268,11 +289,13 @@ class AtomInteraction(object):
 
         Attributes
         ----------
-            maxInteractions (int): maximum number of interactions
+        maxInteractions : int
+           maximum number of interactions
 
         Returns
         -------
-            number of columns in a row
+        int
+           number of columns in a row
         '''
 
         numAngles = maxInteractions * (maxInteractions - 1) / 2
@@ -280,8 +303,16 @@ class AtomInteraction(object):
 
     def _set(self, data, value, i):
         '''Sets the ith index of data to value and increase i by one
-        '''
+        
+        Attributes
+        ----------
+        data : list
+        value : int
+           value to increase
+        i : int
+           ith index of data to value
 
+        '''
         data[i] = value
         i += 1
         return data, i

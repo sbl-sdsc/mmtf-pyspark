@@ -21,7 +21,9 @@ class ContainsPolymerChainType(object):
 
     Attributes
     ----------
-        monomer_type (list(str)): list of monomer types in a polymer chain
+    monomer_type : list
+       list of monomer types in a polymer chain
+
     '''
 
     D_PEPTIDE_COOH_CARBOXY_TERMINUS = "D-PEPTIDE COOH CARBOXY TERMINUS"

@@ -24,8 +24,7 @@ class MmtfStructure(object):
     atom_counter = 0
 
     def __init__(self, input_data):
-        """Decodes a msgpack unpacked data to mmtf structure
-        """
+        """Decodes a msgpack unpacked data to mmtf structure"""
 
         # Variables that are not in all mmtf files
         if "bFactorList" in input_data:
@@ -163,7 +162,7 @@ class MmtfStructure(object):
         Attributes
         ----------
         data_setters : DataTransferInterface
-           a series of functions that can fill a chemical
+            a series of functions that can fill a chemical
         """
         self.set_alt_loc_list()
         data_setters.init_structure(self.num_bonds, len(self.x_coord_list), len(self.group_type_list),
@@ -177,8 +176,7 @@ class MmtfStructure(object):
         data_setters.finalize_structure()
 
     def set_alt_loc_list(self):
-        """Set the alternative location list for structure
-        """
+        """Set the alternative location list for structure"""
         self.alt_loc_list = [chr(x) for x in mmtfDecoder.run_length_decoder_numpy(
             np.frombuffer(self.alt_loc_list, ">i4")).astype(np.int16)]
         self.alt_loc_set = True

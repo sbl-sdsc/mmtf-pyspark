@@ -6,14 +6,13 @@ metadata and annotations for all current entries in the ProteinDataBank.
 
 References
 ----------
-List of supported fieldnames:
-    http://www.rcsb.org/pdb/results/reportField.do
-The RCSB Protein Data Bank:redesignedwebsiteandwebservices2011NucleicAcidsRes.39:D392-D401.
-    https://dx.doi.org/10.1093/nar/gkq1021
+List of supported fieldnames: http://www.rcsb.org/pdb/results/reportField.do
+The RCSB Protein Data Bank:redesignedwebsiteandwebservices2011NucleicAcidsRes.39:D392-D401. https://dx.doi.org/10.1093/nar/gkq1021
 
 Examples
 --------
 Retrieve PubMedCentral, PubMedID, and Depositiondate:
+
 >>> ds = CustomReportService.getDataset("pmc","pubmedId","depositionDate")
 >>> ds.printSchema()
 >>> ds.show(5)
@@ -54,23 +53,16 @@ def get_dataset(columnNames):
     dataset
        dataset with the specified columns
     '''
-
     if type(columnNames) == str:
         columnNames = [columnNames]
-
     query = CURRENT_URL + ','.join(columnNames)
-
-    dataset = _get_dataset(query, columnNames)
-
-    return dataset
+    return _get_dataset(query, columnNames)
 
 
 def _get_dataset(query, columnNames):
     '''Get dataset using different service locations
     '''
-
     dataset = None
-
     for SERVICELOCATION in SERVICELOCATIONS:
         while True:
             try:
@@ -102,10 +94,11 @@ def _concat_ids(spark, dataset, columnNames):
 
     Attributes
     ----------
-    spark : SparkSession
+    spark : :obj:`SparkSession <pyspark.sql.SparkSession>`
     dataset : Dataframe
     columnNames : list
        columnNames
+
     '''
 
     if "chainId" in dataset.columns:

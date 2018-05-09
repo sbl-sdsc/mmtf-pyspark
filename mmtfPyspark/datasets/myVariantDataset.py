@@ -6,10 +6,8 @@ web services for a list of UniProt ids.
 
 References
 ----------
-For more information: 
-   http://myvariant.info
-Query syntax: 
-   http://myvariant.info/docs/
+For more information: http://myvariant.info
+Query syntax: http://myvariant.info/docs/
 Xin J, Mark A, Afrasiabi C, Tsueng G, Juchler M, Gopal N, Stupp GS, Putman
 TE, Ainscough BJ, Griffith OL, Torkamani A, Whetzel PL, Mungall CJ, Mooney
 SD, Su AI, Wu C (2016) High-performance web services for querying gene and
@@ -19,11 +17,13 @@ variant annotation. Genome Biology 17(1):1-7. https://doi.org/10.1186/s13059-016
 Examples
 --------
 Get all missense variations for a list of Uniprot Ids:
+
 >>> uniprotIds = ['P15056']    # BRAF
 >>> ds = MyVariantDataset.get_variations(uniprotIds)
 >>> ds.show()
 
 Return missense variations that match a query
+
 >>> uniprotIds = ['P15056']    # BRAF
 >>> query = "clinivar.rcv.clinical_significance:pathogenic" \
 ...       + "OR linivar.rcv.clinical_significance:likely pathogenic"
@@ -60,24 +60,26 @@ def get_variations(uniprotIds, query = ''):
 
     References
     ----------
-        query syntax
-            http://myvariant.info/docs/
+    query syntax http://myvariant.info/docs/
 
     Examples
     --------
-        uniprotIds = ['P15056']    # BRAF
-        query = "clinivar.rcv.clinical_significance:pathogenic" \
-                + "OR linivar.rcv.clinical_significance:likely pathogenic"
-        ds = MyVariantDataset.get_variations(uniprotIds, query)
+    >>> uniprotIds = ['P15056']    # BRAF
+    >>> query = "clinivar.rcv.clinical_significance:pathogenic" \
+    ...         + "OR linivar.rcv.clinical_significance:likely pathogenic"
+    >>> ds = MyVariantDataset.get_variations(uniprotIds, query)
 
     Attributes
     ----------
-        uniprotIds (list): list of Uniprot Ids
-        query (str): MyVariant.info query string ['']
+    uniprotIds : list
+       list of Uniprot Ids
+    query : str
+       MyVariant.info query string ['']
 
     Returns
     -------
-        dataset with variation Ids and Uniprot Ids or null if no data are found
+    dataset
+       dataset with variation Ids and Uniprot Ids or null if no data are found
     '''
 
     # Get spark context
@@ -167,11 +169,13 @@ def _read_results(inputStream):
 
     Attributes
     ----------
-        inputStream (is): input stream
+    inputStream
+       input stream
 
     Returns
     -------
-        response as a string
+    str
+       response
     '''
 
     sb = ''

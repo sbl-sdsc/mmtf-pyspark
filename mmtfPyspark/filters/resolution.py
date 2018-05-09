@@ -6,8 +6,7 @@ structure is within the sepcified range
 
 References
 ----------
-    Resolution:
-        http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/resolution
+Resolution: http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/resolution
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"
@@ -23,10 +22,12 @@ class Resolution(object):
 
     Attributes
     ----------
-        min_resolution (float): The lower bound resolution
-        max_resolution (float): The upper bound resolution
-    '''
+    min_resolution : float
+       The lower bound resolution
+    max_resolution : float
+       The upper bound resolution
 
+    '''
     def __init__(self, minResolution, maxResolution):
         self.min_Resolution = minResolution
         self.max_Resolution = maxResolution

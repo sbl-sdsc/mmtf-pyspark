@@ -34,8 +34,8 @@ class ContainsDSaccharideChain(object):
 
     Attributes
     ----------
-        exclusive (bool): if true, only return entries that are exclusively
-                          contain D-saccharide chains
+    exclusive : bool
+       if true, only return entries that are exclusively contain D-saccharide chains
 
     '''
 

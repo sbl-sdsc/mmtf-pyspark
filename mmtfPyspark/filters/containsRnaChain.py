@@ -25,7 +25,8 @@ class ContainsRnaChain(object):
 
     Attributes
     ----------
-        exclusive (bool) if true, only return entries that contain RNA chains
+    exclusive : bool
+       if true, only return entries that contain RNA chains
     '''
 
     def __init__(self, exclusive=False):

@@ -8,16 +8,14 @@ and a flag that indicates if data point was part of the training set.
 
 Reference
 ---------
-    JPred4:
-        http://www.compbio.dundee.ac.uk/jpred/about_RETR_JNetv231_details.shtml
+JPred4: http://www.compbio.dundee.ac.uk/jpred/about_RETR_JNetv231_details.shtml
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 import urllib.request
 import tarfile
@@ -31,7 +29,8 @@ def get_dataset():
 
     Return
     ------
-        secondaryStructure dataset
+    dataset
+       secondaryStructure dataset
     '''
 
     URL = "http://www.compbio.dundee.ac.uk/jpred/downloads/retr231.tar.gz"

@@ -3,13 +3,12 @@
 
 Finds interactions that match the criteria specified by the InteractionFilter
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 from mmtfPyspark.interactions import InteractionFilter, AtomInteraction, InteractionCenter
 from mmtfPyspark.utils import ColumnarStructureX
@@ -21,10 +20,12 @@ class StructureToAtomInteractions(object):
     '''Class that finds structure to atom intteractions.
 
     Attributes:
-        bfilter (Class): Specifies the conditions for calculating interactions
-        pairwise (bool): If True, results as one row per pair interactions.
-                         If False, the interactions of one atom with all other
-                         atoms are returned as a single row.
+    bfilter : obj
+       Specifies the conditions for calculating interactions
+    pairwise : bool
+       If True, results as one row per pair interactions.
+       If False, the interactions of one atom with all other 
+       atoms are returned as a single row.
     '''
 
     def __init__(self, bfilter, pairwise=False):
@@ -75,13 +76,17 @@ class StructureToAtomInteractions(object):
 
         Attributes
         ----------
-            arrays (columnarStructure): structure in columnarStructure format
-            queryAtomIndex (int): the index of the querying atom
-            box (distanceBox): the distance box of the query atom
+        arrays : columnarStructure
+           structure in columnarStructure format
+        queryAtomIndex : int
+           the index of the querying atom
+        box : distanceBox
+           the distance box of the query atom
 
         Returns
         -------
-            an AtomInteraction class with interacting neighbors
+        AtomInteraction
+           an AtomInteraction class with interacting neighbors
         '''
         interaction = AtomInteraction()
 
@@ -156,7 +161,8 @@ class StructureToAtomInteractions(object):
 
         Attributes
         ----------
-            arrays (columnarStructure): structure in columnarStructure format
+        arrays : columnarStructure
+           structure in columnarStructure format
         '''
 
         # Get required data
@@ -181,7 +187,8 @@ class StructureToAtomInteractions(object):
 
         Attributes
         ----------
-            arrays (columnarStructure): structure in columnarStructure format
+        arrays : columnarStructure
+           structure in columnarStructure format
         '''
 
         # Get required data

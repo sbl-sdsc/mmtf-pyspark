@@ -5,20 +5,16 @@ This filter runs an PDBj Mine 2 Search web service using SQL query
 
 References
 ----------
-    Data are provided through Mine2 SQL
-        https://pdbj.org/help/mine2-sql
-    Queries can be designed with the interactive PDBj Mine 2 query service:
-        https://pdbj.org/mine/sql
-    PDB metadata are described in the PDB mmCIF Dictionary:
-        http://mmcif.wwpdb.org/
+Data are provided through Mine2 SQL: https://pdbj.org/help/mine2-sql
+Queries can be designed with the interactive PDBj Mine 2 query service: https://pdbj.org/mine/sql
+PDB metadata are described in the PDB mmCIF Dictionary: http://mmcif.wwpdb.org/
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 import urllib
 import ssl
@@ -34,7 +30,8 @@ def get_dataset(sqlQuery):
 
     Attributes
     ----------
-        sqlQuery (str): the sql query for the web service
+    sqlQuery : str
+       the sql query for the web service
     '''
     # Create SSl certificate
     ctx = ssl.create_default_context()

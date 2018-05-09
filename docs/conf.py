@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#/!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # MMTF-PySpark documentation build configuration file, created by
@@ -19,13 +19,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('..'))
-
-try:
-    import mmtfPyspark
-except ImportError:
-    raise ImportError("Install mmtf-pyspark!")
 
 # -- General configuration ------------------------------------------------
 
@@ -38,7 +32,7 @@ needs_sphinx = '1.7.4'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosectionlabel',
-    'sphinx.ext.autosummary',
+    #  'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
@@ -86,7 +80,15 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = False
+todo_include_todos = True
+#  autosummary_generate = True
+autodoc_docstring_signature = True
+
+autodoc_mock_imports = [
+    'pyspark', 'pyspark.sql', 'pyspark.ml.linalg', 'pyspark.ml.regression',
+]
+
+
 
 
 # -- Options for HTML output ----------------------------------------------

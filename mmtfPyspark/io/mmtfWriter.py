@@ -3,13 +3,12 @@
 
 Encodes and write MMTF encoded structure data to a Hadoop Sequence File
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from mmtf.api.mmtf_writer import MMTFEncoder
 from mmtfPyspark.utils import MmtfStructure
@@ -24,10 +23,13 @@ def write_sequence_file(path, sc, structure, compressed=True):
 
     Attributes
     ----------
-        path (str): Path to Hadoop file directory)
-        sc (Spark context)
-        structure (tuple): structure data to be written
-        compress (bool): if true, apply gzip compression
+    path : str
+       Path to Hadoop file directory)
+    sc : Spark context
+    structure : tuple
+       structure data to be written
+    compress : bool
+       if true, apply gzip compression
     '''
     # Can't apply first() function on list
     if type(structure.first()[1]) == MmtfStructure:
@@ -45,9 +47,11 @@ def write_mmtf_files(path, sc, structure):
 
     Attributes
     ----------
-        path (str): Path to Hadoop file directory
-        sc (Spark context)
-        structure (tuple): structure data to be written
+    path : str
+       Path to Hadoop file directory
+    sc : Spark context
+    structure : tuple
+       structure data to be written
     '''
 
     if path[-1] != "/":
@@ -66,11 +70,13 @@ def to_mmtf_base64(structure):
 
     Attributes
     ----------
-        structure (mmtfStructure): structure to be encoded to base64 byte array
+    structure : mmtfStructure
+       structure to be encoded to base64 byte array
 
     Returns
     -------
-        base64 byte array
+    list
+       base64 byte array
     '''
 
     byteArray = _to_byte_array(structure, compressed=False)
@@ -82,7 +88,8 @@ def _to_byte_array(structure, compressed):
 
     Returns
     -------
-        MMTF encoded and optionally gzipped structure data
+    list
+       MMTF encoded and optionally gzipped structure data
     '''
 
     if type(structure) == MmtfStructure:

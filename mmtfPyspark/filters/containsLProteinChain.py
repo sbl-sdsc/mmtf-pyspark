@@ -27,8 +27,8 @@ class ContainsLProteinChain(object):
 
     Attributes
     ----------
-        exclusive (bool): if true, only return entries that are exclusively
-                          contain L-protein chains
+    exclusive : bool
+       if true, only return entries that are exclusively contain L-protein chains
     '''
 
     def __init__(self, exclusive=False):

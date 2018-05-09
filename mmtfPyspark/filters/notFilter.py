@@ -16,8 +16,10 @@ class NotFilter(object):
 
     Attributes
     ----------
-        filter1 (filter): first filter to be negated
-        filter2 (filter): second filter to be negated
+    filter1 : filter
+       first filter to be negated
+    filter2 : filter
+       second filter to be negated
     '''
 
     def __init__(self, filter_function):

@@ -4,13 +4,12 @@
 This class converts a PythonRDD<Row> to a Dataset<Row>. This method only
 supports simple data types and all data need to be not null.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from pyspark.sql.types import *
 from pyspark.sql import SparkSession
@@ -21,8 +20,10 @@ def get_dataset(data, colNames):
 
     Attributes
     ----------
-        data (PythonRDD): PythonRDD of row objects
-        colNames (list(str)): names of the columns in a row
+    data : PythonRDD
+       PythonRDD of row objects
+    colNames : list
+       names of the columns in a row
     '''
 
     row = data.first()
