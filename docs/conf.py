@@ -122,7 +122,7 @@ nbsphinx_epilog = """
 # a list of builtin themes.
 html_theme = 'bootstrap'
 html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
-html_logo = 'mmTF-dark-blue.png'
+html_logo = '_static/mmTF-dark-blue.png'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -159,6 +159,7 @@ html_static_path = ['_static']
 
 def setup(app):
     app.add_stylesheet("custom.css")
+    app.add_stylesheet("_static/custom.css")
 
 # -- Options for HTMLHelp output ------------------------------------------
 
