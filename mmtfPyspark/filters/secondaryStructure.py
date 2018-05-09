@@ -24,13 +24,20 @@ class SecondaryStructure(object):
 
     Attributes
     ----------
-        helixFractionMin (float): minimum value for helix fraction [0.0]
-        helixFractionMax (float): maximum value for helix fraction [1.0]
-        sheetFractionMin (float): minimum value for sheet fraction [0.0]
-        sheetFractionMax (float): maximum value for sheet fraction [1.0]
-        coilFractionMin (float): minimum value for coil fractions [0.0]
-        coilFractionMax (float): maximum value for coil fractions [1.0]
-        exclusive (bool): exclusive flag [False]
+    helixFractionMin : float
+       minimum value for helix fraction [0.0]
+    helixFractionMax : float
+       maximum value for helix fraction [1.0]
+    sheetFractionMin : float
+       minimum value for sheet fraction [0.0]
+    sheetFractionMax : float
+       maximum value for sheet fraction [1.0]
+    coilFractionMin : float
+       minimum value for coil fractions [0.0]
+    coilFractionMax : float
+       maximum value for coil fractions [1.0]
+    exclusive : bool
+       exclusive flag [False]
     '''
 
     def __init__(self, helixFractionMin=0.0, helixFractionMax=1.0,

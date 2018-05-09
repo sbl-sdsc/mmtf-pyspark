@@ -28,8 +28,8 @@ class ContainsDProteinChain(object):
 
     Attributes
     ----------
-        exclusive (bool): if true, only return entries that are exclusively
-                          contain D-protein chains
+    exclusive : bool
+       if true, only return entries that are exclusively contain D-protein chains
     '''
 
     def __init__(self, exclusive=False):

@@ -18,8 +18,10 @@ class RWork(object):
 
     Attributes
     ----------
-        min_Rwork (float): The lower bound r_work value
-        max_Rwork (float): The upper bound r_work value
+    min_Rwork : float
+       The lower bound r_work value
+    max_Rwork : float
+       The upper bound r_work value
     '''
 
     def __init__(self, minRwork, maxRwork):

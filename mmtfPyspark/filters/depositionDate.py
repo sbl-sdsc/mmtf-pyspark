@@ -22,8 +22,10 @@ class DepositionDate(object):
 
         Attributes
         ----------
-            startdate (str): start of the deposition date range
-            enddate (str): end of the deposition date range
+        startdate : str
+           start of the deposition date range
+        enddate : str
+           end of the deposition date range
         '''
         self.startdate = parse(startdate)
         self.enddate = parse(enddate)

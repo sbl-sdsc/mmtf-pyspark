@@ -25,7 +25,8 @@ class ContainsDnaChain(object):
 
     Attributes
     ----------
-        exclusive (bool): if true, only return entries that contain Dna chains
+    exclusive : bool
+       if true, only return entries that contain Dna chains
     '''
 
     def __init__(self, exclusive=False):

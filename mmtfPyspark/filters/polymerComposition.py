@@ -23,8 +23,8 @@ class PolymerComposition(object):
 
     Attributes
     ----------
-        exclusive (bool): if true, all chains must be made of the specified
-                          monomers
+    exclusive : bool
+       if true, all chains must be made of the specified monomers
     '''
 
     # define sets of residue types eg:

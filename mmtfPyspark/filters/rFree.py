@@ -6,8 +6,7 @@ specified range
 
 References
 ----------
-    rFree:
-        http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/r-value-and-r-free
+rFree: http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/r-value-and-r-free
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"
@@ -23,8 +22,10 @@ class RFree(object):
 
     Attributes
     ----------
-        min_Rfree (float): The lower bound r_free value
-        max_RFree (float): The upper bound r_free value
+    min_Rfree : float
+       The lower bound r_free value
+    max_RFree : float
+       The upper bound r_free value
     '''
 
     def __init__(self, minRfree, maxRfree):

@@ -24,7 +24,8 @@ class ContainsGroup(object):
 
     Attributes
     ----------
-        groupQuery (list[str]): list of group names
+    groupQuery : list
+       list of group names
     '''
 
     def __init__(self, *args):

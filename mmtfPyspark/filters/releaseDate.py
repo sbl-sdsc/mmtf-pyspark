@@ -22,8 +22,10 @@ class ReleaseDate(object):
 
         Attributes
         ----------
-            startDate (str): start of the release date range
-            enddate (str): end of the the release date range
+        startDate : str
+           start of the release date range
+        enddate : str
+           end of the the release date range
         '''
         self.startDate = parse(startDate)
         self.endDate = parse(endDate)
