@@ -4,13 +4,12 @@
 Simple wrapper functions that uses ipywidgets and py3Dmol to view a list of
 protein structures.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from ipywidgets import interact, IntSlider, Dropdown
 import matplotlib.pyplot as plt
@@ -25,12 +24,16 @@ def view_structure(pdbIds, bioAssembly = False, style='cartoon', color='spectrum
 
     Attributes
     ----------
-        pdbIds (list<Strings>) : A list of PDBIDs to display
-        bioAssembly (Bool): display bioAssembly
-        style : Style of 3D structure (stick line cross sphere cartoon VDW MS)
-        color : Color of 3D structure
-    '''
+    pdbIds : list
+       A list of PDBIDs to display
+    bioAssembly : bool
+       display bioAssembly
+    style : str, optional
+       Style of 3D structure (stick line cross sphere cartoon VDW MS)
+    color : str, optional
+       Color of 3D structure
 
+    '''
     if type(pdbIds) == str:
         pdbIds = [pdbIds]
 
@@ -70,12 +73,16 @@ def view_group_interaction(pdbIds, interacting_group='None', style='cartoon', co
 
     Attributes
     ----------
-        pdbIds (list<Strings>) : A list of PDBIDs to display
-        interacting_atom (String) : The interacting atom to highlight
-        style : Style of 3D structure (stick line cross sphere cartoon VDW MS)
-        color : Color of 3D structure
-    '''
+    pdbIds : list
+       A list of PDBIDs to display
+    interacting_atom : str, optional
+       The interacting atom to highlight
+    style : str, optional
+       Style of 3D structure (stick line cross sphere cartoon VDW MS)
+    color : str, optional 
+       Color of 3D structure
 
+    '''
     if type(pdbIds) == str:
         pdbIds = [pdbIds]
 
@@ -111,13 +118,17 @@ def view_binding_site(pdbIds=None, groups=None, chains=None, distance=3.0):
 
     Attributes
     ----------
-        pdbIds (list<Strings>, String) : A list of PDBIDs to display
-        groups (list<int>) : A list of groups to center at for each protein structure
-        chains (list<char>) : A list of chains specified for each protein structure.
-                              If no chains is specified, chain 'A' will be default to
-                              all structures.
-        cutoffDistance (float) : The cutoff distance use the find the neighbors
-                                 of specified group
+    pdbIds : list, optional 
+       A list of PDBIDs to display
+    groups : list, optional
+       A list of groups to center at for each protein structure
+    chains : list, optional
+       A list of chains specified for each protein structure.  
+       If no chains is specified, chain 'A' will be default to
+       all structures.
+    cutoffDistance : float, optional
+       The cutoff distance use the find the neighbors of specified group
+
     '''
 
     if pdbIds is None or groups is None:
@@ -166,20 +177,22 @@ def view_binding_site(pdbIds=None, groups=None, chains=None, distance=3.0):
     return interact(view3d, i=s_widget)
 
 
-def group_interaction_viewer(df, sortBy, metal = None):
+def group_interaction_viewer(df, sortBy, metal=None):
     '''A wrapper function that zooms in to a group in a protein structure and
     highlight its interacting atoms. The input dataframe should be generated
     from the GroupInteractionExtractor class.
 
     References
     ----------
-        GroupInteractionExtractor:
-        https://github.com/sbl-sdsc/mmtf-pyspark/blob/master/mmtfPyspark/interactions/groupInteractionExtractor.py
+    GroupInteractionExtractor: https://github.com/sbl-sdsc/mmtf-pyspark/blob/master/mmtfPyspark/interactions/groupInteractionExtractor.py
 
     Attributes
     ----------
-        df (dataframe): the dataframe generated from GroupIneteractionExtractor
-        sort_by (str): the q value to sort by ['q4','q5','q6']
+    df : dataframe
+       the dataframe generated from GroupIneteractionExtractor
+    sort_by : str
+       the q value to sort by ['q4','q5','q6']
+
     '''
 
     # Filter by metal
@@ -209,9 +222,11 @@ def group_interaction_viewer(df, sortBy, metal = None):
     def view3d(i=0):
         '''Simple structure viewer that uses py3Dmol to view PDB structure by
         indexing the list of PDBids
+
         Attributes
         ----------
-        i (int): index of the protein if a list of PDBids
+        i : int
+           index of the protein if a list of PDBids
         '''
 
         structures = df['pdbId'].iloc
@@ -241,7 +256,9 @@ def metal_distance_widget(df_concat):
 
     Attributes
     ----------
-        df_concat (Dataframe): dataframe of metal-elements distances
+    df_concat : Dataframe
+       dataframe of metal-elements distances
+
     '''
     metals = df_concat['Metal'].unique().tolist()
     m_widget = Dropdown(options = metals, description = "Metals")
