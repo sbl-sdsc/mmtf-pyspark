@@ -25,17 +25,17 @@ class SecondaryStructure(object):
     Attributes
     ----------
     helixFractionMin : float
-       minimum value for helix fraction [0.0]
+       minimum value for helix fraction [default: 0.0]
     helixFractionMax : float
-       maximum value for helix fraction [1.0]
+       maximum value for helix fraction [default: 1.0]
     sheetFractionMin : float
-       minimum value for sheet fraction [0.0]
+       minimum value for sheet fraction [default: 0.0]
     sheetFractionMax : float
-       maximum value for sheet fraction [1.0]
+       maximum value for sheet fraction [default: 1.0]
     coilFractionMin : float
-       minimum value for coil fractions [0.0]
+       minimum value for coil fractions [default: 0.0]
     coilFractionMax : float
-       maximum value for coil fractions [1.0]
+       maximum value for coil fractions [default: 1.0]
     exclusive : bool
        exclusive flag [False]
     '''

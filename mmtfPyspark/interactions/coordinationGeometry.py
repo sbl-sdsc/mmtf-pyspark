@@ -4,13 +4,12 @@
 This class calculates distances, angles, and orientational order parameters
 for atoms coordinated to a central atom
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 import numpy as np
 import itertools as it
@@ -23,8 +22,10 @@ class CoordinateGeometry(object):
 
     Attributes
     ----------
-        center : coordinates of the center atom
-        neighbors (list): coordinates of neighbor atoms
+    center : list
+       coordinates of the center atom
+    neighbors : list
+       coordinates of neighbor atoms
     '''
 
     def __init__(self, center, neighbors):
@@ -41,6 +42,7 @@ class CoordinateGeometry(object):
 
         Returns
         -------
+        :obj:`list <numpy.ndarray>`
             Numpy array of pairwise angles
         '''
 
@@ -51,6 +53,7 @@ class CoordinateGeometry(object):
 
         Returns
         -------
+        :obj:`list <numpy.ndarray>`
             Numpy array of pairwise angles
         '''
 
@@ -65,13 +68,12 @@ class CoordinateGeometry(object):
 
         Reference
         ---------
-            Richard H. Henchman and Stuart J. Cockramb (2013), Water’s
-            Non-Tetrahedral Side, Faraday Discuss., 167, 529.
-            <a href="https://dx.doi.org/10.1039/c3fd00080j">doi:10.1039/c3fd00080j</a>
+        Richard H. Henchman and Stuart J. Cockramb (2013), Water’s Non-Tetrahedral Side, Faraday Discuss., 167, 529.  <a href="https://dx.doi.org/10.1039/c3fd00080j">doi:10.1039/c3fd00080j</a>
 
         Returns
         -------
-            trigonal orientational order parameter
+        float
+           trigonal orientational order parameter
         '''
 
         if len(self.neighbors) < 3:
@@ -94,18 +96,14 @@ class CoordinateGeometry(object):
 
         Reference
         ---------
-            Jeffrey R. Errington & Pablo G. Debenedetti (2001) Relationship
-            between structural order and the anomalies of liquid water,
-            Nature 409, 318-321.
-            <a href="https://dx.doi.org/10.1038/35053024">doi:10.1038/35053024</a>
+        Jeffrey R. Errington & Pablo G. Debenedetti (2001) Relationship between structural order and the anomalies of liquid water, Nature 409, 318-321.  <a href="https://dx.doi.org/10.1038/35053024">doi:10.1038/35053024</a>
 
-            P.-L. Chau & A. J. Hardwick (1998) A new order parameter for
-            tetrahedral configurations, Molecular Physics, 93:3, 511-518.
-            <a href"https://dx.doi.org/10.1080/002689798169195">doi:10.1080/002689798169195</a>
+        P.-L. Chau & A. J. Hardwick (1998) A new order parameter for tetrahedral configurations, Molecular Physics, 93:3, 511-518.  <a href"https://dx.doi.org/10.1080/002689798169195">doi:10.1080/002689798169195</a>
 
         Returns
         -------
-            tetrahedra orientational order parameter
+        float
+           tetrahedra orientational order parameter
         '''
 
         if len(self.neighbors) < 4:
@@ -130,16 +128,15 @@ class CoordinateGeometry(object):
 
         Reference
         ---------
-            Richard H. Henchman and Stuart J. Cockramb (2013), Water’s
-            Non-Tetrahedral Side, Faraday Discuss., 167, 529. <a href=
-            "https://dx.doi.org/10.1039/c3fd00080j">doi:10.1039/c3fd00080j</a>
-            Note, the summations in equation (3) in this paper is incorrect.
-            This method uses the corrected version (R. Henchman, personal
-            communication).
+        Richard H. Henchman and Stuart J. Cockramb (2013), Water’s Non-Tetrahedral Side, Faraday Discuss., 167, 529. <a href= "https://dx.doi.org/10.1039/c3fd00080j">doi:10.1039/c3fd00080j</a>
+        
+        Note, the summations in equation (3) in this paper is incorrect.
+        This method uses the corrected version (R. Henchman, personal communication).
 
         Returns
         -------
-            trigonal bipyramidal orientational order parameter
+        float
+           trigonal bipyramidal orientational order parameter
         '''
 
         if len(self.neighbors) < 5:
@@ -169,15 +166,14 @@ class CoordinateGeometry(object):
 
         Reference
         ---------
-            Richard H. Henchman and Stuart J. Cockramb (2013), Water’s
-            Non-Tetrahedral Side, Faraday Discuss., 167, 529.
-            <a href= "https://dx.doi.org/10.1039/c3fd00080j">doi:10.1039/c3fd00080j</a>
-            The same method as described in this paper was used to derive the q6
-            parameter (R. Henchman, personal communication).
+        Richard H. Henchman and Stuart J. Cockramb (2013), Water’s Non-Tetrahedral Side, Faraday Discuss., 167, 529.  <a href= "https://dx.doi.org/10.1039/c3fd00080j">doi:10.1039/c3fd00080j</a>
+
+        The same method as described in this paper was used to derive the q6 parameter (R. Henchman, personal communication).
 
         Returns
         -------
-            Octahedral orientational order parameter
+        float
+           Octahedral orientational order parameter
         '''
 
         if len(self.neighbors) < 6:
@@ -245,8 +241,10 @@ class CoordinateGeometry(object):
 
         Attributes
         ----------
-            a: point a
-            b: point b
+        a : list
+           point a
+        b : list
+           oint b
         '''
         arccosInput = np.dot(a, b) / np.linalg.norm(a) / np.linalg.norm(b)
         arccosInput = 1.0 if arccosInput > 1.0 else arccosInput

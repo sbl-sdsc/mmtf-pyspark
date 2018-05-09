@@ -10,13 +10,12 @@ Typical use cases include:
     Find interactions between a metal ion and protein/DNA/RNA
     Find interactions between a small molecule and protein/DNA/RNA
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 from pyspark.sql import SparkSession
 from pyspark import SparkContext
@@ -32,13 +31,15 @@ class GroupInteractionExtractor(object):
 
         Attributes
         ----------
-            structures (PythonRDD): a set of PDB structures
-            interactionFilter (InteractionFilter): filter criteria for determing
-                                                   noncovalent interactions
+        structures : PythonRDD
+           a set of PDB structures
+        interactionFilter : InteractionFilter
+           filter criteria for determing noncovalent interactions
 
         Returns
         -------
-            Dataset of pairwise interactions
+        dataset
+           Dataset of pairwise interactions
         '''
 
         spark = SparkSession.builder.getOrCreate()
@@ -59,13 +60,17 @@ class GroupInteractionExtractor(object):
         the interactions, such as distances, angles, and orientation order
         parameters are returned in each row.
 
-        Attributes:
-            structures (PythonRDD): a set of PDB structures
-            interactionFilter (InteractionFilter): filter criteria for determing
-                                                   noncovalent interactions
+        Attributes
+        ----------
+        structures : PythonRDD
+           a set of PDB structures
+        interactionFilter : InteractionFilter
+           filter criteria for determing noncovalent interactions
 
-        Returns:
-            Dataset of pairwise interactions
+        Returns
+        -------
+        dataset
+           Dataset of pairwise interactions
         '''
 
         spark = SparkSession.builder.getOrCreate()

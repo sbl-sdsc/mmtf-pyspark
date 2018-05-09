@@ -4,13 +4,12 @@
 InteractionCenter stores information about an atom involved in a molecular
 interaction.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 from pyspark.sql.types import *
 import numpy as np
@@ -22,8 +21,10 @@ class InteractionCenter(object):
 
     Attributes
     ----------
-        structure (mmtfStructure): structure to be used as interaction center [None]
-        atomIndex (int): the index of the atom at center [None]
+    structure : mmtfStructure
+       structure to be used as interaction center [None]
+    atomIndex : int
+       the index of the atom at center [None]
     '''
 
     def __init__(self, structure=None, atomIndex=None):
