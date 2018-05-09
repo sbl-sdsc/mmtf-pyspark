@@ -89,6 +89,12 @@ pygments_style = 'sphinx'
 #  autosummary_generate = True
 #  autodoc_docstring_signature = True
 
+autodoc_mock_imports = [
+    'pyspark',
+]
+
+
+
 
 # -- Options for HTML output ----------------------------------------------
 
