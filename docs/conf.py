@@ -90,7 +90,7 @@ pygments_style = 'sphinx'
 #  autodoc_docstring_signature = True
 
 autodoc_mock_imports = [
-    'pyspark',
+    'pyspark', 'pyspark.sql', 'pyspark.ml.linalg', 'pyspark.ml.regression',
 ]
 
 
