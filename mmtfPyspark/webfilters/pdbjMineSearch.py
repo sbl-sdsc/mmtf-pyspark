@@ -7,21 +7,20 @@ References
 ----------
 Each category represents a table, and fields represent database columns, see
 available tables and columns:
-    https://pdbj.org/mine-rdb-docs
+`MINE RDB DOCS <https://pdbj.org/mine-rdb-docs>`_
 
-Data are provided through, Mine 2 SQL:
-    https://pdbj.org/help/mine2-sql
+Data are provided through:
+`MINE2-SQl <https://pdbj.org/help/mine2-sql>`_
 
 Queries can be designed with the interactive PDBjMine2 query service:
-    https://pdbj.org/mine/sql
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
+`PDBjMine2 SQL <https://pdbj.org/mine/sql>`_
 '''
+
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 import urllib
 import tempfile
@@ -36,7 +35,8 @@ class PdbjMineSearch(object):
 
     Attributes
     ----------
-        sqlQuery (str): the sql query [None]
+    sqlQuery: str
+       the sql query [None]
     '''
 
     URL = "https://pdbj.org/rest/mine2_sql"

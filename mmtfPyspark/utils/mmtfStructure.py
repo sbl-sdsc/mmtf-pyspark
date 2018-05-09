@@ -163,7 +163,6 @@ class MmtfStructure(object):
         ----------
         data_setters : DataTransferInterface
             a series of functions that can fill a chemical
-
         """
         self.set_alt_loc_list()
         data_setters.init_structure(self.num_bonds, len(self.x_coord_list), len(self.group_type_list),

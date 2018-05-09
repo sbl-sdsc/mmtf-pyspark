@@ -7,20 +7,21 @@ data columns availible from RCSB PDB web services.
 
 References
 ----------
-    List of supported field names:
-        http://www.rcsb.org/pdb/results/reportField.do
-    Examples of SQL WHERE clauses:
-        https://www.w3schools.com/sql/sql_where.asp
+List of supported field names:
+`reportFiled <http://www.rcsb.org/pdb/results/reportField.do>`_
+
+Examples of SQL WHERE clauses:
+`SQL where <https://www.w3schools.com/sql/sql_where.asp>`_
 
 
-<p>Example: find PDB entries with Enzyme classification number 2.7.11.1
+Examples
+--------
+Find PDB entries with Enzyme classification number 2.7.11.1
 and source organism Homo sapiens:
 
-<pre><code>
-    JavaPairRDD<String, StructureDataInterface> pdb = ...
-    String whereClause = "WHERE ecNo='2.7.11.1' AND source='Homo sapiens'";
-    pdb = pdb.filter(new RcsbWebserviceFilter(whereClause, "ecNo","source"));
-</code></pre>
+>>> pdb = read_full_sequence_files(sc)
+>>> whereClause = "WHERE ecNo='2.7.11.1' AND source='Homo sapiens'"
+>>> pdb = pdb.filter(RcsbWebserviceFilter(whereClause, "ecNo","source"))
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"
@@ -39,9 +40,9 @@ class CustomReportQuery(object):
     ----------
     whereClause : str
        WHERE Clause of SQL statement
-    fields : 
-       one or more field names to be used in query
 
+    fields : str, list
+       one or more field names to be used in query
     '''
 
     def __init__(self, whereClause, fields):

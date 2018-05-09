@@ -1,7 +1,6 @@
 '''mmtfDecoder.py
 
 Provides efficient methods to decode mmtf structures
-
 '''
 __author__ = "Mars (Shih-Cheng) Huang"
 __maintainer__ = "Mars (Shih-Cheng) Huang"
@@ -19,7 +18,6 @@ def run_length_decoder_numpy(in_array):
     ----------
     in_array : list
        the input list to apply run length decoder on
-
     """
     lengths = np.array(in_array[1::2])
     values = np.array(in_array[0::2])
@@ -44,9 +42,8 @@ def recursive_index_decode(int_array, decode_num=1000):
 
     Returns
     -------
-    list
-       list of integers after recursive index decoding
-
+    numpy.array
+       return the numpy.array of integers after recursive index decoding
     """
     maximum = 32767
     minimum = -32768
@@ -66,7 +63,6 @@ def decode_entity_list(input_data):
     -------
     list
        decoded entity list
-
     """
     return [convert_entity(entry) for entry in input_data]
 
@@ -83,7 +79,6 @@ def decode_group_list(input_data):
     -------
     list
        decoded group list
-
     """
     return [convert_group(entry) for entry in input_data]
 
@@ -99,7 +94,6 @@ def convert_group(input_group):
     Returns
     -------
     dict
-       return the decoded group
     """
 
     output_group = {}
@@ -127,7 +121,6 @@ def convert_entity(input_entity):
     -------
     dict
        decoded entity
-
     """
     output_entity = {}
     for key in input_entity:

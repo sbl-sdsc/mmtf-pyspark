@@ -6,8 +6,7 @@ description.
 
 References
 ----------
-Advanced Search Query
-    https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html
+`Advanced Search Query <https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html>`_
 
 Examples
 --------
@@ -35,7 +34,8 @@ class AdvancedQuery(object):
 
     Attributes
     ----------
-        xmlQuery (String): query in RCSB PDB XML format
+    xmlQuery : str
+       query in RCSB PDB XML format
     '''
 
     def __init__(self, xmlQuery):

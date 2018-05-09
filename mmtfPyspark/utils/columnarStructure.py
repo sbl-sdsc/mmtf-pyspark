@@ -360,7 +360,6 @@ class ColumnarStructure(object):
         -------
         :obj:`array <numpy.ndarray>`
            index that maps chain index to an entity index
-
         '''
 
         if self.entityChainIndex is None:

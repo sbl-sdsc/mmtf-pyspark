@@ -5,17 +5,17 @@ This filter returns entries that contain groups with specified chemical structur
 This chemical structure query supports for query: exact, similar, substructure, and superstructure.
 For details see references.
 
-References:
-    Chemical Structure Search:
-        http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html
+References
+----------
+Chemical Structure Search:
+    http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from mmtfPyspark.webfilters import AdvancedQuery
 
@@ -27,20 +27,23 @@ class ChemicalStructureQuery(object):
     SUBSTRUCTURE = "Substructure"
     SUPERSTRUCTURE = "Superstructure"
 
-    def __init__(self, smiles, queryType="Substructure", percentSimilarity=0):
+    def __init__(self, smiles, queryType="Substructure", percentSimilarity=0.0):
         '''Constructor to setup filter that matches any entry with at least one
         chemical component that matches the specified SMILES string using the
         specified query type.
 
         For details see:
-            <a href="http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html">Chemical Structure Search</a>.
+        `Chemical Structure Search <http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html>`_
 
-        Attribute
-        ---------
-            smiles (String): SMILES string representing chemical structure
-            queryType: One of the 4 supported types
-            percentSimilarity: percent similarity for similarity search. This parameter is
-                               ignored for all other query types
+        Attributes
+        ----------
+        smiles : str
+           SMILES string representing chemical structure
+        queryType : str
+           One of the 4 supported types
+        percentSimilarity : float
+           percent similarity for similarity search. This parameter is ignored
+           for all other query types [default: 0.0]
         '''
 
         if not (queryType == self.EXACT

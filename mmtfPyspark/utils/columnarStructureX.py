@@ -3,13 +3,13 @@
 
 Inheritance class of ColumnarStructure
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
+
 import numpy as np
 import sys
 from mmtfPyspark.utils import ColumnarStructure
@@ -21,8 +21,10 @@ class ColumnarStructureX(ColumnarStructure):
 
     Attributes
     ----------
-        structure (mmtfStructure): mmtf structure
-        firstModelOnly (bool): flag to use only the first model of the structure
+    structure : mmtfStructure)
+       mmtf structure
+    firstModelOnly : bool
+       flag to use only the first model of the structure
     '''
 
     def __init__(self, structure, firstModelOnly = True):
@@ -67,10 +69,11 @@ class ColumnarStructureX(ColumnarStructure):
 
         Reference
         ---------
-            Liu et al. BMC Bioinformatics 2014, 15(Suppl 16):S3,
-            Use B-factor related features for accurate classification between
-            protein binding interfaces and crystal packing contacts
-            <"https://doi.org/10.1186/1471-2105-15-S16-S3">
+        Liu et al. BMC Bioinformatics 2014, 15(Suppl 16):S3,
+        Use B-factor related features for accurate classification between
+        protein binding interfaces and crystal packing contacts
+
+        https://doi.org/10.1186/1471-2105-15-S16-S3
         '''
 
         if self.clampedNormalizedbFactor is None:

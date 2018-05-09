@@ -10,27 +10,24 @@ list:
 
 References
 ----------
-    PISCES:
-        http://dunbrack.fccc.edu/PISCES.php
-        Please cite the following in any work that uses lists provided by PISCES
-        G. Wang and R. L. Dunbrack, Jr. PISCES: a protein sequence culling
-        server. Bioinformatics, 19:1589-1591, 2003.
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
+PISCES: http://dunbrack.fccc.edu/PISCES.php
+Please cite the following in any work that uses lists provided by PISCES
+G. Wang and R. L. Dunbrack, Jr. PISCES: a protein sequence culling
+server. Bioinformatics, 19:1589-1591, 2003.
 '''
+
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from urllib.request import urlopen
 import gzip
 
 
 class PiscesDownloader(object):
-    '''
-    Downloads representative protein chains from the PISCES
+    '''Downloads representative protein chains from the PISCES
     CulledPDB sets. A CulledPDB set is selected by specifying
     sequenceIdentity and resolution cutoff values from the following lists:
     <p> sequenceIdentity = 20, 25, 30, 40, 50, 60, 70, 80, 90
@@ -38,8 +35,10 @@ class PiscesDownloader(object):
 
     Attributes
     ----------
-        sequenceIdentity (int): sequence identity [0]
-        resoltion (int): resoltion for pisces filter [0.0]
+    sequenceIdentity : int
+       sequence identity [0]
+    resoltion : int
+       resoltion for pisces filter [0.0]
     '''
 
     URL = "http://dunbrack.fccc.edu/Guoli/culledpdb_hh"
