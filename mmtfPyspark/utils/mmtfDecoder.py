@@ -2,13 +2,12 @@
 
 Provides efficient methods to decode mmtf structures
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 import numpy as np
 
@@ -18,9 +17,10 @@ def run_length_decoder_numpy(in_array):
 
     Attributes
     ----------
-        in_array (list): the input list to apply run length decoder on
-    """
+    in_array : list
+       the input list to apply run length decoder on
 
+    """
     lengths = np.array(in_array[1::2])
     values = np.array(in_array[0::2])
     starts = np.insert(np.array([0]), 1, np.cumsum(lengths))[:-1]
@@ -37,14 +37,17 @@ def recursive_index_decode(int_array, decode_num=1000):
 
     Attribute
     ---------
-        int_array (list): the input array of integers
-        decode_num (int): the number used for decoding [1000]
+    int_array : list
+       the input array of integers
+    decode_num : int
+       the number used for decoding [1000]
 
     Returns
     -------
-        return the array of integers after recursive index decoding
-    """
+    list
+       list of integers after recursive index decoding
 
+    """
     maximum = 32767
     minimum = -32768
     out_arr = np.cumsum(int_array) / decode_num
@@ -56,17 +59,16 @@ def decode_entity_list(input_data):
 
     Attributes
     ----------
-        input_data (list): the list of entities
+    input_data : list
+       the list of entities
 
     Returns
     -------
-        return the decoded entity list
-    """
+    list
+       decoded entity list
 
-    out_data = []
-    for entry in input_data:
-        out_data.append(convert_entity(entry))
-    return out_data
+    """
+    return [convert_entity(entry) for entry in input_data]
 
 
 def decode_group_list(input_data):
@@ -74,17 +76,16 @@ def decode_group_list(input_data):
 
     Attributes
     ----------
-        input_data (list): the list of groups
+    input_data : list
+       the list of groups
 
     Returns
     -------
-        return the decoded group list
-    """
+    list
+       decoded group list
 
-    out_data = []
-    for entry in input_data:
-        out_data.append(convert_group(entry))
-    return out_data
+    """
+    return [convert_group(entry) for entry in input_data]
 
 
 def convert_group(input_group):
@@ -92,11 +93,13 @@ def convert_group(input_group):
 
     Attributes
     ----------
-        input_group (list): the list of input groups
+    input_group : list
+       the list of input groups
 
     Returns
     -------
-        return the decoded group
+    dict
+       return the decoded group
     """
 
     output_group = {}
@@ -117,18 +120,19 @@ def convert_entity(input_entity):
 
     Attributes
     ----------
-        input_entity (list): the list of entities to decode
+    input_entity : list
+       entities to decode
 
     Returns
     -------
-        return the decoded entity
-    """
+    dict
+       decoded entity
 
+    """
     output_entity = {}
     for key in input_entity:
         if key in [b'description', b'type', b'sequence']:
-            output_entity[key.decode(
-                'ascii')] = input_entity[key].decode('ascii')
+            output_entity[key.decode('ascii')] = input_entity[key].decode('ascii')
         else:
             output_entity[key.decode('ascii')] = input_entity[key]
     return output_entity

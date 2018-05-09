@@ -216,7 +216,7 @@ class AtomInteraction(object):
 
         Returns
         -------
-        :obj:`StructType <pyspark.sql.types.StructType>`
+        pyspark.sql.types.StructType
            schema for dataset
 
         '''
@@ -250,7 +250,7 @@ class AtomInteraction(object):
 
         Return
         ------
-        :obj:`StructType <pyspark.sql.types.StructType>`
+        pyspark.sql.types.StructType
            schema for dataset
 
         '''
