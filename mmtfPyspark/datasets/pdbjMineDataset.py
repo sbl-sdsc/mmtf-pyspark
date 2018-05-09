@@ -5,9 +5,9 @@ This filter runs an PDBj Mine 2 Search web service using SQL query
 
 References
 ----------
-Data are provided through Mine2 SQL: https://pdbj.org/help/mine2-sql
-Queries can be designed with the interactive PDBj Mine 2 query service: https://pdbj.org/mine/sql
-PDB metadata are described in the PDB mmCIF Dictionary: http://mmcif.wwpdb.org/
+- Data are provided through Mine2 SQL: https://pdbj.org/help/mine2-sql
+- Queries can be designed with the interactive PDBj Mine 2 query service: https://pdbj.org/mine/sql
+- PDB metadata are described in the PDB mmCIF Dictionary: http://mmcif.wwpdb.org/
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

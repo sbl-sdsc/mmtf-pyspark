@@ -6,7 +6,7 @@ match a PDB entry
 
 References
 ----------
-The current list of support experimental method types can be found here: http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Items/_exptl.method.html
+- The current list of support experimental method types can be found here: http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Items/_exptl.method.html
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

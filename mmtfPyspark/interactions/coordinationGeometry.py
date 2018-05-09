@@ -66,9 +66,10 @@ class CoordinateGeometry(object):
         to 0 for a random arrangement and equals 1 in a perfectly trigonal
         arrangement.
 
-        Reference
-        ---------
-        Richard H. Henchman and Stuart J. Cockramb (2013), Water’s Non-Tetrahedral Side, Faraday Discuss., 167, 529.  <a href="https://dx.doi.org/10.1039/c3fd00080j">doi:10.1039/c3fd00080j</a>
+        References
+        ----------
+        - Richard H. Henchman and Stuart J. Cockramb (2013), Water’s Non-Tetrahedral 
+          Side, Faraday Discuss., 167, 529.  https://dx.doi.org/10.1039/c3fd00080j
 
         Returns
         -------
@@ -94,8 +95,8 @@ class CoordinateGeometry(object):
         tetrahedral arrangement. It can reach a minimum value of -3 for unusual
         arrangements.
 
-        Reference
-        ---------
+        References
+        ----------
         Jeffrey R. Errington & Pablo G. Debenedetti (2001) Relationship between structural order and the anomalies of liquid water, Nature 409, 318-321.  <a href="https://dx.doi.org/10.1038/35053024">doi:10.1038/35053024</a>
 
         P.-L. Chau & A. J. Hardwick (1998) A new order parameter for tetrahedral configurations, Molecular Physics, 93:3, 511-518.  <a href"https://dx.doi.org/10.1080/002689798169195">doi:10.1080/002689798169195</a>

@@ -7,8 +7,7 @@ For details see references.
 
 References
 ----------
-Chemical Structure Search:
-    http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html
+- `Chemical Structure Search <http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html>`_
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

@@ -7,9 +7,11 @@ the HGVS sequence variant nomenclature.
 
 References
 ----------
-HGVS sequence variant nomenclature http://varnomen.hgvs.org/
-G2S Web Services https://g2s.genomenexus.org/
-Juexin Wang, Robert Sheridan, S Onur Sumer, Nikolaus Schultz, Dong Xu, Jianjiong Gao; G2S: a web-service for annotating genomic variants on 3D protein structures (2018) Bioinformatics. https://doi.org/10.1093/bioinformatics/bty047
+- HGVS sequence variant nomenclature http://varnomen.hgvs.org/
+- G2S Web Services https://g2s.genomenexus.org/
+- Juexin Wang, Robert Sheridan, S Onur Sumer, Nikolaus Schultz, Dong Xu, Jianjiong Gao; 
+  G2S: a web-service for annotating genomic variants on 3D protein structures (2018) 
+  Bioinformatics. https://doi.org/10.1093/bioinformatics/bty047
 
 Examples
 --------

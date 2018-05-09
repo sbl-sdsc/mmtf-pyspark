@@ -7,8 +7,8 @@ an InteractionFilter. The interactions can be returned as interacting atom pairs
 or as one row per interacting atom.
 
 Typical use cases include:
-    Find interactions between a metal ion and protein/DNA/RNA
-    Find interactions between a small molecule and protein/DNA/RNA
+- Find interactions between a metal ion and protein/DNA/RNA
+- Find interactions between a small molecule and protein/DNA/RNA
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

@@ -5,15 +5,14 @@ This class downloads representative protein chains from the PISCES
 CulledPDB sets. A CulledPDB set is selected by specifying
 sequenceIdentity and resolution cutoff values from the following
 list:
-    sequenceIdentity = [20, 25, 30, 40, 50, 60, 70, 80, 90]
-    resolution = [1.6, 1.8, 2.0, 2.2, 2.5, 3.0]
+
+- sequenceIdentity = [20, 25, 30, 40, 50, 60, 70, 80, 90]
+- resolution = [1.6, 1.8, 2.0, 2.2, 2.5, 3.0]
 
 References
 ----------
-PISCES: http://dunbrack.fccc.edu/PISCES.php
-Please cite the following in any work that uses lists provided by PISCES
-G. Wang and R. L. Dunbrack, Jr. PISCES: a protein sequence culling
-server. Bioinformatics, 19:1589-1591, 2003.
+- PISCES: http://dunbrack.fccc.edu/PISCES.php
+- G. Wang and R. L. Dunbrack, Jr. PISCES: a protein sequence culling server. Bioinformatics, 19:1589-1591, 2003.
 '''
 
 __author__ = "Mars (Shih-Cheng) Huang"
@@ -30,8 +29,8 @@ class PiscesDownloader(object):
     '''Downloads representative protein chains from the PISCES
     CulledPDB sets. A CulledPDB set is selected by specifying
     sequenceIdentity and resolution cutoff values from the following lists:
-    <p> sequenceIdentity = 20, 25, 30, 40, 50, 60, 70, 80, 90
-    <p> resolution = 1.6, 1.8, 2.0, 2.2, 2.5, 3.0
+    - sequenceIdentity = 20, 25, 30, 40, 50, 60, 70, 80, 90
+    - resolution = 1.6, 1.8, 2.0, 2.2, 2.5, 3.0
 
     Attributes
     ----------

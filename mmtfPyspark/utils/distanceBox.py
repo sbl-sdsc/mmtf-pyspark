@@ -3,9 +3,9 @@
 
 This code is a modification from BioJava's distanceBox class
 
-Reference
----------
-`BioJava distanceBox <https://github.com/biojava/biojava/blob/359dce819e7678879ae41301b11fa268f92e81d1/biojava-structure/src/main/java/org/biojava/nbio/structure/symmetry/geometry/DistanceBox.java>`_
+References
+----------
+- `BioJava distanceBox <https://github.com/biojava/biojava/blob/359dce819e7678879ae41301b11fa268f92e81d1/biojava-structure/src/main/java/org/biojava/nbio/structure/symmetry/geometry/DistanceBox.java>`_
 '''
 
 __author__ = "Mars (Shih-Cheng) Huang"

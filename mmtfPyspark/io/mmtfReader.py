@@ -4,9 +4,9 @@ formats. The data are returned as a PythonRDD with the structure id (e.g. PDB ID
 as the key and the structural data as the value.
 
 Supported operations and file formats:
-    - Read directory of MMTF-Hadoop sequence files in full and reduced representation
-    - Download MMTF full and reduced representations using web service (mmtf.rcsb.org)
-    - Read directory of MMTF files (.mmtf, mmtf.gz)
+- Read directory of MMTF-Hadoop sequence files in full and reduced representation
+- Download MMTF full and reduced representations using web service (mmtf.rcsb.org)
+- Read directory of MMTF files (.mmtf, mmtf.gz)
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

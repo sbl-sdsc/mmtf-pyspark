@@ -6,8 +6,8 @@ metadata and annotations for all current entries in the ProteinDataBank.
 
 References
 ----------
-List of supported fieldnames: http://www.rcsb.org/pdb/results/reportField.do
-The RCSB Protein Data Bank:redesignedwebsiteandwebservices2011NucleicAcidsRes.39:D392-D401. https://dx.doi.org/10.1093/nar/gkq1021
+- List of supported fieldnames: http://www.rcsb.org/pdb/results/reportField.do
+- The RCSB Protein Data Bank:redesignedwebsiteandwebservices2011NucleicAcidsRes.39:D392-D401. https://dx.doi.org/10.1093/nar/gkq1021
 
 Examples
 --------

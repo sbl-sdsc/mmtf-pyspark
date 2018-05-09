@@ -7,7 +7,9 @@ polymer chain that is a D-saccharides. If the "exclusive" flag is set to true
 in the constructor, all polymer chains must be D-saccharides. For a multi-model structure,
 this filter only checks the first model.
 
-Note: Since the PDB released PDBx/mmCIF version 5.0 in July 2017, it appears that
+.. note::
+
+Since the PDB released PDBx/mmCIF version 5.0 in July 2017, it appears that
 all polysaccharides have been converted to monomers. Therefore, this filter
 does not return any results.
 

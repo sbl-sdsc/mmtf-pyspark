@@ -19,7 +19,8 @@ import numpy as np
 class StructureToAtomInteractions(object):
     '''Class that finds structure to atom intteractions.
 
-    Attributes:
+    Attributes
+    ----------
     bfilter : obj
        Specifies the conditions for calculating interactions
     pairwise : bool

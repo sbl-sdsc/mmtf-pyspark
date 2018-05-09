@@ -6,7 +6,7 @@ structure is within the sepcified range
 
 References
 ----------
-Resolution: http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/resolution
+- `Resolution <http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/resolution>`_
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

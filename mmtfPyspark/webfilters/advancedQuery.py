@@ -6,7 +6,7 @@ description.
 
 References
 ----------
-`Advanced Search Query <https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html>`_
+- `Advanced Search Query <https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html>`_
 
 Examples
 --------

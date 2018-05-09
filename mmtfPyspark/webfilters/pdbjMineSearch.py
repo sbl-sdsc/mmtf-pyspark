@@ -5,15 +5,12 @@ This filter runs an PDBj Mine 2 Search web service using an SQL query.
 
 References
 ----------
-Each category represents a table, and fields represent database columns, see
-available tables and columns:
-`MINE RDB DOCS <https://pdbj.org/mine-rdb-docs>`_
+- Each category represents a table, and fields represent database columns, see
+available tables and columns: `MINE RDB DOCS <https://pdbj.org/mine-rdb-docs>`_
 
-Data are provided through:
-`MINE2-SQl <https://pdbj.org/help/mine2-sql>`_
+- Data are provided through: `MINE2-SQl <https://pdbj.org/help/mine2-sql>`_
 
-Queries can be designed with the interactive PDBjMine2 query service:
-`PDBjMine2 SQL <https://pdbj.org/mine/sql>`_
+- Queries can be designed with the interactive PDBjMine2 query service: `PDBjMine2 SQL <https://pdbj.org/mine/sql>`_
 '''
 
 __author__ = "Mars (Shih-Cheng) Huang"
