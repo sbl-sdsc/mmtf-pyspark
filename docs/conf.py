@@ -19,7 +19,7 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('.'))
 
 try:
     import mmtfPyspark
@@ -35,13 +35,13 @@ needs_sphinx = '1.7.4'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosectionlabel',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.viewcode',
+    #  'sphinx.ext.autodoc',
+    #  'sphinx.ext.autosectionlabel',
+    #  'sphinx.ext.autosummary',
+    #  'sphinx.ext.doctest',
+    #  'sphinx.ext.intersphinx',
+    #  'sphinx.ext.mathjax',
+    #  'sphinx.ext.viewcode',
     'numpydoc.numpydoc',
 ]
 
@@ -85,7 +85,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = False
+#  todo_include_todos = True
+#  autosummary_generate = True
+#  autodoc_docstring_signature = True
 
 
 # -- Options for HTML output ----------------------------------------------
