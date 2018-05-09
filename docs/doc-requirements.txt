@@ -5,3 +5,5 @@ py4j >=0.10.6
 numpy >=1.14.2
 mmtf-python ==1.1.1
 requests >=0.8.0
+sympy ==1.1.1
+matplotlib >=2.2.0
