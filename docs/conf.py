@@ -31,12 +31,12 @@ needs_sphinx = '1.7.4'
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    #  'sphinx.ext.autosectionlabel',
-    #  'sphinx.ext.autosummary',
-    #  'sphinx.ext.doctest',
-    #  'sphinx.ext.intersphinx',
-    #  'sphinx.ext.mathjax',
-    #  'sphinx.ext.viewcode',
+    'sphinx.ext.autosectionlabel',
+    'sphinx.ext.autosummary',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.viewcode',
     'numpydoc.numpydoc',
 ]
 
@@ -81,7 +81,7 @@ pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
-#  autosummary_generate = True
+autosummary_generate = True
 autodoc_docstring_signature = True
 
 autodoc_mock_imports = [

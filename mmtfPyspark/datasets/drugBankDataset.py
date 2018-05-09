@@ -7,11 +7,8 @@ other data resources.
 
 References
 ----------
-Drug Bank:
-    https://www.drugbank.ca
-Wishart DS, et al., DrugBank 5.0: a major update to the DrugBank database
-for 2018. Nucleic Acids Res. 2017 Nov 8 :
-    https://dx.doi.org/10.1093/nar/gkx1037
+Drug Bank. https://www.drugbank.ca
+Wishart DS, et al., DrugBank 5.0: a major update to the DrugBank database for 2018. Nucleic Acids Res. 2017 Nov 8. https://dx.doi.org/10.1093/nar/gkx1037
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"
@@ -46,12 +43,12 @@ def get_open_drug_links():
 
     References
     ----------
-    Open Data dataset:
-        https://www.drugbank.ca/releases/latest#open-data
+    Open Data dataset. https://www.drugbank.ca/releases/latest#open-data
 
     Examples
     --------
     Get DrugBank open dataset:
+
     >>> openDrugLinks = DrugBankDataset.get_open_drug_links()
     >>> openDrugLinks.show()
     +----------+--------------------+-----------+--------------------+
@@ -59,6 +56,7 @@ def get_open_drug_links():
     +----------+--------------------+-----------+--------------------+
     |   DB00006|         Bivalirudin|128270-60-0|OIRCOABEOLEUMC-GE...|
     |   DB00014|           Goserelin| 65807-02-5|BLCLNMBMMGCOAS-UR...|
+    +----------+--------------------+-----------+--------------------+
 
     Returns
     -------
@@ -97,6 +95,7 @@ def get_drug_links(drugGroup, username, password):
     Examples
     --------
     Get dataset of external links and identifiers of approved drugs:
+
     >>> username = "<your DrugBank username>"
     >>> String password = "<your DrugBank password>"
     >>> drugLinks = get_drug_links("APPROVED", username, password)
@@ -148,8 +147,8 @@ def get_drug_target_links(drug, username, password):
 
     Examples
     --------
-    Get dataset of drug target external links and identifiers of all drugs
-    in DrugBank:
+    Get dataset of drug target external links and identifiers of all drugs in DrugBank:
+
     >>> username = "<your DrugBank username>"
     >>> password = "<your DrugBank password>"
     >>> drugTargetLinks = get_drug_target_links("ALL",
@@ -188,9 +187,9 @@ def get_dataset(url, username=None, password=None):
     ----------
     url : str
        DrugBank dataset download links
-    username : str
+    username : str, optional
        DrugBank username <None>
-    password : str
+    password : str, optional
        DrugBank password <None>
 
     Returns
