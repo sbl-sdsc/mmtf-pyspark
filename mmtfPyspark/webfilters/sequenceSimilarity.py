@@ -23,22 +23,20 @@ the Sequence Motif Search.
 
 References
 ----------
-    BLAST:
-        BLAST: Sequence searching using NCBI's BLAST (Basic Local Alignment
-        Search Tool) Program , Altschul, S.F., Gish, W., Miller, W., Myers, E.W.
-        and Lipman, D.J. Basic local alignment search tool. J. Mol. Biol. 215:
-        403-410 (1990)
-    PSI-BLAST:
-        Sequence searching to detect distantly related evolutionary
-        relationships using NCBI's PSI-BLAST (Position-Specific Iterated BLAST).
+BLAST: BLAST: Sequence searching using NCBI's BLAST (Basic Local Alignment
+Search Tool) Program , Altschul, S.F., Gish, W., Miller, W., Myers, E.W.
+and Lipman, D.J. Basic local alignment search tool. J. Mol. Biol. 215:
+403-410 (1990)
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
+PSI-BLAST: Sequence searching to detect distantly related evolutionary
+relationships using NCBI's PSI-BLAST (Position-Specific Iterated BLAST).
 '''
+
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 from mmtfPyspark.webfilters import AdvancedQuery
 
@@ -52,13 +50,18 @@ class SequenceSimilarity(object):
                  sequenceIdentityCutoff=0, maskLowComplexity=True):
         '''Filters by squence similarity using all default parameters.
 
-        Attribute
-        ---------
-            sequence (str): query sequence
-            searchTool (class variable): sequenceSimilarity.BLAST or sequenceSimilarity.PSI_BLAST
-            eValueCutoff (float): maximun e-value
-            sequenceIdentityCutoff (int): minimum sequence identity cutoff
-            maskLowComplexity (bool) : if true, mask (ignore) low complexity regions in sequence
+        Attributes
+        ----------
+        sequence : str
+           query sequence
+        searchTool : class variable
+           sequenceSimilarity.BLAST or sequenceSimilarity.PSI_BLAST
+        eValueCutoff : float
+           maximun e-value
+        sequenceIdentityCutoff : int
+           minimum sequence identity cutoff
+        maskLowComplexity : bool
+           if true, mask (ignore) low complexity regions in sequence
         '''
 
         if len(sequence) < 12:

@@ -5,16 +5,15 @@ This code is a modification from BioJava's distanceBox class
 
 Reference
 ---------
-    BioJava distanceBox:
-        https://github.com/biojava/biojava/blob/359dce819e7678879ae41301b11fa268f92e81d1/biojava-structure/src/main/java/org/biojava/nbio/structure/symmetry/geometry/DistanceBox.java
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
+`BioJava distanceBox <https://github.com/biojava/biojava/blob/359dce819e7678879ae41301b11fa268f92e81d1/biojava-structure/src/main/java/org/biojava/nbio/structure/symmetry/geometry/DistanceBox.java>`_
 '''
+
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
+
 import numpy as np
 from collections import defaultdict
 
@@ -84,10 +83,7 @@ class DistanceBox(object):
                 box_two += self.hashMap[location + off]
 
         return box_two
-        '''
-        return [self.hashMap[location + off] for off in self.offset
-                if (location + off) in self.hashMap]
-        '''
+
     def getIntersection(self, distanceBox):
 
         intersection = []

@@ -4,13 +4,11 @@
 Provides efficient access to structure information in the form of atom-based arrays.
 Data are lazily initialized as needs.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
 
 import numpy as np
 
@@ -20,8 +18,10 @@ class ColumnarStructure(object):
 
     Attributes
     ----------
-        structure (mmtfStructure): mmtf structure
-        firstModelOnly (bool): use only the first model in a structure if True
+    structure : mmtfStructure
+       mmtf structure
+    firstModelOnly : bool
+       use only the first model in a structure if True
     '''
 
     def __init__(self, structure, firstModelOnly=True):
@@ -357,7 +357,8 @@ class ColumnarStructure(object):
 
         Returns
         -------
-            entityChainIndex [np.array] : index that maps chain index to an entity index
+        entityChainIndex : np.array
+           index that maps chain index to an entity index
         '''
 
         if self.entityChainIndex is None:

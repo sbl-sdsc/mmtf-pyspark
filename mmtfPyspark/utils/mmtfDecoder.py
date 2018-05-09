@@ -1,14 +1,13 @@
 '''mmtfDecoder.py
 
 Provides efficient methods to decode mmtf structures
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 import numpy as np
 
@@ -18,7 +17,8 @@ def run_length_decoder_numpy(in_array):
 
     Attributes
     ----------
-        in_array (list): the input list to apply run length decoder on
+    in_array : list
+       the input list to apply run length decoder on
     """
 
     lengths = np.array(in_array[1::2])
@@ -37,12 +37,15 @@ def recursive_index_decode(int_array, decode_num=1000):
 
     Attribute
     ---------
-        int_array (list): the input array of integers
-        decode_num (int): the number used for decoding [1000]
+    int_array : list
+       the input array of integer
+    decode_num : int
+       the number used for decoding [1000]
 
     Returns
     -------
-        return the array of integers after recursive index decoding
+    numpy.array
+       return the numpy.array of integers after recursive index decoding
     """
 
     maximum = 32767
@@ -56,11 +59,13 @@ def decode_entity_list(input_data):
 
     Attributes
     ----------
-        input_data (list): the list of entities
+    input_data : list
+       the list of entities
 
     Returns
     -------
-        return the decoded entity list
+    list
+       return the decoded entity list
     """
 
     out_data = []
@@ -74,11 +79,13 @@ def decode_group_list(input_data):
 
     Attributes
     ----------
-        input_data (list): the list of groups
+    input_data : list
+       the list of groups
 
     Returns
     -------
-        return the decoded group list
+    list
+       return the decoded group list
     """
 
     out_data = []
@@ -92,11 +99,13 @@ def convert_group(input_group):
 
     Attributes
     ----------
-        input_group (list): the list of input groups
+    input_group : list
+       the list of input groups
 
     Returns
     -------
-        return the decoded group
+    list
+       return the decoded group
     """
 
     output_group = {}
@@ -117,11 +126,13 @@ def convert_entity(input_entity):
 
     Attributes
     ----------
-        input_entity (list): the list of entities to decode
+    input_entity : list
+       the list of entities to decode
 
     Returns
     -------
-        return the decoded entity
+    list
+       return the decoded entity
     """
 
     output_entity = {}

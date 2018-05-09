@@ -3,13 +3,12 @@
 
 Decode msgpack unpacked data to mmtf structure
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 import numpy as np
 import time
@@ -163,8 +162,8 @@ class MmtfStructure(object):
 
         Attributes
         ----------
-            data_setters (DataTransferInterface): a series of functions that can\
-                                                  fill a chemical
+        data_setters : DataTransferInterface
+           a series of functions that can fill a chemical
         """
         self.set_alt_loc_list()
         data_setters.init_structure(self.num_bonds, len(self.x_coord_list), len(self.group_type_list),

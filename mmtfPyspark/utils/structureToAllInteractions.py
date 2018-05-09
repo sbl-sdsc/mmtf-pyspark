@@ -2,14 +2,13 @@
 '''structureToAllInteractions.py:
 
 Finds interactions of a specified group within a specified cutoff distance
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from pyspark.sql import Row
 
@@ -20,8 +19,10 @@ class StructureToAllInteractions(object):
 
     Attributes
     ----------
-        groupName (str): specified group in structure
-        cutoffDistance (float): cutoff distance used during search
+    groupName : str
+       specified group in structure
+    cutoffDistance : float
+       cutoff distance used during search
     '''
 
     def __init__(self, groupName, cutoffDistance):
@@ -152,8 +153,9 @@ class StructureToAllInteractions(object):
     def _get_group_indices(self, structure):
         '''Creates an atom index to the first atom of each group
 
-        Attributes:
-            structure
+        Attributes
+        ----------
+        structure : mmtfStructure
         '''
         groupIndices, groupNames = [0], []  # Start index for first group
         atomCounter, groupCounter = 0, 0

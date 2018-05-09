@@ -5,14 +5,13 @@ This filter returns entries that contain wild type protein chains.
 polymer chain(s) made of L-amino acids. If the "exclusive" flag is set to true
 in the constructor, all polymer chains must be L-proteins. For a multi-model structure,
 this filter only checks the first model.
-
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "Done"
 '''
+
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "Done"
 
 from mmtfPyspark.webfilters import AdvancedQuery
 
@@ -35,8 +34,10 @@ class WildTypeQuery(object):
 
         Attributes
         ----------
-            includeExpressionTags (bool): flag to include expression tags
-            percentSequenceCoverage (int): percentage of sequence converage [NONE]
+        includeExpressionTags : bool
+           flag to include expression tags
+        percentSequenceCoverage : int
+           percentage of sequence converage [NONE]
         '''
 
         query = "<orgPdbQuery><queryType>org.pdb.query.simple.WildTypeProteinQuery</queryType>"

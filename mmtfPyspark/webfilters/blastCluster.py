@@ -8,7 +8,7 @@ The representative for each cluster is the first chain in a cluster.
 References
 ----------
 BlastClust cluster field names:
-    http://www.rcsb.org/pdb/statistics/clusterStatistics.do
+`Field names <http://www.rcsb.org/pdb/statistics/clusterStatistics.do>`_
 
 Examples
 --------
