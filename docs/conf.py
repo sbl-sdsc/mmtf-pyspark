@@ -41,6 +41,18 @@ extensions = [
     'nbsphinx',
 ]
 
+try:
+    import numpydoc
+except ImportError:
+    msg = "Error: numpydoc must be installed before generating this documentation"
+    raise ImportError(msg)
+
+try:
+    import sphinx_bootstrap_theme
+except ImportError:
+    msg = "Error: sphinx_bootstrap_thememust be installed before generating this documentation"
+    raise ImportError(msg)
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -61,7 +73,7 @@ author = ''
 # built documents.
 #
 # The short X.Y version.
-version = '0.0.1'
+version = '0.2.4'
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -94,12 +106,11 @@ autodoc_mock_imports = [
 
 nbsphinx_epilog = """
 
-
 .. raw:: html
 
-   --------
-
-   <a href="{{ env.doc2path(env.docname, base='../../../') }}" download>Download Notebook</a>
+   <div class="btn-container">
+       <a class="btn btn-download" role="button" href="{{ env.doc2path(env.docname, base='../../../') }}" download>Download Notebook</a>
+   </div>
 
 """
 
@@ -109,20 +120,45 @@ nbsphinx_epilog = """
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#
-html_theme = 'alabaster'
+html_theme = 'bootstrap'
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+html_logo = 'mmTF-dark-blue.png'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#
-# html_theme_options = {}
+html_theme_options = {
+    # Tab name for entire site.
+    'navbar_site_name': 'Home',
+    # A list of tuples containing pages or urls to link to.
+    'navbar_links': [
+        ('Home', 'index'),
+        ('Examples', 'demo'),
+        ('Documentation', 'contents'),
+    ],
+    # Render the next and previous page links in navbar. 
+    'navbar_sidebarrel': True,
+    # Render the current pages TOC in the navbar.)
+    'navbar_pagenav': True,
+    # Global TOC depth for "site" navbar tab.
+    'globaltoc_depth': 2,
+    # Fix navigation bar to top of page?
+    'navbar_fixed_top': True,
+    # Location of link to source.
+    'source_link_position': "footer",
+    # Bootswatch (http://bootswatch.com/) theme.
+    'bootswatch_theme': "paper",
+    # Choose Bootstrap version.
+    'bootstrap_version': "3",
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+def setup(app):
+    app.add_stylesheet("custom.css")
 
 # -- Options for HTMLHelp output ------------------------------------------
 
@@ -181,4 +217,4 @@ texinfo_documents = [
 ]
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {'https://docs.python.org/3/': None}

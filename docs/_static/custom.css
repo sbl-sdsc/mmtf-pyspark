@@ -1,0 +1,16 @@
+
+.btn-container {
+  padding: 20px 0;
+}
+
+.btn-download {
+  color: #04014f;
+  display: block;
+  margin: 0 auto;
+}
+.btn-download:hover {
+  background-color: #04014f;
+  color: #fff;
+  display: block;
+  margin: 0 auto;
+}
