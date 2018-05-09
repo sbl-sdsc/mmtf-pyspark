@@ -1,4 +1,5 @@
 # Required for documentation
+git+git://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtf-pyspark
 sphinx ==1.7.4
 numpydoc ==0.7.0
 pyspark >=2.3.0
