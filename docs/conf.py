@@ -21,11 +21,6 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
 
-try:
-    import mmtfPyspark
-except ImportError:
-    raise ImportError("Install mmtf-pyspark!")
-
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
