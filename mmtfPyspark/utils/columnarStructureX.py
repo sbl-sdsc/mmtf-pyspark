@@ -67,13 +67,12 @@ class ColumnarStructureX(ColumnarStructure):
         90% Confidenceinterval of the B-factors to [-1,1]. Any value outside of
         the 90% confidence interval is set to either -1 or 1, whichever is closer.
 
-        Reference
-        ---------
-        Liu et al. BMC Bioinformatics 2014, 15(Suppl 16):S3,
-        Use B-factor related features for accurate classification between
-        protein binding interfaces and crystal packing contacts
-
-        https://doi.org/10.1186/1471-2105-15-S16-S3
+        References
+        ----------
+        - Liu et al. BMC Bioinformatics 2014, 15(Suppl 16):S3,
+          Use B-factor related features for accurate classification between
+          protein binding interfaces and crystal packing contacts 
+          https://doi.org/10.1186/1471-2105-15-S16-S3
         '''
 
         if self.clampedNormalizedbFactor is None:

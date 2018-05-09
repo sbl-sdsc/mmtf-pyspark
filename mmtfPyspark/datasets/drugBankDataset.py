@@ -7,8 +7,9 @@ other data resources.
 
 References
 ----------
-Drug Bank. https://www.drugbank.ca
-Wishart DS, et al., DrugBank 5.0: a major update to the DrugBank database for 2018. Nucleic Acids Res. 2017 Nov 8. https://dx.doi.org/10.1093/nar/gkx1037
+- Drug Bank. https://www.drugbank.ca
+- Wishart DS, et al., DrugBank 5.0: a major update to the DrugBank database for 2018.
+  Nucleic Acids Res. 2017 Nov 8. https://dx.doi.org/10.1093/nar/gkx1037
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

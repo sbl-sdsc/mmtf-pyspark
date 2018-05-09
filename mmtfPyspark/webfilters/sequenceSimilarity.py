@@ -23,13 +23,13 @@ the Sequence Motif Search.
 
 References
 ----------
-BLAST: BLAST: Sequence searching using NCBI's BLAST (Basic Local Alignment
-Search Tool) Program , Altschul, S.F., Gish, W., Miller, W., Myers, E.W.
-and Lipman, D.J. Basic local alignment search tool. J. Mol. Biol. 215:
-403-410 (1990)
+- BLAST: BLAST: Sequence searching using NCBI's BLAST (Basic Local Alignment
+  Search Tool) Program , Altschul, S.F., Gish, W., Miller, W., Myers, E.W.
+  and Lipman, D.J. Basic local alignment search tool. J. Mol. Biol. 215:
+  403-410 (1990)
 
-PSI-BLAST: Sequence searching to detect distantly related evolutionary
-relationships using NCBI's PSI-BLAST (Position-Specific Iterated BLAST).
+- PSI-BLAST: Sequence searching to detect distantly related evolutionary
+  relationships using NCBI's PSI-BLAST (Position-Specific Iterated BLAST).
 '''
 
 __author__ = "Mars (Shih-Cheng) Huang"

@@ -7,8 +7,7 @@ e.g. "F", "MG", "ATP", as defined in the PDB Chemical Component Dictionary.
 
 References
 ----------
-    PDB Chemical Component Dictionary:
-        https://www.wwpdb.org/data/ccd
+- `PDB Chemical Component Dictionary <https://www.wwpdb.org/data/ccd>`_
 
 '''
 

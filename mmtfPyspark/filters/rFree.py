@@ -6,7 +6,7 @@ specified range
 
 References
 ----------
-rFree: http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/r-value-and-r-free
+- `rFree <http://pdb101.rcsb.org/learn/guide-to-understanding-pdb-data/r-value-and-r-free>`_
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

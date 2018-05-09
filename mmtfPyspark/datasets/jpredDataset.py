@@ -6,9 +6,9 @@ It can be used as a reference dataset for machine learning applications.
 This dataset includes the ScopID, sequence, DSSP secondary structure assignment,
 and a flag that indicates if data point was part of the training set.
 
-Reference
----------
-JPred4: http://www.compbio.dundee.ac.uk/jpred/about_RETR_JNetv231_details.shtml
+References
+----------
+- `JPred4 <http://www.compbio.dundee.ac.uk/jpred/about_RETR_JNetv231_details.shtml>`_
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

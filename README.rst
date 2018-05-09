@@ -18,16 +18,6 @@ mmtfPyspark use the following technology stack:
 
 This project is still currently under development.
 
-Demos
------
-
-To try out our jupyter notebook demos without any installation, please
-click on the pink "launch binder" icon on top and navigate to the /demos
-folder (An example data analysis notebook,
-"DataAnalysisWithDataFrameExample", can be found in the main directory).
-
-It can take a few minutes for Binder to setup the environment.
-
 Installation
 ------------
 
@@ -56,9 +46,9 @@ Since mmtfPyspark uses parallel computing to ensure high-performance, it
 requires additional dependencies such as Apache Spark. Therefore, please
 read follow the installation instructions for your OS carefully:
 
-`MacOS and LINUX <docs/MacLinuxInstallation.rst>`__
+`MacOS and LINUX <http://mmtf-pyspark-test.readthedocs.io/en/latest/MacLinuxInstallation.html>`_
 
-`Windows <docs/WindowsInstallation.rst>`__
+`Windows <http://mmtf-pyspark-test.readthedocs.io/en/latest/WindowsInstallation.html>`_
 
 Hadoop Sequence Files
 ---------------------

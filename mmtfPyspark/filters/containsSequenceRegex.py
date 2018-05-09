@@ -3,14 +3,14 @@
 
 This filter returns true if the polymer sequence motif matches the specified regular expression.
 Sequence motifs support the following one-letter codes:
-20 standard amino acids,
-O for Pyrrolysine,
-U for Selenocysteine,
-X for non-standard amino acid
+- 20 standard amino acids,
+- O for Pyrrolysine,
+- U for Selenocysteine,
+- X for non-standard amino acid
 
-Reference
----------
-Sequence motif: https://en.wikipedia.org/wiki/Sequence_motif
+References
+----------
+- Sequence motif: https://en.wikipedia.org/wiki/Sequence_motif
 
 Examples
 --------

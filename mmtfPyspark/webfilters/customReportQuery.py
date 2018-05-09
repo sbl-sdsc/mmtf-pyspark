@@ -7,12 +7,8 @@ data columns availible from RCSB PDB web services.
 
 References
 ----------
-List of supported field names:
-`reportFiled <http://www.rcsb.org/pdb/results/reportField.do>`_
-
-Examples of SQL WHERE clauses:
-`SQL where <https://www.w3schools.com/sql/sql_where.asp>`_
-
+- List of supported field names: `reportFiled <http://www.rcsb.org/pdb/results/reportField.do>`_
+- Examples of SQL WHERE clauses: `SQL where <https://www.w3schools.com/sql/sql_where.asp>`_
 
 Examples
 --------

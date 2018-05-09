@@ -5,14 +5,14 @@ This module provides access to SWISS-MODEL datasets containing homology models.
 
 References
 ----------
-SWISS-MODEL API: https://swissmodel.expasy.org/docs/repository_help#smr_api
-Bienert S, Waterhouse A, de Beer TA, Tauriello G, Studer G, Bordoli L,
-Schwede T (2017). The SWISS-MODEL Repository - new features and
-functionality, Nucleic Acids Res. 45(D1):D313-D319.  https://dx.doi.org/10.1093/nar/gkw1132
-Biasini M, Bienert S, Waterhouse A, Arnold K, Studer G, Schmidt T, Kiefer F,
-Gallo Cassarino T, Bertoni M, Bordoli L, Schwede T(2014). The SWISS-MODEL
-Repository - modelling protein tertiary and quaternary structure using
-evolutionary information, Nucleic Acids Res. 42(W1):W252–W258.  https://doi.org/10.1093/nar/gku340
+- SWISS-MODEL API: https://swissmodel.expasy.org/docs/repository_help#smr_api
+- Bienert S, Waterhouse A, de Beer TA, Tauriello G, Studer G, Bordoli L,
+  Schwede T (2017). The SWISS-MODEL Repository - new features and
+  functionality, Nucleic Acids Res. 45(D1):D313-D319.  https://dx.doi.org/10.1093/nar/gkw1132
+- Biasini M, Bienert S, Waterhouse A, Arnold K, Studer G, Schmidt T, Kiefer F,
+  Gallo Cassarino T, Bertoni M, Bordoli L, Schwede T(2014). The SWISS-MODEL
+  Repository - modelling protein tertiary and quaternary structure using
+  evolutionary information, Nucleic Acids Res. 42(W1):W252–W258.  https://doi.org/10.1093/nar/gku340
 
 '''
 __author__ = "Mars (Shih-Cheng) Huang"

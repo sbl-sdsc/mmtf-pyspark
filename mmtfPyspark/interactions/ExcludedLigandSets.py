@@ -2,7 +2,7 @@
 
 References
 ----------
-D3R Project: https://github.com/drugdata/D3R/blob/master/d3r/filter/filtering_sets.py
+- `D3R Project <https://github.com/drugdata/D3R/blob/master/d3r/filter/filtering_sets.py`_
 
 '''
 

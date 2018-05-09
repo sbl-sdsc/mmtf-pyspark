@@ -1,5 +1,5 @@
 Installation on MacOS and Linux
-===============================
+-------------------------------
 
 Install Java SE Development Toolkit (JDK 1.8)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

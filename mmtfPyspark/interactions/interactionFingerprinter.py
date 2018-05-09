@@ -5,13 +5,12 @@ This class creates dataset of ligand - macromolecule and macromolecule -
 macromolecule interaction information. Criteria to select interactions are
 specified by the InteractionFilter.
 
-Authorship information:
-    __author__ = "Mars (Shih-Cheng) Huang"
-    __maintainer__ = "Mars (Shih-Cheng) Huang"
-    __email__ = "marshuang80@gmail.com"
-    __version__ = "0.2.0"
-    __status__ = "done"
 '''
+__author__ = "Mars (Shih-Cheng) Huang"
+__maintainer__ = "Mars (Shih-Cheng) Huang"
+__email__ = "marshuang80@gmail.com"
+__version__ = "0.2.0"
+__status__ = "done"
 
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
@@ -25,15 +24,15 @@ class InteractionFingerprinter(object):
         '''Returns a dataset of ligand - macromolecule interacting residues.
 
         The dataset contains the following columns:
-            structureChainId - pdbId.chainName of chain that interacts with ligand
-            queryLigandId - id of ligand from PDB chemical component dictionary
-            queryLigandNumber - group number of ligand including insetion code
-            queryLigandChainId - chain name of ligand
-            targetChainId - name of chain for which the interaction data are listed
-            groupNumbers - array of residue number of interacting groups including insertion code (e.g. 101A)
-            sequenceIndices - array of zero-based index of interaction groups (residues) mapped onto target sequence
-            sequence - interacting polymer sequence
-            interactingChains - total number of chains that interact with ligand
+        - structureChainId - pdbId.chainName of chain that interacts with ligand
+        - queryLigandId - id of ligand from PDB chemical component dictionary
+        - queryLigandNumber - group number of ligand including insetion code
+        - queryLigandChainId - chain name of ligand
+        - targetChainId - name of chain for which the interaction data are listed
+        - groupNumbers - array of residue number of interacting groups including insertion code (e.g. 101A)
+        - sequenceIndices - array of zero-based index of interaction groups (residues) mapped onto target sequence
+        - sequence - interacting polymer sequence
+        - interactingChains - total number of chains that interact with ligand
 
         Attributes
         ----------

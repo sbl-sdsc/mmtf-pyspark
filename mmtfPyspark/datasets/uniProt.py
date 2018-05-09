@@ -2,18 +2,16 @@
 
 This class downloads and reads UniProt sequence files in the FASTA format and
 converts them to datasets.This module reads the following files:
-    SWISS_PROT,
-    TREMBL,
-    UNIREF50,
-    UNIREF90,
-    UNIREF100.
+- SWISS_PROT,
+- TREMBL,
+- UNIREF50,
+- UNIREF90,
+- UNIREF100.
 
 References
 ----------
-UniProt downloads:
-    http://www.uniprot.org/downloads
-The datasets have the following columns:
-    http://www.uniprot.org/help/fasta-headers
+- UniProt downloads <http://www.uniprot.org/downloads>`_
+- The datasets have the following columns: http://www.uniprot.org/help/fasta-headers
 
 Examples
 --------
