@@ -21,6 +21,7 @@ import gzip
 from mmtfPyspark.utils import MmtfStructure
 from mmtf.api import default_api
 from os import path, walk
+import urllib
 
 text = "org.apache.hadoop.io.Text"
 byteWritable = "org.apache.hadoop.io.BytesWritable"
@@ -169,7 +170,9 @@ def download_full_mmtf_files(pdbIds, sc):
        structure data as keywork/value pairs
     '''
 
-    return sc.parallelize(set(pdbIds)).map(lambda t: _get_structure(t, False))
+    return sc.parallelize(set(pdbIds)) \
+             .map(lambda t: _get_structure(t, False)) \
+             .filter(lambda t: t is not None)
 
 
 def download_reduced_mmtf_files(pdbIds, sc):
@@ -188,7 +191,9 @@ def download_reduced_mmtf_files(pdbIds, sc):
        structure data as keywork/value pairs
     '''
 
-    return sc.parallelize(set(pdbIds)).map(lambda t: _get_structure(t, True))
+    return sc.parallelize(set(pdbIds)) \
+             .map(lambda t: _get_structure(t, True)) \
+             .filter(lambda t: t is not None)
 
 
 def _get_structure(pdbId, reduced):
@@ -205,9 +210,12 @@ def _get_structure(pdbId, reduced):
        pdbID and deccoder
     '''
 
-    unpack = default_api.get_raw_data_from_url(pdbId, reduced)
-    decoder = MmtfStructure(unpack)
-    return (pdbId, decoder)
+    try:
+        unpack = default_api.get_raw_data_from_url(pdbId, reduced)
+        decoder = MmtfStructure(unpack)
+        return (pdbId, decoder)
+    except urllib.error.HTTPError:
+        print(f"ERROR: {pdbId} is not a valid pdbId")
 
 
 def _call_sequence_file(t):
