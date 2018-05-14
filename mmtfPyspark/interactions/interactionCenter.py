@@ -81,8 +81,8 @@ class InteractionCenter(object):
     def set_atom_name(self, atomName):
         '''Sets the atom name
 
-        Attribute
-        ---------
+        Attributes
+        ----------
             atomName (str): name of the atom
         '''
 

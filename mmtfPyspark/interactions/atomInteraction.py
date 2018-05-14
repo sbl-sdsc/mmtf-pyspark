@@ -248,8 +248,8 @@ class AtomInteraction(object):
         '''Returns the schema for a row of pairwise atom interactions.
         The schema is used to create a Dataset<Row> from the row information
 
-        Return
-        ------
+        Returns
+        -------
         pyspark.sql.types.StructType
            schema for dataset
 

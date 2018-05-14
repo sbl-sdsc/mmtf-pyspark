@@ -133,8 +133,8 @@ class InteractionFilter(object):
         '''Sets the minimum number of interactions per atom. Atoms that interact
         with fewer atoms will be discarded
 
-        Attribute
-        ---------
+        Attributes
+        ----------
         minInteractions : int
            minimum number of interactions per atom
         '''

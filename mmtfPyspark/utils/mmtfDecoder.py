@@ -33,8 +33,8 @@ def run_length_decoder_numpy(in_array):
 def recursive_index_decode(int_array, decode_num=1000):
     """Unpack an array of integers using recursive indexing.
 
-    Attribute
-    ---------
+    Attributes
+    ----------
     int_array : list
        the input array of integers
     decode_num : int
