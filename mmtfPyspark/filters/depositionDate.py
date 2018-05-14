@@ -20,7 +20,7 @@ class DepositionDate(object):
         '''This filter return True if the deposition date of this structure is
         within the specified range
 
-        Attributes
+        Parameters
         ----------
         startdate : str
            start of the deposition date range

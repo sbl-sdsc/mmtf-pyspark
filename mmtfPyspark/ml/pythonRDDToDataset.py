@@ -18,7 +18,7 @@ def get_dataset(data, colNames):
     '''Converts a PythonRDD<Row> to a Dataset<Row>. This method only
 	supports simple data types and all data need to be not null.
 
-    Attributes
+    Parameters
     ----------
     data : PythonRDD
        PythonRDD of row objects

@@ -29,7 +29,7 @@ class GroupInteractionExtractor(object):
         the InteractionFilter. Each atom, its interacting neightbor atom, and
         the interacting distance is represented as a row.
 
-        Attributes
+        Parameters
         ----------
         structures : PythonRDD
            a set of PDB structures
@@ -60,7 +60,7 @@ class GroupInteractionExtractor(object):
         the interactions, such as distances, angles, and orientation order
         parameters are returned in each row.
 
-        Attributes
+        Parameters
         ----------
         structures : PythonRDD
            a set of PDB structures

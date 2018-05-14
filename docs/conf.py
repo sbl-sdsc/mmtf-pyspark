@@ -110,6 +110,7 @@ nbsphinx_epilog = """
 
    <div class="btn-container">
        <a class="btn btn-download" role="button" href="{{ env.doc2path(env.docname, base='../../../') }}" download>Download Notebook</a>
+       <a class="btn btn-download" role="button" href="{{ env.doc2path(env.docname, base='../../../') }}.py" download>Download Script</a>
    </div>
 
 """
@@ -128,27 +129,19 @@ html_logo = '_static/mmTF-dark-blue.png'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    # Tab name for entire site.
     'navbar_site_name': 'Home',
-    # A list of tuples containing pages or urls to link to.
     'navbar_links': [
         ('Home', 'index'),
         ('Examples', 'demo'),
         ('Documentation', 'contents'),
     ],
-    # Render the next and previous page links in navbar. 
-    'navbar_sidebarrel': True,
-    # Render the current pages TOC in the navbar.)
+    'nosidebar': True,
+    'navbar_sidebarrel': False,
     'navbar_pagenav': True,
-    # Global TOC depth for "site" navbar tab.
     'globaltoc_depth': 2,
-    # Fix navigation bar to top of page?
     'navbar_fixed_top': True,
-    # Location of link to source.
     'source_link_position': "footer",
-    # Bootswatch (http://bootswatch.com/) theme.
     'bootswatch_theme': "paper",
-    # Choose Bootstrap version.
     'bootstrap_version': "3",
 }
 

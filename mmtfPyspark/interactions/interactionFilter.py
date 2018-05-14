@@ -68,7 +68,7 @@ class InteractionFilter(object):
     def set_distance_cutoff(self, distanceCutoff):
         '''Set the distnace cutoff for interacting atoms
 
-        Attributes
+        Parameters 
         ----------
         distanceCutoff : float
            the maximum distance for interacting atoms
@@ -105,7 +105,7 @@ class InteractionFilter(object):
         For example, to include all interactions within the 90% confidence
         interval, set the normalized b-factor to +1.645
 
-        Attributes
+        Parameters 
         ----------
         normalizedbFactorCutoff : float
            maximum normalized b-factor
@@ -133,8 +133,8 @@ class InteractionFilter(object):
         '''Sets the minimum number of interactions per atom. Atoms that interact
         with fewer atoms will be discarded
 
-        Attribute
-        ---------
+        Parameters 
+        ----------
         minInteractions : int
            minimum number of interactions per atom
         '''
@@ -157,7 +157,7 @@ class InteractionFilter(object):
         '''Sets the maximum number of interactions per atom. Atoms that interact
         with fewer atoms will be discarded
 
-        Attributes
+        Parameters 
         ----------
         maxInteractions : int
            minimum number of interactions per atom
@@ -182,7 +182,7 @@ class InteractionFilter(object):
         >>> elements = ['C', 'H', 'P']
         >>> filter.set_query_elements(False, elements)
 
-        Attributes
+        Parameters 
         ----------
         include : bool
            if True, uses the specifed elements in the query,
@@ -216,7 +216,7 @@ class InteractionFilter(object):
         >>> elements = ['C', 'H', 'P']
         >>> filter.set_query_elements(False, elements)
 
-        Attributes
+        Parameters 
         ----------
         include : bool
            if True, uses the specifed elements in the target,
@@ -249,7 +249,7 @@ class InteractionFilter(object):
         >>> groups = ["HOH", "DOD"]
         >>> filter.set_query_groups(False, groups)
 
-        Attributes
+        Parameters 
         ----------
         include : bool
            if True, uses the specified groups in the query,
@@ -283,7 +283,7 @@ class InteractionFilter(object):
         >>> groups = ["HOH", "DOD"]
         >>> filter.set_target_groups(False, groups)
 
-        Attributes
+        Parameters 
         ----------
         include : bool
            if True, uses the specified groups in the target,
@@ -315,7 +315,7 @@ class InteractionFilter(object):
 
         >>> filter.set_query_atom_names(False, ['N', 'CA', 'C', 'O'])
 
-        Attributes
+        Parameters 
         ----------
         include : bool
            if True, uses set of atom names in query, 
@@ -347,7 +347,7 @@ class InteractionFilter(object):
 
         >>> filter.set_target_atom_names(False, ['N', 'CA', 'C', 'O'])
 
-        Attributes
+        Parameters
         ----------
         include : bool
            if True, uses set of atom names in target, 
@@ -377,7 +377,7 @@ class InteractionFilter(object):
         >>> filter.set_query_groups(True, 'ZN')
         >>> filter.set_prohibited_target_groups(["HOH"])
 
-        Attributes
+        Parameters
         ----------
         groups : list
            one or more group names to be prohibited
@@ -389,7 +389,7 @@ class InteractionFilter(object):
     def is_query_element(self, element):
         '''Returns True if the specified elements matches the query conditions.
 
-        Attributes
+        Parameters
         ----------
         element: str
            the element to be checked
@@ -410,7 +410,7 @@ class InteractionFilter(object):
     def is_target_element(self, element):
         '''Returns True if the specified elements matches the target conditions.
 
-        Attributes
+        Parameters
         ----------
         element : str
            the element to be checked
@@ -432,7 +432,7 @@ class InteractionFilter(object):
     def is_query_group(self, group):
         '''Returns True if the specified group matches the query conditions.
 
-        Attributes
+        Parameters
         ----------
         group : str
            the group to be checked
@@ -455,7 +455,7 @@ class InteractionFilter(object):
     def is_target_group(self, group):
         '''Returns True if the specified group matches the target conditions.
 
-        Attributes
+        Parameters
         ----------
         group : str
            the group to be checked
@@ -477,7 +477,7 @@ class InteractionFilter(object):
     def is_query_atom_name(self, atomName):
         '''Returns True if the specified atom matches the query conditions.
 
-        Attributes
+        Parameters
         ----------
         atomName : str
            the atom name to be checked
@@ -499,7 +499,7 @@ class InteractionFilter(object):
     def is_target_atom_name(self, atomName):
         '''Returns True if the specified atom matches the target conditions.
 
-        Attributes
+        Parameters
         ----------
         atomName : str 
            the atom to be checked
@@ -522,7 +522,7 @@ class InteractionFilter(object):
     def is_prohibited_target_group(self, group):
         '''Returns True if the specified group must not occur in an interactions.
 
-        Attributes
+        Parameters
         ----------
         group : str
            group that must not occur in interactions

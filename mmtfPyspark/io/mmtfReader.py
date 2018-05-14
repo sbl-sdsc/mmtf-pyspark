@@ -33,7 +33,7 @@ def read_full_sequence_file(sc, pdbId=None, fraction=None, seed=123):
 
     To download mmtf files: https://mmtf.rcsb.org/download.html
 
-    Attributes
+    Parameters
     ----------
     sc : Spark Context
     pdbID : list, optional
@@ -53,7 +53,7 @@ def read_reduced_sequence_file(sc, pdbId=None, fraction=None, seed=123):
 
     To download mmtf files: {https://mmtf.rcsb.org/download.htm}
 
-    Attributes
+    Parameters
     ----------
     sc : Spark Context
     pdbID : list, optional
@@ -71,7 +71,7 @@ def read_sequence_file(path, sc, pdbId=None, fraction=None, seed=123):
     randomly rample a fraction, or a subset based on input list.
     See <a href="http://mmtf.rcsb.org/download.html"> for file download information</a>
 
-    Attributes
+    Parameters
     ----------
     path : str
        path to file directory
@@ -115,7 +115,7 @@ def read_sequence_file(path, sc, pdbId=None, fraction=None, seed=123):
 def read_mmtf_files(path, sc):
     '''Read the specified PDB entries from a MMTF file
 
-    Attributes
+    Parameters
     ----------
     path : str
        Path to MMTF files
@@ -137,7 +137,7 @@ def download_mmtf_files(pdbIds, sc, reduced=False):
     '''Download and reads the specified PDB entries using `MMTF web services <http://mmtf.rcsb.org/download.html>`_
     with either full or reduced format
 
-    Attributes
+    Parameters
     ----------
     path : str
        Path to PDB files
@@ -158,7 +158,7 @@ def download_full_mmtf_files(pdbIds, sc):
     '''Download and reads the specified PDB entries in full mmtf format using `MMTF web services
     <http://mmtf.rcsb.org/download.html>`_
 
-    Attributes
+    Parameters
     ----------
     path : str
        Path to PDB files
@@ -179,7 +179,7 @@ def download_reduced_mmtf_files(pdbIds, sc):
     '''Download and reads the specified PDB entries in reduced mmtf format using `MMTF web services
     <http://mmtf.rcsb.org/download.html>`_
 
-    Attributes
+    Parameters
     ----------
     path : str
        Path to PDB files
@@ -199,7 +199,7 @@ def download_reduced_mmtf_files(pdbIds, sc):
 def _get_structure(pdbId, reduced):
     '''Download and decode a list of structure from a list of PDBid
 
-    Attributes
+    Parameters
     ----------
     pdbID : list
        List of structures to download
@@ -247,7 +247,7 @@ def _call_mmtf(f):
 def _get_files(user_path):
     '''Get List of files from path
 
-    Attributes
+    Parameters
     ----------
     user_path : str
        File path

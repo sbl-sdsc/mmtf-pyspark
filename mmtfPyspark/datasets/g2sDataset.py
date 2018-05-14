@@ -45,7 +45,7 @@ G2S_REST_URL = "https://g2s.genomenexus.org/api/alignments/"+REFERENCE_GENOME+"/
 def get_position_dataset(variationIds, structureId = None, chainId = None):
     '''Downloads PDB residue mappings for a list of genomic variations
 
-    Attributes
+    Parameters
     ----------
     variationIds : list
        genomic variation ids, e.g. chr7:g.140449103A>C
@@ -73,7 +73,7 @@ def get_full_dataset(variationIds, structureId = None, chainId = None):
     '''Downloads PDB residue mappings and alignment information for a list of
     genomic variations
 
-    Attributes
+    Parameters
     ----------
     variationIds : list
        genomic variation ids, e.g. chr7:g.140449103A>C
@@ -94,7 +94,7 @@ def get_full_dataset(variationIds, structureId = None, chainId = None):
 def _get_dataset(variationIds, structureId, chainId):
     '''Downloads PDB residue mappings for a list of genomic variations
 
-    Attributes
+    Parameters
     ----------
     variationIds : list
        genomic variation ids, e.g. chr7:g.140449103A>C
@@ -164,7 +164,7 @@ def _get_data(variationId, structureId, chainId):
 def _add_variant_id(json, refGenome, variationId):
     '''Adds reference genome and variationId to each json records
 
-    Attributes
+    Parameters
     ----------
     json : list
        list of original json strings

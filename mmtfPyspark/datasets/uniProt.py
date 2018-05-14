@@ -200,7 +200,7 @@ def _get_uniref_dataset(dataType):
 def get_dataset(UniProtDataset):
     '''Returns the specified UniProt dataset.
 
-    Attributes
+    Parameters
     ----------
     uniProtDataset : str
        name of the UniProt dataset

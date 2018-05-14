@@ -30,7 +30,7 @@ from pyspark.sql import Row
 def get_dataset(structure):
     '''Returns a dataset with protein sequence and secondary structure assignments.
 
-    Attributes
+    Parameters
     ----------
     structure : mmtfStructure
        single protein chain
@@ -54,7 +54,7 @@ def get_dataset(structure):
 def get_python_rdd(structure):
     '''Returns a pythonRDD of 3-state secondary structure
 
-    Attributes
+    Parameters
     ----------
     structure : mmtfStructure
     '''

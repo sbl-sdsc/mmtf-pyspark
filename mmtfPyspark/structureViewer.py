@@ -22,7 +22,7 @@ def view_structure(pdbIds, bioAssembly = False, style='cartoon', color='spectrum
     '''A wrapper function that simply displays a list of protein structures using
     ipywidgets and py3Dmol
 
-    Attributes
+    Parameters
     ----------
     pdbIds : list
        A list of PDBIDs to display
@@ -41,7 +41,7 @@ def view_structure(pdbIds, bioAssembly = False, style='cartoon', color='spectrum
         '''Simple structure viewer that uses py3Dmol to view PDB structure by
         indexing the list of PDBids
 
-        Attributes
+        Parameters
         ----------
             i (int): index of the protein if a list of PDBids
         '''
@@ -71,7 +71,7 @@ def view_group_interaction(pdbIds, interacting_group='None', style='cartoon', co
     '''A wrapper function that simply displays a list of protein structures using
     ipywidgets and py3Dmol and highlight specified interacting groups
 
-    Attributes
+    Parameters
     ----------
     pdbIds : list
        A list of PDBIDs to display
@@ -90,7 +90,7 @@ def view_group_interaction(pdbIds, interacting_group='None', style='cartoon', co
         '''Simple structure viewer that uses py3Dmol to view PDB structure by
         indexing the list of PDBids
 
-        Attributes
+        Parameters
         ----------
             i (int): index of the protein if a list of PDBids
         '''
@@ -116,7 +116,7 @@ def view_binding_site(pdbIds=None, groups=None, chains=None, distance=3.0):
     '''A wrapper function that zooms in to a group of a protein structure and highlight
     its neighbors within a certain distance.
 
-    Attributes
+    Parameters
     ----------
     pdbIds : list, optional 
        A list of PDBIDs to display
@@ -148,7 +148,7 @@ def view_binding_site(pdbIds=None, groups=None, chains=None, distance=3.0):
         '''Simple structure viewer that zooms into a specified group and highlight
         its neighbors
 
-        Attributes
+        Parameters
         ----------
             i (int): index of the protein if a list of PDBids
         '''
@@ -186,7 +186,7 @@ def group_interaction_viewer(df, sortBy, metal=None):
     ----------
     GroupInteractionExtractor: https://github.com/sbl-sdsc/mmtf-pyspark/blob/master/mmtfPyspark/interactions/groupInteractionExtractor.py
 
-    Attributes
+    Parameters
     ----------
     df : dataframe
        the dataframe generated from GroupIneteractionExtractor
@@ -223,7 +223,7 @@ def group_interaction_viewer(df, sortBy, metal=None):
         '''Simple structure viewer that uses py3Dmol to view PDB structure by
         indexing the list of PDBids
 
-        Attributes
+        Parameters
         ----------
         i : int
            index of the protein if a list of PDBids
@@ -254,7 +254,7 @@ def group_interaction_viewer(df, sortBy, metal=None):
 def metal_distance_widget(df_concat):
     '''Plot an violinplot of metal-element distances with ipywidgets
 
-    Attributes
+    Parameters
     ----------
     df_concat : Dataframe
        dataframe of metal-elements distances

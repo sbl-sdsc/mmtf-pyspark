@@ -21,7 +21,7 @@ import base64
 def write_sequence_file(path, sc, structure, compressed=True):
     '''Encodes and writes MMTF encoded structure data to a Hadoop Sequnce File
 
-    Attributes
+    Parameters
     ----------
     path : str
        Path to Hadoop file directory)
@@ -45,7 +45,7 @@ def write_sequence_file(path, sc, structure, compressed=True):
 def write_mmtf_files(path, sc, structure):
     '''Encodes and writes MMTF encoded and gzipped structure data to individual .mmtf.gz files.
 
-    Attributes
+    Parameters
     ----------
     path : str
        Path to Hadoop file directory
@@ -68,7 +68,7 @@ def write_mmtf_files(path, sc, structure):
 def to_mmtf_base64(structure):
     '''Encodes a mmtfStructure to base64 byte array
 
-    Attributes
+    Parameters
     ----------
     structure : mmtfStructure
        structure to be encoded to base64 byte array

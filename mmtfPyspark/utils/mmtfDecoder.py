@@ -14,7 +14,7 @@ import numpy as np
 def run_length_decoder_numpy(in_array):
     """Decodes a run length encoded array
 
-    Attributes
+    Parameters
     ----------
     in_array : list
        the input list to apply run length decoder on
@@ -33,8 +33,8 @@ def run_length_decoder_numpy(in_array):
 def recursive_index_decode(int_array, decode_num=1000):
     """Unpack an array of integers using recursive indexing.
 
-    Attribute
-    ---------
+    Parameters
+    ----------
     int_array : list
        the input array of integers
     decode_num : int
@@ -54,7 +54,7 @@ def recursive_index_decode(int_array, decode_num=1000):
 def decode_entity_list(input_data):
     """Convert byte strings to strings in the entity list.
 
-    Attributes
+    Parameters
     ----------
     input_data : list
        the list of entities
@@ -70,7 +70,7 @@ def decode_entity_list(input_data):
 def decode_group_list(input_data):
     """Convert byte strings to strings in the group map.
 
-    Attributes
+    Parameters
     ----------
     input_data : list
        the list of groups
@@ -86,7 +86,7 @@ def decode_group_list(input_data):
 def convert_group(input_group):
     """Convert an individual group from byte strings to regula strings.
 
-    Attributes
+    Parameters
     ----------
     input_group : list
        the list of input groups
@@ -112,7 +112,7 @@ def convert_group(input_group):
 def convert_entity(input_entity):
     """Convert an individual entity from byte strings to regular strings
 
-    Attributes
+    Parameters
     ----------
     input_entity : list
        entities to decode
