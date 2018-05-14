@@ -21,7 +21,7 @@ def get_dataset(structures):
     using the full sequence used in the experimnet
     (i.e., the "SEQRES" record in PDB files)
 
-    Attributes
+    Parameters
     ----------
     structures : pythonRDD
        a set of PDB structures

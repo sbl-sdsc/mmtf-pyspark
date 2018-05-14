@@ -32,7 +32,7 @@ class WildTypeQuery(object):
         '''Default constructor maches an entry that contains at least one L-protein chain.
         As an example, an L-protein/DNA complex passes this filter
 
-        Attributes
+        Parameters
         ----------
         includeExpressionTags : bool
            flag to include expression tags

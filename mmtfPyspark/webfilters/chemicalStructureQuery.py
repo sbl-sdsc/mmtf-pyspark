@@ -34,7 +34,7 @@ class ChemicalStructureQuery(object):
         For details see:
         `Chemical Structure Search <http://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/chemSmiles.html>`_
 
-        Attributes
+        Parameters
         ----------
         smiles : str
            SMILES string representing chemical structure

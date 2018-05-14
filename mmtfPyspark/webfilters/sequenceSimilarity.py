@@ -50,7 +50,7 @@ class SequenceSimilarity(object):
                  sequenceIdentityCutoff=0, maskLowComplexity=True):
         '''Filters by squence similarity using all default parameters.
 
-        Attributes
+        Parameters
         ----------
         sequence : str
            query sequence

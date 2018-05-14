@@ -46,7 +46,7 @@ class SparkMultiClassClassifier(object):
         label: the class labels
         features: feature vector
 
-        Attributes
+        Parameters
         ----------
         data : Dataset<Row>
            input data

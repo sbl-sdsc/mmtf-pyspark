@@ -153,7 +153,7 @@ class StructureToAllInteractions(object):
     def _get_group_indices(self, structure):
         '''Creates an atom index to the first atom of each group
 
-        Attributes
+        Parameters
         ----------
         structure : mmtfStructure
         '''

@@ -23,7 +23,7 @@ class ContainsRnaChain(object):
     contain DNA chains. For example, with "exclusive" set to true, an
     RNA-protein complex complex does not pass this filter.
 
-    Attributes
+    Parameters
     ----------
     exclusive : bool
        if true, only return entries that contain RNA chains

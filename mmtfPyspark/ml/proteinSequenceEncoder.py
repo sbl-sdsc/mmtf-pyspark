@@ -104,7 +104,7 @@ class ProteinSequenceEncoder(object):
         encodes the 20 natural amino acids, plus X for any other
         residue for a total of 21 elements per residue.
 
-        Attributes
+        Parameters
         ----------
         data : DataFrame
            input data to be encoded [None]
@@ -166,7 +166,7 @@ class ProteinSequenceEncoder(object):
         Meiler, J., Müller, M., Zeidler, A. et al. J Mol Model (2001)
         https://link.springer.com/article/10.1007/s008940100038
 
-        Attributes
+        Parameters
         ----------
         data : DataFrame
            input data to be encoded [None]
@@ -227,7 +227,7 @@ class ProteinSequenceEncoder(object):
         Blosum Matrix
         https://ftp.ncbi.nih.gov/repository/blocks/unix/blosum/BLOSUM/blosum62.blast.new
 
-        Attributes
+        Parameters
         ----------
         data : DataFrame
            input data to be encoded [None]
@@ -290,7 +290,7 @@ class ProteinSequenceEncoder(object):
         sequence by converting it into n-grams and then transforming it using
         pre-trained word2Vec model read from that file
 
-        Attributes
+        Parameters
         ----------
         data : DataFrame
            input data to be encoded [None]
@@ -373,7 +373,7 @@ class ProteinSequenceEncoder(object):
         three resulting freature vectors.
 
 
-        Attributes
+        Parameters
         ----------
         data : DataFrame
            input data to be encoded [None]
@@ -490,7 +490,7 @@ class ProteinSequenceEncoder(object):
     def _average_feature_vectors(self, data, outputCol):
         '''Average the feature vectors
 
-        Attributes
+        Parameters
         ----------
         data : DataFrame
            input dataframe

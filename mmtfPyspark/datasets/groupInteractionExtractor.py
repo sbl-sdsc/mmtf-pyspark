@@ -36,7 +36,7 @@ class groupInteractionExtractor(object):
         '''Returns a dataset of residues that interact with specified group
         within a specified cutoff distance
 
-        Attributes
+        Parameters
         ----------
         structure : pythonRdd
            a set of PDB structures

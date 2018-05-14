@@ -1,17 +1,43 @@
+h1 {
+    font-size: 2.0em;
+}
+
+h2 {
+    font-size: 1.8em;
+}
+
+h3 {
+    font-size: 1.6em;
+}
+
+h4 {
+    font-size: 1.4em;
+}
+
+h5 {
+    font-size: 1.2em;
+}
+
+h6 {
+    font-size: 1.0em;
+}
 
 .btn-container {
-  padding: 20px 0;
+    padding: 20px 0;
+    text-align: center;
 }
 
 .btn-download {
-  color: #04014f;
-  display: block;
-  margin: 0 auto;
+    color: #04014f;
+    display: inline-block;
+    width: 49.8%;
 }
 
 .btn-download:hover {
-  background-color: #04014f;
-  color: #fff;
-  display: block;
-  margin: 0 auto;
+    background-color: #04014f;
+    color: #fff;
+}
+
+.dataframe th, td {
+    padding: 1px 3px;
 }

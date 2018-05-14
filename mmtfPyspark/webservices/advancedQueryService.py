@@ -19,7 +19,7 @@ def post_query(xml):
     '''Post an XML query (PDB XML query format) to the RESTful
     RCSB web service
 
-    Attributes
+    Parameters
     ----------
     xml : str
        a string of xml query

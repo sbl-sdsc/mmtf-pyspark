@@ -24,7 +24,7 @@ class StructureToPolymerSequences(object):
         `_atom_site.label_asym_id <http://mmcif.wwpdb.org/dictionaries/mmcif_mdb.dic/Items/_atom_site.label_asym_id.html>`_ 
         field in an mmCIF file.
 
-        Attributes
+        Parameters
         ----------
         useChainIdInsteadOfChainName : bool
            if true, use the Chain Id in the key assignments

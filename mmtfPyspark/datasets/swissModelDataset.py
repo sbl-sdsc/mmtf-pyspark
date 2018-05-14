@@ -48,7 +48,7 @@ def get_swiss_models(uniProtIds):
     |O00244|MPKHE...|   1| 68| 1.04|0.84233218|0.98|     1.0| homo-2-mer|Homology|1fe4.1.A|   100.0|0.60686457|https://...|
     +------+--------+----+---+-----+----------+----+--------+-----------+--------+--------+--------+----------+-----------+
 
-    Attributes
+    Parameters
     ----------
     uniProtIds : list
        list of UniProt Ids
@@ -67,7 +67,7 @@ def get_swiss_models_raw_data(uniProtIds):
     '''Downloads the raw metadata for SWISS-MODEL homology models. This dataset
     is in the original data schema as downloaded from SWISS-MODEL.
 
-    Attributes
+    Parameters
     ----------
     uniProtIds : list
        list of UniProt Ids
@@ -101,7 +101,7 @@ def _flatten_dataset(ds):
     '''Flattens the original hierarchical data schema into a simple row-based
     schema. Some less useful data are excluded.
 
-    Attributes
+    Parameters
     ----------
     ds : dataset
        the original spark dataset
@@ -125,7 +125,7 @@ def _flatten_dataset(ds):
 def _save_temp_file(inputStream):
     '''Saves tabular report as a temporary CSV file
 
-    Attributes
+    Parameters
     ----------
     inputStream : str
        inputStream from swiss model
@@ -144,7 +144,7 @@ def _save_temp_file(inputStream):
 def _read_json_files(paths):
     '''Reads a list of json files to Spark dataset
 
-    Attributes
+    Parameters
     ----------
     paths : list
        a list of paths to temporary json files

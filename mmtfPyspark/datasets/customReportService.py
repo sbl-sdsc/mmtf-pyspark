@@ -43,7 +43,7 @@ def get_dataset(columnNames):
     See <a href="https://www.rcsb.org/pdb/results/reportField.do">  for a list
     of supported filed names
 
-    Attributes
+    Parameters
     ----------
     columnNames : str, list
        names of columns for the dataset
@@ -92,7 +92,7 @@ def _concat_ids(spark, dataset, columnNames):
     '''Concatenates structureId and chainId fields into a single key if chainId
     field is present
 
-    Attributes
+    Parameters
     ----------
     spark : :obj:`SparkSession <pyspark.sql.SparkSession>`
     dataset : Dataframe
@@ -116,7 +116,7 @@ def _concat_ids(spark, dataset, columnNames):
 def _post_query(service, query):
     '''Post PDB Ids and fields in a query string to the RESTful RCSB web service
 
-    Attributes
+    Parameters
     ----------
     query : str
        RESTful query urlopen
@@ -139,7 +139,7 @@ def _post_query(service, query):
 def _read_csv(spark, inputFileName):
     '''Reads CSV file into a Spark dataset
 
-    Attributes
+    Parameters
     ----------
     spark : Spark Context
     inputFileName : str

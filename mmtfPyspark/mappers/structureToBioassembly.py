@@ -222,7 +222,7 @@ class StructureToBioassembly(object):
     def _getChainToEntityIndex(self, structure):
         '''Returns an list that maps a chain index to an entity index.
 
-        Attributes
+        Parameters
         ----------
         structure : structureDataInterFace
         '''

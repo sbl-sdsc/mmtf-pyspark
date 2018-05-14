@@ -102,7 +102,7 @@ def get_drug_links(drugGroup, username, password):
     >>> drugLinks = get_drug_links("APPROVED", username, password)
     >>> drugLinks.show()
 
-    Attributes
+    Parameters
     ----------
     durgGroup : str
        specific dataset to be downloaded, has to be in the pre-defined DURG_GROUP list
@@ -157,7 +157,7 @@ def get_drug_target_links(drug, username, password):
     ...                                         password)
     >>> drugTargetLinks.show()
 
-    Attributes
+    Parameters
     ----------
     durg : str 
        specific dataset to be downloaded, has to be either in
@@ -184,7 +184,7 @@ def get_drug_target_links(drug, username, password):
 def get_dataset(url, username=None, password=None):
     '''Downloads a DrugBank dataset
 
-    Attributes
+    Parameters
     ----------
     url : str
        DrugBank dataset download links
@@ -224,7 +224,7 @@ def get_dataset(url, username=None, password=None):
 def _decode_as_zip_input_stream(content):
     '''Returns an input stream to the first zip file entry
 
-    Attributes
+    Parameters
     ----------
     content : inputStream
        inputStream content from request
@@ -243,7 +243,7 @@ def _decode_as_zip_input_stream(content):
 def _save_temp_file(unzipped):
     '''Saves tabular report as a temporary CSV file
 
-    Attributes
+    Parameters
     ----------
     unzipped : list
        list of unzipped content
@@ -262,7 +262,7 @@ def _save_temp_file(unzipped):
 def _read_csv(inputFileName):
     '''Reads CSV file into Spark dataset
 
-    Attributes
+    Parameters
     ----------
     fileName : str
        name of the input csv fileName
@@ -283,7 +283,7 @@ def _read_csv(inputFileName):
 def _remove_spaces_from_column_names(original):
     '''Remove spaces from column names to ensure compatibility with parquet
 
-    Attributes
+    Parameters
     ----------
     original : dataset
        the original dataset

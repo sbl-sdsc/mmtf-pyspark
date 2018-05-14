@@ -67,7 +67,7 @@ def get_variations(uniprotIds, query = ''):
     ...         + "OR linivar.rcv.clinical_significance:likely pathogenic"
     >>> ds = MyVariantDataset.get_variations(uniprotIds, query)
 
-    Attributes
+    Parameters
     ----------
     uniprotIds : list
        list of Uniprot Ids
@@ -165,7 +165,7 @@ def _get_scroll_id(results):
 def _read_results(inputStream):
     '''Converts data read from input stream into a single line of text
 
-    Attributes
+    Parameters
     ----------
     inputStream
        input stream

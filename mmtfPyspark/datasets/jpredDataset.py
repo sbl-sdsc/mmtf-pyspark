@@ -27,8 +27,8 @@ from mmtfPyspark.ml import pythonRDDToDataset
 def get_dataset():
     '''Gets JPred 4/JNet (v.2.3.1) secondary structure dataset.
 
-    Return
-    ------
+    Returns
+    -------
     dataset
        secondaryStructure dataset
     '''

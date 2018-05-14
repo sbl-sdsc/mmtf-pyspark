@@ -29,7 +29,7 @@ def get_dataset(structure, label, length=None):
     '''Returns a dataset of continuous segments of protein sequence with the
     specified DSSP secondary structure code (E, H, C) of a minimum length.
 
-    Attributes
+    Parameters
     ----------
     structure : structure
     label : str 
