@@ -151,7 +151,9 @@ def download_mmtf_files(pdbIds, sc, reduced=False):
        structure data as keywork/value pairs
     '''
 
-    return sc.parallelize(set(pdbIds)).map(lambda t: _get_structure(t, reduced))
+    return sc.parallelize(set(pdbIds)) \
+             .map(lambda t: _get_structure(t, reduced)) \
+             .filter(lambda t: t is not None)
 
 
 def download_full_mmtf_files(pdbIds, sc):
@@ -193,7 +195,7 @@ def download_reduced_mmtf_files(pdbIds, sc):
 
     return sc.parallelize(set(pdbIds)) \
              .map(lambda t: _get_structure(t, True)) \
-             .filter(lambda t: t is not None)
+             .filter(lambda t: t != None)
 
 
 def _get_structure(pdbId, reduced):
