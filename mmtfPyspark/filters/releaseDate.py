@@ -20,7 +20,7 @@ class ReleaseDate(object):
         '''This filter retuns true if the release date for the structure is
         within the specified range.
 
-        Attributes
+        Parameters
         ----------
         startDate : str
            start of the release date range

@@ -75,7 +75,7 @@ class StructureToAtomInteractions(object):
     def _get_interactions(self, arrays, queryAtomIndex, box):
         '''Get the interacting neighbors of an atom in a structure
 
-        Attributes
+        Parameters
         ----------
         arrays : columnarStructure
            structure in columnarStructure format
@@ -160,7 +160,7 @@ class StructureToAtomInteractions(object):
         '''Add atom indices on grid for rapid indexing of atom neighbors on a
         grid based on a cutoff distance
 
-        Attributes
+        Parameters
         ----------
         arrays : columnarStructure
            structure in columnarStructure format
@@ -186,7 +186,7 @@ class StructureToAtomInteractions(object):
     def _get_query_atom_indices(self, arrays):
         '''Returns a list of indices to query atoms in the structure
 
-        Attributes
+        Parameters
         ----------
         arrays : columnarStructure
            structure in columnarStructure format

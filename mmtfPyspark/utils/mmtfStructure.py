@@ -159,7 +159,7 @@ class MmtfStructure(object):
     def pass_data_on(self, data_setters):
         """Write the data from the getters to the setters.
 
-        Attributes
+        Parameters
         ----------
         data_setters : DataTransferInterface
             a series of functions that can fill a chemical

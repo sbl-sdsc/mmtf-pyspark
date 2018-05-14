@@ -127,9 +127,10 @@ class CoordinateGeometry(object):
         perfectly trigonal bipyramidal arrangement. It can reach negative values
         for certain arrangements.
 
-        Reference
-        ---------
-        Richard H. Henchman and Stuart J. Cockramb (2013), Water’s Non-Tetrahedral Side, Faraday Discuss., 167, 529. <a href= "https://dx.doi.org/10.1039/c3fd00080j">doi:10.1039/c3fd00080j</a>
+        References
+        ----------
+        - `Richard H. Henchman and Stuart J. Cockramb (2013), Water’s Non-Tetrahedral Side, Faraday Discuss., 167, 529.
+          <https://dx.doi.org/10.1039/c3fd00080j>`_
         
         Note, the summations in equation (3) in this paper is incorrect.
         This method uses the corrected version (R. Henchman, personal communication).
@@ -165,9 +166,9 @@ class CoordinateGeometry(object):
         octahedralhedral arrangement. It can reach negative values for certain
         arrangements.
 
-        Reference
-        ---------
-        Richard H. Henchman and Stuart J. Cockramb (2013), Water’s Non-Tetrahedral Side, Faraday Discuss., 167, 529.  <a href= "https://dx.doi.org/10.1039/c3fd00080j">doi:10.1039/c3fd00080j</a>
+        References
+        ----------
+        - `Richard H. Henchman and Stuart J. Cockramb (2013), Water’s Non-Tetrahedral Side, Faraday Discuss., 167, 529.  <https://dx.doi.org/10.1039/c3fd00080j>`_
 
         The same method as described in this paper was used to derive the q6 parameter (R. Henchman, personal communication).
 
@@ -240,7 +241,7 @@ class CoordinateGeometry(object):
     def _angle(self, a, b):
         '''Calculate the angle between two points
 
-        Attributes
+        Parameters 
         ----------
         a : list
            point a

@@ -176,7 +176,7 @@ class StructureToPolymerChains(object):
     def _get_chain_to_entity_index(self, structure):
         '''Returns an list that maps a chain index to an entity index.
 
-        Attributes
+        Parameters
         ----------
         structure : structureDataInterFace
         '''

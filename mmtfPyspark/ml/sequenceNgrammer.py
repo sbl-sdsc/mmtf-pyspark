@@ -22,7 +22,7 @@ def ngram(data, n, outputCol):
     --------
     2-gram: IDCGH ... => [ID, DC, CG, GH, ...]
 
-    Attributes
+    Parameters
     ----------
     data : dataset
        input dataset with column "sequence"
@@ -80,7 +80,7 @@ def shifted_ngram(data, n, shift, outputCol):
     E Asgari, MRK Mofrad, PLoS One. 2015; 10(11): e0141287, doi:
     https://dx.doi.org/10.1371/journal.pone.0141287
 
-    Attributes
+    Parameters
     ----------
     data : dataset
        input dataset with column "sequence"

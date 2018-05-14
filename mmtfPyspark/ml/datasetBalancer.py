@@ -24,7 +24,7 @@ def downsample(data, columnName, seed=7):
     the majority classes.
     The classification column must be of type String
 
-    Attributes
+    Parameters
     ----------
     data : Dataframe
     columnName : str
@@ -51,7 +51,7 @@ def upsample(data, columnName, seed=7):
     the majority classes.
     The classification column must be of type String
 
-    Attributes
+    Parameters
     ----------
     data : Dataframe)
     columnName : str

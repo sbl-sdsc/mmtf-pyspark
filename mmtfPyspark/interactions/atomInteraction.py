@@ -39,7 +39,7 @@ class AtomInteraction(object):
     def set_structure_id(self, structureId):
         '''Sets the structure identifier
 
-        Attributes
+        Parameters
         ----------
         structureId : str
            the structure identifier
@@ -63,7 +63,7 @@ class AtomInteraction(object):
     def set_center(self, center):
         '''Sets the central atom information of a coordination sphere.
 
-        Attributes
+        Parameters
         ----------
         center : InteractionCenter
            central atom information
@@ -85,7 +85,7 @@ class AtomInteraction(object):
     def add_neighbor(self, neighbor):
         '''Adds a neighbor interaction center.
 
-        Attributes
+        Parameters
         ----------
         neighbor : InteractionCenter
            an interation with the central atom
@@ -122,7 +122,7 @@ class AtomInteraction(object):
         describe the arrangement of the atoms in the coordination sphere,
         distances and angles of the neighcor atoms with the cnter atom.
 
-        Attributes
+        Parameters
         ----------
         maxInteraction : int
            maximum number of interaction
@@ -209,7 +209,7 @@ class AtomInteraction(object):
         '''Returns the schema for a row of atom interaction inforamtion. The schema
         is used to create a Dataset<Row> from the row information.
 
-        Attributes
+        Parameters
         ----------
         maxInteraction : int
            maximum number of interactions
@@ -287,7 +287,7 @@ class AtomInteraction(object):
             distances: maxInteractions
             angles: maxInteractions * (maxInteractions - 1) / 2
 
-        Attributes
+        Parameters
         ----------
         maxInteractions : int
            maximum number of interactions
@@ -304,7 +304,7 @@ class AtomInteraction(object):
     def _set(self, data, value, i):
         '''Sets the ith index of data to value and increase i by one
         
-        Attributes
+        Parameters
         ----------
         data : list
         value : int

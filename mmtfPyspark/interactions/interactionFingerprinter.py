@@ -34,7 +34,7 @@ class InteractionFingerprinter(object):
         - sequence - interacting polymer sequence
         - interactingChains - total number of chains that interact with ligand
 
-        Attributes
+        Parameters
         ----------
         structures : PythonRDD
            a set of PDB structures
@@ -79,7 +79,7 @@ class InteractionFingerprinter(object):
             sequenceIndices - array of zero-based index of interaction groups (residues) mapped onto target sequence
             sequence - target polymer sequence
 
-        Attributes
+        Parameters
         ----------
         structures : PythonRDD
            a set of PDB structures

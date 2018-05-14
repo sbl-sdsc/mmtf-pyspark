@@ -81,7 +81,7 @@ class InteractionCenter(object):
     def set_atom_name(self, atomName):
         '''Sets the atom name
 
-        Attributes
+        Parameters
         ----------
             atomName (str): name of the atom
         '''
@@ -101,7 +101,7 @@ class InteractionCenter(object):
     def set_element(self, element):
         '''Sets the case-sensitive element symbol
 
-        Attributes
+        Parameters
         ----------
             element (str): element symbol
         '''
@@ -123,7 +123,7 @@ class InteractionCenter(object):
         '''Sets the names of the group. This name is the chemical component id
         of this group
 
-        Attributes
+        Parameters
         ----------
             groupName (str): name of group
         '''
@@ -147,7 +147,7 @@ class InteractionCenter(object):
         consists of the residue number (e.g. 101) plus an optional insertion code
         (e.g. A): 101A.
 
-        Attributes
+        Parameters
         ----------
             groupNumber (str): group number
         '''
@@ -167,7 +167,7 @@ class InteractionCenter(object):
     def set_type(self, gtype):
         '''Sets the type of the group.
 
-        Attributes
+        Parameters
         ----------
             gtype (str): type of group
         '''
@@ -187,7 +187,7 @@ class InteractionCenter(object):
     def set_chain_name(self, chainName):
         '''Sets the chainName. This corresponds to the "chain Id" in PDB files.
 
-        Attributes
+        Parameters
         ----------
             chainName (str): the name of the chian
         '''
@@ -211,7 +211,7 @@ class InteractionCenter(object):
         zero-based. If the interaction center is not a polymer atom, this index
         is -1
 
-        Attributes
+        Parameters
         ----------
             sequencePosition (int): index into polymer sequence
         '''
@@ -231,7 +231,7 @@ class InteractionCenter(object):
     def set_coordinates(self, coordinates):
         '''Sets the position of the interaction center.
 
-        Attributes
+        Parameters
         ----------
             coordinates (list): the position of the interaction center
         '''
@@ -251,7 +251,7 @@ class InteractionCenter(object):
     def set_normalized_b_factors(self, normalizedbFactor):
         '''Sets the normalized b-factor
 
-        Attributes
+        Parameters
         ----------
             normalizedbFactor (float) the normalized b-factor
         '''
@@ -275,7 +275,7 @@ class InteractionCenter(object):
         '''Returns a schema to create Spark Datasets. This schema must match the
         order in which the data are return by the getAsObject() method.
 
-        Attributes
+        Parameters
         ----------
             index (int): an integer to label an interaction center
 
