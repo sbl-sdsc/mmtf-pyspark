@@ -43,6 +43,15 @@ commands on your terminal:
     curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/install_spark.sh -o install_spark.sh
     . ./install_spark.sh
 
+The default installation location is in the user's home directory. The specify another directory, use the -o flag:
+
+::
+
+    curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/install_spark.sh -o install_spark.sh
+    . ./install_spark.sh - o /YOUR_DIRECTORY
+
+
+
 Install mmtfPyspark
 ~~~~~~~~~~~~~~~~~~~
 
@@ -106,6 +115,11 @@ environmental variables can be set by running the following command:
 ::
 
     . ./download_mmtf_files.sh
+
+The default download location is in the user's home directory. The specify another directory, use the -o flag:
+
+::
+    . ./download_mmtf_files.sh -o /YOUR_DIRECTORY
 
 Tips:
 ~~~~~
