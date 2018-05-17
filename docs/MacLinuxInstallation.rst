@@ -48,7 +48,7 @@ The default installation location is in the user's home directory. The specify a
 ::
 
     curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/install_spark.sh -o install_spark.sh
-    . ./install_spark.sh - o {YOUR_LOCAL_DIRECTORY}
+    . ./install_spark.sh -o {YOUR_LOCAL_DIRECTORY}
 
 
 
