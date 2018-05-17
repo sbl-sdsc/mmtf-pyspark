@@ -20,6 +20,7 @@ __status__ = "Done"
 
 import requests
 import tempfile
+import io
 from zipfile import ZipFile
 from io import BytesIO
 from pyspark.sql import SparkSession
@@ -159,7 +160,7 @@ def get_drug_target_links(drug, username, password):
 
     Parameters
     ----------
-    durg : str 
+    durg : str
        specific dataset to be downloaded, has to be either in
        the DrugGroup list OR DrugType list.
     usesrname : str
@@ -195,7 +196,7 @@ def get_dataset(url, username=None, password=None):
 
     Returns
     -------
-    dataset 
+    dataset
        DrugBank dataset
     '''
     if username is None and password is None:
@@ -254,8 +255,9 @@ def _save_temp_file(unzipped):
        path to the tempfile
     '''
     tempFile = tempfile.NamedTemporaryFile(delete=False)
-    with open (tempFile.name, "w") as t:
-        t.writelines(unzipped)
+    with io.open(tempFile.name, "w", encoding='utf-8') as t:
+       t.writelines(unzipped)
+
     return tempFile.name
 
 
