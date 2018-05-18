@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import SecondaryStructure
 from mmtfPyspark.mappers import StructureToPolymerChains
@@ -10,16 +10,16 @@ from mmtfPyspark.mappers import StructureToPolymerChains
 class SecondaryStructureTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('SecondaryStructureTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("SecondaryStructureTest") \
+                                 .getOrCreate()
+        
         # 1AIE: all alpha protein 20 alpha out of 31 = 0.645 helical
         # 1E0N: all beta protein, NMR structure with 10 models, 13 beta out of 27 = 0.481 sheet
         # 1EM7: alpha + beta, 14 alpha + 23 beta out of 56 = 0.25 helical and 0.411 sheet
         # 2C7M: 2 chains, alpha + beta (DSSP in MMTF doesn't match DSSP on RCSB PDB website)
         pdbIds = ["1AIE", "1E0N", "1EM7", "2C7M"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(SecondaryStructure(
@@ -71,7 +71,7 @@ class SecondaryStructureTest(unittest.TestCase):
         self.assertFalse('2C7M.B' in results_6)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

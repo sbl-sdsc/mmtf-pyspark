@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import ReleaseDate
 
@@ -9,16 +9,17 @@ from mmtfPyspark.filters import ReleaseDate
 class ReleaseDateFilterTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('releaseDateFilterTest')
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("releaseDateFilterTest") \
+                                 .getOrCreate()
+        
         pdbIds = ['1O6Y', '4MYA', '3VCO', '5N0Y']
 
         # 1O6Y: released on 2003-01-30
         # 4MYA: released on 2014-01-01
         # 3VCO: released on 2013-03-06
         # 5N0Y: released on 2017-05-24
-        self.sc = SparkContext(conf=conf)
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(ReleaseDate("2000-01-01", "2010-01-01"))
@@ -57,7 +58,7 @@ class ReleaseDateFilterTest(unittest.TestCase):
         self.assertTrue('5N0Y' in results_4)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

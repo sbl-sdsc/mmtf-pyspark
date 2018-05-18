@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import ContainsDSaccharideChain
 from mmtfPyspark.mappers import *
@@ -10,9 +10,9 @@ from mmtfPyspark.mappers import *
 class ContainsDSaccharideChainTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('ContainsDSaccharideChainTest')
-        self.sc = SparkContext(conf=conf)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("ContainsDSaccharideChainTest") \
+                                 .getOrCreate()
 
         # 2ONX: only L-protein chain
         # 1JLP: single L-protein chains with non-polymer capping group (NH2)
@@ -21,7 +21,7 @@ class ContainsDSaccharideChainTest(unittest.TestCase):
         # 2MK1: As of V5 of PDBx/mmCIF, saccharides seem to be represented as monomers,
         #       instead of polysaccharides, so none of these tests returns true anymore.
         pdbIds = ['2ONX', '1JLP', '5X6H', '5L2G', '2MK1']
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(ContainsDSaccharideChain())
@@ -46,7 +46,7 @@ class ContainsDSaccharideChainTest(unittest.TestCase):
         self.assertFalse('2MK1.A' in results_2)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

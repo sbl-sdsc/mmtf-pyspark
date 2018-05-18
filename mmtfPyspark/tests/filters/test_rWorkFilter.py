@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import RWork
 
@@ -9,15 +9,16 @@ from mmtfPyspark.filters import RWork
 class RWorkFilterTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('RWorkFilterTest')
-        self.sc = SparkContext(conf=conf)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("RWorkFilterTest") \
+                                 .getOrCreate()
 
         # 2ONX: 0.172 rwork x-ray resolution
         # 2OLX: 0.183 rfree x-ray resolution
         # 3REC: n/a NMR structure
         # 1LU3: n/a EM structure
         pdbIds = ['2ONX', '2OLX', '3REC', '1LU3']
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(RWork(0.171, 0.173))
@@ -47,7 +48,7 @@ class RWorkFilterTest(unittest.TestCase):
         self.assertFalse('1LU3' in results_3)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

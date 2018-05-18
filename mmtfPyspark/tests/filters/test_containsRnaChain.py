@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import ContainsRnaChain
 from mmtfPyspark.mappers import *
@@ -10,10 +10,10 @@ from mmtfPyspark.mappers import *
 class ContainsLRnaChainTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('containsRNAChainTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("containsRNAChainTest") \
+                                 .getOrCreate()
+        
         # 2ONX: only L-protein chain
         # 1JLP: single L-protein chains with non-polymer capping group (NH2)
         # 5X6H: L-protein and DNA chain
@@ -22,7 +22,7 @@ class ContainsLRnaChainTest(unittest.TestCase):
         # 5UX0: 2 L-protein, 2 RNA, 2 DNA chains
         # 2NCQ: 2 RNA chains
         pdbIds = ['2ONX', '1JLP', '5X6H', '5L2G', '2MK1', '5UX0', '2NCQ']
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(ContainsRnaChain())
@@ -69,7 +69,7 @@ class ContainsLRnaChainTest(unittest.TestCase):
         self.assertTrue('2NCQ.S' in results_3)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import DepositionDate
 
@@ -9,16 +9,16 @@ from mmtfPyspark.filters import DepositionDate
 class DepositionDateFilterTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('DepositionDateFilterTest')
-        self.sc = SparkContext(conf=conf)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("DepositionDateFilterTest") \
+                                 .getOrCreate()
 
         # 4MYA: deposited on 2013-09-27
         # 1O6Y: deposited on 2002-10-21
         # 3VCO: deposited on 2012-01-04
         # 5N0Y: deposited on 2017-02-03
         pdbIds = ['1O6Y', '4MYA', '3VCO', '5N0Y']
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(DepositionDate("2000-01-01", "2010-01-01"))
@@ -48,7 +48,7 @@ class DepositionDateFilterTest(unittest.TestCase):
         self.assertTrue('5N0Y' in results_3)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

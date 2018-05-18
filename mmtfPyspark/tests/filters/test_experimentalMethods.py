@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import ExperimentalMethods
 from mmtfPyspark.mappers import *
@@ -10,12 +10,13 @@ from mmtfPyspark.mappers import *
 class ExperimentalMethodsTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('ExperimentalMethodsTest')
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("ExperimentalMethodsTest") \
+                                 .getOrCreate()
+
         pdbIds = ["2ONX", "5VLN", "5VAI", "5JXV", "5K7N",
                   "3PDM", "5MNX", "5I1R", "5MON", "5LCB", "3J07"]
-        self.sc = SparkContext(conf=conf)
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(ExperimentalMethods(
@@ -198,7 +199,7 @@ class ExperimentalMethodsTest(unittest.TestCase):
         self.assertTrue('3J07' in results_10)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import ContainsSequenceRegex
 from mmtfPyspark.mappers import *
@@ -10,15 +10,15 @@ from mmtfPyspark.mappers import *
 class ContainsSequenceRegexTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('containsSequenceRegexTest')
-        self.sc = SparkContext(conf=conf)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("containsSequenceRegexTest") \
+                                 .getOrCreate()
 
         # 5KE8: contains Zinc finger motif
         # 1JLP: does not contain Zinc finger motif
         # 5VAI: contains Walker P loop
         pdbIds = ['5KE8', '1JLP', '5VAI']
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(ContainsSequenceRegex("C.{2,4}C.{12}H.{3,5}H"))
@@ -46,7 +46,7 @@ class ContainsSequenceRegexTest(unittest.TestCase):
         self.assertFalse('5VAI.A' in results_3)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':
