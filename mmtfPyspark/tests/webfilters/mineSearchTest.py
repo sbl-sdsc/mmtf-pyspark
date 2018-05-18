@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import PdbjMineSearch
 from mmtfPyspark.datasets import pdbjMineDataset
@@ -11,11 +11,12 @@ from mmtfPyspark.mappers import StructureToPolymerChains
 class MineSearchTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('mineSearchTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("mineSearchTest") \
+                                 .getOrCreate()
+        
         pdbIds = ["5JDE", "5CU4", "5L6W", "5UFU", "5IHB"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         sql = "select count(*) from brief_summary"
@@ -59,7 +60,7 @@ class MineSearchTest(unittest.TestCase):
         self.assertFalse("5IHB.D" in matches)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

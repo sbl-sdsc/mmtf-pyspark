@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import BlastCluster
 from mmtfPyspark.mappers import StructureToPolymerChains
@@ -10,12 +10,12 @@ from mmtfPyspark.mappers import StructureToPolymerChains
 class BlastClustersTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('blastClustersTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("blastClustersTest") \
+                                 .getOrCreate()
+    
         pdbIds = ["1O06", "2ONX"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
 
@@ -37,7 +37,7 @@ class BlastClustersTest(unittest.TestCase):
         self.assertFalse('2ONX' in results_2)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

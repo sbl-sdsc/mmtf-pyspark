@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import ChemicalStructureQuery
 
@@ -9,11 +9,12 @@ from mmtfPyspark.webfilters import ChemicalStructureQuery
 class ChemicalStructureQueryTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('chemicalStructureQueryTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("chemicalStructureQueryTest") \
+                                 .getOrCreate()
+        
         pdbIds = ["1HYA", "2ONX", "1F27", "4QMC", "2RTL"]
-        self.pdb = download_mmtf_files(pdbIds,self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
 
     def test1(self):
@@ -86,7 +87,7 @@ class ChemicalStructureQueryTest(unittest.TestCase):
         self.assertTrue('4QMC' in results_5)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

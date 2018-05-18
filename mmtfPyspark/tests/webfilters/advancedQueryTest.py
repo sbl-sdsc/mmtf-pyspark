@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import AdvancedQuery
 from mmtfPyspark.mappers import StructureToPolymerChains
@@ -10,10 +10,10 @@ from mmtfPyspark.mappers import StructureToPolymerChains
 class AdvancedQueryTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('advancedQueryTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("advancedQueryTest") \
+                                 .getOrCreate()
+        
         # 1PEN wildtype query 100 matches: 1PEN:1
         # 1OCZ two entities wildtype query 100 matches: 1OCZ:1, 1OCZ:2
         # 2ONX structure result for author query
@@ -21,7 +21,7 @@ class AdvancedQueryTest(unittest.TestCase):
         # 5KHU many chains, chain Q is EC 2.7.11.1
         # 1F3M entity 1: chains A,B, entity 2: chains B,C, all chains are EC 2.7.11.1
         pdbIds = ["1PEN", "1OCZ", "2ONX", "5L6W", "5KHU", "1F3M"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         query = "<orgPdbQuery>" + \
@@ -92,7 +92,7 @@ class AdvancedQueryTest(unittest.TestCase):
         self.assertTrue('1F3M.D' in results_4)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':
