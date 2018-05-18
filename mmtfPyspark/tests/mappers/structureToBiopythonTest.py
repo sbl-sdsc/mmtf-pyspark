@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.mappers import StructureToBiopython, StructureToPolymerChains
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 
@@ -9,9 +9,9 @@ from mmtfPyspark.io.mmtfReader import download_mmtf_files
 class StructureToBiopythonTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('structureToBiopythonTest')
-        self.sc = SparkContext(conf=conf)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("structureToBiopythonTest") \
+                                 .getOrCreate()
 
         # 1STP: 1 L-protein chain:
         # 4HHB: 4 polymer chains
@@ -23,7 +23,7 @@ class StructureToBiopythonTest(unittest.TestCase):
         # tot: 10 chains
 
         pdbIds = ["1STP", "4HHB", "1JLP", "5X6H", "5L2G", "2MK1"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
 
@@ -35,7 +35,7 @@ class StructureToBiopythonTest(unittest.TestCase):
         self.assertTrue(chainCounts.sum() == 10)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

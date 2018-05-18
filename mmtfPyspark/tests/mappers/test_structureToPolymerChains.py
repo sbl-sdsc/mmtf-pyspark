@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.mappers import StructureToPolymerChains
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 
@@ -9,10 +9,10 @@ from mmtfPyspark.io.mmtfReader import download_mmtf_files
 class StructureToPolymerChainsTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('testContainsAlternativeLocations')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("testContainsAlternativeLocations") \
+                                 .getOrCreate()
+        
         # 1STP: 1 L-protein chain:
         # 4HHB: 4 polymer chains
         # 1JLP: 1 L-protein chains with non-polymer capping group (NH2)
@@ -22,7 +22,7 @@ class StructureToPolymerChainsTest(unittest.TestCase):
         # --------------------
         # tot: 10 chains
         pdbIds = ["1STP", "4HHB", "1JLP", "5X6H", "5L2G", "2MK1"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.flatMap(StructureToPolymerChains())
@@ -31,7 +31,7 @@ class StructureToPolymerChainsTest(unittest.TestCase):
         self.assertTrue(len(results_1) == 10)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':
