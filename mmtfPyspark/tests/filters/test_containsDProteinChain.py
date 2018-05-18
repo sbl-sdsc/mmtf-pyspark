@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import ContainsDProteinChain
 from mmtfPyspark.mappers import *
@@ -10,13 +10,13 @@ from mmtfPyspark.mappers import *
 class ContainsDProteinChainTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('containsDProteinChainTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("containsDProteinChainTest") \
+                                 .getOrCreate()
+        
         pdbIds = ['2ONX', '1JLP', '5X6H', '5L2G',
                   '2MK1', '2V5W', '5XDP', '5GOD']
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(ContainsDProteinChain())
@@ -65,7 +65,7 @@ class ContainsDProteinChainTest(unittest.TestCase):
         self.assertTrue('5GOD.D' in results_3)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

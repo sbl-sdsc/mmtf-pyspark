@@ -12,20 +12,20 @@ __status__ = "Done"
 
 from mmtf.api.mmtf_writer import MMTFEncoder
 from mmtfPyspark.utils import MmtfStructure
+from pyspark.sql import SparkSession
 import gzip
 import msgpack
 import os
 import base64
 
 
-def write_sequence_file(path, sc, structure, compressed=True):
+def write_sequence_file(path, structure, compressed=True):
     '''Encodes and writes MMTF encoded structure data to a Hadoop Sequnce File
 
     Parameters
     ----------
     path : str
        Path to Hadoop file directory)
-    sc : Spark context
     structure : tuple
        structure data to be written
     compress : bool
@@ -42,14 +42,13 @@ def write_sequence_file(path, sc, structure, compressed=True):
                                "org.apache.hadoop.io.BytesWritable")
 
 
-def write_mmtf_files(path, sc, structure):
+def write_mmtf_files(path, structure):
     '''Encodes and writes MMTF encoded and gzipped structure data to individual .mmtf.gz files.
 
     Parameters
     ----------
     path : str
        Path to Hadoop file directory
-    sc : Spark context
     structure : tuple
        structure data to be written
     '''

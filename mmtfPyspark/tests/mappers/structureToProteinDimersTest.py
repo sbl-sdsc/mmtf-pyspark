@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.mappers import StructureToBioassembly, StructureToProteinDimers
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 
@@ -9,13 +9,13 @@ from mmtfPyspark.io.mmtfReader import download_mmtf_files
 class StructureToProteinDimersTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('structureToProteinDimers')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("structureToProteinDimers") \
+                                 .getOrCreate()
+        
     def test1(self):
         pdbIds = ["1I1G"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
         pdb_1 = self.pdb.flatMap(StructureToBioassembly()) \
                         .flatMap(StructureToProteinDimers(8, 20, False, True))
@@ -24,7 +24,7 @@ class StructureToProteinDimersTest(unittest.TestCase):
 
     def test2(self):
         pdbIds = ["5NV3"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
         pdb_2 = self.pdb.flatMap(StructureToBioassembly()) \
                         .flatMap(StructureToProteinDimers(8, 20, False, True))
@@ -42,7 +42,7 @@ class StructureToProteinDimersTest(unittest.TestCase):
         # B7-A4
         # B8-A4
         # B8-B7
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
         pdb_3 = self.pdb.flatMap(StructureToBioassembly()) \
                         .flatMap(StructureToProteinDimers(8, 20, False, True))
@@ -56,15 +56,15 @@ class StructureToProteinDimersTest(unittest.TestCase):
         # D7-A2
         # D8-A1
         # E10-E9
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
         pdb_4 = self.pdb.flatMap(StructureToBioassembly()) \
                         .flatMap(StructureToProteinDimers(9, 20, False, True))
 
-        self.assertTrue(pdb_3.count() == 5)
+        self.assertTrue(pdb_4.count() == 5)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

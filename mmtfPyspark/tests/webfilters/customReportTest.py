@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import CustomReportQuery
 from mmtfPyspark.mappers import StructureToPolymerChains
@@ -10,12 +10,12 @@ from mmtfPyspark.mappers import StructureToPolymerChains
 class CustomReportQueryTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('CustomReportQueryTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("CustomReportQueryTest") \
+                                 .getOrCreate()
+        
         pdbIds = ["5JDE", "5CU4", "5L6W", "5UFU", "5IHB"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         # This test runs a chain levle query and compares the results at the PDB entry level
@@ -53,7 +53,7 @@ class CustomReportQueryTest(unittest.TestCase):
         self.assertFalse('5IHB.D' in results_2)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

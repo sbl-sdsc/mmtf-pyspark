@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import PolymerComposition
 from mmtfPyspark.mappers import *
@@ -10,9 +10,9 @@ from mmtfPyspark.mappers import *
 class PolymerCompositionTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('PolymerCompositionTest')
-        self.sc = SparkContext(conf=conf)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("PolymerCompositionTest") \
+                                 .getOrCreate()
 
         # 2ONX: only L-protein chain
         # 1JLP: single L-protein chains with non-polymer capping group (NH2)
@@ -24,7 +24,7 @@ class PolymerCompositionTest(unittest.TestCase):
         # 1NTH: contains PYL, pyrrolysine (22nd amino acid)
         pdbIds = ["2ONX", "1JLP", "5X6H", "5L2G",
                   "2MK1", "5UZT", "1AA6", "1NTH"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(PolymerComposition(
@@ -111,7 +111,7 @@ class PolymerCompositionTest(unittest.TestCase):
         self.assertTrue('5UZT' in results_6)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.webfilters import Pisces
 from mmtfPyspark.mappers import *
@@ -10,12 +10,13 @@ from mmtfPyspark.mappers import *
 class PiscesTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('PiscesTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("PiscesTest") \
+                                 .getOrCreate()
+        
         # "4R4X.A" and "5X42.B" should pass filter
         pdbIds = ["5X42", "4R4X", "2ONX", "1JLP"]
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(Pisces(20, 2.0))
@@ -38,7 +39,7 @@ class PiscesTest(unittest.TestCase):
         self.assertFalse('1JLP.A' in results_2)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

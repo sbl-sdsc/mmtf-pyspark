@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.filters import RFree
 
@@ -9,15 +9,16 @@ from mmtfPyspark.filters import RFree
 class RFreeFilterTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('RFreeFilterTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("RFreeFilterTest") \
+                                 .getOrCreate()
+        
         # 2ONX: 0.202 rfree x-ray resolution
         # 2OLX: 0.235 rfree x-ray resolution
         # 3REC: n/a NMR structure
         # 1LU3: n/a EM structure
         pdbIds = ['2ONX', '2OLX', '3REC', '1LU3']
-        self.pdb = download_mmtf_files(pdbIds, self.sc)
+        self.pdb = download_mmtf_files(pdbIds)
 
     def test1(self):
         pdb_1 = self.pdb.filter(RFree(0.201, 0.203))
@@ -47,7 +48,7 @@ class RFreeFilterTest(unittest.TestCase):
         self.assertFalse('5KHE' in results_3)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

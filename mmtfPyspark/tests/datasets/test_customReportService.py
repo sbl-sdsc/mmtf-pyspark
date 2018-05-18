@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.datasets import customReportService
-
+from pyspark.sql import SparkSession
 
 class CustomReportServiceTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('customReportServiceTest')
-        self.sc = SparkContext(conf=conf)
-
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("customReportServiceTest") \
+                                 .getOrCreate()
+                                 
     def test1(self):
 
         ds = customReportService.get_dataset(
@@ -27,7 +27,7 @@ class CustomReportServiceTest(unittest.TestCase):
         self.assertTrue(ds.count() > 130101)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':

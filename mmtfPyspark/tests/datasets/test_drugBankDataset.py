@@ -8,10 +8,9 @@ from mmtfPyspark.datasets import drugBankDataset
 class DurgBankDatasetTest(unittest.TestCase):
 
     def setUp(self):
-        self.spark = SparkSession.builder\
-                            .master("local[*]") \
-                            .appName("DrugBankDatasetTest") \
-                            .getOrCreate()
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("DrugBankDatasetTest") \
+                                 .getOrCreate()
         self.ds = drugBankDataset.get_open_drug_links()
 
     def test1(self):

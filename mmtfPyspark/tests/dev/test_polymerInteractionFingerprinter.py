@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.interactions import InteractionFilter
 from mmtfPyspark.interactions import InteractionFingerprinter
@@ -9,12 +9,12 @@ from mmtfPyspark.interactions import InteractionFingerprinter
 class PolymerInteractionFingerprintTest(unittest.TestCase):
 
     def setUp(self):
-
-        conf = SparkConf().setMaster(
-            "local[*]").setAppName('PolymerInteractionFingerprint')
-        self.sc = SparkContext(conf=conf)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("PolymerInteractionFingerprint") \
+                                 .getOrCreate()
+                                 
         # download structure 1OHR
-        self.pdb = download_mmtf_files(['1OHR'], self.sc)
+        self.pdb = download_mmtf_files(['1OHR'])
 
 
 
@@ -36,7 +36,7 @@ class PolymerInteractionFingerprintTest(unittest.TestCase):
         self.assertTrue(interactions.count() == 2)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
         pass
 
 if __name__ == '__main__':
