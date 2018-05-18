@@ -4,15 +4,16 @@ import unittest
 from mmtfPyspark.interactions import *
 from mmtfPyspark.utils import ColumnarStructure
 from mmtfPyspark.io import mmtfReader
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 import numpy as np
 
 class ColumnarStructureTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('columnarStructure')
-        self.sc = SparkContext(conf=conf)
-        self.pdb = mmtfReader.download_mmtf_files(['1STP'], self.sc)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("columnarStructure") \
+                                 .getOrCreate()
+        self.pdb = mmtfReader.download_mmtf_files(['1STP'])
 
         structure = self.pdb.values().first()
         self.cs = ColumnarStructure(structure, True)
@@ -63,7 +64,7 @@ class ColumnarStructureTest(unittest.TestCase):
 
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 if __name__ == '__main__':
     unittest.main()

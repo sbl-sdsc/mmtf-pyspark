@@ -4,17 +4,18 @@ import unittest
 from mmtfPyspark.interactions import *
 from mmtfPyspark.utils import ColumnarStructure
 from mmtfPyspark.io import mmtfReader
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 import numpy as np
 from math import isclose
 
 class CoordiateGeometryTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]").setAppName('coordinateGeometry')
-        self.sc = SparkContext(conf=conf)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("coordinateGeometry") \
+                                 .getOrCreate()
 
-        self.pdb = mmtfReader.download_mmtf_files(['5Y20'], self.sc)
+        self.pdb = mmtfReader.download_mmtf_files(['5Y20'])
 
 
     def get_coords(self, cs, index):
@@ -46,7 +47,7 @@ class CoordiateGeometryTest(unittest.TestCase):
 
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 if __name__ == '__main__':
     unittest.main()
