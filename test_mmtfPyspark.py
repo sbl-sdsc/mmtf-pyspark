@@ -1,14 +1,12 @@
 #!/user/bin/env python
-from pyspark import SparkConf, SparkContext
 from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.utils import traverseStructureHierarchy
-
+from pyspark.sql import SparkSession
 # Set up spark
-conf = SparkConf().setMaster("local[*]").setAppName("test")
-sc = SparkContext(conf=conf)
+spark = SparkSession.builder.master("local[*]").appName("test").getOrCreate()
 
 # Download Structure 1AQ1
-pdb = mmtfReader.download_mmtf_files(['1AQ1'], sc) #
+pdb = mmtfReader.download_mmtf_files(['1AQ1']) #
 
 # Get structure
 structure = pdb.collect()[0][1]
@@ -16,4 +14,4 @@ traverseStructureHierarchy.print_metadata(structure)
 traverseStructureHierarchy.print_structure_data(structure)
 
 # Stop Spark Context
-sc.stop()
+spark.stop()
