@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import download_mmtf_files
 from mmtfPyspark.datasets import pdbjMineDataset
 
@@ -9,9 +9,9 @@ from mmtfPyspark.datasets import pdbjMineDataset
 class PdbjMineSearchDatasetTest(unittest.TestCase):
 
     def setUp(self):
-        conf = SparkConf().setMaster("local[*]") \
-                          .setAppName('pdbjMineDatasetTest')
-        self.sc = SparkContext(conf=conf)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("pdbjMineDatasetTest") \
+                                 .getOrCreate()
 
     def test1(self):
 
@@ -22,7 +22,7 @@ class PdbjMineSearchDatasetTest(unittest.TestCase):
         self.assertTrue(count == 1)
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 
 if __name__ == '__main__':
