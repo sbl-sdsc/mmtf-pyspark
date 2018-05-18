@@ -9,20 +9,23 @@ __email__ = "marshuang80@gmail.com"
 __status__ = "Warning"
 
 import unittest
-from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
 from mmtfPyspark.io.mmtfReader import read_sequence_file
 
 
 class ReadSequenceFileTest(unittest.TestCase):
 
     def setUp(self):
-        path = 'resources/sample_rdd'
+        path = 'resources/mmtf_full_sample'
+        #TODO
         stringIds = "1FDK,1FDL,1FDM,1FDN,1FDO,1FDP,1FDQ,1FDR,1FDS,1FDT"
 
         self.pdbIds = stringIds.split(',')
-        conf = SparkConf().setMaster("local[*]").setAppName('read_sequence_file')
-        self.sc = SparkContext(conf=conf)
-        self.pdb = read_sequence_file(path, self.sc, pdbId = self.pdbIds)
+        self.spark = SparkSession.builder.master("local[*]") \
+                                 .appName("read_sequence_file") \
+                                 .getOrCreate()
+        
+        self.pdb = read_sequence_file(path, pdbId = self.pdbIds)
 
 
     def test_size(self):
@@ -34,7 +37,7 @@ class ReadSequenceFileTest(unittest.TestCase):
 
 
     def tearDown(self):
-        self.sc.stop()
+        self.spark.stop()
 
 if __name__ == '__main__':
     unittest.main()
