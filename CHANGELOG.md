@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file, following the suggestions of [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.2.6 - 2018-05-21
+### Upgrade to mmtf-python 1.1.2 
+- use latest version of mmtf-python that uses msgpack 0.5.6
+- update to msgpack>=0.5.6 from msgpack-python (PyPi package name has changed!)
+- update py4j to 0.10.6 as required by pyspark 2.3.0
+ 
 ## v0.2.5 - 2018-05-18
 ### Remove SparkContext as parameter
 - remove sc from mmtfReader and mmtfWriter functions parameters
