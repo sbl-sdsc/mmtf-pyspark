@@ -12,7 +12,7 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.interactions'
                         ]
 
-mmtfPyspark_dependencies = ['pyspark>=2.3.0',
+mmtfPyspark_dependencies = ['pyspark>=2.3.1',
                             'Biopython>=1.7.1',
                             'msgpack>=0.5.6',
                             'numpy>=1.14.2',
@@ -25,7 +25,7 @@ mmtfPyspark_dependencies = ['pyspark>=2.3.0',
                             'py3Dmol>=0.6.3',
                             'scipy>=1.0.0',
                             'scikit-learn>=0.13.0',
-                            'py4j==0.10.6'
+                            'py4j==0.10.7'
                             ]
 
 LONG_DESCRIPTION = """
