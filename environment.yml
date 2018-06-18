@@ -2,7 +2,7 @@ name: myBinder-environment
 
 dependencies:
   - python=3.6
-  - biopython=1.7.1
+  - biopython=1.71
   - numpy=1.14.2
   - requests=2.18.4
   - sympy=1.1.1
