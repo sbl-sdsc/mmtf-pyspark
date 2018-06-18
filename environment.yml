@@ -2,16 +2,16 @@ name: myBinder-environment
 
 dependencies:
   - python=3.6
-  - biopython=1.70
-  - numpy=1.13.3
+  - biopython=1.7.1
+  - numpy=1.14.2
   - requests=2.18.4
   - sympy=1.1.1
   - matplotlib=2.2.0
   - nose
   - ipywidgets
   - seaborn
-  - pyspark
-  - py4j
+  - pyspark=2.3.1
+  - py4j=0.10.7
   - python-dateutil
   - pip:
       - py3Dmol
