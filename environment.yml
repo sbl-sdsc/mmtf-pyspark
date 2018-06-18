@@ -4,9 +4,9 @@ dependencies:
   - python=3.6
   - biopython=1.71
   - numpy=1.14.5
+  - nose
   - requests=2.19.1
   - matplotlib=2.2.2
-  - nose
   - ipywidgets=7.2.1
   - seaborn=0.8.1
   - pyspark=2.3.1
