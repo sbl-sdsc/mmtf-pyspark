@@ -57,7 +57,7 @@ class BlastCluster(object):
                             range [30,40,50,70,90,95,100]")
             return
 
-        coreUrl = "ftp://resources.rcsb.org/sequence/clusters/"
+		coreUrl = "https://cdn.rcsb.org/sequence/clusters/"
         clusters = []
         inputStream = urllib.request.urlopen(f"{coreUrl}bc-{sequenceIdentity}.out")
 
