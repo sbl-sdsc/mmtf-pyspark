@@ -48,11 +48,11 @@ instructions from step 1.
    `Download
    GOW <https://github.com/bmatzelle/gow/releases/download/v0.8.0/Gow-0.8.0.exe>`__
 
-2. | Download Apache Spark 2.3
+2. | Download Apache Spark 2.3.1
    | Go to the Apache Spark website
      `link <http://spark.apache.org/downloads.html>`__
 
-   a) Choose Spark version 2.3
+   a) Choose Spark version 2.3.1
 
    b) Choose a package type: Pre-build for Apache Hadoop 2.7 and later
 
@@ -170,10 +170,10 @@ environmental variables can be set by running the following command:
 
     cd _YOUR_DIRECTORY_
 
-    curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
+    curl -O https://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
     tar -xvf full.tar
 
-    curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
+    curl -O https://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
     tar -xvf reduced.tar
 
 Set environmental variables:
