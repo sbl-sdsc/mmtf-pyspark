@@ -27,42 +27,42 @@ import urllib.request
 
 
 class BlastCluster(object):
-    '''Filters blast clusters
+	'''Filters blast clusters
 
-    Attributes
-    ----------
-    sequenceIdentity : int
-       sequence indentity for blast
-    '''
-    def __init__(self, sequenceIdentity):
+	Attributes
+	----------
+	sequenceIdentity : int
+	   sequence indentity for blast
+	'''
+	def __init__(self, sequenceIdentity):
 
-        clusters = self.get_blast_cluster(sequenceIdentity)
+		clusters = self.get_blast_cluster(sequenceIdentity)
 
-        self.pdbIds = set()
+		self.pdbIds = set()
 
-        for protein in clusters:
-            self.pdbIds.add(protein)
-            self.pdbIds.add(protein[:4])
-
-
-    def __call__(self, t):
-        return t[0] in self.pdbIds
+		for protein in clusters:
+			self.pdbIds.add(protein)
+			self.pdbIds.add(protein[:4])
 
 
-    def get_blast_cluster(self, sequenceIdentity):
+	def __call__(self, t):
+		return t[0] in self.pdbIds
 
-        if sequenceIdentity not in [30,40,50,70,90,95,100]:
-            raise Exception(f"Error: representative chains are not availible for \
-                            sequence Identity {sequenceIdentity}.\n Must be in \
-                            range [30,40,50,70,90,95,100]")
-            return
+
+	def get_blast_cluster(self, sequenceIdentity):
+
+		if sequenceIdentity not in [30,40,50,70,90,95,100]:
+			raise Exception(f"Error: representative chains are not availible for \
+							sequence Identity {sequenceIdentity}.\n Must be in \
+							range [30,40,50,70,90,95,100]")
+			return
 
 		coreUrl = "https://cdn.rcsb.org/sequence/clusters/"
-        clusters = []
-        inputStream = urllib.request.urlopen(f"{coreUrl}bc-{sequenceIdentity}.out")
+		clusters = []
+		inputStream = urllib.request.urlopen(f"{coreUrl}bc-{sequenceIdentity}.out")
 
-        for line in inputStream:
-            line = str(line)[2:-3].replace("_",".").strip("\\n")
-            clusters += line.split(" ")
+		for line in inputStream:
+			line = str(line)[2:-3].replace("_",".").strip("\\n")
+			clusters += line.split(" ")
 
-        return clusters
+		return clusters
