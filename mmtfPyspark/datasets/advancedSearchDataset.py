@@ -2,14 +2,18 @@
 """
 advancedSearchDataset.py:
 
-Creates a dataset of polymer sequences using the full sequence
-used in the experiment (i.e., the "SEQRES" record in PDB files).
+Runs an RCSB PDB Advanced Search web service using an XML query description.
+See https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html Advanced Search for
+an overview and a list of available queries at
+https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/index.html
+The returned dataset contains the following field dependent on the query type:
+
+# structureId, e.g., 4HHB
+# structureChainId, e.g., 4HHB.A
+# ligandId, e.g., HEM
 """
 __author__ = "Peter Rose"
-__maintainer__ = "Peter Rose"
-__email__ = "pwrose@ucsd.edu"
 __version__ = "0.2.0"
-__status__ = "Debug"
 
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import concat_ws, explode, split, substring_index
@@ -22,8 +26,10 @@ def get_dataset(xmlQuery):
     """
     Runs an RCSB PDB Advanced Search web service using an XML query description.
     See https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html Advanced Search
-    Returns a dataset of structureIds or structureChainIds based
-    on the specified query.
+    The returned dataset contains the following field dependent on the query type:
+    # structureId, e.g., 1STP
+    # structureChainId, e.g., 4HHB.A
+    # ligandId, e.g., HEM
 
     :param xmlQuery: RCSB PDB advanced query xml string
     :return: dataset with matching ids
@@ -39,22 +45,29 @@ def get_dataset(xmlQuery):
 
     # convert list of lists to a dataframe
     spark = SparkSession.builder.getOrCreate()
-    ds: DataFrame = spark.createDataFrame(results, ['structureEntityId'])
-    ds = ds.withColumn("structureId", substring_index(ds.structureEntityId, ':', 1))
 
-    # if results contain an entity id, e.g., 101M:1, then map entityId to structureChainIds
+    # distinguish 3 types of results based on length of string
+    # structureId: 4 (e.g., 4HHB)
+    # structureEntityId: > 4 (e.g., 4HHB:1)
+    # entityId: < 4 (e.g., HEM)
+
     if len(results[0][0]) > 4:
+        ds: DataFrame = spark.createDataFrame(results, ['structureEntityId'])
+        # if results contain an entity id, e.g., 101M:1, then map entityId to structureChainId
+        ds = ds.withColumn("structureId", substring_index(ds.structureEntityId, ':', 1))
         ds = ds.withColumn("entityId", substring_index(ds.structureEntityId, ':', -1))
-        mapping = get_entity_to_chain_id()
+        mapping = __get_entity_to_chain_id()
         ds = ds.join(mapping, (ds.structureId == mapping.structureId) & (ds.entityId == mapping.entity_id))
         ds = ds.select(ds.structureChainId)
+    elif len(results[0][0]) < 4:
+        ds: DataFrame = spark.createDataFrame(results, ['ligandId'])
     else:
-        ds = ds.select(ds.structureId)
+        ds: DataFrame = spark.createDataFrame(results, ['structureId'])
 
     return ds
 
 
-def get_entity_to_chain_id():
+def __get_entity_to_chain_id():
     # get entityID to strandId mapping
     query = "SELECT pdbid, entity_id, pdbx_strand_id FROM entity_poly"
     mapping: DataFrame = pdbjMineDataset.get_dataset(query)

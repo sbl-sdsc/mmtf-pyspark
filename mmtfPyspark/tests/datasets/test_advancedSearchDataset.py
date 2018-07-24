@@ -39,6 +39,22 @@ class AdvancedSearchDatasetTest(unittest.TestCase):
 
         self.assertTrue(ds.filter("structureChainId = '10GS.A' OR structureChainId = '10GS.B'").count() == 2)
 
+    def test3(self):
+        query = (
+            "<orgPdbQuery>"
+            "<queryType>org.pdb.query.simple.ChemSmilesQuery</queryType>"
+            "<smiles>CC(C)C1=C(Br)C(=O)C(C)=C(Br)C1=O</smiles>"
+            "<target>Ligand</target>"
+            "<searchType>Substructure</searchType>"
+            "<polymericType>Any</polymericType>"
+            "</orgPdbQuery>"
+        )
+
+        ds = advancedSearchDataset.get_dataset(query)
+        ds.show()
+
+        self.assertTrue(ds.filter("ligandId = 'BNT'").count() == 1)
+
     def tearDown(self):
         self.spark.stop()
 
