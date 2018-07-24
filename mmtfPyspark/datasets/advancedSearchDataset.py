@@ -3,7 +3,9 @@
 advancedSearchDataset.py:
 
 Runs an RCSB PDB Advanced Search web service using an XML query description.
-See https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html Advanced Search
+See https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedSearch.html Advanced Search for
+an overview and a list of available queries at
+https://www.rcsb.org/pdb/staticHelp.do?p=help/advancedsearch/index.html
 The returned dataset contains the following field dependent on the query type:
 
 # structureId, e.g., 4HHB
