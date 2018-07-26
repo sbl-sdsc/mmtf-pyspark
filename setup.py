@@ -26,7 +26,8 @@ mmtfPyspark_dependencies = ['pyspark==2.3.1',
                             'scipy>=1.1.0',
                             'scikit-learn>=0.19.0',
                             'py4j==0.10.7',
-                            'pyarrow==0.9.0'
+                            'pyarrow==0.9.0',
+                            'xlrd==1.1.0'
                             ]
 
 LONG_DESCRIPTION = """
