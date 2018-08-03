@@ -23,8 +23,7 @@ class AdvancedSearchDatasetTest(unittest.TestCase):
         )
 
         ds = advancedSearchDataset.get_dataset(query)
-
-        self.assertTrue(ds.filter("structureId = '1A5K'").count() == 1)
+        self.assertEqual(ds.filter("pdbId = '1A5K'").count(), 1)
 
     def test2(self):
         query = (
@@ -36,8 +35,7 @@ class AdvancedSearchDatasetTest(unittest.TestCase):
         )
 
         ds = advancedSearchDataset.get_dataset(query)
-
-        self.assertTrue(ds.filter("structureChainId = '10GS.A' OR structureChainId = '10GS.B'").count() == 2)
+        self.assertEqual(ds.filter("pdbChainId = '10GS.A' OR pdbChainId = '10GS.B'").count(), 2)
 
     def test3(self):
         query = (
@@ -51,9 +49,7 @@ class AdvancedSearchDatasetTest(unittest.TestCase):
         )
 
         ds = advancedSearchDataset.get_dataset(query)
-        ds.show()
-
-        self.assertTrue(ds.filter("ligandId = 'BNT'").count() == 1)
+        self.assertEqual(ds.filter("ligandId = 'BNT'").count(), 1)
 
     def tearDown(self):
         self.spark.stop()

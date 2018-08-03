@@ -39,9 +39,7 @@ def get_dataset(xmlQuery):
     ids = post_query(xmlQuery)
 
     # convert list of ids to a list of lists (required for dataframe creation below)
-    results = []
-    for i in ids:
-        results.append([i])
+    id_list = [[i] for i in ids]
 
     # convert list of lists to a dataframe
     spark = SparkSession.builder.getOrCreate()
@@ -51,18 +49,18 @@ def get_dataset(xmlQuery):
     # structureEntityId: > 4 (e.g., 4HHB:1)
     # entityId: < 4 (e.g., HEM)
 
-    if len(results[0][0]) > 4:
-        ds: DataFrame = spark.createDataFrame(results, ['structureEntityId'])
-        # if results contain an entity id, e.g., 101M:1, then map entityId to structureChainId
-        ds = ds.withColumn("structureId", substring_index(ds.structureEntityId, ':', 1))
-        ds = ds.withColumn("entityId", substring_index(ds.structureEntityId, ':', -1))
+    if len(ids[0]) > 4:
+        ds: DataFrame = spark.createDataFrame(id_list, ['pdbEntityId'])
+        # if results contain an entity id, e.g., 101M:1, then map entityId to pdbChainId
+        ds = ds.withColumn("pdbId", substring_index(ds.pdbEntityId, ':', 1))
+        ds = ds.withColumn("entityId", substring_index(ds.pdbEntityId, ':', -1))
         mapping = __get_entity_to_chain_id()
-        ds = ds.join(mapping, (ds.structureId == mapping.structureId) & (ds.entityId == mapping.entity_id))
-        ds = ds.select(ds.structureChainId)
-    elif len(results[0][0]) < 4:
-        ds: DataFrame = spark.createDataFrame(results, ['ligandId'])
+        ds = ds.join(mapping, (ds.pdbId == mapping.structureId) & (ds.entityId == mapping.entity_id))
+        ds = ds.select(ds.pdbChainId)
+    elif len(ids[0]) < 4:
+        ds: DataFrame = spark.createDataFrame(id_list, ['ligandId'])
     else:
-        ds: DataFrame = spark.createDataFrame(results, ['structureId'])
+        ds: DataFrame = spark.createDataFrame(id_list, ['pdbId'])
 
     return ds
 
@@ -77,6 +75,6 @@ def __get_entity_to_chain_id():
     mapping = mapping.withColumn("chainId", explode("chainId"))
 
     # create a structureChainId file, e.g. 1XYZ + A -> 1XYZ.A
-    mapping = mapping.withColumn("structureChainId", concat_ws(".", mapping.structureId, mapping.chainId))
+    mapping = mapping.withColumn("pdbChainId", concat_ws(".", mapping.structureId, mapping.chainId))
 
-    return mapping.select(mapping.entity_id, mapping.structureId, mapping.structureChainId)
+    return mapping.select(mapping.entity_id, mapping.structureId, mapping.pdbChainId)
