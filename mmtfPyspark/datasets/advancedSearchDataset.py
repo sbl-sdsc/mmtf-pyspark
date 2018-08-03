@@ -39,7 +39,6 @@ def get_dataset(xmlQuery):
     ids = post_query(xmlQuery)
 
     # convert list of ids to a list of lists (required for dataframe creation below)
-    # convert list of ids to a list of lists (required for dataframe creation below)
     id_list = [[i] for i in ids]
 
     # convert list of lists to a dataframe
