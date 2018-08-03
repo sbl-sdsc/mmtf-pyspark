@@ -50,17 +50,17 @@ def get_dataset(xmlQuery):
     # entityId: < 4 (e.g., HEM)
 
     if len(ids[0]) > 4:
-        ds: DataFrame = spark.createDataFrame(id_list, ['structureEntityId'])
-        # if results contain an entity id, e.g., 101M:1, then map entityId to structureChainId
-        ds = ds.withColumn("structureId", substring_index(ds.structureEntityId, ':', 1))
-        ds = ds.withColumn("entityId", substring_index(ds.structureEntityId, ':', -1))
+        ds: DataFrame = spark.createDataFrame(id_list, ['pdbEntityId'])
+        # if results contain an entity id, e.g., 101M:1, then map entityId to pdbChainId
+        ds = ds.withColumn("pdbId", substring_index(ds.pdbEntityId, ':', 1))
+        ds = ds.withColumn("entityId", substring_index(ds.pdbEntityId, ':', -1))
         mapping = __get_entity_to_chain_id()
-        ds = ds.join(mapping, (ds.structureId == mapping.structureId) & (ds.entityId == mapping.entity_id))
-        ds = ds.select(ds.structureChainId)
+        ds = ds.join(mapping, (ds.pdbId == mapping.structureId) & (ds.entityId == mapping.entity_id))
+        ds = ds.select(ds.pdbChainId)
     elif len(ids[0]) < 4:
         ds: DataFrame = spark.createDataFrame(id_list, ['ligandId'])
     else:
-        ds: DataFrame = spark.createDataFrame(id_list, ['structureId'])
+        ds: DataFrame = spark.createDataFrame(id_list, ['pdbId'])
 
     return ds
 
@@ -75,6 +75,6 @@ def __get_entity_to_chain_id():
     mapping = mapping.withColumn("chainId", explode("chainId"))
 
     # create a structureChainId file, e.g. 1XYZ + A -> 1XYZ.A
-    mapping = mapping.withColumn("structureChainId", concat_ws(".", mapping.structureId, mapping.chainId))
+    mapping = mapping.withColumn("pdbChainId", concat_ws(".", mapping.structureId, mapping.chainId))
 
-    return mapping.select(mapping.entity_id, mapping.structureId, mapping.structureChainId)
+    return mapping.select(mapping.entity_id, mapping.structureId, mapping.pdbChainId)
