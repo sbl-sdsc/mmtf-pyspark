@@ -16,7 +16,7 @@ mmtfPyspark use the following technology stack:
 - `Hadoop Sequence File <https://wiki.apache.org/hadoop/SequenceFile>`__ a Big Data file format for parallel I/O
 - `Apache Parquet <https://parquet.apache.org/>`__ a columnar data format to store dataframes
 
-This project is still currently under development.
+This project is under development.
 
 Installation
 ------------
@@ -53,15 +53,15 @@ read follow the installation instructions for your OS carefully:
 Hadoop Sequence Files
 ---------------------
 
-The MMTF Hadoop sequence files of all PDB structures can be downloaded
+This project uses the PDB archive in the form of MMTF Hadoop Sequence File. The files can be downloaded
 by:
 
 ::
 
-    curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
+    curl -O https://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
     tar -xvf full.tar
 
-    curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
+    curl -O https://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
     tar -xvf reduced.tar
 
 For Mac and Linux, the Hadoop sequence files can be downloaded and saved
