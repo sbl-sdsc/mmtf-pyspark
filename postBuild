@@ -1,20 +1,5 @@
 #!/bin/bash
-# define hadoop and spark version
-## Since Spark 2.3.1, the spark download seems to be included in the pip install
-
-# SPARK_VERSION='2.3.1'
-# HADOOP_VERSION='2.7'
-
-# download spark from mirror image
-# curl http://mirror.cogentco.com/pub/apache/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz --output /tmp/spark.tgz
-
-# unzip spark
-# cd /tmp && tar -xvzf /tmp/spark.tgz
-
-# set spark home and pyspark paths
-# SPARK_HOME=/tmp/spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION
-# export PATH=$SPARK_HOME/bin:$PATH
-# export PYTHONPATH=$SPARK_HOME/python:$PYTHONPATH
+# The following extensions are required for Juyter Lab
 jupyter labextension install jupyterlab_3dmol
 jupyter labextension install @jupyter-widgets/jupyterlab-manager
 jupyter lab build
