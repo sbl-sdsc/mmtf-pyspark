@@ -1,5 +1,0 @@
-#!/bin/bash
-# set environment variables to sample files
-MMTF_REDUCED=./resources/mmtf_reduced_sample/
-MMTF_FULL=./resources/mmtf_full_sample/
-exec "$@"
