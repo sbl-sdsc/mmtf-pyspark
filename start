@@ -1,0 +1,5 @@
+#!/bin/bash
+# set environment variables to sample files
+export MMTF_REDUCED=./resources/mmtf_reduced_sample/
+export MMTF_FULL=./resources/mmtf_full_sample/
+exec "$@"
