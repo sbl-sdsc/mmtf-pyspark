@@ -15,7 +15,7 @@ mmtfPyspark_packages = ['mmtfPyspark',
 mmtfPyspark_dependencies = ['pyspark==2.3.1',
                             'biopython>=1.71',
                             'msgpack>=0.5.6',
-                            'numpy>=1.14.5',
+                            'numpy==1.14.5',
                             'ipywidgets>=7.4.0',
                             'mmtf-python==1.1.2',
                             'requests>=2.19.1',
@@ -27,7 +27,9 @@ mmtfPyspark_dependencies = ['pyspark==2.3.1',
                             'scikit-learn>=0.19.0',
                             'py4j==0.10.7',
                             'pyarrow==0.8.0',
-                            'xlrd==1.1.0'
+                            'xlrd==1.1.0',
+                            'notebook==5.6.0',
+                            'jupyterlab==0.34.6'
                             ]
 
 LONG_DESCRIPTION = """
