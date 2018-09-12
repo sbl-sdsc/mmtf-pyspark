@@ -18,6 +18,11 @@ mmtfPyspark use the following technology stack:
 
 This project is under development.
 
+Documentation
+-------------
+
+`Documentation <http://mmtf-pyspark.readthedocs.io/en/latest/>`_
+
 Installation
 ------------
 
@@ -96,7 +101,7 @@ Valasatava Y, Bradley AR, Rose AS, Duarte JM, Prlić A, Rose PW (2017) Towards a
 
 Rose AS, Bradley AR, Valasatava Y, Duarte JM, Prlić A, Rose PW (2018) NGL viewer: web-based molecular graphics for large complexes, Bioinformatics, bty419. doi: `10.1093/bioinformatics/bty419 <https://doi.org/10.1093/bioinformatics/bty419>`_
 
-Rose AS, Bradley AR, Valasatava Y, Duarte JM, Prlić A, Rose PW (2016) Web-based molecular graphics for large complexes. In Proceedings of the 21st International Conference on Web3D Technology (Web3D '16). ACM, New York, NY, USA, 185-186. doi: `10.1145/2945292.2945324 <https://doi.org/10.1145/2945292.2945324`_
+Rose AS, Bradley AR, Valasatava Y, Duarte JM, Prlić A, Rose PW (2016) Web-based molecular graphics for large complexes. In Proceedings of the 21st International Conference on Web3D Technology (Web3D '16). ACM, New York, NY, USA, 185-186. doi: `10.1145/2945292.2945324 <https://doi.org/10.1145/2945292.2945324>`_
 
 Funding
 -------
