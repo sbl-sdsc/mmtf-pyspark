@@ -22,6 +22,7 @@ Documentation
 -------------
 
 `Documentation <http://mmtf-pyspark.readthedocs.io/en/latest/>`_
+'In Depth Tutorial <https://github.com/sbl-sdsc/mmtf-workshop-2018/>`_
 
 Installation
 ------------
