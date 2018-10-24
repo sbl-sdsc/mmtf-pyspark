@@ -16,8 +16,6 @@ dependencies:
   - python-dateutil
   - sympy=1.1.1
   - xlrd=1.1.0
-  - notebook=5.6.0
-  - jupyterlab=0.34.6
   - pip:
       - py3Dmol==0.8.0
       - git+https://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtf-pyspark[complete]
