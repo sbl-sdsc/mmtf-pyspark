@@ -149,7 +149,7 @@ class MmtfStructure(object):
         self.y_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
             input_data['yCoordList'][12:], '>i2'), np.frombuffer(input_data['yCoordList'][8:12], '>i'))
         self.z_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
-            input_data['zCoordList'][12:], '>i2'), np.frombuffer(input_data['xCoordList'][8:12], '>i'))
+            input_data['zCoordList'][12:], '>i2'), np.frombuffer(input_data['zCoordList'][8:12], '>i'))
         self.group_list = input_data['groupList']
         self.chain_id_list = np.frombuffer(
             input_data["chainIdList"][12:], 'S4').astype(str)
