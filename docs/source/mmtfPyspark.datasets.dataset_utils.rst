@@ -1,7 +1,7 @@
-mmtfPyspark\.utils\.columnarStructure module
+mmtfPyspark\.datasets\.dataset\_utils module
 ============================================
 
-.. automodule:: mmtfPyspark.utils.columnarStructure
+.. automodule:: mmtfPyspark.datasets.dataset_utils
     :members:
     :undoc-members:
     :show-inheritance:

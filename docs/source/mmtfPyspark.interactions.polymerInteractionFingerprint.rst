@@ -1,5 +1,5 @@
-mmtfPyspark.interactions.polymerInteractionFingerprint module
-=============================================================
+mmtfPyspark\.interactions\.polymerInteractionFingerprint module
+===============================================================
 
 .. automodule:: mmtfPyspark.interactions.polymerInteractionFingerprint
     :members:

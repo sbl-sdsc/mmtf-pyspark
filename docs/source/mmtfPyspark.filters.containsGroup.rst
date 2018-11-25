@@ -1,5 +1,5 @@
-mmtfPyspark.filters.containsGroup module
-========================================
+mmtfPyspark\.filters\.containsGroup module
+==========================================
 
 .. automodule:: mmtfPyspark.filters.containsGroup
     :members:

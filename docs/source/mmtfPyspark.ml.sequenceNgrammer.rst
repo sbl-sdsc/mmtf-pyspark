@@ -1,5 +1,5 @@
-mmtfPyspark.ml.sequenceNgrammer module
-======================================
+mmtfPyspark\.ml\.sequenceNgrammer module
+========================================
 
 .. automodule:: mmtfPyspark.ml.sequenceNgrammer
     :members:

@@ -1,5 +1,5 @@
-mmtfPyspark.webfilters.advancedQuery module
-===========================================
+mmtfPyspark\.webfilters\.advancedQuery module
+=============================================
 
 .. automodule:: mmtfPyspark.webfilters.advancedQuery
     :members:

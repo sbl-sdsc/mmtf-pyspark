@@ -1,5 +1,5 @@
-mmtfPyspark.datasets.jpredDataset module
-========================================
+mmtfPyspark\.datasets\.jpredDataset module
+==========================================
 
 .. automodule:: mmtfPyspark.datasets.jpredDataset
     :members:

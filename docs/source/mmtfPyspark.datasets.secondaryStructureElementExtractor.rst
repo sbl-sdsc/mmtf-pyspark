@@ -1,5 +1,5 @@
-mmtfPyspark.datasets.secondaryStructureElementExtractor module
-==============================================================
+mmtfPyspark\.datasets\.secondaryStructureElementExtractor module
+================================================================
 
 .. automodule:: mmtfPyspark.datasets.secondaryStructureElementExtractor
     :members:

@@ -1,5 +1,5 @@
-mmtfPyspark.filters.resolution module
-=====================================
+mmtfPyspark\.filters\.resolution module
+=======================================
 
 .. automodule:: mmtfPyspark.filters.resolution
     :members:

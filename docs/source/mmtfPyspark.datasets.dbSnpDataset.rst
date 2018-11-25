@@ -1,7 +1,7 @@
-mmtfPyspark\.ml\.pythonRDDToDataset module
+mmtfPyspark\.datasets\.dbSnpDataset module
 ==========================================
 
-.. automodule:: mmtfPyspark.ml.pythonRDDToDataset
+.. automodule:: mmtfPyspark.datasets.dbSnpDataset
     :members:
     :undoc-members:
     :show-inheritance:

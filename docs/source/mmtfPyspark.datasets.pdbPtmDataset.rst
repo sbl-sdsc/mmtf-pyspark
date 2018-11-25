@@ -1,7 +1,7 @@
-mmtfPyspark\.filters\.depositionDate module
+mmtfPyspark\.datasets\.pdbPtmDataset module
 ===========================================
 
-.. automodule:: mmtfPyspark.filters.depositionDate
+.. automodule:: mmtfPyspark.datasets.pdbPtmDataset
     :members:
     :undoc-members:
     :show-inheritance:

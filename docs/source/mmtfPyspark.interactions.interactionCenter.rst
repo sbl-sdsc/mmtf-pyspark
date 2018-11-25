@@ -1,5 +1,5 @@
-mmtfPyspark.interactions.interactionCenter module
-=================================================
+mmtfPyspark\.interactions\.interactionCenter module
+===================================================
 
 .. automodule:: mmtfPyspark.interactions.interactionCenter
     :members:

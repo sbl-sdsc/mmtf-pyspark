@@ -1,5 +1,5 @@
-mmtfPyspark.mappers package
-===========================
+mmtfPyspark\.mappers package
+============================
 
 .. automodule:: mmtfPyspark.mappers
     :members:

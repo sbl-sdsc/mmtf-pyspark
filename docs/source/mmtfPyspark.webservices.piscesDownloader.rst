@@ -1,5 +1,5 @@
-mmtfPyspark.webservices.piscesDownloader module
-===============================================
+mmtfPyspark\.webservices\.piscesDownloader module
+=================================================
 
 .. automodule:: mmtfPyspark.webservices.piscesDownloader
     :members:

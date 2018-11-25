@@ -1,5 +1,5 @@
-mmtfPyspark.utils.mmtfStructure module
-======================================
+mmtfPyspark\.utils\.mmtfStructure module
+========================================
 
 .. automodule:: mmtfPyspark.utils.mmtfStructure
     :members:

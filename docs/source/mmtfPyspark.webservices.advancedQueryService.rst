@@ -1,5 +1,5 @@
-mmtfPyspark.webservices.advancedQueryService module
-===================================================
+mmtfPyspark\.webservices\.advancedQueryService module
+=====================================================
 
 .. automodule:: mmtfPyspark.webservices.advancedQueryService
     :members:

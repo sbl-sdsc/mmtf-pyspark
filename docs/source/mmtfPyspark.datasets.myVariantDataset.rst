@@ -1,5 +1,5 @@
-mmtfPyspark.datasets.myVariantDataset module
-============================================
+mmtfPyspark\.datasets\.myVariantDataset module
+==============================================
 
 .. automodule:: mmtfPyspark.datasets.myVariantDataset
     :members:

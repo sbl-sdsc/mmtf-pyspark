@@ -1,5 +1,5 @@
-mmtfPyspark.utils.dsspSecondaryStructure module
-===============================================
+mmtfPyspark\.utils\.dsspSecondaryStructure module
+=================================================
 
 .. automodule:: mmtfPyspark.utils.dsspSecondaryStructure
     :members:

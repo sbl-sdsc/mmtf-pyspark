@@ -1,5 +1,5 @@
-mmtfPyspark.datasets.drugBankDataset module
-===========================================
+mmtfPyspark\.datasets\.drugBankDataset module
+=============================================
 
 .. automodule:: mmtfPyspark.datasets.drugBankDataset
     :members:
