@@ -1,18 +1,18 @@
 name: myBinder-environment
 
 dependencies:
-  - python>=3.6
-  - biopython=1.72
-  - numpy=1.15.4
+  - python=3.6
+  - biopython=1.71
+  - numpy=1.14.5
   - nose
   - requests=2.19.1
-  - matplotlib=3.0.2
-  - ipywidgets=7.4.2
+  - matplotlib=2.2.2
+  - ipywidgets=7.4.0
   - seaborn=0.8.1
-  - pandas=0.23.4
+  - pandas=0.22.0
   - pyspark=2.4.0
   - py4j=0.10.7
-  - pyarrow=0.11.1
+  - pyarrow=0.9.0
   - python-dateutil
   - sympy=1.1.1
   - xlrd=1.1.0
