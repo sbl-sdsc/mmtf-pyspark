@@ -82,7 +82,7 @@ as environmental variables by running the following command:
    :target: https://travis-ci.org/sbl-sdsc/mmtf-pyspark
 .. |GitHub license| image:: https://img.shields.io/github/license/sbl-sdsc/mmtf-pyspark.svg
    :target: https://github.com/sbl-sdsc/mmtf-pyspark/blob/master/LICENSE
-.. |Version| image:: http://img.shields.io/badge/version-0.2.6-yellowgreen.svg?style=flat
+.. |Version| image:: http://img.shields.io/badge/version-0.2.7-yellowgreen.svg?style=flat
    :target: https://github.com/sbl-sdsc/mmtf-pyspark
 .. |Download MMTF| image:: http://img.shields.io/badge/download-MMTF_full-yellow.svg?style=flat
    :target: https://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
