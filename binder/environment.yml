@@ -1,4 +1,7 @@
 name: myBinder-environment
+channels:
+  - anaconda
+  - conda-forge
 
 dependencies:
   - python=3.6
