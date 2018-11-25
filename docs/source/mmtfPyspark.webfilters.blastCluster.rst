@@ -1,5 +1,5 @@
-mmtfPyspark.webfilters.blastCluster module
-==========================================
+mmtfPyspark\.webfilters\.blastCluster module
+============================================
 
 .. automodule:: mmtfPyspark.webfilters.blastCluster
     :members:

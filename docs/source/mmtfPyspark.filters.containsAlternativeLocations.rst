@@ -1,5 +1,5 @@
-mmtfPyspark.filters.containsAlternativeLocations module
-=======================================================
+mmtfPyspark\.filters\.containsAlternativeLocations module
+=========================================================
 
 .. automodule:: mmtfPyspark.filters.containsAlternativeLocations
     :members:

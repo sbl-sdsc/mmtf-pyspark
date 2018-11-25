@@ -1,5 +1,5 @@
-mmtfPyspark.filters package
-===========================
+mmtfPyspark\.filters package
+============================
 
 .. automodule:: mmtfPyspark.filters
     :members:

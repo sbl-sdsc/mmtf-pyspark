@@ -1,7 +1,7 @@
-mmtfPyspark\.ml\.pythonRDDToDataset module
+mmtfPyspark\.datasets\.pdbToUniProt module
 ==========================================
 
-.. automodule:: mmtfPyspark.ml.pythonRDDToDataset
+.. automodule:: mmtfPyspark.datasets.pdbToUniProt
     :members:
     :undoc-members:
     :show-inheritance:

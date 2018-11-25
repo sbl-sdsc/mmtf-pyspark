@@ -1,5 +1,5 @@
-mmtfPyspark.io.mmtfWriter module
-================================
+mmtfPyspark\.io\.mmtfWriter module
+==================================
 
 .. automodule:: mmtfPyspark.io.mmtfWriter
     :members:

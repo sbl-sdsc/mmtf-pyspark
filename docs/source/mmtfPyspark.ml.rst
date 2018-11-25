@@ -1,5 +1,5 @@
-mmtfPyspark.ml package
-======================
+mmtfPyspark\.ml package
+=======================
 
 .. automodule:: mmtfPyspark.ml
     :members:

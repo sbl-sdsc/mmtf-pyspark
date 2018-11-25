@@ -1,5 +1,5 @@
-mmtfPyspark.mappers.structureToProteinDimers module
-===================================================
+mmtfPyspark\.mappers\.structureToProteinDimers module
+=====================================================
 
 .. automodule:: mmtfPyspark.mappers.structureToProteinDimers
     :members:

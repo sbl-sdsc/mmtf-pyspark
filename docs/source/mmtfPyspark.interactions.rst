@@ -1,5 +1,5 @@
-mmtfPyspark.interactions package
-================================
+mmtfPyspark\.interactions package
+=================================
 
 .. automodule:: mmtfPyspark.interactions
     :members:

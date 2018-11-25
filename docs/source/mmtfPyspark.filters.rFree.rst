@@ -1,5 +1,5 @@
-mmtfPyspark.filters.rFree module
-================================
+mmtfPyspark\.filters\.rFree module
+==================================
 
 .. automodule:: mmtfPyspark.filters.rFree
     :members:

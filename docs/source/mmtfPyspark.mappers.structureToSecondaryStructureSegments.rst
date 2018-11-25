@@ -1,5 +1,5 @@
-mmtfPyspark.mappers.structureToSecondaryStructureSegments module
-================================================================
+mmtfPyspark\.mappers\.structureToSecondaryStructureSegments module
+==================================================================
 
 .. automodule:: mmtfPyspark.mappers.structureToSecondaryStructureSegments
     :members:

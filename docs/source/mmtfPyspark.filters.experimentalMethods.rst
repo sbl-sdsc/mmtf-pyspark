@@ -1,5 +1,5 @@
-mmtfPyspark.filters.experimentalMethods module
-==============================================
+mmtfPyspark\.filters\.experimentalMethods module
+================================================
 
 .. automodule:: mmtfPyspark.filters.experimentalMethods
     :members:

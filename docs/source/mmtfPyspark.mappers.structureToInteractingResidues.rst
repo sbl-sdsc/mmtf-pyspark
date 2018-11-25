@@ -1,5 +1,5 @@
-mmtfPyspark.mappers.structureToInteractingResidues module
-=========================================================
+mmtfPyspark\.mappers\.structureToInteractingResidues module
+===========================================================
 
 .. automodule:: mmtfPyspark.mappers.structureToInteractingResidues
     :members:

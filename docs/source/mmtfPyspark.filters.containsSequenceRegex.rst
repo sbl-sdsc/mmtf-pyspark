@@ -1,5 +1,5 @@
-mmtfPyspark.filters.containsSequenceRegex module
-================================================
+mmtfPyspark\.filters\.containsSequenceRegex module
+==================================================
 
 .. automodule:: mmtfPyspark.filters.containsSequenceRegex
     :members:

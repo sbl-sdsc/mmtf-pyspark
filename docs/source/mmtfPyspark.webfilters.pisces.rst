@@ -1,5 +1,5 @@
-mmtfPyspark.webfilters.pisces module
-====================================
+mmtfPyspark\.webfilters\.pisces module
+======================================
 
 .. automodule:: mmtfPyspark.webfilters.pisces
     :members:

@@ -1,5 +1,5 @@
-mmtfPyspark.filters.containsLProteinChain module
-================================================
+mmtfPyspark\.filters\.containsLProteinChain module
+==================================================
 
 .. automodule:: mmtfPyspark.filters.containsLProteinChain
     :members:

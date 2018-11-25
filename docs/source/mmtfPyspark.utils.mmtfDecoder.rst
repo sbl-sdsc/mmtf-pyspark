@@ -1,5 +1,5 @@
-mmtfPyspark.utils.mmtfDecoder module
-====================================
+mmtfPyspark\.utils\.mmtfDecoder module
+======================================
 
 .. automodule:: mmtfPyspark.utils.mmtfDecoder
     :members:

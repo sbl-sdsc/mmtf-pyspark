@@ -1,5 +1,5 @@
-mmtfPyspark.filters.rWork module
-================================
+mmtfPyspark\.filters\.rWork module
+==================================
 
 .. automodule:: mmtfPyspark.filters.rWork
     :members:

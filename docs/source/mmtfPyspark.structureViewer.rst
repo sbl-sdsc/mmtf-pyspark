@@ -1,5 +1,5 @@
-mmtfPyspark.structureViewer module
-==================================
+mmtfPyspark\.structureViewer module
+===================================
 
 .. automodule:: mmtfPyspark.structureViewer
     :members:

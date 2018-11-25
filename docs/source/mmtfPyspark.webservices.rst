@@ -1,5 +1,5 @@
-mmtfPyspark.webservices package
-===============================
+mmtfPyspark\.webservices package
+================================
 
 .. automodule:: mmtfPyspark.webservices
     :members:

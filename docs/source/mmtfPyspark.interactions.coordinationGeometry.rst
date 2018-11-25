@@ -1,5 +1,5 @@
-mmtfPyspark.interactions.coordinationGeometry module
-====================================================
+mmtfPyspark\.interactions\.coordinationGeometry module
+======================================================
 
 .. automodule:: mmtfPyspark.interactions.coordinationGeometry
     :members:
