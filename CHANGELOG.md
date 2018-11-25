@@ -1,6 +1,28 @@
 # Change Log
 All notable changes to this project will be documented in this file, following the suggestions of [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.2.7 - 2018-11-24
+- Bug fixes
+  - Fixed MMTF decoding error
+
+
+- New features
+  - Added method to retrieve PTMs from dbPTM
+  - Added method to retrieve PTMs from PDB
+  - Added method to retrieve PDB to Uniprot chain and residue level mappings
+  - Added support for ligandIds in advanced search results
+  - Added method to create dataset for advanced search results
+  - Added pyarrow 0.8.0 dependency
+  - Added xlrd 1.1.0 dependency to support Excel spreadsheets with pandas
+  
+  
+- Changes
+  - Use https instead of ftp to retrieve BlastClust data
+  - Upgraded py3dmol to 0.8.0
+  - Moved binder related files to binder directory
+  
+  
+  
 ## v0.2.6 - 2018-05-21
 ### Upgrade to mmtf-python 1.1.2 
 - use latest version of mmtf-python that uses msgpack 0.5.6

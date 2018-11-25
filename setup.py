@@ -12,7 +12,7 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.interactions'
                         ]
 
-mmtfPyspark_dependencies = ['pyspark==2.4.0',
+mmtfPyspark_dependencies = ['pyspark==2.3.1',
                             'biopython>=1.71',
                             'msgpack>=0.5.6',
                             'numpy==1.14.5',
@@ -38,12 +38,12 @@ LONG_DESCRIPTION = """
 """
 
 setup(name='mmtfPyspark',
-      version='0.2.6',
+      version='0.2.7',
       description='Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark',
       long_description=LONG_DESCRIPTION,
       url='https://github.com/sbl-sdsc/mmtf-pyspark',
-      author='Mars Huang (Shih-Cheng)',
-      author_email='marshuang80@gmail.com',
+      author='Peter Rose',
+      author_email='pwrose.ucsd@gmail.com',
       license='Apache License 2.0',
       keywords='mmtf spark pyspark protein PDB',
       packages=mmtfPyspark_packages,
