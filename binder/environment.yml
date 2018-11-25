@@ -5,11 +5,11 @@ channels:
 
 dependencies:
   - python=3.6
-  - biopython=1.71
-  - numpy=1.14.5
+  - biopython=1.72
+  - numpy=1.15.4
   - nose
   - requests=2.19.1
-  - matplotlib=2.2.2
+  - matplotlib=3.0.2
   - ipywidgets=7.4.0
   - seaborn=0.8.1
   - pandas=0.22.0
