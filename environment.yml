@@ -1,0 +1,22 @@
+name: myBinder-environment
+
+dependencies:
+  - python=3.6
+  - biopython=1.71
+  - numpy=1.14.5
+  - nose
+  - requests=2.19.1
+  - matplotlib=2.2.2
+  - ipywidgets=7.4.0
+  - seaborn=0.8.1
+  - pandas=0.22.0
+  - pyspark=2.3.1
+  - py4j=0.10.7
+  - pyarrow=0.9.0
+  - python-dateutil
+  - sympy=1.1.1
+  - xlrd=1.1.0
+  - pip:
+      - py3Dmol==0.8.0
+      - mmtf-python==1.1.2
+      - git+https://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtf-pyspark[complete]
