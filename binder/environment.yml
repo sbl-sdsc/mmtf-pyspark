@@ -20,3 +20,4 @@ dependencies:
       - py3Dmol==0.8.0
       - mmtf-python==1.1.2
       - git+https://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtf-pyspark[complete]
+
