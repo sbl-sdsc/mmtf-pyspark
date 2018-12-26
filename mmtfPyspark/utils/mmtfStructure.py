@@ -11,8 +11,6 @@ __version__ = "0.2.0"
 __status__ = "Done"
 
 import numpy as np
-import time
-import struct
 from mmtf.utils import decoder_utils
 from mmtfPyspark.utils import mmtfDecoder
 
@@ -82,16 +80,17 @@ class MmtfStructure(object):
             self.space_group = input_data["spaceGroup"]
         else:
             self.space_group = None
-        if "bondAtomList" in input_data:
-            self.bond_atom_list = np.frombuffer(
-                input_data["bondAtomList"][12:], '>i4')
-        else:
-            self.bond_atom_list = None
-        if "bondOrderList" in input_data:
-            self.bond_order_list = np.frombuffer(
-                input_data["bondOrderList"][12:], '>i1')
-        else:
-            self.bond_order_list = None
+        # TODO bond info needs to be decoded
+        # if "bondAtomList" in input_data:
+        #     self.bond_atom_list = np.frombuffer(
+        #         input_data["bondAtomList"][12:], '>i4')
+        # else:
+        #     self.bond_atom_list = None
+        # if "bondOrderList" in input_data:
+        #     self.bond_order_list = np.frombuffer(
+        #         input_data["bondOrderList"][12:], '>i1')
+        # else:
+        #     self.bond_order_list = None
         if "secStructList" in input_data:
             self.sec_struct_list = np.frombuffer(
                 input_data["secStructList"][12:], '>i1')
@@ -108,8 +107,9 @@ class MmtfStructure(object):
         else:
             self.sequence_index_list = []
         if "occupancyList" in input_data:
+            decode_num = np.frombuffer(input_data["occupancyList"][8:12], '>i')
             self.occupancy_list = mmtfDecoder.run_length_decoder_numpy(
-                np.frombuffer(input_data["occupancyList"][12:], ">i4")) / 100
+                np.frombuffer(input_data["occupancyList"][12:], ">i4")) / decode_num
         else:
             self.occupancy_list = []
         if "experimentalMethods" in input_data:
@@ -117,8 +117,10 @@ class MmtfStructure(object):
         else:
             self.experimental_methods = None
         if "insCodeList" in input_data:
-            self.ins_code_list = [chr(a) for a in mmtfDecoder.run_length_decoder_numpy(
-                np.frombuffer(input_data["insCodeList"][12:], ">i4")).astype(np.int16)]
+            # TODO needs more efficient decoding method
+            ic = [chr(a) for a in mmtfDecoder.run_length_decoder_numpy(np.frombuffer(
+                input_data["insCodeList"][12:], ">i4")).astype(np.int16)]
+            self.ins_code_list = np.array(ic, dtype=np.chararray)
         else:
             self.ins_code_list = []
         if "entityList" in input_data:
@@ -132,7 +134,7 @@ class MmtfStructure(object):
         else:
             self.chain_name_list = []
 
-        # Variables gaurenteed in mmtf files
+        # Variables guaranteed in mmtf files
         self.num_bonds = input_data["numBonds"]
         self.num_chains = input_data["numChains"]
         self.num_models = input_data["numModels"]
