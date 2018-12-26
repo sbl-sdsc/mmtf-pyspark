@@ -15,6 +15,7 @@ __version__ = "0.2.0"
 __status__ = "done"
 
 import sys
+import numpy as np
 
 
 class InteractionFilter(object):
@@ -537,3 +538,123 @@ class InteractionFilter(object):
             return False
 
         return group in self._prohibitedTargetGroups
+
+    def is_query_element_np(self, elements):
+        '''Returns True if the specified elements matches the query conditions.
+
+        Parameters
+        ----------
+        element: str
+           the element to be checked
+        Returns
+        -------
+        bool
+           True if element matches query conditinos, else False
+        '''
+
+        if self._queryElements is None:
+            return np.full(elements.shape, True)
+        else:
+            inv = not self._includeQueryElements
+            return np.in1d(elements, list(self._queryElements), invert=inv).reshape(elements.shape)
+
+    def is_target_element_np(self, elements):
+        '''Returns True if the specified elements matches the target conditions.
+
+        Parameters
+        ----------
+        elements : str
+           the element to be checked
+
+        Returns
+        -------
+        bool
+           True if element matches target conditions, else False
+        '''
+
+        if self._targetElements is None:
+            return np.full(elements.shape, True)
+        else:
+            inv = not self._includeTargetElements
+            return np.in1d(elements, list(self._targetElements), invert=inv).reshape(elements.shape)
+
+    def is_query_group_np(self, groups):
+        '''Returns True if the specified group matches the query conditions.
+
+        Parameters
+        ----------
+        group : str
+           the group to be checked
+
+        Returns
+        -------
+        bool
+           True if group matches query conditinos, else False
+
+        '''
+        if self._queryGroups is None:
+            return np.full(groups.shape, True)
+        else:
+            inv = not self._includeQueryGroups
+            return np.in1d(groups, list(self._queryGroups), invert=inv).reshape(groups.shape)
+
+    def is_target_group_np(self, groups):
+        '''Returns True if the specified group matches the target conditions.
+
+        Parameters
+        ----------
+        group : str
+           the group to be checked
+
+        Returns
+        -------
+        bool
+           True if group matches target conditinos, else False
+        '''
+
+        if self._targetGroups is None:
+            return np.full(groups.shape, True)
+        else:
+            inv = not self._includeTargetGroups
+            return np.in1d(groups, list(self._targetGroups), invert=inv).reshape(groups.shape)
+
+    def is_query_atom_name_np(self, atomNames):
+        '''Returns True if the specified atom matches the query conditions.
+
+        Parameters
+        ----------
+        atomName : str
+           the atom name to be checked
+
+        Returns
+        -------
+        bool
+           True if atom matches query conditinos, else False
+        '''
+
+        if self._queryAtomNames is None:
+            return np.full(atomNames.shape, True)
+        else:
+            inv = not self._includeQueryAtomNames
+            return np.in1d(atomNames, list(self._queryAtomNames), invert=inv).reshape(atomNames.shape)
+
+    def is_target_atom_name_np(self, atomNames):
+        '''Returns True if the specified atom matches the target conditions.
+
+        Parameters
+        ----------
+        atomName : str
+           the atom to be checked
+
+        Returns
+        -------
+        bool
+           True if atom matches target conditinos, else False
+
+        '''
+
+        if self._targetAtomNames is None:
+            return np.full(atomNames.shape, True)
+        else:
+            inv = not self._includeTargetAtomNames
+            return np.in1d(atomNames, list(self._targetAtomNames), invert=inv).reshape(atomNames.shape)
