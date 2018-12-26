@@ -1,4 +1,5 @@
 from .interactionFilter import InteractionFilter
+from .interaction_extractor import InteractionExtractor
 from .interactionCenter import InteractionCenter
 from .coordinationGeometry import CoordinateGeometry
 from .atomInteraction import AtomInteraction
