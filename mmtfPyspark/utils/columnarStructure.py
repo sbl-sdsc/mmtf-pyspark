@@ -370,6 +370,9 @@ class ColumnarStructure(object):
             for i, entity in enumerate(self.structure.entity_list):
 
                 chainIndexList = entity['chainIndexList']
+                # pd.read_msgpack returns tuple, msgpack-python returns list
+                if type(chainIndexList) is not list:
+                    chainIndexList = list(chainIndexList)
                 self.entityChainIndex[chainIndexList] = i
 
         return self.entityChainIndex

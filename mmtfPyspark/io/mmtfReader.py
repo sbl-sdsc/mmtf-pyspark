@@ -16,13 +16,15 @@ __version__ = "0.2.0"
 __status__ = "Done"
 
 import os
-import msgpack
+# import msgpack
 import gzip
 from mmtfPyspark.utils import MmtfStructure
 from mmtf.api import default_api
 from os import path, walk
 from pyspark.sql import SparkSession
 import urllib
+import urllib.request as urllib2
+import pandas as pd
 
 text = "org.apache.hadoop.io.Text"
 byteWritable = "org.apache.hadoop.io.BytesWritable"
@@ -133,7 +135,7 @@ def read_mmtf_files(path):
     spark = SparkSession.builder.getOrCreate()
     sc = spark.sparkContext
 
-    return sc.parallelize(_get_files(path)).map(_call_mmtf).filter(lambda t: t != None)
+    return sc.parallelize(_get_files(path)).map(_call_mmtf).filter(lambda t: t is not None)
 
 
 def download_mmtf_files(pdbIds, reduced=False):
@@ -201,7 +203,7 @@ def download_reduced_mmtf_files(pdbIds):
     
     return sc.parallelize(set(pdbIds)) \
              .map(lambda t: _get_structure(t, True)) \
-             .filter(lambda t: t != None)
+             .filter(lambda t: t is not None)
 
 
 def _get_structure(pdbId, reduced):
@@ -219,7 +221,16 @@ def _get_structure(pdbId, reduced):
     '''
 
     try:
-        unpack = default_api.get_raw_data_from_url(pdbId, reduced)
+        #unpack = default_api.get_raw_data_from_url(pdbId, reduced)
+        url = default_api.get_url(pdbId, reduced)
+        request = urllib2.Request(url)
+        request.add_header('Accept-encoding', 'gzip')
+        response = urllib2.urlopen(request)
+        if response.info().get('Content-Encoding') == 'gzip':
+            data = gzip.decompress(response.read())
+        else:
+            data = response.read()
+        unpack = pd.read_msgpack(data)
         decoder = MmtfStructure(unpack)
         return (pdbId, decoder)
     except urllib.error.HTTPError:
@@ -229,10 +240,14 @@ def _get_structure(pdbId, reduced):
 def _call_sequence_file(t):
     '''Call function for hadoop sequence files'''
     # TODO: check if all sequence files are gzipped
-    data = default_api.ungzip_data(t[1])
-    unpack = msgpack.unpackb(data.read(), raw=False)
+    # data = default_api.ungzip_data(t[1])
+    # unpack = msgpack.unpackb(data.read(), raw=False)
+    # decoder = MmtfStructure(unpack)
+    # return (str(t[0]), decoder)
+    data = gzip.decompress(t[1])
+    unpack = pd.read_msgpack(data)
     decoder = MmtfStructure(unpack)
-    return (str(t[0]), decoder)
+    return (t[0], decoder)
 
 
 def _call_mmtf(f):
@@ -241,13 +256,17 @@ def _call_mmtf(f):
     if ".mmtf.gz" in f:
         name = f.split('/')[-1].split('.')[0].upper()
         data = gzip.open(f, 'rb')
-        unpack = msgpack.unpack(data, raw=False)
+        #unpack = msgpack.unpack(data, raw=False)
+        unpack = pd.read_msgpack(data)
         decoder = MmtfStructure(unpack)
         return (name, decoder)
 
     elif ".mmtf" in f:
+        #name = f.split('/')[-1].split('.')[0].upper()
+        #unpack = msgpack.unpack(open(f, "rb"), raw=False)
+        #decoder = MmtfStructure(unpack)
         name = f.split('/')[-1].split('.')[0].upper()
-        unpack = msgpack.unpack(open(f, "rb"), raw=False)
+        unpack = pd.read_msgpack(f)
         decoder = MmtfStructure(unpack)
         return (name, decoder)
 
