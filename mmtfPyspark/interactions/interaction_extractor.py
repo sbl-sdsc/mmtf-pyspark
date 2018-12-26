@@ -1,5 +1,5 @@
 #!/user/bin/env python
-'''interactionFingerprinter.py
+'''interaction_extractor.py
 
 This class creates dataset of ligand - macromolecule and macromolecule -
 macromolecule interaction information. Criteria to select interactions are
@@ -18,7 +18,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 
-class InteractionExtractor:
+class InteractionExtractor(object):
 
     @staticmethod
     def get_ligand_polymer_interactions(structures, interaction_filter, level='group'):
@@ -49,7 +49,6 @@ class InteractionExtractor:
            dataset with interacting residue information
         '''
 
-        print("get_ligand_polymer_interactions, level=", level)
         # find sll interactions
         row = structures.flatMap(LigandInteractionFingerprint(interaction_filter, level))
 
