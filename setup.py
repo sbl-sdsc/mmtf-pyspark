@@ -36,7 +36,7 @@ LONG_DESCRIPTION = """
 """
 
 setup(name='mmtfPyspark',
-      version='0.3.0',
+      version='0.3.1',
       description='Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark',
       long_description=LONG_DESCRIPTION,
       url='https://github.com/sbl-sdsc/mmtf-pyspark',
