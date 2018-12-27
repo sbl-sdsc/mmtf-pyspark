@@ -28,7 +28,7 @@ mmtfPyspark_dependencies = ['pyspark==2.3.2',
                             'matplotlib==2.2.2',
                             'xlrd==1.1.0'
                             'requests==2.19.1',
-                            'mmtf-python==1.1.2',
+                            'mmtf-python==1.1.2'
                             ]
 
 LONG_DESCRIPTION = """
