@@ -1,6 +1,14 @@
 # Change Log
 All notable changes to this project will be documented in this file, following the suggestions of [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic Versioning](http://semver.org/).
 
+## v0.3.3 - 2018-12-27
+- Changes
+  - Update to pyarrow 0.11.1
+
+## v0.3.2 - 2018-12-26
+- Changes 
+  - Update to pyarrow 0.9.0
+
 ## v0.3.1 - 2018-12-26
 - Bug fixes
   - Fixed dependency issue in setup.py
