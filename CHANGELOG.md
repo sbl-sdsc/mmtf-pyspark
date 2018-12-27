@@ -1,10 +1,26 @@
 # Change Log
 All notable changes to this project will be documented in this file, following the suggestions of [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic Versioning](http://semver.org/).
 
-## v0.3.0 - 2018-11-25
+## v0.3.1 - 2018-12-26
+- Bug fixes
+  - Fixed dependency issue in setup.py
+
 - Changes
-  - Upgraded pyspark to 2.4.0
-  
+  - Replaced top level notebook example with new version using InteractionExtractor
+
+## v0.3.0 - 2018-12-26
+- Bug fixes
+  - Removed hard-coded denominator value for decoding occupancy values
+
+
+- Changes
+  - Upgraded pyspark to 2.3.2
+  - Use pandas msgpack library instead of msgpack-python for decoding
+
+
+- New features
+  - Added InteractionExtractor class using vectorized methods
+  - Added new filter methods in InteractionFilter class using vectorized methods
 
 ## v0.2.7 - 2018-11-24
 - Bug fixes

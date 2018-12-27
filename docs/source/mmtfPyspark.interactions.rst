@@ -18,6 +18,7 @@ Submodules
    mmtfPyspark.interactions.interactionCenter
    mmtfPyspark.interactions.interactionFilter
    mmtfPyspark.interactions.interactionFingerprinter
+   mmtfPyspark.interactions.interaction_extractor
    mmtfPyspark.interactions.ligandInteractionFingerprint
    mmtfPyspark.interactions.polymerInteractionFingerprint
    mmtfPyspark.interactions.structureToAtomInteractions
