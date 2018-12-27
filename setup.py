@@ -27,7 +27,7 @@ mmtfPyspark_dependencies = ['pyspark==2.3.2',
                             'scikit-learn>=0.19.0',
                             'pandas==0.23.1',
                             'py4j==0.10.7',
-                            'pyarrow==0.9.0',
+                            'pyarrow==0.11.1',
                             'xlrd==1.1.0'
                             ]
 
@@ -46,7 +46,7 @@ setup(name='mmtfPyspark',
       keywords='mmtf spark pyspark protein PDB',
       packages=mmtfPyspark_packages,
       install_requires=mmtfPyspark_dependencies,
-      python_requires='>=3.6',
+      python_requires='==3.6',
       include_package_data=True,
       test_suite='nose.collector',
       test_require=['nose'],
