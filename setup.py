@@ -24,7 +24,7 @@ mmtfPyspark_dependencies = ['pyspark==2.3.2',
                             'scikit-learn>=0.19.0',
                             'pandas==0.23.1',
                             'py4j==0.10.7',
-                            'pyarrow==0.9.1',
+                            'pyarrow==0.11.1',
                             'requests==2.19.1',
                             'matplotlib==2.2.2',
                             'xlrd==1.1.0',
@@ -36,7 +36,7 @@ LONG_DESCRIPTION = """
 """
 
 setup(name='mmtfPyspark',
-      version='0.3.1',
+      version='0.3.2',
       description='Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark',
       long_description=LONG_DESCRIPTION,
       url='https://github.com/sbl-sdsc/mmtf-pyspark',
