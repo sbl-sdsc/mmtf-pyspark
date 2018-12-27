@@ -17,9 +17,6 @@ mmtfPyspark_dependencies = ['pyspark==2.3.2',
                             'msgpack==0.5.6',
                             'numpy==1.14.5',
                             'ipywidgets==7.4.0',
-                            'mmtf-python==1.1.2',
-                            'requests==2.19.1',
-                            'matplotlib==2.2.2',
                             'seaborn==0.8.1',
                             'sympy>=1.1.1',
                             'py3Dmol==0.8.0',
@@ -28,7 +25,10 @@ mmtfPyspark_dependencies = ['pyspark==2.3.2',
                             'pandas==0.23.1',
                             'py4j==0.10.7',
                             'pyarrow==0.11.1',
+                            'matplotlib==2.2.2',
                             'xlrd==1.1.0'
+                            'requests==2.19.1',
+                            'mmtf-python==1.1.2',
                             ]
 
 LONG_DESCRIPTION = """
