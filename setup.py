@@ -24,7 +24,7 @@ mmtfPyspark_dependencies = ['pyspark==2.3.2',
                             'scikit-learn>=0.19.0',
                             'pandas==0.23.1',
                             'py4j==0.10.7',
-                            'pyarrow==0.11.1',
+                            'pyarrow==0.9.1',
                             'matplotlib==2.2.2',
                             'xlrd==1.1.0'
                             'requests==2.19.1',
