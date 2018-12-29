@@ -1,8 +1,8 @@
 name: mmtf-pyspark 
 
 dependencies:
-  - python==3.6.4
+  - python==3.6
   - openjdk==8.0.152
   - pip:
-      - git+https://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtf-pyspark
+      - git+https://github.com/sbl-sdsc/mmtf-pyspark.git#egg=mmtfPyspark
 
