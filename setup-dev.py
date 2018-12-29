@@ -16,19 +16,19 @@ mmtfPyspark_dependencies = ['pyspark==2.3.2',
                             'biopython>=1.71',
                             'msgpack==0.5.6',
                             'numpy==1.14.5',
-                            'ipywidgets>=7.4.0',
-                            'mmtf-python==1.1.2',
-                            'requests>=2.20.0',
-                            'matplotlib>=2.2.2',
-                            'seaborn>=0.8.1',
+                            'ipywidgets==7.4.2',
+                            'seaborn==0.8.1',
                             'sympy>=1.1.1',
-                            'py3Dmol>=0.8.0',
+                            'py3Dmol==0.8.0',
                             'scipy>=1.1.0',
                             'scikit-learn>=0.19.0',
-                            'pandas==0.22.0',
+                            'pandas==0.23.1',
                             'py4j==0.10.7',
-                            'pyarrow==0.8.0',
+                            'pyarrow==0.11.1',
+                            'requests==2.20.0',
+                            'matplotlib==2.2.2',
                             'xlrd==1.1.0',
+                            'mmtf-python==1.1.2'
                             ]
 
 LONG_DESCRIPTION = """
@@ -36,7 +36,7 @@ LONG_DESCRIPTION = """
 """
 
 setup(name='mmtfPyspark',
-      version='0.3.4',
+      version='0.3.0',
       description='Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark',
       long_description=LONG_DESCRIPTION,
       url='https://github.com/sbl-sdsc/mmtf-pyspark',
@@ -56,4 +56,3 @@ setup(name='mmtfPyspark',
                  'License :: OSI Approved :: Apache Software License',
                  'Programming Language :: Python :: 3.6'],
       zip_safe=False)
-
