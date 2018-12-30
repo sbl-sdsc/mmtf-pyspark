@@ -12,8 +12,7 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.interactions'
                         ]
 
-mmtfPyspark_dependencies = ['pyspark==2.3.2',
-                            'biopython>=1.71',
+mmtfPyspark_dependencies = ['biopython>=1.71',
                             'msgpack==0.5.6',
                             'numpy==1.14.5',
                             'ipywidgets>=7.4.0',
