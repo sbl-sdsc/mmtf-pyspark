@@ -4,7 +4,7 @@ dependencies:
   - python>=3.6
   - openjdk==8.0.152
   - pyspark==2.3.2
-  - biopython==1.73
+  - biopython==1.72
   - numpy==1.15.4
   - ipywidgets==7.4.2
   - mmtf-python==1.1.2
