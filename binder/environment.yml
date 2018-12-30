@@ -16,7 +16,6 @@ dependencies:
   - scikit-learn==0.20.0
   - pandas==0.23.4
   - py4j==0.10.7
-  - pyarrow==0.8.0
   - xlrd==1.1.0
   - pip
   - pip:
