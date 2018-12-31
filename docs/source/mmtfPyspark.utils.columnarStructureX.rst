@@ -1,5 +1,5 @@
-mmtfPyspark\.utils\.columnarStructureX module
-=============================================
+mmtfPyspark.utils.columnarStructureX module
+===========================================
 
 .. automodule:: mmtfPyspark.utils.columnarStructureX
     :members:

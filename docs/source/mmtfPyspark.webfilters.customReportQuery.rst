@@ -1,5 +1,5 @@
-mmtfPyspark\.webfilters\.customReportQuery module
-=================================================
+mmtfPyspark.webfilters.customReportQuery module
+===============================================
 
 .. automodule:: mmtfPyspark.webfilters.customReportQuery
     :members:

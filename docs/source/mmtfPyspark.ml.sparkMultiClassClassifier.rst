@@ -1,5 +1,5 @@
-mmtfPyspark\.ml\.sparkMultiClassClassifier module
-=================================================
+mmtfPyspark.ml.sparkMultiClassClassifier module
+===============================================
 
 .. automodule:: mmtfPyspark.ml.sparkMultiClassClassifier
     :members:

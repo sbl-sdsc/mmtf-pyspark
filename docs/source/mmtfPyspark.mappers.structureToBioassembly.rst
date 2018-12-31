@@ -1,5 +1,5 @@
-mmtfPyspark\.mappers\.structureToBioassembly module
-===================================================
+mmtfPyspark.mappers.structureToBioassembly module
+=================================================
 
 .. automodule:: mmtfPyspark.mappers.structureToBioassembly
     :members:

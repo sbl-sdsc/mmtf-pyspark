@@ -1,5 +1,5 @@
-mmtfPyspark\.interactions\.structureToAtomInteractions module
-=============================================================
+mmtfPyspark.interactions.structureToAtomInteractions module
+===========================================================
 
 .. automodule:: mmtfPyspark.interactions.structureToAtomInteractions
     :members:

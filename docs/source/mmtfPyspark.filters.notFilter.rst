@@ -1,5 +1,5 @@
-mmtfPyspark\.filters\.notFilter module
-======================================
+mmtfPyspark.filters.notFilter module
+====================================
 
 .. automodule:: mmtfPyspark.filters.notFilter
     :members:

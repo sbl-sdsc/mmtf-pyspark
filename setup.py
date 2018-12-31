@@ -12,8 +12,7 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.interactions'
                         ]
 
-mmtfPyspark_dependencies = ['biopython==1.72',
-                            'msgpack==0.5.6',
+mmtfPyspark_dependencies = ['msgpack==0.5.6',
                             'numpy==1.15.4',
                             'ipywidgets==7.4.2',
                             'mmtf-python==1.1.2',
@@ -32,10 +31,11 @@ mmtfPyspark_dependencies = ['biopython==1.72',
 
 LONG_DESCRIPTION = """
 **mmtfPyspark** is a python package that provides APIs and sample applications for distributed analysis and scalable mining of 3D biomacromolecular structures, such as the Protein Data Bank (PDB) archive. mmtfPyspark uses Big Data technologies to enable high-performance parallel processing of macromolecular structures.
+Note, pip's functionality is too limited to install a working installation of mmtfPyspark, follow the platform specific instructions on https://github.com/sbl-sdsc/mmtf-pyspark.
 """
 
 setup(name='mmtfPyspark',
-      version='0.3.4',
+      version='0.3.5',
       description='Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark',
       long_description=LONG_DESCRIPTION,
       url='https://github.com/sbl-sdsc/mmtf-pyspark',

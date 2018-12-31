@@ -39,9 +39,9 @@ fi
 cd $OUTPUT
 
 # download mmtf full and reduced file
-curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
+curl -O https://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
 tar -xvf full.tar
-curl -O http://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
+curl -O https://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
 tar -xvf reduced.tar
 
 # Set environmental variables

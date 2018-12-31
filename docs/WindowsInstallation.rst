@@ -5,22 +5,16 @@ Prerequisites
 -------------
 
 The following libraries and tools are required to install mmtfPyspark.
-Except for Java, you need to choose an installation directory, for
-example your home directory ``C:\Users\USER_NAME``. This directory is a
-placeholder for a location of your choice.
+Choose an installation directory, for example your home directory ``C:\Users\USER_NAME``. This directory is a placeholder for a location of your choice.
 
-Install Java SE Development Toolkit (JDK 1.8)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Install Anaconda
+~~~~~~~~~~~
 
-If you do not have JDK, or if you are using any version other than 1.8,
-please install JDK 1.8.
+`Download the Python 3.7 Anaconda installer <https://www.anaconda.com/download>`__ and install Anaconda.
 
-`Download JDK
-1.8 <http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html>`__
-and run the installer.
 
 Install Git
------------
+~~~~~~~~~~~
 
 The Git version control system is used to download repositories from
 Github.
@@ -29,40 +23,45 @@ Github.
 Git <https://github.com/git-for-windows/git/releases/download/v2.16.1.windows.1/Git-2.16.1-64-bit.exe>`__
 and run the installer (choose all default options)
 
-Install Spark
--------------
 
-As an example in following steps, ``_YOUR_DIRECTORY_`` could be
-``C:\spark``, ``_YOUR_SPARK_VERSION_`` could be
-``spark-2.3.0-bin-hadoop2.7``.
+Install Gow
+~~~~~~~~~~~
 
-If **Anaconda** is installed, skip step 1 and run all of the commands on
-**Anaconda prompt**. Else, open your command prompt and follow the
-instructions from step 1.
-
-1. Download GOW:
-
-   GOW allows you to use linux commands on windows. In this install, we
-   will need curl, gzip, tar which GOW provides.
+Gow installs Linux command line tools on Windows. For this install, we
+will use the curl, gzip, mkdir, mv, and tar tools.
 
    `Download
    GOW <https://github.com/bmatzelle/gow/releases/download/v0.8.0/Gow-0.8.0.exe>`__
 
-2. | Download Apache Spark 2.3.1
-   | Go to the Apache Spark website
-     `link <http://spark.apache.org/downloads.html>`__
 
-   a) Choose Spark version 2.3.1
+Install Apache Spark
+-------------
+
+As an example in following steps, ``_YOUR_DIRECTORY_`` could be
+``C:\spark``, ``_YOUR_SPARK_VERSION_`` could be
+``spark-2.3.2-bin-hadoop2.7``.
+
+NOTE, Spark 2.4.0 does not run on Windows due to a bug!
+
+Launch the Anaconda Prompt command window from the Start Menu and follow the instructions.
+
+1. | Download Apache Spark 2.3.2
+   | Go to the Apache Spark website
+     `link <https://spark.apache.org/downloads.html>`__
+
+   a) Choose Spark version 2.3.2
 
    b) Choose a package type: Pre-build for Apache Hadoop 2.7 and later
 
    c) Click on the Download Spark link
 
-   d) Move the file to ``_YOUR_DIRECTORY_``
-
-   e) Unzip the file with the following commands:
+   d) Unzip the file in your directory:
 
    ::
+
+       mkdir _YOUR_DIRECTORY_
+
+       mv _YOUR_SPARK_VERSION_.tgz _YOUR_DIRECTORY_
 
        cd _YOUR_DIRECTORY_
 
@@ -70,100 +69,109 @@ instructions from step 1.
 
        tar xvf _YOUR_SPARK_VERSION_.tar
 
-3. Download winutils.exe into
-   ``_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_\bin`` using the following
-   command.
+2. Download winutils.exe into
+   ``_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_\bin`
 
    ::
 
+       cd _YOUR_SPARK_VERSION_\bin
+
        curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.7.1/bin/winutils.exe?raw=true
 
-4. Next, edit the environmental variables.
+       cd ..
 
-   **Find environmental variables:**
+4. Next, set the following environmental variables.
 
-   a) In Search, search for and then select: System (Control Panel)
+   ::
 
-   b) Click the Advanced system settings link.
+       setx SPARK_HOME _YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_
 
-   c) Click Environment Variables.
+       setx HADOOP_HOME _YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_
 
-   d) In the section User Variables find the environment variables and
-      select it. Click new to set the following environmental variables.
+    
+Check the Environment Variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-      **Set environmental variables:**
-
-   -  Set *"SPARK\_HOME"* to ``_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_``
-
-   -  Set *"HADOOP\_HOME"* to ``_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_``
-
-   -  Add ``;_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_\bin`` to your
-      *"PATH"*.
-
-Install mmtfPyspark
-~~~~~~~~~~~~~~~~~~~
-
-If you do not have anaconda installed, all the following ``pip ...``
-should be replaced with ``python -m pip ...``
-
-To install mmtfPyspark, make sure you have pip installed:
+**Close and reopen the Anaconda Prompt to update the environment variables.** Type the following commands to check the environment variables. 
 
 ::
 
-    pip --version
+       echo %SPARK_HOME%
 
-Pip should be included if you have python 3.4+
+       echo %HADOOP_HOME%
 
-mmtfPyspark can be installed using: \*
-`PyPI <https://pypi.org/project/mmtfPyspark/>`__ install (from the
-python packaging index):
 
-::
+Install mmtf-pyspark
+--------------------
 
-    ```
-    pip install mmtfPyspark
-    ```
-
-If there are any errors installing the package, try grading pip by:
+Create a Conda Environment for mmtf-pyspark
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A `conda environment <https://conda.io/docs/user-guide/concepts.html>`__ is a directory that contains a specific collection of conda packages that you have installed. If you change one environment, your other environments are not affected. You can easily activate or deactivate environments, which is how you switch between them.
 
 ::
 
-    pip install --upgrade pip    
+    cd _YOUR_DIRECTORY_
 
-By cloning the Github repository using the pip install method, sample
-jupyter notebooks and tutorials can be found in the *mmtf-pyspark/demos*
-directory. All the demos requires jupyter notebooks 5.4+. To check if
-you have jupyter 5.4+ installed:
+    git clone https://github.com/sbl-sdsc/mmtf-pyspark.git
 
-::
+    cd mmtf-pyspark
 
-    jupyter notebook --version    
+    conda env create -f binder/environment.yml
 
-If you do not have jupyter installed: ``pip install jupyter``
 
-If you have a version lower than 5.4: ``pip install --upgrade jupyter``
-
-Testing installation
+Activate the Conda Environment
 ~~~~~~~~~~~~~~~~~~~~
 
-Before testing the installation, close and reopen your Anaconda/Command
-prompt.
+::
 
-To test if the installation is successful:
+   conda activate mmtf-pyspark
+
+
+Test the Installation
+~~~~~~~~~~~~~~~~~~~~
+
+::
+   
+   python test_mmtfPyspark.py
+
+
+If the metadata for 1AQ1 are printed, you have successfully installed
+mmtf-pyspark.
+
+Launch Jupyter Notebook
+~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
-    curl -k https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/test_mmtfPyspark.py -o test_mmtfPyspark.py
+   jupyter notebook
 
-    python test_mmtfPyspark.py
+In Jupyter Notebook, open ``DataAnalysisExample.ipynb`` and run it.
 
-If the metadata of 1AQ1 is printed, you have successfully intalled
-mmtfPyspark.
+Notebooks that demonstrate the use of the mmtf-pypark API are available in the ``demos`` directory.
 
-[OPTIONAL] Hadoop Sequence Files
+Deactivate the Conda Environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MMTF Hadoop sequence files of all PDB structures can be downloaded and
+::
+
+   conda deactivate
+
+Actvate the environment again if you want to use mmtf-pyspark.
+
+
+Remove the Conda Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To permanently remove the environment type:
+
+::
+
+    conda remove -n mmtf-pyspark --all
+
+
+Download Hadoop Sequence Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The entire PDB can be downloaded as an MMTF Hadoop sequence file and
 environmental variables can be set by running the following command:
 
 ::
@@ -178,6 +186,10 @@ environmental variables can be set by running the following command:
 
 Set environmental variables:
 
-a) Set *"MMTF\_FULL"* to ``_YOUR_DIRECTORY_\full``
+::
 
-b) Set *"MMTF\_REDUCED"* to ``_YOUR_DIRECTORY_\reduced``
+    setx MMTF_FULL _YOUR_DIRECTORY_\full
+
+    setx MMTF_REDUCED _YOUR_DIRECTORY_\reduced
+
+**Close and reopen the Anaconda Prompt to update the environment variables.** 

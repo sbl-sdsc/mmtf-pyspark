@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.dataset\_utils module
-============================================
+mmtfPyspark.datasets.dataset\_utils module
+==========================================
 
 .. automodule:: mmtfPyspark.datasets.dataset_utils
     :members:

@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.dbSnpDataset module
-==========================================
+mmtfPyspark.datasets.dbSnpDataset module
+========================================
 
 .. automodule:: mmtfPyspark.datasets.dbSnpDataset
     :members:

@@ -1,5 +1,5 @@
-mmtfPyspark\.interactions\.atomInteraction module
-=================================================
+mmtfPyspark.interactions.atomInteraction module
+===============================================
 
 .. automodule:: mmtfPyspark.interactions.atomInteraction
     :members:

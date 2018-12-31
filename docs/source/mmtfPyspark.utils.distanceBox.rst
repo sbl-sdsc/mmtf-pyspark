@@ -1,5 +1,5 @@
-mmtfPyspark\.utils\.distanceBox module
-======================================
+mmtfPyspark.utils.distanceBox module
+====================================
 
 .. automodule:: mmtfPyspark.utils.distanceBox
     :members:

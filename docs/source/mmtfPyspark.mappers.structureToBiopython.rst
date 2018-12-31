@@ -1,5 +1,5 @@
-mmtfPyspark\.mappers\.structureToBiopython module
-=================================================
+mmtfPyspark.mappers.structureToBiopython module
+===============================================
 
 .. automodule:: mmtfPyspark.mappers.structureToBiopython
     :members:

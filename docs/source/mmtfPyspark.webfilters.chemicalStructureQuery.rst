@@ -1,5 +1,5 @@
-mmtfPyspark\.webfilters\.chemicalStructureQuery module
-======================================================
+mmtfPyspark.webfilters.chemicalStructureQuery module
+====================================================
 
 .. automodule:: mmtfPyspark.webfilters.chemicalStructureQuery
     :members:

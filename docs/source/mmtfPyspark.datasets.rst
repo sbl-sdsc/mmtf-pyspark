@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets package
-=============================
+mmtfPyspark.datasets package
+============================
 
 .. automodule:: mmtfPyspark.datasets
     :members:

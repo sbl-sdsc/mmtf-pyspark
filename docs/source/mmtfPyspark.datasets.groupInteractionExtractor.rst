@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.groupInteractionExtractor module
-=======================================================
+mmtfPyspark.datasets.groupInteractionExtractor module
+=====================================================
 
 .. automodule:: mmtfPyspark.datasets.groupInteractionExtractor
     :members:

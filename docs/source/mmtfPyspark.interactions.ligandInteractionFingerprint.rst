@@ -1,5 +1,5 @@
-mmtfPyspark\.interactions\.ligandInteractionFingerprint module
-==============================================================
+mmtfPyspark.interactions.ligandInteractionFingerprint module
+============================================================
 
 .. automodule:: mmtfPyspark.interactions.ligandInteractionFingerprint
     :members:

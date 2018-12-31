@@ -1,5 +1,5 @@
-mmtfPyspark\.utils package
-==========================
+mmtfPyspark.utils package
+=========================
 
 .. automodule:: mmtfPyspark.utils
     :members:

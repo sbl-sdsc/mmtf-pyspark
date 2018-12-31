@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.swissModelDataset module
-===============================================
+mmtfPyspark.datasets.swissModelDataset module
+=============================================
 
 .. automodule:: mmtfPyspark.datasets.swissModelDataset
     :members:

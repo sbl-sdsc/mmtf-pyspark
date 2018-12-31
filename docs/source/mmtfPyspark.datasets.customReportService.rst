@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.customReportService module
-=================================================
+mmtfPyspark.datasets.customReportService module
+===============================================
 
 .. automodule:: mmtfPyspark.datasets.customReportService
     :members:

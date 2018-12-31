@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.advancedSearchDataset module
-===================================================
+mmtfPyspark.datasets.advancedSearchDataset module
+=================================================
 
 .. automodule:: mmtfPyspark.datasets.advancedSearchDataset
     :members:

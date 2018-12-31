@@ -1,21 +1,11 @@
 Installation on MacOS and Linux
 -------------------------------
 
-Install Java SE Development Toolkit (JDK 1.8)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Install Anaconda
+~~~~~~~~~~~
 
-To check if you have JDK installed, type the following on your terminal:
+`Download the Python 3.7 Anaconda installer <https://www.anaconda.com/download>`__ and install Anaconda.
 
-::
-
-    javac -version
-
-If you do not have JDK, or if you are using any version other than 1.8,
-please install JDK 1.8.
-
-`Download JDK
-1.8 <http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html>`__
-and run the installer.
 
 Install Git
 ~~~~~~~~~~~
@@ -32,85 +22,75 @@ terminal:
 
 `Download and install Git <https://git-scm.com/downloads>`__
 
-Install Spark
-~~~~~~~~~~~~~
 
-To install and setup Apache Spark 2.3 and Hadoop 2.7, run the following
-commands on your terminal:
-
-::
-
-    curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/install_spark.sh -o install_spark.sh
-    . ./install_spark.sh
-
-The default installation location is in the user's home directory. The specify another directory, use the -o flag:
+Create a Conda Environment for mmtf-pyspark
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A `conda environment <https://conda.io/docs/user-guide/concepts.html>`__ is a directory that contains a specific collection of conda packages that you have installed. If you change one environment, your other environments are not affected. You can easily activate or deactivate environments, which is how you switch between them.
 
 ::
 
-    curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/install_spark.sh -o install_spark.sh
-    . ./install_spark.sh -o {YOUR_LOCAL_DIRECTORY}
+    git clone https://github.com/sbl-sdsc/mmtf-pyspark.git
+
+    cd mmtf-pyspark
+
+    conda env create -f binder/environment.yml
 
 
-
-Install mmtfPyspark
-~~~~~~~~~~~~~~~~~~~
-
-If you do not have anaconda installed, all the following ``pip ...``
-should be replaced with ``python -m pip ...``
-
-If you have both python 2 and python 3 installed, replace all the
-following ``python ...`` with ``python3 ...``
-
-To install mmtfPyspark, make sure you have pip installed:
-
-::
-
-    pip --version
-
-To install pip on MacOS:
-
-::
-
-    sudo easy_install pip
-
-For linux machines, please visit the following website:
-
-`Install pip on
-linux <https://packaging.python.org/guides/installing-using-linux-tools/>`__
-
-mmtfPyspark can be installed in the following way: \*
-`PyPI <https://pypi.org/project/mmtfPyspark/>`__ install (from the
-python packaging index):
-
-``pip install mmtfPyspark``
-
-If there are any errors installing mmtfPyspark, try upgrading pip by:
-
-``pip install --upgrade pip``
-
-By cloning the Github repository using the pip install method, sample
-jupyter notebooks and tutorials can be found in the *mmtf-pyspark/demos*
-directory.
-
-Testing installation
+Activate the Conda Environment
 ~~~~~~~~~~~~~~~~~~~~
 
-To test if the installation is successful:
+::
+
+   conda activate mmtf-pyspark
+
+
+Test the Installation
+~~~~~~~~~~~~~~~~~~~~
 
 ::
 
-    curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/test_mmtfPyspark.py -o test_mmtfPyspark.py
+   python test_mmtfPyspark.py
 
-    python test_mmtfPyspark.py
 
-If the metadata of 1AQ1 is printed, you have successfully installed
-mmtfPyspark.
+If the metadata for 1AQ1 are printed, you have successfully installed
+mmtf-pyspark.
 
-[OPTIONAL] Hadoop Sequence Files
+Launch Jupyter Notebook
+~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+   jupyter notebook
+
+In Jupyter Notebook, open ``DataAnalysisExample.ipynb`` and run it.
+
+Notebooks that demonstrate the use of the  mmtf-pypark API are available in the ``demos`` directory.
+
+Deactivate the Conda Environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MMTF Hadoop sequence files of all PDB structures can be downloaded and
-environmental variables can be set by running the following command:
+::
+
+   conda deactivate
+
+Actvate the environment again if you want to use mmtf-pyspark.
+
+
+Remove the Conda Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To permanently remove the environment type:
+
+::
+
+    conda remove -n mmtf-pyspark --all
+
+
+Download Hadoop Sequence Files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+The entire PDB can be downloaded as an MMTF Hadoop sequence file and
+environmental variables can be set by running the following command
 
 ::
 
@@ -123,39 +103,3 @@ The default download location is in the user's home directory. The specify anoth
 
     curl https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/bin/download_mmtf_files.sh -o download_mmtf_files.sh
     . ./download_mmtf_files.sh -o {YOUR_LOCAL_DIRECTORY}
-
-Tips:
-~~~~~
-
-Exception: Python in worker has different version than in driver.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Find the path to your python3 by the following command:
-
-::
-
-    which python3
-
-Add the following lines to your ``~/.basrc`` file
-
-::
-
-    export PYSPARK_PYTHON = <path to your python3>
-    export PYSPARK_DRIVER_PYTHON = <path to your python3>
-
-[SSL: CERTIFICATE\_VERIFY\_FAILED]
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-On your Mac, go to ``Applications`` > ``Python 3.6`` and click on
-``InstallCertificates.command``
-
-If you are not using the root account
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Add the --user flag during pip install:
-
-::
-
-    pip install --user mmtfPyspark
-
-Again, we strongly recommend you to have **Anaconda** installed.

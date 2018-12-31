@@ -1,5 +1,5 @@
-mmtfPyspark\.mappers\.structureToPolymerChains module
-=====================================================
+mmtfPyspark.mappers.structureToPolymerChains module
+===================================================
 
 .. automodule:: mmtfPyspark.mappers.structureToPolymerChains
     :members:
