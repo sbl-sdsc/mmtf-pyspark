@@ -27,7 +27,7 @@ and run the installer (choose all default options)
 Install Gow
 ~~~~~~~~~~~
 
-Gow installs Linux command line on Windows. For this install, we
+Gow installs Linux command line tools on Windows. For this install, we
 will use the curl, gzip, mkdir, mv, and tar tools.
 
    `Download
