@@ -7,6 +7,12 @@ Prerequisites
 The following libraries and tools are required to install mmtfPyspark.
 Choose an installation directory, for example your home directory ``C:\Users\USER_NAME``. This directory is a placeholder for a location of your choice.
 
+Install Anaconda
+~~~~~~~~~~~
+
+`Download the Python 3.7 Anaconda installer <https://www.anaconda.com/download>`__ and install Anaconda.
+
+
 Install Git
 ~~~~~~~~~~~
 
