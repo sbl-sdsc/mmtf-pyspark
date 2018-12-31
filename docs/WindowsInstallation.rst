@@ -5,9 +5,7 @@ Prerequisites
 -------------
 
 The following libraries and tools are required to install mmtfPyspark.
-Except for Java, you need to choose an installation directory, for
-example your home directory ``C:\Users\USER_NAME``. This directory is a
-placeholder for a location of your choice.
+Choose an installation directory, for example your home directory ``C:\Users\USER_NAME``. This directory is a placeholder for a location of your choice.
 
 Install Git
 -----------
@@ -28,9 +26,7 @@ As an example in following steps, ``_YOUR_DIRECTORY_`` could be
 
 NOTE, Spark 2.4.0 does not run on Windows!
 
-If **Anaconda** is installed, skip step 1 and run all of the commands on
-**Anaconda prompt**. Else, open your command prompt and follow the
-instructions from step 1.
+Open the Anaconda Prompt command window from the Start Menu and follow the instructions.
 
 1. Download GOW:
 
@@ -84,9 +80,24 @@ instructions from step 1.
 
        setx HADOOP_HOME _YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_
 
+    
+Check the Environment Variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Create a Conda Environment
-~~~~~~~~~~~~~~~~~~~
+For the environment variable to become effetive, close the Anaconda Prompt and open a new Anaconda Prompt. Type the following command to check that the environment variables are set correctly. 
+
+::
+
+       echo %SPARK_HOME%
+
+       echo %HADOOP_HOME%
+
+
+Install mmtf-pyspark
+--------------------
+
+Create a Conda Environment for mmtf-pyspark
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
@@ -113,8 +124,8 @@ Testing installation
 Before testing the installation, close and reopen your Anaconda/Command
 prompt.
 
-If the metadata of 1AQ1 is printed, you have successfully intalled
-mmtfPyspark.
+If the metadata of 1AQ1 are printed, you have successfully intalled
+mmtf-pyspark.
 
 Launch Jupyter Notebook
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -129,7 +140,26 @@ More notebooks that demonstarte use the mmtf-pypark API are available in the
 demos directory.
 
 
-OPTIONAL] Hadoop Sequence Files
+Deactivate the Conda Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+   conda deactivate
+
+Actvate the environment again if you want to use mmtf-pyspark.
+
+
+Remove the Conda Environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To permanently remove the environment type:
+
+::
+
+    conda remove -n mmtf-pyspark --all
+
+
+[OPTIONAL] Hadoop Sequence Files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 MMTF Hadoop sequence files of all PDB structures can be downloaded and
@@ -151,4 +181,6 @@ Set environmental variables:
 
     setx MMTF_FULL _YOUR_DIRECTORY_\full
 
-    setx MMTF_REDUCED _YOUR_DIRECTORY_\reduced``
+    setx MMTF_REDUCED _YOUR_DIRECTORY_\reduced
+
+Remember to close and reopen the Anaconda Prompt to set the environment variables.
