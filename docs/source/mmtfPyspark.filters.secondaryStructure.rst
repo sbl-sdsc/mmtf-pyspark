@@ -1,5 +1,5 @@
-mmtfPyspark\.filters\.secondaryStructure module
-===============================================
+mmtfPyspark.filters.secondaryStructure module
+=============================================
 
 .. automodule:: mmtfPyspark.filters.secondaryStructure
     :members:

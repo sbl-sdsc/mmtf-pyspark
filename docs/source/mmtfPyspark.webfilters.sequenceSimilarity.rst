@@ -1,5 +1,5 @@
-mmtfPyspark\.webfilters\.sequenceSimilarity module
-==================================================
+mmtfPyspark.webfilters.sequenceSimilarity module
+================================================
 
 .. automodule:: mmtfPyspark.webfilters.sequenceSimilarity
     :members:

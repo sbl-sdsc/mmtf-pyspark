@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.g2sDataset module
-========================================
+mmtfPyspark.datasets.g2sDataset module
+======================================
 
 .. automodule:: mmtfPyspark.datasets.g2sDataset
     :members:

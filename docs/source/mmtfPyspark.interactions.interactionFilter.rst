@@ -1,5 +1,5 @@
-mmtfPyspark\.interactions\.interactionFilter module
-===================================================
+mmtfPyspark.interactions.interactionFilter module
+=================================================
 
 .. automodule:: mmtfPyspark.interactions.interactionFilter
     :members:

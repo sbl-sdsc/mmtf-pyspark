@@ -1,5 +1,5 @@
-mmtfPyspark\.ml\.datasetClassifier module
-=========================================
+mmtfPyspark.ml.datasetClassifier module
+=======================================
 
 .. automodule:: mmtfPyspark.ml.datasetClassifier
     :members:

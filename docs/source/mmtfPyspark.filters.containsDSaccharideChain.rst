@@ -1,5 +1,5 @@
-mmtfPyspark\.filters\.containsDSaccharideChain module
-=====================================================
+mmtfPyspark.filters.containsDSaccharideChain module
+===================================================
 
 .. automodule:: mmtfPyspark.filters.containsDSaccharideChain
     :members:

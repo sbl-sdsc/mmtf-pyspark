@@ -1,5 +1,5 @@
-mmtfPyspark\.ml\.datasetBalancer module
-=======================================
+mmtfPyspark.ml.datasetBalancer module
+=====================================
 
 .. automodule:: mmtfPyspark.ml.datasetBalancer
     :members:

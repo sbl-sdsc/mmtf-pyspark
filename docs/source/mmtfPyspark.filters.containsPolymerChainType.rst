@@ -1,5 +1,5 @@
-mmtfPyspark\.filters\.containsPolymerChainType module
-=====================================================
+mmtfPyspark.filters.containsPolymerChainType module
+===================================================
 
 .. automodule:: mmtfPyspark.filters.containsPolymerChainType
     :members:

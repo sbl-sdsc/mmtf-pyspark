@@ -1,5 +1,5 @@
-mmtfPyspark\.webfilters package
-===============================
+mmtfPyspark.webfilters package
+==============================
 
 .. automodule:: mmtfPyspark.webfilters
     :members:

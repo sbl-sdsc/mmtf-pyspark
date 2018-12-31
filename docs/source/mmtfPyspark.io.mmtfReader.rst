@@ -1,5 +1,5 @@
-mmtfPyspark\.io\.mmtfReader module
-==================================
+mmtfPyspark.io.mmtfReader module
+================================
 
 .. automodule:: mmtfPyspark.io.mmtfReader
     :members:

@@ -17,7 +17,6 @@ Subpackages
     mmtfPyspark.io
     mmtfPyspark.mappers
     mmtfPyspark.ml
-    mmtfPyspark.tests
     mmtfPyspark.utils
     mmtfPyspark.webfilters
     mmtfPyspark.webservices

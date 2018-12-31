@@ -1,5 +1,5 @@
-mmtfPyspark\.ml\.datasetRegressor module
-========================================
+mmtfPyspark.ml.datasetRegressor module
+======================================
 
 .. automodule:: mmtfPyspark.ml.datasetRegressor
     :members:

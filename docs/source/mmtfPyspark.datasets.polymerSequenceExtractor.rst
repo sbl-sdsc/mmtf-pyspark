@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.polymerSequenceExtractor module
-======================================================
+mmtfPyspark.datasets.polymerSequenceExtractor module
+====================================================
 
 .. automodule:: mmtfPyspark.datasets.polymerSequenceExtractor
     :members:

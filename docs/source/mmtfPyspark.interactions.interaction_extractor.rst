@@ -1,5 +1,5 @@
-mmtfPyspark\.interactions\.interaction\_extractor module
-========================================================
+mmtfPyspark.interactions.interaction\_extractor module
+======================================================
 
 .. automodule:: mmtfPyspark.interactions.interaction_extractor
     :members:

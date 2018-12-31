@@ -1,5 +1,5 @@
-mmtfPyspark\.ml\.sparkRegressor module
-======================================
+mmtfPyspark.ml.sparkRegressor module
+====================================
 
 .. automodule:: mmtfPyspark.ml.sparkRegressor
     :members:

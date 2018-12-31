@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.dbPtmDataset module
-==========================================
+mmtfPyspark.datasets.dbPtmDataset module
+========================================
 
 .. automodule:: mmtfPyspark.datasets.dbPtmDataset
     :members:

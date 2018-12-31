@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.pdbjMineDataset module
-=============================================
+mmtfPyspark.datasets.pdbjMineDataset module
+===========================================
 
 .. automodule:: mmtfPyspark.datasets.pdbjMineDataset
     :members:

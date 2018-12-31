@@ -1,5 +1,5 @@
-mmtfPyspark\.filters\.depositionDate module
-===========================================
+mmtfPyspark.filters.depositionDate module
+=========================================
 
 .. automodule:: mmtfPyspark.filters.depositionDate
     :members:

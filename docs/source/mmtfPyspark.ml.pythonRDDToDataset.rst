@@ -1,5 +1,5 @@
-mmtfPyspark\.ml\.pythonRDDToDataset module
-==========================================
+mmtfPyspark.ml.pythonRDDToDataset module
+========================================
 
 .. automodule:: mmtfPyspark.ml.pythonRDDToDataset
     :members:

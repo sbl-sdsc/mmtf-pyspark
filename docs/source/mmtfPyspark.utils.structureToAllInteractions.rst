@@ -1,5 +1,5 @@
-mmtfPyspark\.utils\.structureToAllInteractions module
-=====================================================
+mmtfPyspark.utils.structureToAllInteractions module
+===================================================
 
 .. automodule:: mmtfPyspark.utils.structureToAllInteractions
     :members:

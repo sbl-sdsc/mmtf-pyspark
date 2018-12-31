@@ -1,5 +1,5 @@
-mmtfPyspark\.webfilters\.pdbjMineSearch module
-==============================================
+mmtfPyspark.webfilters.pdbjMineSearch module
+============================================
 
 .. automodule:: mmtfPyspark.webfilters.pdbjMineSearch
     :members:

@@ -1,5 +1,5 @@
-mmtfPyspark\.filters\.releaseDate module
-========================================
+mmtfPyspark.filters.releaseDate module
+======================================
 
 .. automodule:: mmtfPyspark.filters.releaseDate
     :members:

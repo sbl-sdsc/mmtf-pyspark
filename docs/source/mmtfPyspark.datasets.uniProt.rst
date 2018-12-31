@@ -1,5 +1,5 @@
-mmtfPyspark\.datasets\.uniProt module
-=====================================
+mmtfPyspark.datasets.uniProt module
+===================================
 
 .. automodule:: mmtfPyspark.datasets.uniProt
     :members:

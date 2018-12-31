@@ -1,5 +1,5 @@
-mmtfPyspark\.utils\.traverseStructureHierarchy module
-=====================================================
+mmtfPyspark.utils.traverseStructureHierarchy module
+===================================================
 
 .. automodule:: mmtfPyspark.utils.traverseStructureHierarchy
     :members:

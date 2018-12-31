@@ -1,5 +1,5 @@
-mmtfPyspark\.interactions\.ExcludedLigandSets module
-====================================================
+mmtfPyspark.interactions.ExcludedLigandSets module
+==================================================
 
 .. automodule:: mmtfPyspark.interactions.ExcludedLigandSets
     :members:

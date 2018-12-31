@@ -1,5 +1,5 @@
-mmtfPyspark\.filters\.polymerComposition module
-===============================================
+mmtfPyspark.filters.polymerComposition module
+=============================================
 
 .. automodule:: mmtfPyspark.filters.polymerComposition
     :members:
