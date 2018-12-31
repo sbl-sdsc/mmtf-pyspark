@@ -50,11 +50,13 @@ instructions from step 1.
 
    c) Click on the Download Spark link
 
-   d) Move the file to ``_YOUR_DIRECTORY_``
-
-   e) Unzip the file with the following commands:
+   d) Unzip the file in your directory:
 
    ::
+
+       mkdir _YOUR_DIRECTORY_
+
+       mv _YOUR_SPARK_VERSION_.tgz _YOUR_DIRECTORY_
 
        cd _YOUR_DIRECTORY_
 
@@ -67,12 +69,17 @@ instructions from step 1.
    command.
 
    ::
+
        cd _YOUR_SPARK_VERSION_\bin
+
        curl -k -L -o winutils.exe https://github.com/steveloughran/winutils/blob/master/hadoop-2.7.1/bin/winutils.exe?raw=true
+
+       cd ..
 
 4. Next, set the following environmental variables.
 
    ::
+
        setx SPARK_HOME _YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_
 
        setx HADOOP_HOME _YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_
@@ -82,9 +89,13 @@ Create a Conda Environment
 ~~~~~~~~~~~~~~~~~~~
 
 ::
+
     cd _YOUR_DIRECTORY_
+
     git clone https://github.com/sbl-sdsc/mmtf-pyspark.git
+
     cd mmtf-pyspark
+
     conda env create -f binder/environment.yml
 
 
@@ -92,7 +103,9 @@ Activate Conda Environment
 ~~~~~~~~~~~~~~~~~~~~
 
 ::
+
    conda activate mmtf-pyspark
+
 
 Testing installation
 ~~~~~~~~~~~~~~~~~~~~
@@ -107,12 +120,14 @@ Launch Jupyter Notebook
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
+
    jupyter notebook
 
-In jupyter notebook, open the file DataAnalysisExample.ipynb and run it.
+In Jupyter Notebook, open the file ``DataAnalysisExample.ipynb`` and run it.
 
-More notebooks that show how to use the mmtf-pypark API are available in the
-demos directory
+More notebooks that demonstarte use the mmtf-pypark API are available in the
+demos directory.
+
 
 OPTIONAL] Hadoop Sequence Files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -133,6 +148,7 @@ environmental variables can be set by running the following command:
 Set environmental variables:
 
 ::
+
     setx MMTF_FULL _YOUR_DIRECTORY_\full
 
     setx MMTF_REDUCED _YOUR_DIRECTORY_\reduced``
