@@ -8,7 +8,7 @@ The following libraries and tools are required to install mmtfPyspark.
 Choose an installation directory, for example your home directory ``C:\Users\USER_NAME``. This directory is a placeholder for a location of your choice.
 
 Install Git
------------
+~~~~~~~~~~~
 
 The Git version control system is used to download repositories from
 Github.
@@ -17,28 +17,31 @@ Github.
 Git <https://github.com/git-for-windows/git/releases/download/v2.16.1.windows.1/Git-2.16.1-64-bit.exe>`__
 and run the installer (choose all default options)
 
-Install Spark
+
+Install Gow
+~~~~~~~~~~~
+
+Gow installs Linux command line on Windows. For this install, we
+will use the curl, gzip, tar tools.
+
+   `Download
+   GOW <https://github.com/bmatzelle/gow/releases/download/v0.8.0/Gow-0.8.0.exe>`__
+
+
+Install Apache Spark
 -------------
 
 As an example in following steps, ``_YOUR_DIRECTORY_`` could be
 ``C:\spark``, ``_YOUR_SPARK_VERSION_`` could be
 ``spark-2.3.2-bin-hadoop2.7``.
 
-NOTE, Spark 2.4.0 does not run on Windows!
+NOTE, Spark 2.4.0 does not run on Windows due to a bug!
 
-Open the Anaconda Prompt command window from the Start Menu and follow the instructions.
+Launch the Anaconda Prompt command window from the Start Menu and follow the instructions.
 
-1. Download GOW:
-
-   GOW allows you to use linux commands on windows. In this install, we
-   will need curl, gzip, tar which GOW provides.
-
-   `Download
-   GOW <https://github.com/bmatzelle/gow/releases/download/v0.8.0/Gow-0.8.0.exe>`__
-
-2. | Download Apache Spark 2.3.2
+1. | Download Apache Spark 2.3.2
    | Go to the Apache Spark website
-     `link <http://spark.apache.org/downloads.html>`__
+     `link <https://spark.apache.org/downloads.html>`__
 
    a) Choose Spark version 2.3.2
 
@@ -60,9 +63,8 @@ Open the Anaconda Prompt command window from the Start Menu and follow the instr
 
        tar xvf _YOUR_SPARK_VERSION_.tar
 
-3. Download winutils.exe into
-   ``_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_\bin`` using the following
-   command.
+2. Download winutils.exe into
+   ``_YOUR_DIRECTORY_\_YOUR_SPARK_VERSION_\bin`
 
    ::
 
@@ -84,7 +86,7 @@ Open the Anaconda Prompt command window from the Start Menu and follow the instr
 Check the Environment Variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-For the environment variable to become effetive, close the Anaconda Prompt and open a new Anaconda Prompt. Type the following command to check that the environment variables are set correctly. 
+**Close and reopen the Anaconda Prompt to update the environment variables.** Type the following commands to check the environment variables. 
 
 ::
 
@@ -98,6 +100,7 @@ Install mmtf-pyspark
 
 Create a Conda Environment for mmtf-pyspark
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A `conda environment <https://conda.io/docs/user-guide/concepts.html>`__ is a directory that contains a specific collection of conda packages that you have installed. If you change one environment, your other environments are not affected. You can easily activate or deactivate environments, which is how you switch between them.
 
 ::
 
@@ -110,7 +113,7 @@ Create a Conda Environment for mmtf-pyspark
     conda env create -f binder/environment.yml
 
 
-Activate Conda Environment
+Activate the Conda Environment
 ~~~~~~~~~~~~~~~~~~~~
 
 ::
@@ -118,11 +121,13 @@ Activate Conda Environment
    conda activate mmtf-pyspark
 
 
-Testing installation
+Test the Installation
 ~~~~~~~~~~~~~~~~~~~~
 
-Before testing the installation, close and reopen your Anaconda/Command
-prompt.
+::
+   
+   python test_mmtfPyspark.py
+
 
 If the metadata of 1AQ1 are printed, you have successfully intalled
 mmtf-pyspark.
@@ -159,10 +164,10 @@ To permanently remove the environment type:
     conda remove -n mmtf-pyspark --all
 
 
-[OPTIONAL] Hadoop Sequence Files
+Download Hadoop Sequence Files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-MMTF Hadoop sequence files of all PDB structures can be downloaded and
+The entire PDB can be downloaded as an MMTF Hadoop sequence file and
 environmental variables can be set by running the following command:
 
 ::
@@ -183,4 +188,4 @@ Set environmental variables:
 
     setx MMTF_REDUCED _YOUR_DIRECTORY_\reduced
 
-Remember to close and reopen the Anaconda Prompt to set the environment variables.
+**Close and reopen the Anaconda Prompt to update the environment variables.** 
