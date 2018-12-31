@@ -28,7 +28,7 @@ Install Gow
 ~~~~~~~~~~~
 
 Gow installs Linux command line on Windows. For this install, we
-will use the curl, gzip, tar tools.
+will use the curl, gzip, mkdir, mv, and tar tools.
 
    `Download
    GOW <https://github.com/bmatzelle/gow/releases/download/v0.8.0/Gow-0.8.0.exe>`__
@@ -135,7 +135,7 @@ Test the Installation
    python test_mmtfPyspark.py
 
 
-If the metadata of 1AQ1 are printed, you have successfully intalled
+If the metadata for 1AQ1 are printed, you have successfully installed
 mmtf-pyspark.
 
 Launch Jupyter Notebook
@@ -145,11 +145,13 @@ Launch Jupyter Notebook
 
    jupyter notebook
 
-In Jupyter Notebook, open the file ``DataAnalysisExample.ipynb`` and run it.
+In Jupyter Notebook, open ``DataAnalysisExample.ipynb`` and run it.
 
-More notebooks that demonstarte use the mmtf-pypark API are available in the
-demos directory.
+Notebooks that demonstrate the use of the  mmtf-pypark API are available in the demos_.
 
+.. _demos:
+
+directory.
 
 Deactivate the Conda Environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
