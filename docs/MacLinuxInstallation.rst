@@ -86,7 +86,7 @@ To permanently remove the environment type:
 
 
 Download Hadoop Sequence Files
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 The entire PDB can be downloaded as an MMTF Hadoop sequence file and
