@@ -1,22 +1,6 @@
 Installation on MacOS and Linux
 -------------------------------
 
-Install Java SE Development Toolkit (JDK 1.8)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To check if you have JDK installed, type the following on your terminal:
-
-::
-
-    javac -version
-
-If you do not have JDK, or if you are using any version other than 1.8,
-please install JDK 1.8.
-
-`Download JDK
-1.8 <http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html>`__
-and run the installer.
-
 Install Git
 ~~~~~~~~~~~
 
@@ -33,16 +17,11 @@ terminal:
 `Download and install Git <https://git-scm.com/downloads>`__
 
 
-Install mmtfPyspark
-~~~~~~~~~~~~~~~~~~~
-
 Create a Conda Environment for mmtf-pyspark
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 A `conda environment <https://conda.io/docs/user-guide/concepts.html>`__ is a directory that contains a specific collection of conda packages that you have installed. If you change one environment, your other environments are not affected. You can easily activate or deactivate environments, which is how you switch between them.
 
 ::
-
-    cd _YOUR_DIRECTORY_
 
     git clone https://github.com/sbl-sdsc/mmtf-pyspark.git
 
