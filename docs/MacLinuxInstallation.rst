@@ -1,6 +1,12 @@
 Installation on MacOS and Linux
 -------------------------------
 
+Install Anaconda
+~~~~~~~~~~~
+
+`Download the Python 3.7 Anaconda installer <https://www.anaconda.com/download>`__ and install Anaconda.
+
+
 Install Git
 ~~~~~~~~~~~
 
