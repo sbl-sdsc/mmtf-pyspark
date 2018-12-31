@@ -147,7 +147,7 @@ Launch Jupyter Notebook
 
 In Jupyter Notebook, open ``DataAnalysisExample.ipynb`` and run it.
 
-Notebooks that demonstrate the use of the  mmtf-pypark API are available in the demos directory.
+Notebooks that demonstrate the use of the mmtf-pypark API are available in the ``demos`` directory.
 
 Deactivate the Conda Environment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
