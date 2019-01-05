@@ -38,11 +38,12 @@ from pyspark import SparkContext
 from io import BytesIO
 import requests
 
-REFERENCE_GENOME = "hgvs-grch37"
-G2S_REST_URL = "https://g2s.genomenexus.org/api/alignments/"+REFERENCE_GENOME+"/"
+#REFERENCE_GENOME = "hgvs-grch37"
+#G2S_REST_URL = "https://g2s.genomenexus.org/api/alignments/"+REFERENCE_GENOME+"/"
+G2S_REST_URL = "https://g2s.genomenexus.org/api/alignments/"
 
 
-def get_position_dataset(variationIds, structureId = None, chainId = None):
+def get_position_dataset(variationIds, structureId = None, chainId = None, ref_genome='hgvs-grch37'):
     '''Downloads PDB residue mappings for a list of genomic variations
 
     Parameters
@@ -60,7 +61,7 @@ def get_position_dataset(variationIds, structureId = None, chainId = None):
        dataset with PDB mapping information
     '''
 
-    dataset = _get_dataset(variationIds, structureId, chainId)
+    dataset = _get_dataset(variationIds, structureId, chainId, ref_genome)
 
     if dataset == None: return None
 
@@ -69,7 +70,7 @@ def get_position_dataset(variationIds, structureId = None, chainId = None):
     return dataset.select(cols).distinct()
 
 
-def get_full_dataset(variationIds, structureId = None, chainId = None):
+def get_full_dataset(variationIds, structureId = None, chainId = None, ref_genome='hgvs-grch37'):
     '''Downloads PDB residue mappings and alignment information for a list of
     genomic variations
 
@@ -88,10 +89,10 @@ def get_full_dataset(variationIds, structureId = None, chainId = None):
        dataset with PDB mapping information
     '''
 
-    return _get_dataset(variationIds, structureId, chainId)
+    return _get_dataset(variationIds, structureId, chainId, ref_genome)
 
 
-def _get_dataset(variationIds, structureId, chainId):
+def _get_dataset(variationIds, structureId, chainId, ref_genome):
     '''Downloads PDB residue mappings for a list of genomic variations
 
     Parameters
@@ -115,7 +116,7 @@ def _get_dataset(variationIds, structureId, chainId):
 
     # Download data in parallel
     data = sc.parallelize(variationIds) \
-             .flatMap(lambda m: _get_data(m, structureId, chainId))
+             .flatMap(lambda m: _get_data(m, structureId, chainId, ref_genome))
 
     # Convert Python Rdd to dataframe
     dataframe = spark.read.json(data)
@@ -130,14 +131,14 @@ def _get_dataset(variationIds, structureId, chainId):
     return _flatten_dataframe(dataframe)
 
 
-def _get_data(variationId, structureId, chainId):
+def _get_data(variationId, structureId, chainId, ref_genome):
     '''Downloads PDB residue mappings for a list of genomic variations'''
     data = []
 
     if structureId is None and chainId is None:
-        url = G2S_REST_URL + variationId + '/residueMapping'
+        url = G2S_REST_URL + ref_genome + '/' + variationId + '/residueMapping'
     elif structureId is not None and chainId is not None:
-        url = G2S_REST_URL + variationId + '/pdb/' + structureId + '_' \
+        url = G2S_REST_URL + ref_genome + '/' + variationId + '/pdb/' + structureId + '_' \
               + chainId + '/residueMapping'
     else:
         raise Exception("Both structureId and chainId have to be provided")
@@ -155,7 +156,7 @@ def _get_data(variationId, structureId, chainId):
     results = [inputStream.decode() for inputStream in BytesIO(req.content).readlines()]
 
     if results is not None and len(results[0]) > 100:
-        results = _add_variant_id(results, REFERENCE_GENOME, variationId)
+        results = _add_variant_id(results, ref_genome, variationId)
         data = results
 
     return data
