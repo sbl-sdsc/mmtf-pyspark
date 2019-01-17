@@ -35,7 +35,7 @@ Note, pip's functionality is too limited to install a working installation of mm
 """
 
 setup(name='mmtfPyspark',
-      version='0.3.5',
+      version='0.3.6',
       description='Methods for parallel and distributed analysis and mining of the Protein Data Bank using MMTF and Apache Spark',
       long_description=LONG_DESCRIPTION,
       url='https://github.com/sbl-sdsc/mmtf-pyspark',
