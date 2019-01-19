@@ -1,7 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file, following the suggestions of [Keep a CHANGELOG](http://keepachangelog.com/). This project adheres to [Semantic Versioning](http://semver.org/).
 
-## v0.3.4 - 2018-12-28
+## v0.3.6 - 2019-01-18
+- New features 
+  - Added ref_genome parameter to g2sDataset.get_position_dataset
+
+## v0.3.5 - 2018-12-28
 - Changes
   - Replaced top level notebook example with new version using InteractionExtractor
 
