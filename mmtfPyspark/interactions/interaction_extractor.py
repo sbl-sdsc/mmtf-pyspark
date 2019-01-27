@@ -292,7 +292,7 @@ class PolymerInteractionFingerprint:
         arrays = ColumnarStructure(structure, True)
 
         # if there is only a single chain, there are no polymer-polymer interactions
-        if structure.numChains == 1:
+        if structure.num_chains == 1:
             return []
 
         # Apply query filter
