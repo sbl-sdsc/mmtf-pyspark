@@ -91,6 +91,76 @@ class InteractionExtractor(object):
         spark = SparkSession.builder.getOrCreate()
         return spark.createDataFrame(row, schema)
 
+    @staticmethod
+    def get_polymer_interactions(structures, interaction_filter, level='group'):
+        '''Returns a dataset of ligand - macromolecule interactions
+
+        The dataset contains the following columns:
+        - structureChainId - pdbId.chainName of chain that interacts with ligand
+        - queryLigandId - id of ligand from PDB chemical component dictionary
+        - queryLigandNumber - group number of ligand including insetion code
+        - queryLigandChainId - chain name of ligand
+        - targetChainId - name of chain for which the interaction data are listed
+        - groupNumbers - array of residue number of interacting groups including insertion code (e.g. 101A)
+        - sequenceIndices - array of zero-based index of interaction groups (residues) mapped onto target sequence
+        - sequence - interacting polymer sequence
+        - interactingChains - total number of chains that interact with ligand
+
+        Parameters
+        ----------
+        structures : PythonRDD
+           a set of PDB structures
+        interaction_filter : InteractionFilter
+           interaction criteria
+        level : 'group' or 'atom' to aggregate results
+
+        Returns
+        -------
+        dataset
+           dataset with interacting residue information
+        '''
+
+        # find sll interactions
+        row = structures.flatMap(PolymerInteractionFingerprint(interaction_filter, level))
+
+        # Convert RDD to a Dataset with the following columns and types
+        nullable = False
+
+        # consider adding parameters
+        # chem: add element, entity_type(LGO, PRO, DNA, etc.)
+        # geom=True -> add distance, order parameters([q3,q4,q5,q6]
+        # seq=True -> add sequence index, sequence
+
+        fields = []
+        if level == 'group':
+            fields = [StructField("structureChainId", StringType(), nullable),
+                      StructField("queryLigandId", StringType(), nullable),
+                      StructField("queryLigandChainId", StringType(), nullable),
+                      StructField("queryLigandNumber", StringType(), nullable),
+                      StructField("targetGroupId", StringType(), nullable),
+                      StructField("targetChainId", StringType(), nullable),
+                      StructField("targetGroupNumber", StringType(), nullable),
+                      StructField("sequenceIndex", IntegerType(), nullable),
+                      StructField("sequence", StringType(), nullable)
+                      ]
+        elif level == 'atom':
+            fields = [StructField("structureChainId", StringType(), nullable),
+                      StructField("queryLigandId", StringType(), nullable),
+                      StructField("queryLigandChainId", StringType(), nullable),
+                      StructField("queryLigandNumber", StringType(), nullable),
+                      StructField("queryAtomName", StringType(), nullable),
+                      StructField("targetChainId", StringType(), nullable),
+                      StructField("targetGroupId", StringType(), nullable),
+                      StructField("targetGroupNumber", StringType(), nullable),
+                      StructField("targetAtomName", StringType(), nullable),
+                      StructField("distance", FloatType(), nullable),
+                      StructField("sequenceIndex", IntegerType(), nullable),
+                      StructField("sequence", StringType(), nullable)
+                      ]
+
+        schema = StructType(fields)
+        spark = SparkSession.builder.getOrCreate()
+        return spark.createDataFrame(row, schema)
 
 class LigandInteractionFingerprint:
 
@@ -209,8 +279,131 @@ class LigandInteractionFingerprint:
 
         return rows
 
-#class PolymerInteractionFingerprint(object):
-    #  TODO create a KD tree for each chain, then do comparisons?
+class PolymerInteractionFingerprint:
+
+    def __init__(self, interaction_filter, level='group'):
+        self.filter = interaction_filter
+        self.level = level
+
+    def __call__(self, t):
+        structure_id = t[0]
+        structure = t[1]
+
+        arrays = ColumnarStructure(structure, True)
+
+        # if there is only a single chain, there are no polymer-polymer interactions
+        if structure.numChains == 1:
+            return []
+
+        # Apply query filter
+        group_names = arrays.get_group_names()
+        qg = self.filter.is_query_group_np(group_names)
+        if np.count_nonzero(qg) == 0:
+            return []
+
+        elements = arrays.get_elements()
+        qe = self.filter.is_query_element_np(elements)
+        if np.count_nonzero(qe) == 0:
+            return []
+
+        atom_names = arrays.get_atom_names()
+        qa = self.filter.is_query_atom_name_np(atom_names)
+        if np.count_nonzero(qa) == 0:
+            return []
+
+        ### filter prohibited groups??
+
+        # Create mask for polymer atoms
+        polymer = arrays.is_polymer()
+
+        # Apply query filter to polymer
+        poly1 = polymer & qg & qe & qa
+        if np.count_nonzero(poly1) == 0:
+            return []
+
+        # Apply target filter to polymer
+        tg = self.filter.is_target_group_np(group_names)
+        te = self.filter.is_target_element_np(elements)
+        ta = self.filter.is_target_atom_name_np(atom_names)
+
+        poly2 = polymer & tg & te & ta
+
+        if np.count_nonzero(poly2) == 0:
+            return []
+
+        chain_names = arrays.get_chain_names()
+        group_numbers = arrays.get_group_numbers()
+        entity_indices = arrays.get_entity_indices()
+        sequence_positions = arrays.get_sequence_positions()
+
+        # Stack coordinates into an nx3 array
+        # TODO add this to ColumnarStructure
+        c = np.stack((arrays.get_x_coords(), arrays.get_y_coords(), arrays.get_z_coords()), axis=-1)
+
+        # Apply ligand mask to ligand data
+        c_poly1 = c[poly1]
+        pgq = group_names[poly1]
+        pnq = group_numbers[poly1]
+        paq = atom_names[poly1]
+        pcq = chain_names[poly1]
+
+        # Apply polymer mask to polymer data
+        c_poly2 = c[poly2]
+        pgt = group_names[poly2]
+        pnt = group_numbers[poly2]
+        pat = atom_names[poly2]
+        pct = chain_names[poly2]
+        pet = entity_indices[poly2]
+        pst = sequence_positions[poly2]
+
+        # Calculate distances between polymer and ligand atoms
+        poly_tree2 = cKDTree(c_poly2)
+        poly_tree1 = cKDTree(c_poly1)
+        distance_cutoff = self.filter.get_distance_cutoff()
+        sparse_dm = poly_tree2.sparse_distance_matrix(poly_tree1, max_distance=distance_cutoff, output_type='dict')
+
+        # Add interactions to rows.
+        # There are redundant interactions when aggregating the results at the 'group' level,
+        # since multiple atoms in a group may be involved in interactions.
+        # Therefore we use a set of rows to store only unique interactions.
+        rows = set([])
+        for ind, dis in sparse_dm.items():
+            i = ind[0]  # polymer target atom index
+            j = ind[1]  # polymer query atom index
+            # skip intrachain interactions
+            if pc1[j] == pct[i]:
+                continue
+
+            if self.level == 'group':
+                row = Row(structure_id + "." + pct[i],  # structureChainId
+                          pgq[j],  # queryLigandId
+                          pcq[j],  # queryLigandChainId
+                          pnq[j],  # queryLigandNumber
+                          pgt[i],  # targetGroupId
+                          pct[i],  # targetChainId
+                          pnt[i],  # targetGroupNumber
+                          pst[i].item(),  # sequenceIndex
+                          structure.entity_list[pet[i]]['sequence']  # sequence
+                          )
+            elif self.level == 'atom':
+                row = Row(structure_id + "." + pct[i],  # structureChainId
+                          pgq[j],  # queryLigandId
+                          pcq[j],  # queryLigandChainId
+                          pnq[j],  # queryLigandNumber
+                          paq[j],  # queryAtomName
+                          pgt[i],  # targetGroupId
+                          pct[i],  # targetChainId
+                          pnt[i],  # targetGroupNumber
+                          pat[i],  # targetAtomName
+                          dis,  # distance
+                          pst[i].item(),  # sequenceIndex
+                          structure.entity_list[pet[i]]['sequence']  # sequence
+                          )
+
+            rows.add(row)
+
+        return rows
+
 
 #class GroupInteractionFingerprint(object):
     # TODO calculate interaction of a group with both polymers and ligands
