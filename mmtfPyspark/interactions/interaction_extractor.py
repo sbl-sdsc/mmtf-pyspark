@@ -371,7 +371,7 @@ class PolymerInteractionFingerprint:
             i = ind[0]  # polymer target atom index
             j = ind[1]  # polymer query atom index
             # skip intrachain interactions
-            if pc1[j] == pct[i]:
+            if pcq[j] == pct[i]:
                 continue
 
             if self.level == 'group':
