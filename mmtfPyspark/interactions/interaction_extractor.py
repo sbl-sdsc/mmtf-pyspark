@@ -283,7 +283,7 @@ class LigandInteractionFingerprint:
 
 class PolymerInteractionFingerprint:
 
-    def __init__(self, interaction_filter, inter=True, intra=False, level='group'):
+    def __init__(self, interaction_filter, inter, intra, level='group'):
         self.filter = interaction_filter
         self.inter = inter
         self.intra = intra
@@ -375,9 +375,9 @@ class PolymerInteractionFingerprint:
             i = ind[0]  # polymer target atom index
             j = ind[1]  # polymer query atom index
 
-
             # handle intra vs inter-chain interactions
             if pcq[j] == pct[i]:
+                # cases with interactions in the same chain
                 if not self.intra:
                     # exclude intrachain interactions
                     continue
@@ -385,11 +385,12 @@ class PolymerInteractionFingerprint:
                 elif pnq[j] == pnt[i]:
                     # exclude interactions within the same chain and group
                     continue
-                    
-            elif not self.inter:
-                # exclude inter-chain interactions
-                continue
 
+            else:
+                # case with interactions in different chains
+                if not self.inter:
+                    # exclude inter-chain interactions
+                    continue
 
             # exclude self interactions
             if dis < 0.001:
