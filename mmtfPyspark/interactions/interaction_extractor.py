@@ -92,7 +92,7 @@ class InteractionExtractor(object):
         return spark.createDataFrame(row, schema)
 
     @staticmethod
-    def get_polymer_interactions(structures, interaction_filter, level='group'):
+    def get_polymer_interactions(structures, interaction_filter, inter=True, intra=False, level='group'):
         '''Returns a dataset of ligand - macromolecule interactions
 
         The dataset contains the following columns:
@@ -112,6 +112,8 @@ class InteractionExtractor(object):
            a set of PDB structures
         interaction_filter : InteractionFilter
            interaction criteria
+        inter : calculate inter-chain interactions (default True)
+        intra : calculate intra-chain interactions (default False)
         level : 'group' or 'atom' to aggregate results
 
         Returns
@@ -121,7 +123,7 @@ class InteractionExtractor(object):
         '''
 
         # find sll interactions
-        row = structures.flatMap(PolymerInteractionFingerprint(interaction_filter, level))
+        row = structures.flatMap(PolymerInteractionFingerprint(interaction_filter, inter, intra, level))
 
         # Convert RDD to a Dataset with the following columns and types
         nullable = False
