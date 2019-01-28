@@ -385,6 +385,11 @@ class PolymerInteractionFingerprint:
                 elif pnq[j] == pnt[i]:
                     # exclude interactions within the same chain and group
                     continue
+                    
+            elif not self.inter:
+                # exclude inter-chain interactions
+                continue
+
 
             # exclude self interactions
             if dis < 0.001:
