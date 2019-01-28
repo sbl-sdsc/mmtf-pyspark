@@ -78,8 +78,8 @@ class InteractionExtractor(object):
                       StructField("queryLigandChainId", StringType(), nullable),
                       StructField("queryLigandNumber", StringType(), nullable),
                       StructField("queryAtomName", StringType(), nullable),
-                      StructField("targetChainId", StringType(), nullable),
                       StructField("targetGroupId", StringType(), nullable),
+                      StructField("targetChainId", StringType(), nullable),
                       StructField("targetGroupNumber", StringType(), nullable),
                       StructField("targetAtomName", StringType(), nullable),
                       StructField("distance", FloatType(), nullable),
@@ -149,8 +149,8 @@ class InteractionExtractor(object):
                       StructField("queryLigandChainId", StringType(), nullable),
                       StructField("queryLigandNumber", StringType(), nullable),
                       StructField("queryAtomName", StringType(), nullable),
-                      StructField("targetChainId", StringType(), nullable),
                       StructField("targetGroupId", StringType(), nullable),
+                      StructField("targetChainId", StringType(), nullable),
                       StructField("targetGroupNumber", StringType(), nullable),
                       StructField("targetAtomName", StringType(), nullable),
                       StructField("distance", FloatType(), nullable),
@@ -281,8 +281,10 @@ class LigandInteractionFingerprint:
 
 class PolymerInteractionFingerprint:
 
-    def __init__(self, interaction_filter, level='group'):
+    def __init__(self, interaction_filter, inter=True, intra=False, level='group'):
         self.filter = interaction_filter
+        self.inter = inter
+        self.intra = intra
         self.level = level
 
     def __call__(self, t):
@@ -291,8 +293,8 @@ class PolymerInteractionFingerprint:
 
         arrays = ColumnarStructure(structure, True)
 
-        # if there is only a single chain, there are no polymer-polymer interactions
-        if structure.num_chains == 1:
+        # if there is only a single chain, there are no intermolecular interactions
+        if structure.num_chains == 1 and self.inter and not self.intra:
             return []
 
         # Apply query filter
@@ -317,8 +319,8 @@ class PolymerInteractionFingerprint:
         polymer = arrays.is_polymer()
 
         # Apply query filter to polymer
-        poly1 = polymer & qg & qe & qa
-        if np.count_nonzero(poly1) == 0:
+        polyq = polymer & qg & qe & qa
+        if np.count_nonzero(polyq) == 0:
             return []
 
         # Apply target filter to polymer
@@ -326,9 +328,9 @@ class PolymerInteractionFingerprint:
         te = self.filter.is_target_element_np(elements)
         ta = self.filter.is_target_atom_name_np(atom_names)
 
-        poly2 = polymer & tg & te & ta
+        polyt = polymer & tg & te & ta
 
-        if np.count_nonzero(poly2) == 0:
+        if np.count_nonzero(polyt) == 0:
             return []
 
         chain_names = arrays.get_chain_names()
@@ -340,27 +342,27 @@ class PolymerInteractionFingerprint:
         # TODO add this to ColumnarStructure
         c = np.stack((arrays.get_x_coords(), arrays.get_y_coords(), arrays.get_z_coords()), axis=-1)
 
-        # Apply ligand mask to ligand data
-        c_poly1 = c[poly1]
-        pgq = group_names[poly1]
-        pnq = group_numbers[poly1]
-        paq = atom_names[poly1]
-        pcq = chain_names[poly1]
+        # Apply mask for query atoms
+        cpq = c[polyq]
+        pgq = group_names[polyq]
+        pnq = group_numbers[polyq]
+        paq = atom_names[polyq]
+        pcq = chain_names[polyq]
 
-        # Apply polymer mask to polymer data
-        c_poly2 = c[poly2]
-        pgt = group_names[poly2]
-        pnt = group_numbers[poly2]
-        pat = atom_names[poly2]
-        pct = chain_names[poly2]
-        pet = entity_indices[poly2]
-        pst = sequence_positions[poly2]
+        # Apply mask for target atoms
+        cpt = c[polyt]
+        pgt = group_names[polyt]
+        pnt = group_numbers[polyt]
+        pat = atom_names[polyt]
+        pct = chain_names[polyt]
+        pet = entity_indices[polyt]
+        pst = sequence_positions[polyt]
 
-        # Calculate distances between polymer and ligand atoms
-        poly_tree2 = cKDTree(c_poly2)
-        poly_tree1 = cKDTree(c_poly1)
+        # Calculate distances between the two atom sets
+        tree_t = cKDTree(cpt)
+        tree_q = cKDTree(cpq)
         distance_cutoff = self.filter.get_distance_cutoff()
-        sparse_dm = poly_tree2.sparse_distance_matrix(poly_tree1, max_distance=distance_cutoff, output_type='dict')
+        sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=distance_cutoff, output_type='dict')
 
         # Add interactions to rows.
         # There are redundant interactions when aggregating the results at the 'group' level,
@@ -370,8 +372,20 @@ class PolymerInteractionFingerprint:
         for ind, dis in sparse_dm.items():
             i = ind[0]  # polymer target atom index
             j = ind[1]  # polymer query atom index
-            # skip intrachain interactions
+
+
+            # handle intra vs inter-chain interactions
             if pcq[j] == pct[i]:
+                if not self.intra:
+                    # exclude intrachain interactions
+                    continue
+
+                elif pnq[j] == pnt[i]:
+                    # exclude interactions within the same chain and group
+                    continue
+
+            # exclude self interactions
+            if dis < 0.001:
                 continue
 
             if self.level == 'group':
