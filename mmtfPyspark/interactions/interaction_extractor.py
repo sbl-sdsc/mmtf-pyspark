@@ -24,16 +24,20 @@ class InteractionExtractor(object):
     def get_ligand_polymer_interactions(structures, interaction_filter, level='group'):
         '''Returns a dataset of ligand - macromolecule interactions
 
-        The dataset contains the following columns:
-        - structureChainId - pdbId.chainName of chain that interacts with ligand
-        - queryLigandId - id of ligand from PDB chemical component dictionary
-        - queryLigandNumber - group number of ligand including insetion code
-        - queryLigandChainId - chain name of ligand
-        - targetChainId - name of chain for which the interaction data are listed
-        - groupNumbers - array of residue number of interacting groups including insertion code (e.g. 101A)
-        - sequenceIndices - array of zero-based index of interaction groups (residues) mapped onto target sequence
+        The dataset contains the following columns. When level='group' is specified, only a subset of these
+        columns is returned.
+        - structureChainId - pdbId.chainName of interacting chain
+        - queryGroupId - id of the query group (residue) from the PDB chemical component dictionary
+        - queryChainId - chain name of the query group (residue)
+        - queryGroupNumber - group number of the query group (residue) including insertion code (e.g. 101A)
+        - queryAtomName - atom name of the query atom
+        - targetGroupId - id of the query group (residue) from the PDB chemical component dictionary
+        - targetChainId - chain name of the target group (residue)
+        - targetGroupNumber - group number of the target group (residue) including insertion code (e.g. 101A)
+        - targetAtomName - atom name of the target atom
+        - distance - distance between interaction atoms
+        - sequenceIndex - zero-based index of interacting groups (residues) mapped onto target sequence
         - sequence - interacting polymer sequence
-        - interactingChains - total number of chains that interact with ligand
 
         Parameters
         ----------
@@ -46,65 +50,41 @@ class InteractionExtractor(object):
         Returns
         -------
         dataset
-           dataset with interacting residue information
+           dataset with interacting residue and atom information
         '''
 
-        # find sll interactions
+        # find all interactions
         row = structures.flatMap(LigandInteractionFingerprint(interaction_filter, level))
 
-        # Convert RDD to a Dataset with the following columns and types
-        nullable = False
-
-        # consider adding parameters
+        # TODO consider adding parameters
         # chem: add element, entity_type(LGO, PRO, DNA, etc.)
         # geom=True -> add distance, order parameters([q3,q4,q5,q6]
         # seq=True -> add sequence index, sequence
 
-        fields = []
-        if level == 'group':
-            fields = [StructField("structureChainId", StringType(), nullable),
-                      StructField("queryLigandId", StringType(), nullable),
-                      StructField("queryLigandChainId", StringType(), nullable),
-                      StructField("queryLigandNumber", StringType(), nullable),
-                      StructField("targetGroupId", StringType(), nullable),
-                      StructField("targetChainId", StringType(), nullable),
-                      StructField("targetGroupNumber", StringType(), nullable),
-                      StructField("sequenceIndex", IntegerType(), nullable),
-                      StructField("sequence", StringType(), nullable)
-                      ]
-        elif level == 'atom':
-            fields = [StructField("structureChainId", StringType(), nullable),
-                      StructField("queryLigandId", StringType(), nullable),
-                      StructField("queryLigandChainId", StringType(), nullable),
-                      StructField("queryLigandNumber", StringType(), nullable),
-                      StructField("queryAtomName", StringType(), nullable),
-                      StructField("targetGroupId", StringType(), nullable),
-                      StructField("targetChainId", StringType(), nullable),
-                      StructField("targetGroupNumber", StringType(), nullable),
-                      StructField("targetAtomName", StringType(), nullable),
-                      StructField("distance", FloatType(), nullable),
-                      StructField("sequenceIndex", IntegerType(), nullable),
-                      StructField("sequence", StringType(), nullable)
-                      ]
-
-        schema = StructType(fields)
+        # Convert RDD of rows to a dataset using a schema
         spark = SparkSession.builder.getOrCreate()
+        schema = InteractionExtractor._get_schema(level)
         return spark.createDataFrame(row, schema)
+
 
     @staticmethod
     def get_polymer_interactions(structures, interaction_filter, inter=True, intra=False, level='group'):
-        '''Returns a dataset of ligand - macromolecule interactions
+        '''Returns a dataset of inter and or intra macromolecule - macromolecule interactions
 
-        The dataset contains the following columns:
-        - structureChainId - pdbId.chainName of chain that interacts with ligand
-        - queryLigandId - id of ligand from PDB chemical component dictionary
-        - queryLigandNumber - group number of ligand including insetion code
-        - queryLigandChainId - chain name of ligand
-        - targetChainId - name of chain for which the interaction data are listed
-        - groupNumbers - array of residue number of interacting groups including insertion code (e.g. 101A)
-        - sequenceIndices - array of zero-based index of interaction groups (residues) mapped onto target sequence
+        The dataset contains the following columns. When level='group' is specified, only a subset of these
+        columns is returned.
+        - structureChainId - pdbId.chainName of interacting chain
+        - queryGroupId - id of the query group (residue) from the PDB chemical component dictionary
+        - queryChainId - chain name of the query group (residue)
+        - queryGroupNumber - group number of the query group (residue) including insertion code (e.g. 101A)
+        - queryAtomName - atom name of the query atom
+        - targetGroupId - id of the query group (residue) from the PDB chemical component dictionary
+        - targetChainId - chain name of the target group (residue)
+        - targetGroupNumber - group number of the target group (residue) including insertion code (e.g. 101A)
+        - targetAtomName - atom name of the target atom
+        - distance - distance between interaction atoms
+        - sequenceIndex - zero-based index of interacting groups (residues) mapped onto target sequence
         - sequence - interacting polymer sequence
-        - interactingChains - total number of chains that interact with ligand
 
         Parameters
         ----------
@@ -119,26 +99,27 @@ class InteractionExtractor(object):
         Returns
         -------
         dataset
-           dataset with interacting residue information
+           dataset with interacting residue and atom information
         '''
 
-        # find sll interactions
+        # find all interactions
         row = structures.flatMap(PolymerInteractionFingerprint(interaction_filter, inter, intra, level))
 
-        # Convert RDD to a Dataset with the following columns and types
+        # Convert RDD of rows to a dataset using a schema
+        spark = SparkSession.builder.getOrCreate()
+        schema = InteractionExtractor._get_schema(level)
+        return spark.createDataFrame(row, schema)
+
+    @staticmethod
+    def _get_schema(level):
+        fields = []
         nullable = False
 
-        # consider adding parameters
-        # chem: add element, entity_type(LGO, PRO, DNA, etc.)
-        # geom=True -> add distance, order parameters([q3,q4,q5,q6]
-        # seq=True -> add sequence index, sequence
-
-        fields = []
         if level == 'group':
             fields = [StructField("structureChainId", StringType(), nullable),
-                      StructField("queryLigandId", StringType(), nullable),
-                      StructField("queryLigandChainId", StringType(), nullable),
-                      StructField("queryLigandNumber", StringType(), nullable),
+                      StructField("queryGroupId", StringType(), nullable),
+                      StructField("queryChainId", StringType(), nullable),
+                      StructField("queryGroupNumber", StringType(), nullable),
                       StructField("targetGroupId", StringType(), nullable),
                       StructField("targetChainId", StringType(), nullable),
                       StructField("targetGroupNumber", StringType(), nullable),
@@ -147,9 +128,9 @@ class InteractionExtractor(object):
                       ]
         elif level == 'atom':
             fields = [StructField("structureChainId", StringType(), nullable),
-                      StructField("queryLigandId", StringType(), nullable),
-                      StructField("queryLigandChainId", StringType(), nullable),
-                      StructField("queryLigandNumber", StringType(), nullable),
+                      StructField("queryGroupId", StringType(), nullable),
+                      StructField("queryChainId", StringType(), nullable),
+                      StructField("queryGroupNumber", StringType(), nullable),
                       StructField("queryAtomName", StringType(), nullable),
                       StructField("targetGroupId", StringType(), nullable),
                       StructField("targetChainId", StringType(), nullable),
@@ -161,8 +142,8 @@ class InteractionExtractor(object):
                       ]
 
         schema = StructType(fields)
-        spark = SparkSession.builder.getOrCreate()
-        return spark.createDataFrame(row, schema)
+        return schema
+
 
 class LigandInteractionFingerprint:
 
@@ -262,6 +243,7 @@ class LigandInteractionFingerprint:
                           ps[i].item(),  # sequenceIndex
                           structure.entity_list[pt[i]]['sequence']  # sequence
                           )
+                rows.add(row)
             elif self.level == 'atom':
                 row = Row(structure_id + "." + pc[i],  # structureChainId
                           lg[j],  # queryLigandId
@@ -276,10 +258,10 @@ class LigandInteractionFingerprint:
                           ps[i].item(),  # sequenceIndex
                           structure.entity_list[pt[i]]['sequence']  # sequence
                           )
-
-            rows.add(row)
+                rows.add(row)
 
         return rows
+
 
 class PolymerInteractionFingerprint:
 
@@ -315,17 +297,16 @@ class PolymerInteractionFingerprint:
         if np.count_nonzero(qa) == 0:
             return []
 
-        ### filter prohibited groups??
-
         # Create mask for polymer atoms
         polymer = arrays.is_polymer()
 
         # Apply query filter to polymer
         polyq = polymer & qg & qe & qa
+
         if np.count_nonzero(polyq) == 0:
             return []
 
-        # Apply target filter to polymer
+        # Apply target filter to polymer atoms
         tg = self.filter.is_target_group_np(group_names)
         te = self.filter.is_target_element_np(elements)
         ta = self.filter.is_target_atom_name_np(atom_names)
@@ -392,26 +373,27 @@ class PolymerInteractionFingerprint:
                     # exclude inter-chain interactions
                     continue
 
-            # exclude self interactions
+            # exclude self interactions (this can happen if the query and target criteria overlap)
             if dis < 0.001:
                 continue
 
             if self.level == 'group':
                 row = Row(structure_id + "." + pct[i],  # structureChainId
-                          pgq[j],  # queryLigandId
-                          pcq[j],  # queryLigandChainId
-                          pnq[j],  # queryLigandNumber
+                          pgq[j],  # queryGroupId
+                          pcq[j],  # queryChainId
+                          pnq[j],  # queryGroupNumber
                           pgt[i],  # targetGroupId
                           pct[i],  # targetChainId
                           pnt[i],  # targetGroupNumber
                           pst[i].item(),  # sequenceIndex
                           structure.entity_list[pet[i]]['sequence']  # sequence
                           )
+                rows.add(row)
             elif self.level == 'atom':
                 row = Row(structure_id + "." + pct[i],  # structureChainId
-                          pgq[j],  # queryLigandId
-                          pcq[j],  # queryLigandChainId
-                          pnq[j],  # queryLigandNumber
+                          pgq[j],  # queryGroupId
+                          pcq[j],  # queryChainId
+                          pnq[j],  # queryGroupNumber
                           paq[j],  # queryAtomName
                           pgt[i],  # targetGroupId
                           pct[i],  # targetChainId
@@ -421,11 +403,7 @@ class PolymerInteractionFingerprint:
                           pst[i].item(),  # sequenceIndex
                           structure.entity_list[pet[i]]['sequence']  # sequence
                           )
-
-            rows.add(row)
+                rows.add(row)
 
         return rows
 
-
-#class GroupInteractionFingerprint(object):
-    # TODO calculate interaction of a group with both polymers and ligands
