@@ -24,8 +24,8 @@ class InteractionExtractor(object):
     def get_ligand_polymer_interactions(structures, interaction_filter, level='group'):
         '''Returns a dataset of ligand - macromolecule interactions
 
-        The dataset contains the following columns. When level='group' is specified, only a subset of these
-        columns is returned.
+        The dataset contains the following columns. When level='chain' or level='group' is specified,
+        only a subset of these columns is returned.
         - structureChainId - pdbId.chainName of interacting chain
         - queryGroupId - id of the query group (residue) from the PDB chemical component dictionary
         - queryChainId - chain name of the query group (residue)
@@ -45,7 +45,7 @@ class InteractionExtractor(object):
            a set of PDB structures
         interaction_filter : InteractionFilter
            interaction criteria
-        level : 'group' or 'atom' to aggregate results
+        level : 'chain', 'group' or 'atom' to aggregate results
 
         Returns
         -------
@@ -71,8 +71,8 @@ class InteractionExtractor(object):
     def get_polymer_interactions(structures, interaction_filter, inter=True, intra=False, level='group'):
         '''Returns a dataset of inter and or intra macromolecule - macromolecule interactions
 
-        The dataset contains the following columns. When level='group' is specified, only a subset of these
-        columns is returned.
+        The dataset contains the following columns. When level='chain' or level='group' is specified,
+        only a subset of these columns is returned.
         - structureChainId - pdbId.chainName of interacting chain
         - queryGroupId - id of the query group (residue) from the PDB chemical component dictionary
         - queryChainId - chain name of the query group (residue)
@@ -94,7 +94,7 @@ class InteractionExtractor(object):
            interaction criteria
         inter : calculate inter-chain interactions (default True)
         intra : calculate intra-chain interactions (default False)
-        level : 'group' or 'atom' to aggregate results
+        level : 'chain', 'group' or 'atom' to aggregate results
 
         Returns
         -------
@@ -115,7 +115,14 @@ class InteractionExtractor(object):
         fields = []
         nullable = False
 
-        if level == 'group':
+        if level == 'chain':
+            fields = [StructField("structureChainId", StringType(), nullable),
+                      StructField("queryGroupId", StringType(), nullable),
+                      StructField("queryChainId", StringType(), nullable),
+                      StructField("queryGroupNumber", StringType(), nullable),
+                      StructField("targetChainId", StringType(), nullable)
+                      ]
+        elif level == 'group':
             fields = [StructField("structureChainId", StringType(), nullable),
                       StructField("queryGroupId", StringType(), nullable),
                       StructField("queryChainId", StringType(), nullable),
@@ -232,7 +239,15 @@ class LigandInteractionFingerprint:
         for ind, dis in sparse_dm.items():
             i = ind[0]  # ligand atom index
             j = ind[1]  # polymer atom index
-            if self.level == 'group':
+            if self.level == 'chain':
+                row = Row(structure_id + "." + pc[i],  # structureChainId
+                          lg[j],  # queryLigandId
+                          lc[j],  # queryLigandChainId
+                          ln[j],  # queryLigandNumber
+                          pc[i]  # targetChainId
+                          )
+                rows.add(row)
+            elif self.level == 'group':
                 row = Row(structure_id + "." + pc[i],  # structureChainId
                           lg[j],  # queryLigandId
                           lc[j],  # queryLigandChainId
@@ -377,7 +392,15 @@ class PolymerInteractionFingerprint:
             if dis < 0.001:
                 continue
 
-            if self.level == 'group':
+            if self.level == 'chain':
+                row = Row(structure_id + "." + pct[i],  # structureChainId
+                          pgq[j],  # queryGroupId
+                          pcq[j],  # queryChainId
+                          pnq[j],  # queryGroupNumber
+                          pct[i]  # targetChainId
+                          )
+                rows.add(row)
+            elif self.level == 'group':
                 row = Row(structure_id + "." + pct[i],  # structureChainId
                           pgq[j],  # queryGroupId
                           pcq[j],  # queryChainId
