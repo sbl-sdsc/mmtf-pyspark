@@ -7,4 +7,4 @@ dependencies:
   - biopython==1.72
   - pip
   - pip:
-      - git+https://github.com/pwrose/mmtf-pyspark.git 
+      - git+https://github.com/sbl-sdsc/mmtf-pyspark.git 
