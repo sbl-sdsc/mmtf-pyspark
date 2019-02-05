@@ -32,6 +32,10 @@ ENV MMTF_REDUCED=$MMTF_REDUCED_ENV
 
 WORKDIR /home/jovyan
 
+# Setup irods
+RUN mkdir .irods
+RUN echo '{"irods_host": "data.cyverse.org", "irods_port": 1247, "irods_user_name": "$IPLANT_USER", "irods_zone_name": "iplant"}' | envsubst > ~/.irods/irods_environment.json
+
 # Setup entrypoint script 
 # This is an attempt to copy required files during launch
 #RUN echo '#!/bin/bash' > docker-entrypoint.sh
