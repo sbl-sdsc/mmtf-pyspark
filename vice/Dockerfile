@@ -21,7 +21,7 @@ RUN pip install biopython==1.72
 RUN pip install git+https://github.com/sbl-sdsc/mmtf-pyspark.git 
 
 # Set Spark driver memory
-ARG SPARK_DRIVER_MEMORY_ENV=10G
+ARG SPARK_DRIVER_MEMORY_ENV=20G
 ENV SPARK_DRIVER_MEMORY=$SPARK_DRIVER_MEMORY_ENV
 
 # Set default environment variables for MMTF Hadoop Sequence files
