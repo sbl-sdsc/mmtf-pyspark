@@ -21,7 +21,7 @@ This project is under development.
 Run mmtf-pyspark in your Web Browser
 ------------------------------------
 
-The Jupyter Notebooks in this repository can be run in your web browser using two freely available servers: Binder and CyVerse/VICE. Click on the buttons below to launch Jupyter Lab. It may take several minutes for Jupyter Lab to launch.
+The Jupyter Notebooks in this repository can be run in your web browser using two freely available servers: Binder and CyVerse/VICE. Click on the buttons below to launch Jupyter Lab. **It may take several minutes for Jupyter Lab to launch.**
 
 Navigate to the `demos directory <demos>`_ to run any of the example notebooks.
 
@@ -128,7 +128,23 @@ Rose AS, Bradley AR, Valasatava Y, Duarte JM, Prlić A, Rose PW (2018) NGL viewe
 
 Rose AS, Bradley AR, Valasatava Y, Duarte JM, Prlić A, Rose PW (2016) Web-based molecular graphics for large complexes. In Proceedings of the 21st International Conference on Web3D Technology (Web3D '16). ACM, New York, NY, USA, 185-186. doi: `10.1145/2945292.2945324 <https://doi.org/10.1145/2945292.2945324>`_
 
+Binder
+~~~~~~
+
+Jupyter et al., "Binder 2.0 - Reproducible, Interactive, Sharable Environments for Science at Scale." Proceedings of the 17th Python in Science Conference. 2018. 10.25080/Majora-4af1f417-011.
+
+CyVerse
+~~~~~~~
+
+Merchant, Nirav, et al., "The iPlant Collaborative: Cyberinfrastructure for Enabling Data to Discovery 
+
+Py3Dmol
+~~~~~~~
+Rego N, Koes, D (2015) 3Dmol.js: molecular visualization with WebGL, Bioinformatics 31, 1322–1324. doi: `10.1093/bioinformatics/btu829 <https://doi.org/10.1093/bioinformatics/btu829>`_
+
 Funding
 -------
 
-This project is supported by the National Cancer Institute of the National Institutes of Health under Award Number U01CA198942. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.
+The MMTF project (Compressive Structural BioInformatics: High Efficiency 3D Structure Compression) is supported by the National Cancer Institute of the National Institutes of Health under Award Number U01CA198942. The content is solely the responsibility of the authors and does not necessarily represent the official views of the National Institutes of Health.
+
+The CyVerse project is supported by the National Science Foundation under Award Numbers DBI-0735191,  DBI-1265383, and DBI-1743442. URL: www.cyverse.org
