@@ -30,7 +30,7 @@ Binder
 
 `Binder <https://mybinder.org/>`__ is an experimental platform for reproducible research developed by `Project Jupyter <https://jupyter.org/>`__. Learn more about `Binder <https://blog.jupyter.org/mybinder-org-serves-two-million-launches-7543ae498a2a>`__. 
 
-.. image:: https://mybinder.org/badge.svg
+.. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master
 
 CyVerse (experimental version)
@@ -38,9 +38,7 @@ CyVerse (experimental version)
 
 The new VICE (Visual Interactive Computing Environment) in the `CyVerse Discovery Environment <https://www.cyverse.org/discovery-environment>`__ enables users to launch Jupyter Lab, upload files, run analyses, and save results. To use VICE, create a free `CyVerse account <https://www.cyverse.org/create-account>`__.
 
-.. raw:: html
-
-   <img src="https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/docs/vice_badge.png"  width="100"> 
+.. image:: docs/vice_badge.png
    :target: https://www.cyverse.org/discovery-environment
 
 Documentation
@@ -114,7 +112,7 @@ as environmental variables by running the following command:
    :target: https://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
 .. |Download MMTF Reduced| image:: http://img.shields.io/badge/download-MMTF_reduced-orange.svg?style=flat
    :target: https://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
-.. |Binder| image:: https://mybinder.org/badge.svg
+.. |Binder| image:: https://mybinder.org/badge_logo.svg 
    :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master
 .. |Twitter URL| image:: https://img.shields.io/twitter/url/http/shields.io.svg?style=social
    :target: https://twitter.com/mmtf_spec
