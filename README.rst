@@ -140,7 +140,7 @@ Merchant, Nirav, et al., "The iPlant Collaborative: Cyberinfrastructure for Enab
 
 Py3Dmol
 ~~~~~~~
-Rego N, Koes, D (2015) 3Dmol.js: molecular visualization with WebGL, Bioinformatics 31, 1322–1324. doi: `10.1093/bioinformatics/btu829 <https://doi.org/10.1093/bioinformatics/btu829>_
+Rego N, Koes, D (2015) 3Dmol.js: molecular visualization with WebGL, Bioinformatics 31, 1322–1324. doi: `10.1093/bioinformatics/btu829 <https://doi.org/10.1093/bioinformatics/btu829>`_
 
 Funding
 -------
