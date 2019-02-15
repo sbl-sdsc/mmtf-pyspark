@@ -23,10 +23,12 @@ Run mmtf-pyspark in your Web Browser
 
 The Jupyter Notebooks in this repository can be run in your web browser using two freely available servers: Binder and CyVerse/VICE. Click on the buttons below to launch Jupyter Lab. It may take several minutes for Jupyter Lab to launch.
 
+Navigate to the `demos directory <demos>`_ to run any of the example notebooks.
+
 Binder
 ~~~~~~
 
-`Binder <https://mybinder.org/>`__ is an experimental platform for reproducible research developed by `Project Jupyter <https://jupyter.org/>`__. Learn more about `Binder <https://blog.jupyter.org/mybinder-org-serves-two-million-launches-7543ae498a2a>`__. There are specific links for each notebook below, however, once Jupyter Lab is launched, navigate to any of the other notebooks using the Jupyter Lab file panel.
+`Binder <https://mybinder.org/>`__ is an experimental platform for reproducible research developed by `Project Jupyter <https://jupyter.org/>`__. Learn more about `Binder <https://blog.jupyter.org/mybinder-org-serves-two-million-launches-7543ae498a2a>`__. 
 
 .. image:: https://mybinder.org/badge.svg
    :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master
