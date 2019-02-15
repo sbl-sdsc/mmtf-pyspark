@@ -18,6 +18,31 @@ mmtfPyspark use the following technology stack:
 
 This project is under development.
 
+Run mmtf-pyspark in your Web Browser
+------------------------------------
+
+The Jupyter Notebooks in this repository can be run in your web browser using two freely available servers: Binder and CyVerse/VICE. Click on the buttons below to launch Jupyter Lab. It may take several minutes for Jupyter Lab to launch.
+
+Navigate to the `demos directory <demos>`_ to run any of the example notebooks.
+
+Binder
+~~~~~~
+
+`Binder <https://mybinder.org/>`__ is an experimental platform for reproducible research developed by `Project Jupyter <https://jupyter.org/>`__. Learn more about `Binder <https://blog.jupyter.org/mybinder-org-serves-two-million-launches-7543ae498a2a>`__. 
+
+.. image:: https://mybinder.org/badge.svg
+   :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master
+
+CyVerse (experimental version)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The new VICE (Visual Interactive Computing Environment) in the `CyVerse Discovery Environment <https://www.cyverse.org/discovery-environment>`__ enables users to launch Jupyter Lab, upload files, run analyses, and save results. To use VICE, create a free `CyVerse account <https://www.cyverse.org/create-account>`__.
+
+.. raw:: html
+
+   <img src="https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/docs/vice_badge.png"  width="100"> 
+   :target: https://www.cyverse.org/discovery-environment
+
 Documentation
 -------------
 
