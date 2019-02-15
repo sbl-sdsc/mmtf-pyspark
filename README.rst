@@ -30,7 +30,7 @@ Binder
 
 `Binder <https://mybinder.org/>`__ is an experimental platform for reproducible research developed by `Project Jupyter <https://jupyter.org/>`__. Learn more about `Binder <https://blog.jupyter.org/mybinder-org-serves-two-million-launches-7543ae498a2a>`__. 
 
-.. image:: https://mybinder.org/badge.svg
+.. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master
 
 CyVerse (experimental version)
@@ -112,7 +112,7 @@ as environmental variables by running the following command:
    :target: https://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
 .. |Download MMTF Reduced| image:: http://img.shields.io/badge/download-MMTF_reduced-orange.svg?style=flat
    :target: https://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
-.. |Binder| image:: https://mybinder.org/badge.svg
+.. |Binder| image:: https://mybinder.org/badge_logo.svg 
    :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master
 .. |Twitter URL| image:: https://img.shields.io/twitter/url/http/shields.io.svg?style=social
    :target: https://twitter.com/mmtf_spec
