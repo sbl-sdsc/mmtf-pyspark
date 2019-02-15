@@ -38,9 +38,7 @@ CyVerse (experimental version)
 
 The new VICE (Visual Interactive Computing Environment) in the `CyVerse Discovery Environment <https://www.cyverse.org/discovery-environment>`__ enables users to launch Jupyter Lab, upload files, run analyses, and save results. To use VICE, create a free `CyVerse account <https://www.cyverse.org/create-account>`__.
 
-.. raw:: html
-
-   <img src="https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/docs/vice_badge.png"  width="100"> 
+.. image:: docs/vice_badge.png
    :target: https://www.cyverse.org/discovery-environment
 
 Documentation
