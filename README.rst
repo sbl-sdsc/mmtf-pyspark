@@ -136,7 +136,8 @@ Jupyter et al., "Binder 2.0 - Reproducible, Interactive, Sharable Environments f
 CyVerse
 ~~~~~~~
 
-Merchant, Nirav, et al., "The iPlant Collaborative: Cyberinfrastructure for Enabling Data to Discovery 
+Merchant, Nirav, et al., "The iPlant Collaborative: Cyberinfrastructure for Enabling Data to Discovery," PLOS Biology (2016), doi: 10.1371/journal.pbio.1002342.
+ 
 
 Py3Dmol
 ~~~~~~~
