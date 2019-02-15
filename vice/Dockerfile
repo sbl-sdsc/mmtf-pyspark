@@ -27,11 +27,30 @@ ENV MMTF_FULL=$MMTF_FULL_ENV
 ARG MMTF_REDUCED_ENV=/home/jovyan/reduced
 ENV MMTF_REDUCED=$MMTF_REDUCED_ENV
 
-# clone mmtf-pyspark
-RUN git clone https://github.com/sbl-sdsc/mmtf-pyspark 
+# clone mmtf-pyspark and delete unnecessary files and directories
+RUN git clone https://github.com/sbl-sdsc/mmtf-pyspark \
+    && rm -rf mmtf-pyspark/bin \
+    && rm -rf mmtf-pyspark/binder \
+    && rm -rf mmtf-pyspark/docs \
+    && rm -rf mmtf-pyspark/vice \
+    && rm -rf mmtf-pyspark/conda.recipe \
+    && rm -rf mmtf-pyspark/conda.recipe \
+    && rm -f mmtf-pyspark/.gitignore \
+    && rm -f mmtf-pyspark/.readthedocs.yml \
+    && rm -f mmtf-pyspark/.travis.yml \
+    && rm -f mmtf-pyspark/CHANGELOG.md \
+    && rm -f mmtf-pyspark/CODE_OF_CONDUCT.md \
+    && rm -f mmtf-pyspark/LICENSE.txt \
+    && rm -f mmtf-pyspark/MANIFEST.in \
+    && rm -f mmtf-pyspark/README.rst \
+    && rm -f mmtf-pyspark/requirements.txt \
+    && rm -f mmtf-pyspark/setup-dev.py \
+    && rm -f mmtf-pyspark/setup.cfg \
+    && rm -f mmtf-pyspark/setup.py \
+    && rm -f mmtf-pyspark/test_mmtfPyspark.py
 
-#RUN mkdir /home/jovyan/mmtf-pyspark
-#COPY mmtf-pyspark /home/jovyan/mmtf-pyspark
+# Copy demo notebooks
+COPY *.ipynb . 
 
 COPY entry.sh /bin
 RUN mkdir /home/jovyan/.irods
