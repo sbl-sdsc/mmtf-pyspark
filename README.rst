@@ -2,7 +2,7 @@ MMTF PySpark
 ============
 
 |Build Status| |GitHub license| |Version| |Download MMTF| |Download MMTF
-Reduced| |Binder| |Twitter URL|
+Reduced| |Twitter URL|
 
 mmtfPyspark is a python package that provides APIs and sample
 applications for distributed analysis and scalable mining of 3D
@@ -43,7 +43,7 @@ The VICE environment supports large-scale analyses. Users can upload and downloa
 .. image:: docs/vice_badge.png
    :target: https://de.cyverse.org/de/?type=apps&app-id=420b82f4-2747-11e9-9ee3-008cfa5ae621&system-id=de 
 
-`Follow these step to run Jupyter Lab on VICE <https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/docs/vice_instructions.rst>`_
+`Follow these step to run Jupyter Lab on VICE <docs/vice_instructions.rst>`_
 
 Documentation
 -------------
