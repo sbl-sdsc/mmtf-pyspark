@@ -28,18 +28,22 @@ Navigate to the `demos directory <demos>`_ to run any of the example notebooks.
 Binder
 ~~~~~~
 
-`Binder <https://mybinder.org/>`__ is an experimental platform for reproducible research developed by `Project Jupyter <https://jupyter.org/>`__. Learn more about `Binder <https://blog.jupyter.org/mybinder-org-serves-two-million-launches-7543ae498a2a>`__. 
+`Binder <https://mybinder.org/>`_ is an experimental platform for reproducible research developed by `Project Jupyter <https://jupyter.org/>`_. Learn more about `Binder <https://blog.jupyter.org/mybinder-org-serves-two-million-launches-7543ae498a2a>`_. There are specific links for each notebook below, however, once Jupyter Lab is launched, navigate to any of the other notebooks using the Jupyter Lab file panel.
 
 .. image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master
+   :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master?urlpath=lab?filepath=tree
 
 CyVerse (experimental version)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The new VICE (Visual Interactive Computing Environment) in the `CyVerse Discovery Environment <https://www.cyverse.org/discovery-environment>`__ enables users to launch Jupyter Lab, upload files, run analyses, and save results. To use VICE, create a free `CyVerse account <https://www.cyverse.org/create-account>`__.
+The new VICE (Visual Interactive Computing Environment) in the `CyVerse Discovery Environment <https://www.cyverse.org/discovery-environment>`_ enables users to run Jupyter Lab in a production environment. To use VICE, sign up for a free `CyVerse account <https://www.cyverse.org/create-account>`_.
+
+The VICE environment supports large-scale analyses. Users can upload and download files, and save and share results of their analyses in their user accounts (up to 100GB of data). The environment is preloaded with a local copy of the entire Protein Data Bank (~148,000 structures).
 
 .. image:: docs/vice_badge.png
    :target: https://de.cyverse.org/de/?type=apps&app-id=420b82f4-2747-11e9-9ee3-008cfa5ae621&system-id=de 
+
+`Follow these step to run Jupyter Lab on VICE <https://raw.githubusercontent.com/sbl-sdsc/mmtf-pyspark/master/docs/vice_instructions.md>`_
 
 Documentation
 -------------
