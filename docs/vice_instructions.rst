@@ -10,4 +10,4 @@ button, follow these steps to launch Jupyter Lab, run your analyses, and save yo
 
 See also the `Discovery Environment Guide  <https://learning.cyverse.org/projects/discovery-environment-guide/en/latest/>`_.
 
-.. image:: https://raw.githubusercontent.com/pwrose/mmtf-pyspark/master/docs/vice_instructions.png 
+.. image:: vice_instructions.png 
