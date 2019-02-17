@@ -257,8 +257,9 @@ class ColumnarStructure(object):
                 value = str(self.structure.group_id_list[i])
                 insCode = self.structure.ins_code_list[i]
 
-                if insCode != "\x00":
-                    value += insCode
+                #if insCode != "\x00": # old encoding
+                #    value += insCode
+                value += insCode
 
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]

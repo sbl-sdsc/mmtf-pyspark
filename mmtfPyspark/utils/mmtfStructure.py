@@ -118,9 +118,13 @@ class MmtfStructure(object):
             self.experimental_methods = None
         if "insCodeList" in input_data:
             # TODO needs more efficient decoding method
-            ic = [chr(a) for a in mmtfDecoder.run_length_decoder_numpy(np.frombuffer(
-                input_data["insCodeList"][12:], ">i4")).astype(np.int16)]
-            self.ins_code_list = np.array(ic, dtype=np.chararray)
+            #ic = [chr(a) for a in mmtfDecoder.run_length_decoder_numpy(np.frombuffer(
+            #    input_data["insCodeList"][12:], ">i4")).astype(np.int16)]
+            #self.ins_code_list = np.array(ic, dtype=np.chararray)
+            # new more efficient method
+            ic = mmtfDecoder.run_length_decoder_numpy(np.frombuffer(input_data["insCodeList"][12:], ">i4")) \
+                .astype(np.uint8).tostring().decode("ascii")
+            self.ins_code_list = np.array(list(ic))
         else:
             self.ins_code_list = []
         if "entityList" in input_data:
