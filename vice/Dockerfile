@@ -22,9 +22,9 @@ RUN pip install git+https://github.com/sbl-sdsc/mmtf-pyspark.git
 WORKDIR /home/jovyan
 
 # Set default environment variables for MMTF Hadoop Sequence files
-ARG MMTF_FULL_ENV=/home/jovyan/full
+ARG MMTF_FULL_ENV=/home/jovyan/vice/MMTF_Files/full
 ENV MMTF_FULL=$MMTF_FULL_ENV
-ARG MMTF_REDUCED_ENV=/home/jovyan/reduced
+ARG MMTF_REDUCED_ENV=/home/jovyan/vice/MMTF_Files/reduced
 ENV MMTF_REDUCED=$MMTF_REDUCED_ENV
 
 # clone mmtf-pyspark and delete unnecessary files and directories
@@ -32,6 +32,7 @@ RUN git clone https://github.com/sbl-sdsc/mmtf-pyspark \
     && rm -rf mmtf-pyspark/bin \
     && rm -rf mmtf-pyspark/binder \
     && rm -rf mmtf-pyspark/docs \
+    && rm -rf mmtf-pyspark/mmtfPyspark \
     && rm -rf mmtf-pyspark/vice \
     && rm -rf mmtf-pyspark/conda.recipe \
     && rm -rf mmtf-pyspark/conda.recipe \
