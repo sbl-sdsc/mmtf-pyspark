@@ -33,7 +33,7 @@ Binder
 .. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master?urlpath=lab?filepath=tree
 
-CyVerse (comming soon)
+CyVerse (coming soon)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The new VICE (Visual Interactive Computing Environment) in the `CyVerse Discovery Environment <https://www.cyverse.org/discovery-environment>`_ enables users to run Jupyter Lab in a production environment. To use VICE, sign up for a free `CyVerse account <https://www.cyverse.org/create-account>`_.
