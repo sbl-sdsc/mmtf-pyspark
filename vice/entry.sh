@@ -11,7 +11,7 @@ tar -xvf full.tar
 rm full.tar
 
 # The full directory to $HOME
-mv $HOME/vice/MMTF_Files/full $HOME/
+#mv $HOME/vice/MMTF_Files/full $HOME/
 
 # Move mmtf-pyspark with notebooks to default location
 cd $HOME/vice
