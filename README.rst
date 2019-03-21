@@ -33,12 +33,18 @@ Binder
 .. image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/sbl-sdsc/mmtf-pyspark/master?urlpath=lab?filepath=tree
 
-CyVerse (coming soon)
+CyVerse (experimental version)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The new VICE (Visual Interactive Computing Environment) in the `CyVerse Discovery Environment <https://www.cyverse.org/discovery-environment>`_ enables users to run Jupyter Lab in a production environment. To use VICE, sign up for a free `CyVerse account <https://www.cyverse.org/create-account>`_.
 
 The VICE environment supports large-scale analyses. Users can upload and download files, and save and share results of their analyses in their user accounts (up to 100GB of data). The environment is preloaded with a local copy of the entire Protein Data Bank (~148,000 structures).
+
+.. image:: docs/vice_badge.png
+   :target: https://de.cyverse.org/de/?type=apps&app-id=0c25cbcc-4a74-11e9-b417-008cfa5ae621&system-id=de 
+
+`Follow these step to run Jupyter Lab on VICE <docs/vice_instructions.rst>`_
+
 
 Documentation
 -------------
