@@ -28,6 +28,8 @@ mmtfPyspark_dependencies = ['msgpack==0.5.6',
                             'py4j==0.10.7',
                             'pyarrow==0.11.1',
                             'xlrd==1.1.0',
+                            'nose',
+                            'cython',
                             ]
 
 LONG_DESCRIPTION = """
