@@ -9,6 +9,21 @@ __version__ = "0.2.0"
 __status__ = "done"
 
 import numpy as np
+from numba import jit
+
+USE_NUMBA = True
+
+
+def decode_type_10(input_data, field_name):
+    buffer = input_data[field_name]
+    if USE_NUMBA:
+        int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+        decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+        return rcid(int_array, decode_num)
+    else:
+        int_array = np.frombuffer(buffer[12:], '>i2')
+        decode_num = np.frombuffer(buffer[8:12], '>i')
+        return recursive_index_decode(int_array, decode_num)
 
 
 def run_length_decoder_numpy(in_array):
@@ -30,7 +45,47 @@ def run_length_decoder_numpy(in_array):
     return x
 
 
+@jit(nopython=True)
+def rld(x, n):
+    """Decodes a run length encoded array
+
+    Parameters
+    ----------
+    x : encoded array of integers (value, repeat pairs)
+    n : number of element in decoded array
+    """
+    y = np.empty(n)
+    start = 0
+    for i in range(0, x.shape[0]-1, 2):
+        end = x[i+1] + start
+        y[start:end] = x[i]
+        start = end
+    return y
+
+
 def recursive_index_decode(int_array, decode_num=1000):
+    """Unpack an array of integers using recursive indexing.
+
+    Parameters
+    ----------
+    int_array : list
+       the input array of integers
+    decode_num : int
+       the number used for decoding [1000]
+
+    Returns
+    -------
+    numpy.array
+       return the numpy.array of integers after recursive index decoding
+    """
+    maximum = 32767
+    minimum = -32768
+    out_arr = np.cumsum(int_array) / decode_num
+    return out_arr[(int_array != maximum) & (int_array != minimum)]
+
+
+@jit(nopython=True)
+def rcid(int_array, decode_num=1000):
     """Unpack an array of integers using recursive indexing.
 
     Parameters

@@ -26,10 +26,11 @@ class MmtfStructure(object):
 
         # Variables that are not in all mmtf files
         if "bFactorList" in input_data:
-            int_array = np.frombuffer(input_data["bFactorList"][12:], '>i2')
-            decode_num = np.frombuffer(input_data["bFactorList"][8:12], '>i')
-            self.b_factor_list = mmtfDecoder.recursive_index_decode(
-                int_array, decode_num)
+            #int_array = np.frombuffer(input_data["bFactorList"][12:], '>i2')
+            #decode_num = np.frombuffer(input_data["bFactorList"][8:12], '>i')
+            #self.b_factor_list = mmtfDecoder.recursive_index_decode(
+            #    int_array, decode_num)
+            self.b_factor_list = mmtfDecoder.decode_type_10(input_data, "bFactorList")
         else:
             self.b_factor_list = []
         if 'resolution' in input_data:
@@ -150,12 +151,15 @@ class MmtfStructure(object):
             np.frombuffer(input_data['groupIdList'][12:], '>i4'))).astype(np.int32)
         self.group_type_list = np.frombuffer(
             input_data['groupTypeList'][12:], '>i4')
-        self.x_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
-            input_data['xCoordList'][12:], '>i2'), np.frombuffer(input_data['xCoordList'][8:12], '>i'))
-        self.y_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
-            input_data['yCoordList'][12:], '>i2'), np.frombuffer(input_data['yCoordList'][8:12], '>i'))
-        self.z_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
-            input_data['zCoordList'][12:], '>i2'), np.frombuffer(input_data['zCoordList'][8:12], '>i'))
+        #self.x_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
+        #    input_data['xCoordList'][12:], '>i2'), np.frombuffer(input_data['xCoordList'][8:12], '>i'))
+        #self.y_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
+        #    input_data['yCoordList'][12:], '>i2'), np.frombuffer(input_data['yCoordList'][8:12], '>i'))
+        #self.z_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
+        #    input_data['zCoordList'][12:], '>i2'), np.frombuffer(input_data['zCoordList'][8:12], '>i'))
+        self.x_coord_list = mmtfDecoder.decode_type_10(input_data, "xCoordList")
+        self.y_coord_list = mmtfDecoder.decode_type_10(input_data, "yCoordList")
+        self.z_coord_list = mmtfDecoder.decode_type_10(input_data, "zCoordList")
         self.group_list = input_data['groupList']
         self.chain_id_list = np.frombuffer(
             input_data["chainIdList"][12:], 'S4').astype(str)
