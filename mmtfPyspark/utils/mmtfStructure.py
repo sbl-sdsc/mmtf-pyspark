@@ -26,10 +26,11 @@ class MmtfStructure(object):
 
         # Variables that are not in all mmtf files
         if "bFactorList" in input_data:
-            int_array = np.frombuffer(input_data["bFactorList"][12:], '>i2')
-            decode_num = np.frombuffer(input_data["bFactorList"][8:12], '>i')
-            self.b_factor_list = mmtfDecoder.recursive_index_decode(
-                int_array, decode_num)
+            #int_array = np.frombuffer(input_data["bFactorList"][12:], '>i2')
+            #decode_num = np.frombuffer(input_data["bFactorList"][8:12], '>i')
+            #self.b_factor_list = mmtfDecoder.recursive_index_decode(
+            #    int_array, decode_num)
+            self.b_factor_list(mmtfDecoder.decode_type_10(input_data, "bFactorList"))
         else:
             self.b_factor_list = []
         if 'resolution' in input_data:
