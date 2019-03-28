@@ -98,19 +98,21 @@ class MmtfStructure(object):
         else:
             self.sec_struct_list = []
         if "atomIdList" in input_data:
-            self.atom_id_list = np.cumsum(mmtfDecoder.run_length_decoder_numpy(
-                np.frombuffer(input_data['atomIdList'][12:], '>i4')).astype(np.int16))
+            #self.atom_id_list = np.cumsum(mmtfDecoder.run_length_decoder(
+            #    np.frombuffer(input_data['atomIdList'][12:], '>i4')).astype(np.int16))
+            self.atom_id_list = mmtfDecoder.decode_type_8(input_data, "atomIdList", input_data["numAtoms"])
         else:
             self.atom_id_list = []
         if "sequenceIndexList" in input_data:
-            self.sequence_index_list = np.cumsum(mmtfDecoder.run_length_decoder_numpy(
+            self.sequence_index_list = np.cumsum(mmtfDecoder.run_length_decoder(
                 np.frombuffer(input_data['sequenceIndexList'][12:], '>i4')).astype(np.int16))
         else:
             self.sequence_index_list = []
         if "occupancyList" in input_data:
-            decode_num = np.frombuffer(input_data["occupancyList"][8:12], '>i')
-            self.occupancy_list = mmtfDecoder.run_length_decoder_numpy(
-                np.frombuffer(input_data["occupancyList"][12:], ">i4")) / decode_num
+            #decode_num = np.frombuffer(input_data["occupancyList"][8:12], '>i')
+            #self.occupancy_list = mmtfDecoder.run_length_decoder(
+            #    np.frombuffer(input_data["occupancyList"][12:], ">i4")) / decode_num
+            self.occupancy_list = mmtfDecoder.decode_type_9(input_data, "occupancyList", input_data["numAtoms"])
         else:
             self.occupancy_list = []
         if "experimentalMethods" in input_data:
@@ -119,11 +121,11 @@ class MmtfStructure(object):
             self.experimental_methods = None
         if "insCodeList" in input_data:
             # TODO needs more efficient decoding method
-            #ic = [chr(a) for a in mmtfDecoder.run_length_decoder_numpy(np.frombuffer(
+            #ic = [chr(a) for a in mmtfDecoder.run_length_decoder(np.frombuffer(
             #    input_data["insCodeList"][12:], ">i4")).astype(np.int16)]
             #self.ins_code_list = np.array(ic, dtype=np.chararray)
             # new more efficient method
-            ic = mmtfDecoder.run_length_decoder_numpy(np.frombuffer(input_data["insCodeList"][12:], ">i4")) \
+            ic = mmtfDecoder.run_length_decoder(np.frombuffer(input_data["insCodeList"][12:], ">i4")) \
                 .astype(np.uint8).tostring().decode("ascii")
             self.ins_code_list = np.array(list(ic))
         else:
@@ -134,8 +136,9 @@ class MmtfStructure(object):
             self.entity_list = []
 
         if "chainNameList" in input_data:
-            self.chain_name_list = np.frombuffer(
-                input_data["chainNameList"][12:], 'S4').astype(str)
+            #self.chain_name_list = np.frombuffer(
+            #    input_data["chainNameList"][12:], 'S4').astype(str)
+            self.chain_name_list = mmtfDecoder.decode_type_5(input_data, "chainNameList")
         else:
             self.chain_name_list = []
 
@@ -147,10 +150,12 @@ class MmtfStructure(object):
         self.num_groups = input_data["numGroups"]
         self.chains_per_model = input_data["chainsPerModel"]
         self.groups_per_chain = input_data["groupsPerChain"]
-        self.group_id_list = np.cumsum(mmtfDecoder.run_length_decoder_numpy(
-            np.frombuffer(input_data['groupIdList'][12:], '>i4'))).astype(np.int32)
-        self.group_type_list = np.frombuffer(
-            input_data['groupTypeList'][12:], '>i4')
+        #self.group_id_list = np.cumsum(mmtfDecoder.run_length_decoder(
+        #    np.frombuffer(input_data['groupIdList'][12:], '>i4'))).astype(np.int32)
+        self.group_id_list = mmtfDecoder.decode_type_8(input_data, "group_id_list", self.num_groups)
+        #self.group_type_list = np.frombuffer(
+        #    input_data['groupTypeList'][12:], '>i4')
+        self.group_type_list = mmtfDecoder.decode_type_4(input_data, "groupTypeList")
         #self.x_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
         #    input_data['xCoordList'][12:], '>i2'), np.frombuffer(input_data['xCoordList'][8:12], '>i'))
         #self.y_coord_list = mmtfDecoder.recursive_index_decode(np.frombuffer(
@@ -161,8 +166,9 @@ class MmtfStructure(object):
         self.y_coord_list = mmtfDecoder.decode_type_10(input_data, "yCoordList")
         self.z_coord_list = mmtfDecoder.decode_type_10(input_data, "zCoordList")
         self.group_list = input_data['groupList']
-        self.chain_id_list = np.frombuffer(
-            input_data["chainIdList"][12:], 'S4').astype(str)
+        #self.chain_id_list = np.frombuffer(
+        #    input_data["chainIdList"][12:], 'S4').astype(str)
+        self.chain_id_list = mmtfDecoder.decode_type_5(input_data, "chainIdList")
         self.alt_loc_list = input_data['altLocList'][12:]
         self.alt_loc_set = False
 
@@ -187,7 +193,7 @@ class MmtfStructure(object):
 
     def set_alt_loc_list(self):
         """Set the alternative location list for structure"""
-        self.alt_loc_list = [chr(x) for x in mmtfDecoder.run_length_decoder_numpy(
+        self.alt_loc_list = [chr(x) for x in mmtfDecoder.run_length_decoder(
             np.frombuffer(self.alt_loc_list, ">i4")).astype(np.int16)]
         self.alt_loc_set = True
         return self
