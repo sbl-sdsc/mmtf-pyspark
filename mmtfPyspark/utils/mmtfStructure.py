@@ -125,9 +125,10 @@ class MmtfStructure(object):
             #    input_data["insCodeList"][12:], ">i4")).astype(np.int16)]
             #self.ins_code_list = np.array(ic, dtype=np.chararray)
             # new more efficient method
-            ic = mmtfDecoder.run_length_decoder(np.frombuffer(input_data["insCodeList"][12:], ">i4")) \
-                .astype(np.uint8).tostring().decode("ascii")
-            self.ins_code_list = np.array(list(ic))
+            #ic = mmtfDecoder.run_length_decoder(np.frombuffer(input_data["insCodeList"][12:], ">i4")) \
+            #   .astype(np.uint8).tostring().decode("ascii")
+            #self.ins_code_list = np.array(list(ic))
+            self.ins_code_list = mmtfDecoder.decode_type_6(input_data, "insCodeList", input_data["numGroups"])
         else:
             self.ins_code_list = []
         if "entityList" in input_data:
@@ -169,8 +170,9 @@ class MmtfStructure(object):
         #self.chain_id_list = np.frombuffer(
         #    input_data["chainIdList"][12:], 'S4').astype(str)
         self.chain_id_list = mmtfDecoder.decode_type_5(input_data, "chainIdList")
-        self.alt_loc_list = input_data['altLocList'][12:]
-        self.alt_loc_set = False
+        #self.alt_loc_list = input_data['altLocList'][12:]
+        self.alt_loc_set = True
+        self.alt_loc_list = mmtfDecoder.decode_type_6(input_data, "altLocList", input_data["numAtoms"])
 
     def pass_data_on(self, data_setters):
         """Write the data from the getters to the setters.

@@ -22,6 +22,18 @@ def decode_type_5(input_data, field_name):
     return np.frombuffer(input_data[field_name][12:], 'S4').astype(str)
 
 
+def decode_type_6(input_data, field_name, n):
+    buffer = input_data[field_name]
+    if USE_NUMBA:
+        int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
+        ic = run_length_decoder_jit(int_array, n).astype(np.uint8).tostring().decode("ascii")
+        return np.array(list(ic))
+    else:
+        int_array = np.frombuffer(buffer[12:], '>i4')
+        ic = run_length_decoder(int_array, n).astype(np.uint8).tostring().decode("ascii")
+        return np.array(list(ic))
+
+
 def decode_type_8(input_data, field_name, n):
     buffer = input_data[field_name]
     if USE_NUMBA:
