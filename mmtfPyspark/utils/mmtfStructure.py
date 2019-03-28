@@ -152,7 +152,7 @@ class MmtfStructure(object):
         self.groups_per_chain = input_data["groupsPerChain"]
         #self.group_id_list = np.cumsum(mmtfDecoder.run_length_decoder(
         #    np.frombuffer(input_data['groupIdList'][12:], '>i4'))).astype(np.int32)
-        self.group_id_list = mmtfDecoder.decode_type_8(input_data, "group_id_list", self.num_groups)
+        self.group_id_list = mmtfDecoder.decode_type_8(input_data, "groupIdList", self.num_groups)
         #self.group_type_list = np.frombuffer(
         #    input_data['groupTypeList'][12:], '>i4')
         self.group_type_list = mmtfDecoder.decode_type_4(input_data, "groupTypeList")
