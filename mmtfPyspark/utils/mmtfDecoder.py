@@ -14,19 +14,85 @@ from numba import jit
 USE_NUMBA = True
 
 
-def decode_type_10(input_data, field_name):
-    buffer = input_data[field_name]
-    if USE_NUMBA:
-        int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
-        decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
-        return rcid(int_array, decode_num)
+def decode_type_2(input_data, field_name):
+    if field_name in input_data:
+        return np.frombuffer(input_data[field_name][12:], '>i1').byteswap().newbyteorder()
     else:
-        int_array = np.frombuffer(buffer[12:], '>i2')
-        decode_num = np.frombuffer(buffer[8:12], '>i')
-        return recursive_index_decode(int_array, decode_num)
+        return []
 
 
-def run_length_decoder_numpy(in_array):
+def decode_type_4(input_data, field_name):
+    if field_name in input_data:
+        return np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
+    else:
+        return []
+
+
+def decode_type_5(input_data, field_name):
+    if field_name in input_data:
+        return np.frombuffer(input_data[field_name][12:], 'S4').astype(str)
+    else:
+        return []
+
+
+def decode_type_6(input_data, field_name, n):
+    if field_name in input_data:
+        buffer = input_data[field_name]
+        if USE_NUMBA:
+            int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
+            return run_length_decoder_ascii(int_array, n)
+        else:
+            int_array = np.frombuffer(buffer[12:], '>i4')
+            ic = run_length_decoder(int_array, n).astype(np.uint8).tostring().decode("ascii")
+            return np.array(list(ic))
+    else:
+        return []
+
+
+def decode_type_8(input_data, field_name, n):
+    if field_name in input_data:
+        buffer = input_data[field_name]
+        if USE_NUMBA:
+            int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+            return np.cumsum(run_length_decoder_jit(int_array, n))
+        else:
+            int_array = np.frombuffer(buffer[12:], '>i2')
+            return np.cumsum(run_length_decoder(int_array))
+    else:
+        return []
+
+
+def decode_type_9(input_data, field_name, n):
+    if field_name in input_data:
+        buffer = input_data[field_name]
+        if USE_NUMBA:
+            int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
+            divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+            return run_length_decoder_jit(int_array, n) / divisor
+        else:
+            int_array = np.frombuffer(buffer[12:], '>i4')
+            divisor = np.frombuffer(buffer[8:12], '>i')
+            return run_length_decoder(int_array) / divisor
+    else:
+        return []
+
+
+def decode_type_10(input_data, field_name):
+    if field_name in input_data:
+        buffer = input_data[field_name]
+        if USE_NUMBA:
+            int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+            decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+            return recursive_index_decode_jit(int_array, decode_num)
+        else:
+            int_array = np.frombuffer(buffer[12:], '>i2')
+            decode_num = np.frombuffer(buffer[8:12], '>i')
+            return recursive_index_decode(int_array, decode_num)
+    else:
+        return []
+
+
+def run_length_decoder(in_array):
     """Decodes a run length encoded array
 
     Parameters
@@ -46,7 +112,7 @@ def run_length_decoder_numpy(in_array):
 
 
 @jit(nopython=True)
-def rld(x, n):
+def run_length_decoder_jit(x, n):
     """Decodes a run length encoded array
 
     Parameters
@@ -85,7 +151,7 @@ def recursive_index_decode(int_array, decode_num=1000):
 
 
 @jit(nopython=True)
-def rcid(int_array, decode_num=1000):
+def recursive_index_decode_jit(int_array, decode_num=1000):
     """Unpack an array of integers using recursive indexing.
 
     Parameters
@@ -104,6 +170,23 @@ def rcid(int_array, decode_num=1000):
     minimum = -32768
     out_arr = np.cumsum(int_array) / decode_num
     return out_arr[(int_array != maximum) & (int_array != minimum)]
+
+
+def run_length_decoder_ascii(x, n):
+    """Decodes a run length encoded array
+
+    Parameters
+    ----------
+    x : encoded array of integers (value, repeat pairs)
+    n : number of element in decoded array
+    """
+    y = np.empty(n, dtype=str)
+    start = 0
+    for i in range(0, x.shape[0]-1, 2):
+        end = x[i+1] + start
+        y[start:end] = chr(x[i])
+        start = end
+    return y
 
 
 def decode_entity_list(input_data):

@@ -11,7 +11,7 @@ __maintainer__ = "Mars (Shih-Cheng) Huang"
 __email__ = "marshuang80@gmail.com"
 __version__ = "0.2.0"
 __status__ = "debug"
-from mmtf.utils import *
+#from mmtf.utils import *
 from mmtf.api.mmtf_writer import MMTFEncoder
 from mmtfPyspark.utils import MmtfStructure
 
