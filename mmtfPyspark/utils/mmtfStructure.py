@@ -94,7 +94,7 @@ class MmtfStructure(object):
         #     self.bond_order_list = None
         if "secStructList" in input_data:
             #self.sec_struct_list = np.frombuffer(input_data["secStructList"][12:], '>i1')
-            self.sec_struct_list = mmtfDecoder.decode_type_4(input_data, "secStructList")
+            self.sec_struct_list = mmtfDecoder.decode_type_2(input_data, "secStructList")
         #else:
         #    self.sec_struct_list = []
         if "atomIdList" in input_data:
