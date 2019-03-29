@@ -49,8 +49,8 @@ def decode_type_8(input_data, field_name, n):
             int_array = np.frombuffer(input_data[field_name][12:], '>i2').byteswap().newbyteorder()
             return np.cumsum(run_length_decoder_jit(int_array, n))
         else:
-            int_array = np.frombuffer(input_data[field_name][12:], '>i2')
-            return np.cumsum(run_length_decoder(int_array))
+            int_array = np.frombuffer(input_data[field_name][12:], '>i2').byteswap().newbyteorder()
+            return np.cumsum(run_length_decoder(int_array, n))
     else:
         return []
 
@@ -65,7 +65,7 @@ def decode_type_9(input_data, field_name, n):
         else:
             int_array = np.frombuffer(buffer[12:], '>i4')
             divisor = np.frombuffer(buffer[8:12], '>i')
-            return run_length_decoder(int_array) / divisor
+            return run_length_decoder(int_array, n) / divisor
     else:
         return []
 
@@ -78,14 +78,14 @@ def decode_type_10(input_data, field_name):
             decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
             return recursive_index_decode_jit(int_array, decode_num)
         else:
-            int_array = np.frombuffer(buffer[12:], '>i2')
-            decode_num = np.frombuffer(buffer[8:12], '>i')
+            int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+            decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
             return recursive_index_decode(int_array, decode_num)
     else:
         return []
 
 
-def run_length_decoder(in_array):
+def run_length_decoder(in_array, n):
     """Decodes a run length encoded array
 
     Parameters
@@ -97,7 +97,7 @@ def run_length_decoder(in_array):
     values = np.array(in_array[0::2])
     starts = np.insert(np.array([0]), 1, np.cumsum(lengths))[:-1]
     ends = starts + lengths
-    n = ends[-1]
+    #n = ends[-1]
     x = np.full(n, np.nan)
     for l, h, v in zip(starts, ends, values):
         x[l:h] = v
