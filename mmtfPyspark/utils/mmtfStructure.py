@@ -171,7 +171,7 @@ class MmtfStructure(object):
         #    input_data["chainIdList"][12:], 'S4').astype(str)
         self.chain_id_list = mmtfDecoder.decode_type_5(input_data, "chainIdList")
         #self.alt_loc_list = input_data['altLocList'][12:]
-        self.alt_loc_list = mmtfDecoder.decode_type_6(self.alt_loc_list, "altLocList", self.num_atoms)
+        self.alt_loc_list = mmtfDecoder.decode_type_6(input_data, "altLocList", self.num_atoms)
         self.alt_loc_set = True
 
     def pass_data_on(self, data_setters):
