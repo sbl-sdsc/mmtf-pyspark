@@ -14,61 +14,82 @@ from numba import jit
 USE_NUMBA = True
 
 
+def decode_type_2(input_data, field_name):
+    if field_name in input_data:
+        return np.frombuffer(input_data[field_name][12:], '>i1').byteswap().newbyteorder()
+    else:
+        return []
+
+
 def decode_type_4(input_data, field_name):
-    return np.frombuffer(input_data[field_name][12:], '>i4')
+    if field_name in input_data:
+        return np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
+    else:
+        return []
 
 
 def decode_type_5(input_data, field_name):
-    return np.frombuffer(input_data[field_name][12:], 'S4').astype(str)
+    if field_name in input_data:
+        return np.frombuffer(input_data[field_name][12:], 'S4').astype(str)
+    else:
+        return []
 
 
 def decode_type_6(input_data, field_name, n):
-    buffer = input_data[field_name]
-    if USE_NUMBA:
-        int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
-        return run_length_decoder_ascii(int_array, n)
-    #if USE_NUMBA:
-    #    int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
-    #    ic = run_length_decoder_jit(int_array, n).astype(np.uint8).tostring().decode("ascii")
-    #    return np.array(list(ic))
+    if field_name in input_data:
+        buffer = input_data[field_name]
+        if USE_NUMBA:
+            int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
+            return run_length_decoder_ascii(int_array, n)
+        else:
+            int_array = np.frombuffer(buffer[12:], '>i4')
+            ic = run_length_decoder(int_array, n).astype(np.uint8).tostring().decode("ascii")
+            return np.array(list(ic))
     else:
-        int_array = np.frombuffer(buffer[12:], '>i4')
-        ic = run_length_decoder(int_array, n).astype(np.uint8).tostring().decode("ascii")
-        return np.array(list(ic))
+        return []
 
 
 def decode_type_8(input_data, field_name, n):
-    buffer = input_data[field_name]
-    if USE_NUMBA:
-        int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
-        return np.cumsum(run_length_decoder_jit(int_array, n))
+    if field_name in input_data:
+        buffer = input_data[field_name]
+        if USE_NUMBA:
+            int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+            return np.cumsum(run_length_decoder_jit(int_array, n))
+        else:
+            int_array = np.frombuffer(buffer[12:], '>i2')
+            return np.cumsum(run_length_decoder(int_array))
     else:
-        int_array = np.frombuffer(buffer[12:], '>i2')
-        return np.cumsum(run_length_decoder(int_array))
+        return []
 
 
 def decode_type_9(input_data, field_name, n):
-    buffer = input_data[field_name]
-    if USE_NUMBA:
-        int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
-        divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
-        return run_length_decoder_jit(int_array, n) / divisor
+    if field_name in input_data:
+        buffer = input_data[field_name]
+        if USE_NUMBA:
+            int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
+            divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+            return run_length_decoder_jit(int_array, n) / divisor
+        else:
+            int_array = np.frombuffer(buffer[12:], '>i4')
+            divisor = np.frombuffer(buffer[8:12], '>i')
+            return run_length_decoder(int_array) / divisor
     else:
-        int_array = np.frombuffer(buffer[12:], '>i4')
-        divisor = np.frombuffer(buffer[8:12], '>i')
-        return run_length_decoder(int_array) / divisor
+        return []
 
 
 def decode_type_10(input_data, field_name):
-    buffer = input_data[field_name]
-    if USE_NUMBA:
-        int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
-        decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
-        return recursive_index_decode_jit(int_array, decode_num)
+    if field_name in input_data:
+        buffer = input_data[field_name]
+        if USE_NUMBA:
+            int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+            decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+            return recursive_index_decode_jit(int_array, decode_num)
+        else:
+            int_array = np.frombuffer(buffer[12:], '>i2')
+            decode_num = np.frombuffer(buffer[8:12], '>i')
+            return recursive_index_decode(int_array, decode_num)
     else:
-        int_array = np.frombuffer(buffer[12:], '>i2')
-        decode_num = np.frombuffer(buffer[8:12], '>i')
-        return recursive_index_decode(int_array, decode_num)
+        return []
 
 
 def run_length_decoder(in_array):

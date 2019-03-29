@@ -31,8 +31,8 @@ class MmtfStructure(object):
             #self.b_factor_list = mmtfDecoder.recursive_index_decode(
             #    int_array, decode_num)
             self.b_factor_list = mmtfDecoder.decode_type_10(input_data, "bFactorList")
-        else:
-            self.b_factor_list = []
+        #else:
+        #    self.b_factor_list = []
         if 'resolution' in input_data:
             self.resolution = input_data['resolution']
         else:
@@ -93,28 +93,29 @@ class MmtfStructure(object):
         # else:
         #     self.bond_order_list = None
         if "secStructList" in input_data:
-            self.sec_struct_list = np.frombuffer(
-                input_data["secStructList"][12:], '>i1')
-        else:
-            self.sec_struct_list = []
+            #self.sec_struct_list = np.frombuffer(input_data["secStructList"][12:], '>i1')
+            self.sec_struct_list = mmtfDecoder.decode_type_4(input_data, "secStructList")
+        #else:
+        #    self.sec_struct_list = []
         if "atomIdList" in input_data:
             #self.atom_id_list = np.cumsum(mmtfDecoder.run_length_decoder(
             #    np.frombuffer(input_data['atomIdList'][12:], '>i4')).astype(np.int16))
             self.atom_id_list = mmtfDecoder.decode_type_8(input_data, "atomIdList", input_data["numAtoms"])
-        else:
-            self.atom_id_list = []
+        #else:
+        #    self.atom_id_list = []
         if "sequenceIndexList" in input_data:
-            self.sequence_index_list = np.cumsum(mmtfDecoder.run_length_decoder(
-                np.frombuffer(input_data['sequenceIndexList'][12:], '>i4')).astype(np.int16))
-        else:
-            self.sequence_index_list = []
+            #self.sequence_index_list = np.cumsum(mmtfDecoder.run_length_decoder(
+            #   np.frombuffer(input_data['sequenceIndexList'][12:], '>i4')).astype(np.int16))
+            self.sequence_index_list = mmtfDecoder.decode_type_8(input_data, "sequenceIndexList", input_data["numAtoms"])
+        #else:
+        #    self.sequence_index_list = []
         if "occupancyList" in input_data:
             #decode_num = np.frombuffer(input_data["occupancyList"][8:12], '>i')
             #self.occupancy_list = mmtfDecoder.run_length_decoder(
             #    np.frombuffer(input_data["occupancyList"][12:], ">i4")) / decode_num
             self.occupancy_list = mmtfDecoder.decode_type_9(input_data, "occupancyList", input_data["numAtoms"])
-        else:
-            self.occupancy_list = []
+        #else:
+        #    self.occupancy_list = []
         if "experimentalMethods" in input_data:
             self.experimental_methods = input_data["experimentalMethods"]
         else:
@@ -129,8 +130,8 @@ class MmtfStructure(object):
             #   .astype(np.uint8).tostring().decode("ascii")
             #self.ins_code_list = np.array(list(ic))
             self.ins_code_list = mmtfDecoder.decode_type_6(input_data, "insCodeList", input_data["numGroups"])
-        else:
-            self.ins_code_list = []
+        #else:
+        #    self.ins_code_list = []
         if "entityList" in input_data:
             self.entity_list = input_data["entityList"]
         else:
@@ -140,8 +141,8 @@ class MmtfStructure(object):
             #self.chain_name_list = np.frombuffer(
             #    input_data["chainNameList"][12:], 'S4').astype(str)
             self.chain_name_list = mmtfDecoder.decode_type_5(input_data, "chainNameList")
-        else:
-            self.chain_name_list = []
+        #else:
+        #    self.chain_name_list = []
 
         # Variables guaranteed in mmtf files
         self.num_bonds = input_data["numBonds"]
@@ -197,6 +198,6 @@ class MmtfStructure(object):
         """Set the alternative location list for structure"""
         #self.alt_loc_list = [chr(x) for x in mmtfDecoder.run_length_decoder(
         #    np.frombuffer(self.alt_loc_list, ">i4")).astype(np.int16)]
-        self.alt_loc_set = True
-        self.alt_loc_list = mmtfDecoder.decode_type_6(self.alt_loc_list, "altLocList", self.num_atoms)
+        #self.alt_loc_set = True
+        #self.alt_loc_list = mmtfDecoder.decode_type_6(self.alt_loc_list, "altLocList", self.num_atoms)
         return self
