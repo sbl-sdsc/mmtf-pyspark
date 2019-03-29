@@ -11,7 +11,7 @@ __status__ = "done"
 import numpy as np
 from numba import jit
 
-USE_NUMBA = True
+USE_NUMBA = False
 
 
 def decode_type_2(input_data, field_name):
@@ -37,26 +37,19 @@ def decode_type_5(input_data, field_name):
 
 def decode_type_6(input_data, field_name, n):
     if field_name in input_data:
-        buffer = input_data[field_name]
-        if USE_NUMBA:
-            int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
-            return run_length_decoder_ascii(int_array, n)
-        else:
-            int_array = np.frombuffer(buffer[12:], '>i4')
-            ic = run_length_decoder(int_array, n).astype(np.uint8).tostring().decode("ascii")
-            return np.array(list(ic))
+        int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
+        return run_length_decoder_ascii(int_array, n)
     else:
         return []
 
 
 def decode_type_8(input_data, field_name, n):
     if field_name in input_data:
-        buffer = input_data[field_name]
         if USE_NUMBA:
-            int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+            int_array = np.frombuffer(input_data[field_name][12:], '>i2').byteswap().newbyteorder()
             return np.cumsum(run_length_decoder_jit(int_array, n))
         else:
-            int_array = np.frombuffer(buffer[12:], '>i2')
+            int_array = np.frombuffer(input_data[field_name][12:], '>i2')
             return np.cumsum(run_length_decoder(int_array))
     else:
         return []
