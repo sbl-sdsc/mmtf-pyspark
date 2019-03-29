@@ -171,8 +171,8 @@ class MmtfStructure(object):
         #    input_data["chainIdList"][12:], 'S4').astype(str)
         self.chain_id_list = mmtfDecoder.decode_type_5(input_data, "chainIdList")
         #self.alt_loc_list = input_data['altLocList'][12:]
-        self.alt_loc_set = True
-        self.alt_loc_list = mmtfDecoder.decode_type_6(input_data, "altLocList", input_data["numAtoms"])
+        self.alt_loc_list = input_data['altLocList']
+        self.alt_loc_set = False
 
     def pass_data_on(self, data_setters):
         """Write the data from the getters to the setters.
@@ -195,7 +195,8 @@ class MmtfStructure(object):
 
     def set_alt_loc_list(self):
         """Set the alternative location list for structure"""
-        self.alt_loc_list = [chr(x) for x in mmtfDecoder.run_length_decoder(
-            np.frombuffer(self.alt_loc_list, ">i4")).astype(np.int16)]
+        #self.alt_loc_list = [chr(x) for x in mmtfDecoder.run_length_decoder(
+        #    np.frombuffer(self.alt_loc_list, ">i4")).astype(np.int16)]
         self.alt_loc_set = True
+        self.alt_loc_list = mmtfDecoder.decode_type_6(self.alt_loc_list, "altLocList", self.num_atoms)
         return self
