@@ -66,6 +66,7 @@ class ColStructure(object):
 
     def get_df(self):
         if self.df is None:
+            # array.byteswap().newbyteorder()
             self.df = pd.DataFrame({'atomName': self.get_atom_names(),
                                     'altloc': self.get_alt_loc_list(),
                                     'group_name': self.get_group_names(),
