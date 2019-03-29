@@ -26,7 +26,7 @@ def decode_type_6(input_data, field_name, n):
     buffer = input_data[field_name]
     if USE_NUMBA:
         int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
-        return run_length_decoder_ascii_jit(int_array, n)
+        return run_length_decoder_ascii(int_array, n)
     #if USE_NUMBA:
     #    int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
     #    ic = run_length_decoder_jit(int_array, n).astype(np.uint8).tostring().decode("ascii")
@@ -151,8 +151,7 @@ def recursive_index_decode_jit(int_array, decode_num=1000):
     return out_arr[(int_array != maximum) & (int_array != minimum)]
 
 
-#@jit(nopython=True)
-def run_length_decoder_ascii_jit(x, n):
+def run_length_decoder_ascii(x, n):
     """Decodes a run length encoded array
 
     Parameters
@@ -160,7 +159,7 @@ def run_length_decoder_ascii_jit(x, n):
     x : encoded array of integers (value, repeat pairs)
     n : number of element in decoded array
     """
-    y = np.empty(n, ' ')
+    y = np.empty(n, dtype=str)
     start = 0
     for i in range(0, x.shape[0]-1, 2):
         end = x[i+1] + start
