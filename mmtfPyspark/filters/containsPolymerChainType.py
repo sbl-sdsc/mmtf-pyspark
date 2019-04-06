@@ -58,7 +58,7 @@ class ContainsPolymerChainType(object):
 
     def __call__(self, t):
         structure = t[1]
-        contrains_polymer = False
+        contains_polymer = False
         global_match = False
         # get number of chains in first model, nessary?
         num_chains = structure.chains_per_model[0]
