@@ -91,24 +91,43 @@ class ColumnarStructure(object):
         return self.numModels
 
     def get_x_coords(self):
-        return self.structure.x_coord_list
+        if self.structure.x_coord_list.shape[0] != self.get_num_atoms():
+            return self.structure.x_coord_list[:self.get_num_atoms()]
+        else:
+            return self.structure.x_coord_list
 
     def get_y_coords(self):
-        return self.structure.y_coord_list
+        if self.structure.y_coord_list.shape[0] != self.get_num_atoms():
+            return self.structure.y_coord_list[:self.get_num_atoms()]
+        else:
+            return self.structure.y_coord_list
 
     def get_z_coords(self):
-        return self.structure.z_coord_list
+        if self.structure.z_coord_list.shape[0] != self.get_num_atoms():
+            return self.structure.z_coord_list[:self.get_num_atoms()]
+        else:
+            return self.structure.z_coord_list
 
     def get_occupancies(self):
-        return self.structure.occupancy_list
+        if self.structure.occupancy_list.shape[0] != self.get_num_atoms():
+            return self.structure.occupancy_list[:self.get_num_atoms()]
+        else:
+            return self.structure.occupancy_list
 
     def get_b_factors(self):
-        return self.structure.b_factor_list
+        if self.structure.b_factor_list.shape[0] != self.get_num_atoms():
+            return self.structure.b_factor_list[:self.get_num_atoms()]
+        else:
+            return self.structure.b_factor_list
 
     def get_alt_loc_list(self):
-        if not self.structure.alt_loc_set:
-            self.structure = self.structure.set_alt_loc_list()
-        return self.structure.alt_loc_list
+        if self.structure.alt_loc_list.shape[0] != self.get_num_atoms():
+            return self.structure.alt_loc_list[:self.get_num_atoms()]
+        else:
+            return self.structure.alt_loc_list
+        #if not self.structure.alt_loc_set:
+        #    self.structure = self.structure.set_alt_loc_list()
+        #return self.structure.alt_loc_list
 
     def get_group_types(self):
         return self.structure.group_type_list

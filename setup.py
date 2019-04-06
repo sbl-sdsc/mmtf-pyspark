@@ -12,7 +12,7 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.interactions'
                         ]
 
-mmtfPyspark_dependencies = ['msgpack==0.5.6',
+mmtfPyspark_dependencies = ['msgpack==0.6.1',
                             'numpy==1.15.4',
                             'ipywidgets==7.4.2',
                             'mmtf-python==1.1.2',
@@ -29,7 +29,7 @@ mmtfPyspark_dependencies = ['msgpack==0.5.6',
                             'pyarrow==0.11.1',
                             'xlrd==1.1.0',
                             'nose',
-                            'cython',
+                            'Cython',
                             ]
 
 LONG_DESCRIPTION = """
