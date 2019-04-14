@@ -81,17 +81,16 @@ class MmtfStructure(object):
             self.space_group = input_data["spaceGroup"]
         else:
             self.space_group = None
-        # TODO bond info needs to be decoded
-        # if "bondAtomList" in input_data:
-        #     self.bond_atom_list = np.frombuffer(
-        #         input_data["bondAtomList"][12:], '>i4')
-        # else:
-        #     self.bond_atom_list = None
-        # if "bondOrderList" in input_data:
-        #     self.bond_order_list = np.frombuffer(
-        #         input_data["bondOrderList"][12:], '>i1')
-        # else:
-        #     self.bond_order_list = None
+        if "bondAtomList" in input_data:
+            self.bond_atom_list = np.frombuffer(
+                input_data["bondAtomList"][12:], '>i4')
+        else:
+            self.bond_atom_list = None
+        if "bondOrderList" in input_data:
+            self.bond_order_list = np.frombuffer(
+                input_data["bondOrderList"][12:], '>i1')
+        else:
+            self.bond_order_list = None
         if "secStructList" in input_data:
             #self.sec_struct_list = np.frombuffer(input_data["secStructList"][12:], '>i1')
             self.sec_struct_list = mmtfDecoder.decode_type_2(input_data, "secStructList")

@@ -215,7 +215,7 @@ def decode_group_list(input_data):
 
 
 def convert_group(input_group):
-    """Convert an individual group from byte strings to regula strings.
+    """Convert an individual group from byte strings to regular strings.
 
     Parameters
     ----------
