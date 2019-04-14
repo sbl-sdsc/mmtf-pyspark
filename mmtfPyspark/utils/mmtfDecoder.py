@@ -11,7 +11,7 @@ __status__ = "done"
 import numpy as np
 from numba import jit
 
-USE_NUMBA = True
+USE_NUMBA = False
 
 
 def decode_type_2(input_data, field_name):
