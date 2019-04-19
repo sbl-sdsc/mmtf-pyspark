@@ -12,6 +12,7 @@ __version__ = "0.2.0"
 __status__ = "Done"
 
 import numpy as np
+import pandas as pd
 
 
 class ColumnarStructure(object):
@@ -52,12 +53,31 @@ class ColumnarStructure(object):
         self.groupToAtomIndices = None
         self.chainToAtomIndices = None
         self.chainToGroupIndices = None
+        self.df = None
 
 
         if firstModelOnly:
             self.numModels = 1
         else:
             self.numModels = structure.num_models
+
+    def get_df(self):
+        if self.df is None:
+            self.df = pd.DataFrame({'atomName': self.get_atom_names(),
+                                    'altloc': self.get_alt_loc_list(),
+                                    'group_name': self.get_group_names(),
+                                    'chain_name': self.get_chain_names(),
+                                    'x': self.get_x_coords(),
+                                    'y': self.get_y_coords(),
+                                    'z': self.get_z_coords(),
+                                    'o': self.get_occupancies(),
+                                    'b': self.get_b_factors(),
+                                    'element': self.get_elements(),
+                                    'polymer': self.is_polymer(),
+                                    'entity': self.get_entity_indices(),
+                                    'seq_index': self.get_sequence_positions()
+                                    })
+        return self.df
 
     def get_group_to_atom_indices(self):
         if self.groupToAtomIndices is None:
