@@ -21,7 +21,7 @@ from scipy.spatial import cKDTree
 class InteractionExtractorDf(object):
 
     @staticmethod
-    def get_interactions(structure, query, target, inter=True, intra=False, level='group'):
+    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, level='group'):
         '''Returns a dataset of ligand - macromolecule interactions
 
         The dataset contains the following columns. When level='chain' or level='group' is specified,
@@ -54,7 +54,7 @@ class InteractionExtractorDf(object):
         '''
 
         # find all interactions
-        row = structure.flatMap(InteractionFingerprint(query, target, inter, intra, level))
+        row = structure.flatMap(InteractionFingerprint(query, target, distance_cutoff, inter, intra, level))
 
         # TODO consider adding parameters
         # chem: add element, entity_type(LGO, PRO, DNA, etc.)
@@ -110,9 +110,10 @@ class InteractionExtractorDf(object):
 
 class InteractionFingerprint:
 
-    def __init__(self, query, target, inter, intra, level='group'):
+    def __init__(self, query, target, distance_cutoff, inter, intra, level='group'):
         self.query = query
         self.target = target
+        self.distance_cutoff = distance_cutoff
         self.inter = inter
         self.intra = intra
         self.level = level
@@ -142,8 +143,7 @@ class InteractionFingerprint:
         # Calculate distances between the two atom sets
         tree_t = cKDTree(cq)
         tree_q = cKDTree(ct)
-        distance_cutoff = self.filter.get_distance_cutoff()
-        sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=distance_cutoff, output_type='dict')
+        sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=self.distance_cutoff, output_type='dict')
 
         # Add interactions to rows.
         # There are redundant interactions when aggregating the results at the 'group' level,
