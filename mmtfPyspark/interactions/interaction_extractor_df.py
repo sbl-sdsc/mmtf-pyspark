@@ -161,6 +161,18 @@ class InteractionFingerprint:
             qr = q.iloc[[j]]
             print(tr)
             print(qr)
+            qr['group_number']
+            row = Row(structure_id + "." + pct[i],  # structureChainId
+                      qr['group_name'].item(),  # queryGroupId
+                      qr['chain_name'].item(),  # queryChainId
+                      qr['group_number'].item(),  # queryGroupNumber
+                      tr['group_name'].item(),  # targetGroupId
+                      tr['chain_name'].item(),  # targetChainId
+                      tr['group_number'].item(),  # targetGroupNumber
+                      0,  # sequenceIndex
+                      "SEQUENCE"  # sequence
+                      )
+            rows.add(row)
             # # handle intra vs inter-chain interactions
             # if pcq[j] == pct[i]:
             #     # cases with interactions in the same chain

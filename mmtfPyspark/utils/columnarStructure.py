@@ -66,6 +66,7 @@ class ColumnarStructure(object):
             self.df = pd.DataFrame({'atomName': self.get_atom_names(),
                                     'altloc': self.get_alt_loc_list(),
                                     'group_name': self.get_group_names(),
+                                    'group_number': self.get_group_numbers(),
                                     'chain_name': self.get_chain_names(),
                                     'x': self.get_x_coords(),
                                     'y': self.get_y_coords(),
