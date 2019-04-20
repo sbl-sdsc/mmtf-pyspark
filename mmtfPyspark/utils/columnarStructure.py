@@ -75,7 +75,7 @@ class ColumnarStructure(object):
                                     'element': self.get_elements(),
                                     'polymer': self.is_polymer(),
                                     'entity': self.get_entity_indices(),
-                                    'seq_index': self.get_sequence_positions()
+ #                                   'seq_index': self.get_sequence_positions()
                                     })
         return self.df
 
