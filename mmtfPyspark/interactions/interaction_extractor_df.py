@@ -143,8 +143,8 @@ class InteractionFingerprint:
         ct = np.stack(t['x'].values, t['y'].values, t['z'].values, axis=-1)
 
         # Calculate distances between the two atom sets
-        tree_t = cKDTree(cq)
-        tree_q = cKDTree(ct)
+        tree_t = cKDTree(ct)
+        tree_q = cKDTree(cq)
         sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=self.distance_cutoff, output_type='dict')
 
         # Add interactions to rows.
@@ -159,10 +159,8 @@ class InteractionFingerprint:
 
             tr = t.iloc[[i]]
             qr = q.iloc[[j]]
-            print(tr)
-            print(qr)
-            qr['group_number']
-            row = Row(structure_id + "." + pct[i],  # structureChainId
+
+            row = Row(structure_id + "." + qr['chain_name'].item(),  # structureChainId
                       qr['group_name'].item(),  # queryGroupId
                       qr['chain_name'].item(),  # queryChainId
                       qr['group_number'].item(),  # queryGroupNumber
