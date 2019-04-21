@@ -2,16 +2,16 @@
 
 Provides efficient methods to decode mmtf structures
 '''
-__author__ = "Mars (Shih-Cheng) Huang"
-__maintainer__ = "Mars (Shih-Cheng) Huang"
-__email__ = "marshuang80@gmail.com"
-__version__ = "0.2.0"
-__status__ = "done"
+__author__ = "Mars (Shih-Cheng) Huang, Peter W Rose"
+__maintainer__ = "Peter W Rose"
+__email__ = "pwrose.ucsd@gmail.com"
+__version__ = "0.3.7"
+__status__ = "experimental"
 
 import numpy as np
 from numba import jit
 
-USE_NUMBA = False
+USE_NUMBA = True
 
 
 def decode_type_2(input_data, field_name):
@@ -45,11 +45,10 @@ def decode_type_6(input_data, field_name, n):
 
 def decode_type_8(input_data, field_name, n):
     if field_name in input_data:
+        int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
         if USE_NUMBA:
-            int_array = np.frombuffer(input_data[field_name][12:], '>i2').byteswap().newbyteorder()
             return np.cumsum(run_length_decoder_jit(int_array, n))
         else:
-            int_array = np.frombuffer(input_data[field_name][12:], '>i2').byteswap().newbyteorder()
             return np.cumsum(run_length_decoder(int_array, n))
     else:
         return []
@@ -58,13 +57,11 @@ def decode_type_8(input_data, field_name, n):
 def decode_type_9(input_data, field_name, n):
     if field_name in input_data:
         buffer = input_data[field_name]
+        int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
+        divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
         if USE_NUMBA:
-            int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
-            divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
             return run_length_decoder_jit(int_array, n) / divisor
         else:
-            int_array = np.frombuffer(buffer[12:], '>i4')
-            divisor = np.frombuffer(buffer[8:12], '>i')
             return run_length_decoder(int_array, n) / divisor
     else:
         return []
@@ -73,13 +70,11 @@ def decode_type_9(input_data, field_name, n):
 def decode_type_10(input_data, field_name):
     if field_name in input_data:
         buffer = input_data[field_name]
+        int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+        decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
         if USE_NUMBA:
-            int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
-            decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
             return recursive_index_decode_jit(int_array, decode_num)
         else:
-            int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
-            decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
             return recursive_index_decode(int_array, decode_num)
     else:
         return []
@@ -97,7 +92,7 @@ def run_length_decoder(in_array, n):
     values = np.array(in_array[0::2])
     starts = np.insert(np.array([0]), 1, np.cumsum(lengths))[:-1]
     ends = starts + lengths
-    #n = ends[-1]
+    # n = ends[-1]
     x = np.full(n, np.nan)
     for l, h, v in zip(starts, ends, values):
         x[l:h] = v
@@ -115,8 +110,8 @@ def run_length_decoder_jit(x, n):
     """
     y = np.empty(n)
     start = 0
-    for i in range(0, x.shape[0]-1, 2):
-        end = x[i+1] + start
+    for i in range(0, x.shape[0] - 1, 2):
+        end = x[i + 1] + start
         y[start:end] = x[i]
         start = end
     return y
@@ -175,8 +170,8 @@ def run_length_decoder_ascii(x, n):
     """
     y = np.empty(n, dtype=str)
     start = 0
-    for i in range(0, x.shape[0]-1, 2):
-        end = x[i+1] + start
+    for i in range(0, x.shape[0] - 1, 2):
+        end = x[i + 1] + start
         y[start:end] = chr(x[i])
         start = end
     return y
