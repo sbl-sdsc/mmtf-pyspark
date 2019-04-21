@@ -47,9 +47,9 @@ def decode_type_8(input_data, field_name, n):
     if field_name in input_data:
         int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
         if USE_NUMBA:
-            return np.cumsum(run_length_decoder_jit(int_array, n))
+            return np.cumsum(run_length_decoder_jit(int_array, n)).astype(np.int32)
         else:
-            return np.cumsum(run_length_decoder(int_array, n))
+            return np.cumsum(run_length_decoder(int_array, n)).astype(np.int32)
     else:
         return []
 
