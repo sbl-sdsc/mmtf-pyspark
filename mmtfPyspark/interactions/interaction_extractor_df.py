@@ -143,8 +143,8 @@ class InteractionFingerprint:
             return []
 
         # Stack coordinates into an nx3 array
-        cq = np.stack(q['x'].values, q['y'].values, q['z'].values, axis=-1)
-        ct = np.stack(t['x'].values, t['y'].values, t['z'].values, axis=-1)
+        cq = np.column_stack((q['x'].values, q['y'].values, q['z'].values))
+        ct = np.column_stack((t['x'].values, t['y'].values, t['z'].values))
 
         # Calculate distances between the two atom sets
         tree_t = cKDTree(ct)
