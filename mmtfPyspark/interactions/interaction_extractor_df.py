@@ -127,15 +127,19 @@ class InteractionFingerprint:
             return []
 
         df = ColumnarStructure(structure, True).get_df()
+        if df is None:
+            return []
 
         # Apply query filter
-        q = df.query(self.query)
-        if q.shape[0] == 0:
+        try:
+            q = df.query(self.query)
+        except:
             return []
 
         # Apply target filter
-        t = df.query(self.target)
-        if t.shape[0] == 0:
+        try:
+            t = df.query(self.target)
+        except:
             return []
 
         # Stack coordinates into an nx3 array
