@@ -126,15 +126,15 @@ class InteractionFingerprint:
         if structure.num_chains == 1 and self.inter and not self.intra:
             return []
 
-        arrays = ColumnarStructure(structure, True)
+        df = ColumnarStructure(structure, True).get_df()
 
         # Apply query filter
-        q = arrays.get_df().query(self.query)
+        q = df.query(self.query)
         if q.shape[0] == 0:
             return []
 
         # Apply target filter
-        t = arrays.get_df().query(self.target)
+        t = df.query(self.target)
         if t.shape[0] == 0:
             return []
 
