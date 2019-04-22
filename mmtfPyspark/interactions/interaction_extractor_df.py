@@ -136,10 +136,19 @@ class InteractionFingerprint:
         except:
             return []
 
+        if q.shape[0] == 0:
+            return []
+
         # Apply target filter
-        try:
-            t = df.query(self.target)
-        except:
+        if self.target == self.query:
+            t = q
+        else:
+            try:
+                t = df.query(self.target)
+            except:
+                return []
+
+        if t.shape[0] == 0:
             return []
 
         # Stack coordinates into an nx3 array
