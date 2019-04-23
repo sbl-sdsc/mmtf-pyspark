@@ -79,6 +79,7 @@ class ColumnarStructure(object):
                                     'entity': self.get_entity_indices(),
  #                                   'seq_index': self.get_sequence_positions()
                                     })
+            self.df.set_index(['chain_name', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
         return self.df
 
     def initialize_core_data(self):
