@@ -63,6 +63,7 @@ class ColumnarStructure(object):
 
     def get_df(self):
         if self.df is None:
+            initialize_core_data()
             self.df = pd.DataFrame({'atom_name': self.get_atom_names(),
                                     'altloc': self.get_alt_loc_list(),
                                     'group_name': self.get_group_names(),
@@ -79,6 +80,23 @@ class ColumnarStructure(object):
  #                                   'seq_index': self.get_sequence_positions()
                                     })
         return self.df
+
+    def initialize_core_data(self):
+        self.atomNames = np.empty(self.get_num_atoms(), dtype=np.object_)
+        self.elements = np.empty(self.get_num_atoms(), dtype=np.object_)
+        self.groupNames = np.empty(self.get_num_atoms(), dtype=np.object_)
+        self.groupNumbers = np.empty(self.get_num_atoms(), dtype=np.object_)
+
+        groupTypeIndices = self.get_group_types()
+
+        for i in range(self.get_num_groups()):
+            index = groupTypeIndices[i]
+            start = self.groupToAtomIndices[i]
+            end = self.groupToAtomIndices[i + 1]
+            self.atomNames[start:end] = self.structure.group_list[index]['atomNameList']
+            self.elements[start:end] = self.structure.group_list[index]['elementList']
+            self.groupNames[start:end] = self.structure.group_list[index]['groupName']
+            self.groupNumbers[start:end] = str(self.structure.group_id_list[i]) + self.structure.ins_code_list[i]
 
     def get_group_to_atom_indices(self):
         if self.groupToAtomIndices is None:
@@ -172,10 +190,11 @@ class ColumnarStructure(object):
             # Max chemCompType has 17 characters
             self.chemCompType = np.empty(
                 self.get_num_atoms(), dtype=np.object_)
-            self.groupTypeIndices = self.get_group_types()
+#            self.groupTypeIndices = self.get_group_types()
+            groupTypeIndices = self.get_group_types()
 
             for i in range(self.get_num_groups()):
-                index = self.groupTypeIndices[i]
+                index = groupTypeIndices[i]
                 value = self.structure.group_list[index]['chemCompType']
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
@@ -187,10 +206,10 @@ class ColumnarStructure(object):
 
         if self.elements is None:
             self.elements = np.empty(self.get_num_atoms(), dtype=np.object_)
-            self.groupTypeIndices = self.get_group_types()
+            groupTypeIndices = self.get_group_types()
 
             for i in range(self.get_num_groups()):
-                index = self.groupTypeIndices[i]
+                index = groupTypeIndices[i]
                 elementNames = self.structure.group_list[index]['elementList']
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
@@ -203,10 +222,10 @@ class ColumnarStructure(object):
         if self.atomNames is None:
             # in case of 2 cjacter group + 3 digits
             self.atomNames = np.empty(self.get_num_atoms(), dtype=np.object_)
-            self.groupTypeIndices = self.get_group_types()
+            groupTypeIndices = self.get_group_types()
 
             for i in range(self.get_num_groups()):
-                index = self.groupTypeIndices[i]
+                index = groupTypeIndices[i]
                 atomNames = self.structure.group_list[index]['atomNameList']
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
@@ -225,6 +244,7 @@ class ColumnarStructure(object):
             self.get_elements()
             self.get_group_names()
 
+            # TODO calc. ccType for each unique group
             for i in range(self.get_num_groups()):
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
@@ -275,10 +295,10 @@ class ColumnarStructure(object):
 
         if self.groupNames is None:
             self.groupNames = np.empty(self.get_num_atoms(), dtype=np.object_)
-            self.groupTypeIndices = self.structure.group_type_list
+            groupTypeIndices = self.structure.group_type_list
 
             for i in range(self.get_num_groups()):
-                index = self.groupTypeIndices[i]
+                index = groupTypeIndices[i]
                 value = self.structure.group_list[index]['groupName']
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
