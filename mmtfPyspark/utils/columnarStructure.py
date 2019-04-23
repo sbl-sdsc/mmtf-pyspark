@@ -61,14 +61,14 @@ class ColumnarStructure(object):
         else:
             self.numModels = structure.num_models
 
-    def get_df(self):
+    def get_df(self, multi_index=False):
         if self.df is None:
             self.initialize_core_data()
-            self.df = pd.DataFrame({'atom_name': self.get_atom_names(),
-                                    'altloc': self.get_alt_loc_list(),
-                                    'group_name': self.get_group_names(),
+            self.df = pd.DataFrame({'chain_name': self.get_chain_names(),
                                     'group_number': self.get_group_numbers(),
-                                    'chain_name': self.get_chain_names(),
+                                    'group_name': self.get_group_names(),
+                                    'atom_name': self.get_atom_names(),
+                                    'altloc': self.get_alt_loc_list(),
                                     'x': self.get_x_coords(),
                                     'y': self.get_y_coords(),
                                     'z': self.get_z_coords(),
@@ -79,7 +79,9 @@ class ColumnarStructure(object):
                                     'entity': self.get_entity_indices(),
  #                                   'seq_index': self.get_sequence_positions()
                                     })
-            self.df.set_index(['chain_name', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
+            if multi_index:
+                self.df.set_index(['chain_name', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
+
         return self.df
 
     def initialize_core_data(self):
