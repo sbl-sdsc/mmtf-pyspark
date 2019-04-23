@@ -173,6 +173,27 @@ class InteractionFingerprint:
             tr = t.iloc[[i]]
             qr = q.iloc[[j]]
 
+            # handle intra vs inter-chain interactions
+            if qr['chain_name'].item() == tr['chain_name'].item():
+                # cases with interactions in the same chain
+                if not self.intra:
+                    # exclude intrachain interactions
+                    continue
+
+                elif qr['group_name'].item() == tr['group_name'].item():
+                    # exclude interactions within the same chain and group
+                    continue
+
+            else:
+                # case with interactions in different chains
+                if not self.inter:
+                    # exclude inter-chain interactions
+                    continue
+
+            # exclude self interactions (this can happen if the query and target criteria overlap)
+            if dis < 0.001:
+                continue
+
             row = Row(structure_id + "." + qr['chain_name'].item(),  # structureChainId
                       qr['group_name'].item(),  # queryGroupId
                       qr['chain_name'].item(),  # queryChainId

@@ -63,7 +63,7 @@ class ColumnarStructure(object):
 
     def get_df(self):
         if self.df is None:
-            self.df = pd.DataFrame({'atomName': self.get_atom_names(),
+            self.df = pd.DataFrame({'atom_name': self.get_atom_names(),
                                     'altloc': self.get_alt_loc_list(),
                                     'group_name': self.get_group_names(),
                                     'group_number': self.get_group_numbers(),
