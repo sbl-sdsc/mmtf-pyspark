@@ -144,7 +144,7 @@ class InteractionFingerprint:
             t = q
         else:
             try:
-                t = df.query(self.target)
+                t = df.query(self.target, inplace=True)
             except:
                 return []
 
