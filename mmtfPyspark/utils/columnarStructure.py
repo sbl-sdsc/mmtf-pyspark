@@ -220,8 +220,7 @@ class ColumnarStructure(object):
     def get_elements(self):
 
         if self.elements is None:
-            # self.elements = np.empty(self.get_num_atoms(), dtype=np.object_)
-            self.elements = np.empty(self.get_num_atoms(), dtype='S2')
+            self.elements = np.empty(self.get_num_atoms(), dtype=np.object_)
             groupTypeIndices = self.get_group_types()
 
             for i in range(self.get_num_groups()):
