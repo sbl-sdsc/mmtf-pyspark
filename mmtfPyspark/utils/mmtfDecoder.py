@@ -168,6 +168,7 @@ def run_length_decoder_ascii(x, n):
     x : encoded array of integers (value, repeat pairs)
     n : number of element in decoded array
     """
+    # TODO initialize as str or np.object_ or default?
     y = np.empty(n, dtype=str)
     start = 0
     for i in range(0, x.shape[0] - 1, 2):
