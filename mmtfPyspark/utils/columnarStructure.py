@@ -13,7 +13,6 @@ __status__ = "Done"
 
 import numpy as np
 import pandas as pd
-from numba import njit
 
 
 class ColumnarStructure(object):
@@ -73,11 +72,11 @@ class ColumnarStructure(object):
                                     'x': self.get_x_coords(),
                                     'y': self.get_y_coords(),
                                     'z': self.get_z_coords(),
-                                    'o': self.get_occupancies(),
-                                    'b': self.get_b_factors(),
+    #                               'o': self.get_occupancies(),
+    #                                'b': self.get_b_factors(),
                                     'element': self.get_elements(),
                                     'polymer': self.is_polymer(),
-                                    'entity': self.get_entity_indices(),
+    #                               'entity': self.get_entity_indices(),
  #                                   'seq_index': self.get_sequence_positions()
                                     })
             if multi_index:
@@ -98,7 +97,6 @@ class ColumnarStructure(object):
                           index=index)
         return df
 
-    @njit
     def initialize_core_data(self):
         self.atomNames = np.empty(self.get_num_atoms(), dtype=np.object_)
         self.elements = np.empty(self.get_num_atoms(), dtype=np.object_)
