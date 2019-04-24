@@ -168,7 +168,7 @@ class InteractionFingerprint:
         # There are redundant interactions when aggregating the results at the 'group' level,
         # since multiple atoms in a group may be involved in interactions.
         # Therefore we use a set of rows to store only unique interactions.
-        rows = set([])
+        rows = set()
         for ind, dis in sparse_dm.items():
             i = ind[0]  # polymer target atom index
             j = ind[1]  # polymer query atom index
@@ -245,9 +245,9 @@ class InteractionFingerprint:
         tc_keys = set(tc.groups.keys())
         keys = qc_keys.intersection(tc_keys)
 
-        rows = list([])
+        rows = list()
         for key in keys:
-            rows.append(self.calc_interactions(structure_id, qc.get_group(key), tc.get_group(key)))
+            rows += self.calc_interactions(structure_id, qc.get_group(key), tc.get_group(key))
 
         return rows
 
