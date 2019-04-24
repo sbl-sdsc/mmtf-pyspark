@@ -242,7 +242,7 @@ class InteractionFingerprint:
         qc = q.groupby("chain_id")
         tc = t.groupby("chain_id")
 
-        # intermolecular interactions are within the same chain.
+        # intramolecular interactions are within the same chain.
         # find the chains in common between query and target
         qc_keys = set(qc.groups.keys())
         tc_keys = set(tc.groups.keys())
@@ -262,7 +262,8 @@ class InteractionFingerprint:
         rows = list()
         for qkey in qc.groups.keys():
             for tkey in tc.groups.keys():
-                rows += self.calc_interactions(structure_id, qc.get_group(qkey), tc.get_group(tkey))
+                if qkey != tkey:
+                    rows += self.calc_interactions(structure_id, qc.get_group(qkey), tc.get_group(tkey))
 
         return rows
 
