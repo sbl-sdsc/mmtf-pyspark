@@ -215,7 +215,7 @@ class InteractionFingerprint:
                 rows.add(row)
 
             elif self.level == 'atom':
-                row = Row(structure_id + "." + pct[i],  # structureChainId
+                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
                           qr['group_name'].item(),  # queryGroupId
                           qr['chain_name'].item(),  # queryChainId
                           qr['group_number'].item(),  # queryGroupNumber
