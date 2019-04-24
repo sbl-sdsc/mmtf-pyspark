@@ -122,6 +122,7 @@ class InteractionFingerprint:
         structure_id = t[0]
         structure = t[1]
 
+
         # if there is only a single chain, there are no intermolecular interactions
         if structure.num_chains == 1 and self.inter and not self.intra:
             return []
@@ -151,6 +152,9 @@ class InteractionFingerprint:
         if t is None or t.shape[0] == 0:
             return []
 
+        if self.intra and not self.inter:
+            return self.calc_intra_interactions(structure_id, q, t)
+
         # Stack coordinates into an nx3 array
         cq = np.column_stack((q['x'].values, q['y'].values, q['z'].values))
         ct = np.column_stack((t['x'].values, t['y'].values, t['z'].values))
@@ -168,12 +172,12 @@ class InteractionFingerprint:
         for ind, dis in sparse_dm.items():
             i = ind[0]  # polymer target atom index
             j = ind[1]  # polymer query atom index
-            print(structure_id, i, j, dis)
 
             tr = t.iloc[[i]]
             qr = q.iloc[[j]]
 
             # handle intra vs inter-chain interactions
+            # TODO should compare chain_id since ligands may have the same chain id as proteins
             if qr['chain_name'].item() == tr['chain_name'].item():
                 # cases with interactions in the same chain
                 if not self.intra:
@@ -230,3 +234,81 @@ class InteractionFingerprint:
 
         return rows
 
+    def calc_intra_interactions(self, structure_id, q, t):
+        # Group dataframes by chains
+        qc = q.groupby("chain_id")
+        tc = t.groupby("chain_id")
+
+        # intermolecular interactions are within the same chain.
+        # find the chains in common between query and target
+        qc_keys = set(qc.groups.keys())
+        tc_keys = set(tc.groups.keys())
+        keys = qc_keys.intersection(tc_keys)
+
+        rows = list([])
+        for key in keys:
+            rows.append(self.calc_interactions(structure_id, qc.get_group(key), tc.get_group(key)))
+
+        return rows
+
+    def calc_interactions(self, structure_id, q, t):
+        # Stack coordinates into an nx3 array
+        cq = np.column_stack((q['x'].values, q['y'].values, q['z'].values))
+        ct = np.column_stack((t['x'].values, t['y'].values, t['z'].values))
+
+        # Calculate distances between the two atom sets
+        tree_t = cKDTree(ct)
+        tree_q = cKDTree(cq)
+        sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=self.distance_cutoff, output_type='dict')
+
+        # Add interactions to rows.
+        # There are redundant interactions when aggregating the results at the 'group' level,
+        # since multiple atoms in a group may be involved in interactions.
+        # Therefore we use a set of rows to store only unique interactions.
+        rows = set([])
+        for ind, dis in sparse_dm.items():
+            i = ind[0]  # polymer target atom index
+            j = ind[1]  # polymer query atom index
+
+            tr = t.iloc[[i]]
+            qr = q.iloc[[j]]
+
+            # exclude self interactions (this can happen if the query and target criteria overlap)
+            if dis < 0.001:
+                continue
+
+            if self.level == 'chain':
+                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+                          qr['group_name'].item(),  # queryGroupId
+                          qr['chain_name'].item(),  # queryChainId
+                          qr['group_number'].item(),  # queryGroupNumber
+                          tr['chain_name'].item()  # targetChainId
+                          )
+                rows.add(row)
+
+            elif self.level == 'group':
+                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+                          qr['group_name'].item(),  # queryGroupId
+                          qr['chain_name'].item(),  # queryChainId
+                          qr['group_number'].item(),  # queryGroupNumber
+                          tr['group_name'].item(),  # targetGroupId
+                          tr['chain_name'].item(),  # targetChainId
+                          tr['group_number'].item(),  # targetGroupNumber
+                          )
+                rows.add(row)
+
+            elif self.level == 'atom':
+                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+                          qr['group_name'].item(),  # queryGroupId
+                          qr['chain_name'].item(),  # queryChainId
+                          qr['group_number'].item(),  # queryGroupNumber
+                          qr['atom_name'].item(),  # queryAtomName
+                          tr['group_name'].item(),  # targetGroupId
+                          tr['chain_name'].item(),  # targetChainId
+                          tr['group_number'].item(),  # targetGroupNumber
+                          tr['atom_name'].item(),  # targetAtomName
+                          dis,  # distance
+                          )
+                rows.add(row)
+
+        return rows
