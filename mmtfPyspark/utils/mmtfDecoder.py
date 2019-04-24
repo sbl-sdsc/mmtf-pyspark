@@ -60,9 +60,9 @@ def decode_type_9(input_data, field_name, n):
         int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
         divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
         if USE_NUMBA:
-            return run_length_decoder_jit(int_array, n) / divisor
+            return (run_length_decoder_jit(int_array, n) / divisor).astype(np.float32)
         else:
-            return run_length_decoder(int_array, n) / divisor
+            return (run_length_decoder(int_array, n) / divisor).astype(np.float32)
     else:
         return []
 
@@ -73,9 +73,9 @@ def decode_type_10(input_data, field_name):
         int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
         decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
         if USE_NUMBA:
-            return recursive_index_decode_jit(int_array, decode_num)
+            return (recursive_index_decode_jit(int_array, decode_num)).astype(np.float32)
         else:
-            return recursive_index_decode(int_array, decode_num)
+            return (recursive_index_decode(int_array, decode_num)).astype(np.float32)
     else:
         return []
 

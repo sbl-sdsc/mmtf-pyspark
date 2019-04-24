@@ -13,6 +13,7 @@ __status__ = "Done"
 
 import numpy as np
 import pandas as pd
+from numba import njit
 
 
 class ColumnarStructure(object):
@@ -84,6 +85,20 @@ class ColumnarStructure(object):
 
         return self.df
 
+    def get_atom_df(self):
+        chain_indices = self.get_atom_to_chain_indices()
+        chain_names = self.structure.chain_name_list
+        group_indices = np.arange(self.get_num_atoms())
+        group_numbers = self.get_group_numbers()
+
+        index = pd.MultiIndex(levels=[chain_names, group_numbers], labels=[chain_indices, group_indices], names=['chain_name','group_number'], verify_integrity=True)
+        df = pd.DataFrame({'x': self.get_x_coords(),
+                           'y': self.get_y_coords(),
+                           'z': self.get_z_coords()},
+                          index=index)
+        return df
+
+    @njit
     def initialize_core_data(self):
         self.atomNames = np.empty(self.get_num_atoms(), dtype=np.object_)
         self.elements = np.empty(self.get_num_atoms(), dtype=np.object_)
