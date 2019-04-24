@@ -86,8 +86,8 @@ class InteractionExtractorDf(object):
                       StructField("targetGroupId", StringType(), nullable),
                       StructField("targetChainId", StringType(), nullable),
                       StructField("targetGroupNumber", StringType(), nullable),
-                      StructField("sequenceIndex", IntegerType(), nullable),
-                      StructField("sequence", StringType(), nullable)
+                      # StructField("sequenceIndex", IntegerType(), nullable),
+                      # StructField("sequence", StringType(), nullable)
                       ]
         elif level == 'atom':
             fields = [StructField("structureChainId", StringType(), nullable),
@@ -100,8 +100,8 @@ class InteractionExtractorDf(object):
                       StructField("targetGroupNumber", StringType(), nullable),
                       StructField("targetAtomName", StringType(), nullable),
                       StructField("distance", FloatType(), nullable),
-                      StructField("sequenceIndex", IntegerType(), nullable),
-                      StructField("sequence", StringType(), nullable)
+                      # StructField("sequenceIndex", IntegerType(), nullable),
+                      # StructField("sequence", StringType(), nullable)
                       ]
 
         schema = StructType(fields)
@@ -194,73 +194,39 @@ class InteractionFingerprint:
             if dis < 0.001:
                 continue
 
-            row = Row(structure_id + "." + qr['chain_name'].item(),  # structureChainId
-                      qr['group_name'].item(),  # queryGroupId
-                      qr['chain_name'].item(),  # queryChainId
-                      qr['group_number'].item(),  # queryGroupNumber
-                      tr['group_name'].item(),  # targetGroupId
-                      tr['chain_name'].item(),  # targetChainId
-                      tr['group_number'].item(),  # targetGroupNumber
-                      0,  # sequenceIndex
-                      "SEQUENCE"  # sequence
-                      )
-            rows.add(row)
-            # # handle intra vs inter-chain interactions
-            # if pcq[j] == pct[i]:
-            #     # cases with interactions in the same chain
-            #     if not self.intra:
-            #         # exclude intrachain interactions
-            #         continue
-            #
-            #     elif pnq[j] == pnt[i]:
-            #         # exclude interactions within the same chain and group
-            #         continue
-            #
-            # else:
-            #     # case with interactions in different chains
-            #     if not self.inter:
-            #         # exclude inter-chain interactions
-            #         continue
-            #
-            # # exclude self interactions (this can happen if the query and target criteria overlap)
-            # if dis < 0.001:
-            #     continue
-            #
-            # if self.level == 'chain':
-            #     row = Row(structure_id + "." + pct[i],  # structureChainId
-            #               pgq[j],  # queryGroupId
-            #               pcq[j],  # queryChainId
-            #               pnq[j],  # queryGroupNumber
-            #               pct[i]  # targetChainId
-            #               )
-            #     rows.add(row)
-            # elif self.level == 'group':
-            #     row = Row(structure_id + "." + pct[i],  # structureChainId
-            #               pgq[j],  # queryGroupId
-            #               pcq[j],  # queryChainId
-            #               pnq[j],  # queryGroupNumber
-            #               pgt[i],  # targetGroupId
-            #               pct[i],  # targetChainId
-            #               pnt[i],  # targetGroupNumber
-            #               pst[i].item(),  # sequenceIndex
-            #               structure.entity_list[pet[i]]['sequence']  # sequence
-            #               )
-            #     rows.add(row)
-            # elif self.level == 'atom':
-            #     row = Row(structure_id + "." + pct[i],  # structureChainId
-            #               pgq[j],  # queryGroupId
-            #               pcq[j],  # queryChainId
-            #               pnq[j],  # queryGroupNumber
-            #               paq[j],  # queryAtomName
-            #               pgt[i],  # targetGroupId
-            #               pct[i],  # targetChainId
-            #               pnt[i],  # targetGroupNumber
-            #               pat[i],  # targetAtomName
-            #               dis,  # distance
-            #               pst[i].item(),  # sequenceIndex
-            #               structure.entity_list[pet[i]]['sequence']  # sequence
-            #               )
-            #     rows.add(row)
+            if self.level == 'chain':
+                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+                          qr['group_name'].item(),  # queryGroupId
+                          qr['chain_name'].item(),  # queryChainId
+                          qr['group_number'].item(),  # queryGroupNumber
+                          tr['chain_name'].item()  # targetChainId
+                          )
+                rows.add(row)
+
+            elif self.level == 'group':
+                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+                          qr['group_name'].item(),  # queryGroupId
+                          qr['chain_name'].item(),  # queryChainId
+                          qr['group_number'].item(),  # queryGroupNumber
+                          tr['group_name'].item(),  # targetGroupId
+                          tr['chain_name'].item(),  # targetChainId
+                          tr['group_number'].item(),  # targetGroupNumber
+                          )
+                rows.add(row)
+
+            elif self.level == 'atom':
+                row = Row(structure_id + "." + pct[i],  # structureChainId
+                          qr['group_name'].item(),  # queryGroupId
+                          qr['chain_name'].item(),  # queryChainId
+                          qr['group_number'].item(),  # queryGroupNumber
+                          qr['atom_name'].item(),  # queryAtomName
+                          tr['group_name'].item(),  # targetGroupId
+                          tr['chain_name'].item(),  # targetChainId
+                          tr['group_number'].item(),  # targetGroupNumber
+                          tr['atom_name'].item(),  # targetAtomName
+                          dis,  # distance
+                          )
+                rows.add(row)
 
         return rows
 
