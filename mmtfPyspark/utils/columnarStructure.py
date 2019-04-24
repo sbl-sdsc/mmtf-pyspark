@@ -99,7 +99,7 @@ class ColumnarStructure(object):
 
     def initialize_core_data(self):
         self.atomNames = np.empty(self.get_num_atoms(), dtype=np.object_)
-        self.elements = np.empty(self.get_num_atoms(), dtype='S2')
+        self.elements = np.empty(self.get_num_atoms(), dtype=np.object_)
         self.groupNames = np.empty(self.get_num_atoms(), dtype=np.object_)
         self.groupNumbers = np.empty(self.get_num_atoms(), dtype=np.object_)
 
