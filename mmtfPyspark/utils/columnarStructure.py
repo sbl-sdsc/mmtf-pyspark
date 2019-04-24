@@ -65,6 +65,7 @@ class ColumnarStructure(object):
         if self.df is None:
             self.initialize_core_data()
             self.df = pd.DataFrame({'chain_name': self.get_chain_names(),
+                                    'chain_id': self.get_chain_ids(),
                                     'group_number': self.get_group_numbers(),
                                     'group_name': self.get_group_names(),
                                     'atom_name': self.get_atom_names(),
