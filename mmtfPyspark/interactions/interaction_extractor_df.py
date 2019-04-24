@@ -154,6 +154,9 @@ class InteractionFingerprint:
 
         if self.intra and not self.inter:
             return self.calc_intra_interactions(structure_id, q, t)
+        
+        if not self.intra and self.inter:
+            return self.calc_inter_interactions(structure_id, q, t)
 
         # Stack coordinates into an nx3 array
         cq = np.column_stack((q['x'].values, q['y'].values, q['z'].values))
@@ -184,7 +187,7 @@ class InteractionFingerprint:
                     # exclude intrachain interactions
                     continue
 
-                elif qr['group_name'].item() == tr['group_name'].item():
+                elif qr['group_number'].item() == tr['group_number'].item():
                     # exclude interactions within the same chain and group
                     continue
 
@@ -251,6 +254,18 @@ class InteractionFingerprint:
 
         return rows
 
+    def calc_inter_interactions(self, structure_id, q, t):
+        # Group dataframes by chains
+        qc = q.groupby("chain_id")
+        tc = t.groupby("chain_id")
+
+        rows = list()
+        for qkey in qc.groups.keys():
+            for tkey in tc.groups.keys():
+                rows += self.calc_interactions(structure_id, qc.get_group(qkey), tc.get_group(tkey))
+
+        return rows
+
     def calc_interactions(self, structure_id, q, t):
         # Stack coordinates into an nx3 array
         cq = np.column_stack((q['x'].values, q['y'].values, q['z'].values))
@@ -275,6 +290,10 @@ class InteractionFingerprint:
 
             # exclude self interactions (this can happen if the query and target criteria overlap)
             if dis < 0.001:
+                continue
+
+            # exclude interactions within the same group
+            if qr['chain_id'].item() == tr['chain_id'].item() and qr['group_number'].item() == tr['group_number'].item():
                 continue
 
             if self.level == 'chain':
