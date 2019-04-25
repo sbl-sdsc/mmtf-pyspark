@@ -124,7 +124,10 @@ class InteractionFingerprint:
 
 
         # if there is only a single chain, there are no intermolecular interactions
-        if structure.num_chains == 1 and self.inter and not self.intra:
+        # if structure.num_chains == 1 and self.inter and not self.intra:
+        #     return []
+            # if there is only a single chain, there are no intermolecular interactions
+        if structure.num_entities == 1 and structure.num_chains == 1 and self.inter and not self.intra:
             return []
 
         df = ColumnarStructure(structure, True).get_df()
@@ -132,10 +135,10 @@ class InteractionFingerprint:
             return []
 
         # Apply query filter
-        try:
+#        try:
             q = df.query(self.query)
-        except:
-            return []
+#        except:
+#            return []
 
         if q is None or q.shape[0] == 0:
             return []
@@ -144,19 +147,19 @@ class InteractionFingerprint:
         if self.target == self.query:
             t = q
         else:
-            try:
+ #           try:
                 t = df.query(self.target)
-            except:
-                return []
+ #           except:
+ #               return []
 
         if t is None or t.shape[0] == 0:
             return []
 
-        if self.intra and not self.inter:
-            return self.calc_intra_interactions(structure_id, q, t)
-        
-        if not self.intra and self.inter:
-            return self.calc_inter_interactions(structure_id, q, t)
+        # if self.intra and not self.inter:
+        #     return self.calc_intra_interactions(structure_id, q, t)
+        #
+        # if not self.intra and self.inter:
+        #     return self.calc_inter_interactions(structure_id, q, t)
 
         # Stack coordinates into an nx3 array
         cq = np.column_stack((q['x'].values, q['y'].values, q['z'].values))
