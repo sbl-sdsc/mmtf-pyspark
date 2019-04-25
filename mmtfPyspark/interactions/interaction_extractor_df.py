@@ -136,7 +136,7 @@ class InteractionFingerprint:
 
         # Apply query filter
 #        try:
-            q = df.query(self.query)
+        q = df.query(self.query)
 #        except:
 #            return []
 
@@ -148,7 +148,7 @@ class InteractionFingerprint:
             t = q
         else:
  #           try:
-                t = df.query(self.target)
+            t = df.query(self.target)
  #           except:
  #               return []
 
