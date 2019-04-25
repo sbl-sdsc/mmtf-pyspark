@@ -127,8 +127,8 @@ class InteractionFingerprint:
         # if structure.num_chains == 1 and self.inter and not self.intra:
         #     return []
             # if there is only a single chain, there are no intermolecular interactions
-        if structure.num_entities == 1 and structure.num_chains == 1 and self.inter and not self.intra:
-            return []
+        #if len(structure.entity_list) == 1 and structure.num_chains == 1 and self.inter and not self.intra:
+         #   return []
 
         df = ColumnarStructure(structure, True).get_df()
         if df is None:
