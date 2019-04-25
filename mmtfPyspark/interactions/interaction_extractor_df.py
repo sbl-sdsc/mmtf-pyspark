@@ -181,10 +181,12 @@ class InteractionFingerprint:
 
             tr = t.iloc[[i]]
             qr = q.iloc[[j]]
+            qcid = qr['chain_id'].item()
+            tcid = tr['chain_id'].item()
 
             # handle intra vs inter-chain interactions
             # TODO should compare chain_id since ligands may have the same chain id as proteins
-            if qr['chain_name'].item() == tr['chain_name'].item():
+            if qcid == tcid:
                 # cases with interactions in the same chain
                 if not self.intra:
                     # exclude intrachain interactions
