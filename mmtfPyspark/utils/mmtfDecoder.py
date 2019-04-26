@@ -53,26 +53,26 @@ def decode(input_data, field_name, required=False):
 
 
 def decode_type_2(input_data, field_name):
-    return np.frombuffer(input_data[field_name][12:], '>i1').byteswap().newbyteorder()
+    return np.frombuffer(input_data[field_name], '>i1', offset=12).byteswap().newbyteorder()
 
 
 def decode_type_4(input_data, field_name):
-    return np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
+    return np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
 
 
 def decode_type_5(input_data, field_name):
-        return np.frombuffer(input_data[field_name][12:], 'S4').astype(str)
+        return np.frombuffer(input_data[field_name], 'S4', offset=12).astype(str)
 
 
 def decode_type_6(input_data, field_name):
     length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
-    int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
+    int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
     return run_length_decoder_ascii(int_array, length)
 
 
 def decode_type_8(input_data, field_name):
     length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
-    int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
+    int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
     if USE_NUMBA:
         return np.cumsum(run_length_decoder_jit(int_array, length)).astype(np.int32)
     else:
@@ -82,7 +82,7 @@ def decode_type_8(input_data, field_name):
 def decode_type_9(input_data, field_name):
     length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
     buffer = input_data[field_name]
-    int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
+    int_array = np.frombuffer(buffer, '>i4', offset=12).byteswap().newbyteorder()
     divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()[0]
     if USE_NUMBA:
         return (run_length_decoder_jit(int_array, length) / divisor).astype(np.float32)
