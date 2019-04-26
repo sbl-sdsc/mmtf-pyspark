@@ -29,7 +29,8 @@ def get_value(input_data, field_name, required=False):
 
 def decode(input_data, field_name, required=False):
     if field_name in input_data:
-        encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
+        #encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
+        encoding = np.frombuffer(input_data[field_name], '>i4', count=1).byteswap().newbyteorder()[0]
         if encoding == 2:
             return decode_type_2(input_data, field_name)
         elif encoding == 4:
