@@ -44,7 +44,7 @@ class MmtfStructure(object):
         self.num_groups = mmtfDecoder.get_value(input_data, 'numGroups', required=True)
         self.num_chains = mmtfDecoder.get_value(input_data, 'numChains', required=True)
         self.num_models = mmtfDecoder.get_value(input_data, 'numModels', required=True)
-        self.group_list = mmtfDecoder.get_values(input_data, 'groupList', required=True)
+        self.group_list = mmtfDecoder.get_value(input_data, 'groupList', required=True)
         self.bond_atom_list = mmtfDecoder.decode(input_data, 'bondAtomList')
         self.bond_order_list = mmtfDecoder.decode(input_data, 'bondOrderList')
         self.bondResonanceList = None  # TODO
