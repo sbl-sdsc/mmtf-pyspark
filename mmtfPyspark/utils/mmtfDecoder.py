@@ -49,7 +49,8 @@ def decode(input_data, field_name, required=False):
 def decode_n(input_data, field_name, n, required=False):
     if field_name in input_data:
         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
-        length = np.frombuffer(input_data[field_name][4:8], '>i4').byteswap().newbyteorder()
+        length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()
+        print(field_name, length, type(length))
         if encoding == 6:
             return decode_type_6(input_data, field_name, length)
         elif encoding == 8:
