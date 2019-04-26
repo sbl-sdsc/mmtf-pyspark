@@ -36,26 +36,14 @@ def decode(input_data, field_name, required=False):
             return decode_type_4(input_data, field_name)
         elif encoding == 5:
             return decode_type_5(input_data, field_name)
+        elif encoding == 6:
+            return decode_type_6(input_data, field_name)
+        elif encoding == 8:
+            return decode_type_8(input_data, field_name)
+        elif encoding == 9:
+            return decode_type_9(input_data, field_name)
         elif encoding == 10:
             return decode_type_10(input_data, field_name)
-        else:
-            raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
-    elif required:
-        raise Exception('ERROR: Invalid MMTF File, field: {} is missing!'.format(field_name))
-    else:
-        return []
-
-
-def decode_n(input_data, field_name, n, required=False):
-    if field_name in input_data:
-        encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
-        length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
-        if encoding == 6:
-            return decode_type_6(input_data, field_name, length)
-        elif encoding == 8:
-            return decode_type_8(input_data, field_name, length)
-        elif encoding == 9:
-            return decode_type_9(input_data, field_name, length)
         else:
             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
     elif required:
@@ -76,32 +64,36 @@ def decode_type_5(input_data, field_name):
         return np.frombuffer(input_data[field_name][12:], 'S4').astype(str)
 
 
-def decode_type_6(input_data, field_name, n):
+def decode_type_6(input_data, field_name):
+    length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
     int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
-    return run_length_decoder_ascii(int_array, n)
+    return run_length_decoder_ascii(int_array, length)
 
 
-def decode_type_8(input_data, field_name, n):
+def decode_type_8(input_data, field_name):
+    length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
     int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
     if USE_NUMBA:
-        return np.cumsum(run_length_decoder_jit(int_array, n)).astype(np.int32)
+        return np.cumsum(run_length_decoder_jit(int_array, length)).astype(np.int32)
     else:
-        return np.cumsum(run_length_decoder(int_array, n)).astype(np.int32)
+        return np.cumsum(run_length_decoder(int_array, length)).astype(np.int32)
 
 
-def decode_type_9(input_data, field_name, n):
+def decode_type_9(input_data, field_name):
+    length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
     buffer = input_data[field_name]
     int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
     divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()[0]
     if USE_NUMBA:
-        return (run_length_decoder_jit(int_array, n) / divisor).astype(np.float32)
+        return (run_length_decoder_jit(int_array, length) / divisor).astype(np.float32)
     else:
-        return (run_length_decoder(int_array, n) / divisor).astype(np.float32)
+        return (run_length_decoder(int_array, length) / divisor).astype(np.float32)
 
 
 def decode_type_10(input_data, field_name):
     buffer = input_data[field_name]
-    int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+    #int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+    int_array = np.frombuffer(buffer, '>i2', offset=12).byteswap().newbyteorder()
     divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
     if USE_NUMBA:
         return (recursive_index_decode_jit(int_array, divisor)).astype(np.float32)
