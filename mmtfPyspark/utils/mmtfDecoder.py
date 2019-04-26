@@ -17,6 +17,7 @@ USE_NUMBA = True
 # Byte arrays in message pack are in big endian format, e.g. >i4.
 # Convert to little endian as expected by Python.
 
+
 def get_value(input_data, field_name, required=False):
     if field_name in input_data:
         return input_data[field_name]
@@ -25,7 +26,8 @@ def get_value(input_data, field_name, required=False):
     else:
         return None
 
-def decode(input_data, field_name, required):
+
+def decode(input_data, field_name, required=False):
     if field_name in input_data:
         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
         if encoding == 2:
@@ -43,6 +45,7 @@ def decode(input_data, field_name, required):
     else:
         return []
 
+
 def decode_n(input_data, field_name, n):
     if field_name in input_data:
         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
@@ -57,11 +60,13 @@ def decode_n(input_data, field_name, n):
     else:
         return []
 
+
 def decode_type_2(input_data, field_name):
     if field_name in input_data:
         return np.frombuffer(input_data[field_name][12:], '>i1').byteswap().newbyteorder()
     else:
         return []
+
 
 def decode_type_4(input_data, field_name):
     if field_name in input_data:
@@ -69,11 +74,13 @@ def decode_type_4(input_data, field_name):
     else:
         return []
 
+
 def decode_type_5(input_data, field_name):
     if field_name in input_data:
         return np.frombuffer(input_data[field_name][12:], 'S4').astype(str)
     else:
         return []
+
 
 def decode_type_6(input_data, field_name, n):
     if field_name in input_data:
@@ -81,6 +88,7 @@ def decode_type_6(input_data, field_name, n):
         return run_length_decoder_ascii(int_array, n)
     else:
         return []
+
 
 def decode_type_8(input_data, field_name, n):
     if field_name in input_data:
@@ -91,6 +99,7 @@ def decode_type_8(input_data, field_name, n):
             return np.cumsum(run_length_decoder(int_array, n)).astype(np.int32)
     else:
         return []
+
 
 def decode_type_9(input_data, field_name, n):
     if field_name in input_data:
@@ -104,6 +113,7 @@ def decode_type_9(input_data, field_name, n):
     else:
         return []
 
+
 def decode_type_10(input_data, field_name):
     if field_name in input_data:
         buffer = input_data[field_name]
@@ -115,6 +125,7 @@ def decode_type_10(input_data, field_name):
             return (recursive_index_decode(int_array, decode_num)).astype(np.float32)
     else:
         return []
+
 
 def run_length_decoder(in_array, n):
     """Decodes a run length encoded array
@@ -134,6 +145,7 @@ def run_length_decoder(in_array, n):
         x[l:h] = v
     return x
 
+
 @jit(nopython=True)
 def run_length_decoder_jit(x, n):
     """Decodes a run length encoded array
@@ -150,6 +162,7 @@ def run_length_decoder_jit(x, n):
         y[start:end] = x[i]
         start = end
     return y
+
 
 def recursive_index_decode(int_array, decode_num=1000):
     """Unpack an array of integers using recursive indexing.
@@ -170,6 +183,7 @@ def recursive_index_decode(int_array, decode_num=1000):
     minimum = -32768
     out_arr = np.cumsum(int_array) / decode_num
     return out_arr[(int_array != maximum) & (int_array != minimum)]
+
 
 @jit(nopython=True)
 def recursive_index_decode_jit(int_array, decode_num=1000):
@@ -192,6 +206,7 @@ def recursive_index_decode_jit(int_array, decode_num=1000):
     out_arr = np.cumsum(int_array) / decode_num
     return out_arr[(int_array != maximum) & (int_array != minimum)]
 
+
 def run_length_decoder_ascii(x, n):
     """Decodes a run length encoded array
 
@@ -209,6 +224,7 @@ def run_length_decoder_ascii(x, n):
         start = end
     return y
 
+
 def decode_entity_list(input_data):
     """Convert byte strings to strings in the entity list.
 
@@ -223,6 +239,7 @@ def decode_entity_list(input_data):
        decoded entity list
     """
     return [convert_entity(entry) for entry in input_data]
+
 
 # TODO check if these methods are still required
 def decode_group_list(input_data):
@@ -239,6 +256,7 @@ def decode_group_list(input_data):
        decoded group list
     """
     return [convert_group(entry) for entry in input_data]
+
 
 def convert_group(input_group):
     """Convert an individual group from byte strings to regular strings.
@@ -264,6 +282,7 @@ def convert_group(input_group):
         else:
             output_group[key.decode('ascii')] = input_group[key]
     return output_group
+
 
 def convert_entity(input_entity):
     """Convert an individual entity from byte strings to regular strings
