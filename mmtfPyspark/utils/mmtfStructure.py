@@ -24,121 +24,55 @@ class MmtfStructure(object):
     def __init__(self, input_data):
         """Decodes a msgpack unpacked data to mmtf structure"""
 
-        # Variables that are not in all mmtf files
-
-
-        if 'resolution' in input_data:
-            self.resolution = input_data['resolution']
-        else:
-            self.resolution = None
-        if "rFree" in input_data:
-            self.r_free = input_data["rFree"]
-        else:
-            self.r_free = None
-        if "rWork" in input_data:
-            self.r_work = input_data["rWork"]
-        else:
-            self.r_work = None
-        if "bioAssemblyList" in input_data:
-            self.bio_assembly = input_data["bioAssemblyList"]
-        else:
-            self.bio_assembly = []
-        if "unitCell" in input_data:
-            self.unit_cell = input_data["unitCell"]
-        else:
-            self.unit_cell = None
-        if "releaseDate" in input_data:
-            self.release_date = input_data["releaseDate"]
-        else:
-            self.release_date = None
-        if "depositionDate" in input_data:
-            self.deposition_date = input_data["depositionDate"]
-        else:
-            self.deposition_date = None
-        if "title" in input_data:
-            self.title = input_data["title"]
-        else:
-            self.title = None
-        if "mmtfVersion" in input_data:
-            self.mmtf_version = input_data["mmtfVersion"]
-        else:
-            self.mmtf_version = None
-        if "mmtfProducer" in input_data:
-            self.mmtf_producer = input_data["mmtfProducer"]
-        else:
-            self.mmtf_producer = None
-        if "structureId" in input_data:
-            self.structure_id = input_data["structureId"]
-        else:
-            self.structure_id = None
-        if "spaceGroup" in input_data:
-            self.space_group = input_data["spaceGroup"]
-        else:
-            self.space_group = None
+        self.mmtf_version = mmtfDecoder.get_value(input_data, 'mmtfVersion', required=True)
+        self.mmtf_producer = mmtfDecoder.get_value(input_data, 'mmtfProducer', required=True)
+        self.unit_cell = mmtfDecoder.get_value(input_data, 'unitCell')
+        self.space_group = mmtfDecoder.get_value(input_data, 'spaceGroup')
+        self.structure_id = mmtfDecoder.get_value(input_data, 'structureId')
+        self.title = mmtfDecoder.get_value(input_data, 'title')
+        self.deposition_date = mmtfDecoder.get_value(input_data, 'depositionDate')
+        self.release_date = mmtfDecoder.get_value(input_data, 'releaseDate')
+        self.ncs_operator_list = mmtfDecoder.get_value(input_data, 'ncsOperatorList')
+        self.bio_assembly = mmtfDecoder.get_value(input_data, 'bioAssemblyList')  # TODO naming inconsistency
+        self.entity_list = mmtfDecoder.get_value(input_data, 'entityList')
+        self.experimental_methods = mmtfDecoder.get_value(input_data, 'experimentalMethods')
+        self.resolution = mmtfDecoder.get_value(input_data, 'resolution')
+        self.r_free = mmtfDecoder.get_value(input_data, 'rFree')
+        self.r_work = mmtfDecoder.get_value(input_data, 'rWork')
+        self.num_bonds = mmtfDecoder.get_value(input_data, 'numBonds', required=True)
+        self.num_atoms = mmtfDecoder.get_value(input_data, 'numAtoms', required=True)
+        self.num_groups = mmtfDecoder.get_value(input_data, 'numGroups', required=True)
+        self.num_chains = mmtfDecoder.get_value(input_data, 'numChains', required=True)
+        self.num_models = mmtfDecoder.get_value(input_data, 'numModels', required=True)
+        self.group_list = mmtfDecoder.get_values(input_data, 'groupList', required=True)
+        # TODO need encoder for bytes/ byteswap
         if "bondAtomList" in input_data:
             self.bond_atom_list = np.frombuffer(
                 input_data["bondAtomList"][12:], '>i4')
         else:
             self.bond_atom_list = None
+        # TODO need encoder for bytes/ byteswap
         if "bondOrderList" in input_data:
             self.bond_order_list = np.frombuffer(
                 input_data["bondOrderList"][12:], '>i1')
         else:
             self.bond_order_list = None
-
-        self.sec_struct_list = mmtfDecoder.decode_type_2(input_data, "secStructList")
-        self.atom_id_list = mmtfDecoder.decode_type_8(input_data, "atomIdList", input_data["numAtoms"])
-        self.sequence_index_list = mmtfDecoder.decode_type_8(input_data, "sequenceIndexList", input_data["numAtoms"])
-
-        self.b_factor_list = mmtfDecoder.decode_type_10(input_data, "bFactorList")
-        self.occupancy_list = mmtfDecoder.decode_type_9(input_data, "occupancyList", input_data["numAtoms"])
-
-        if "experimentalMethods" in input_data:
-            self.experimental_methods = input_data["experimentalMethods"]
-        else:
-            self.experimental_methods = None
-
-        self.ins_code_list = mmtfDecoder.decode_type_6(input_data, "insCodeList", input_data["numGroups"])
-
-        if "entityList" in input_data:
-            self.entity_list = input_data["entityList"]
-        else:
-            self.entity_list = []
-
-        self.chain_name_list = mmtfDecoder.decode_type_5(input_data, "chainNameList")
-
-        # Variables guaranteed in mmtf files
-        self.num_bonds = input_data["numBonds"]
-        self.num_chains = input_data["numChains"]
-        self.num_models = input_data["numModels"]
-        self.num_atoms = input_data["numAtoms"]
-        self.num_groups = input_data["numGroups"]
-        self.chains_per_model = input_data["chainsPerModel"]
-        self.groups_per_chain = input_data["groupsPerChain"]
-        self.group_id_list = mmtfDecoder.decode_type_8(input_data, "groupIdList", self.num_groups)
-        self.group_type_list = mmtfDecoder.decode_type_4(input_data, "groupTypeList")
-        self.x_coord_list = mmtfDecoder.decode_type_10(input_data, "xCoordList")
-        self.y_coord_list = mmtfDecoder.decode_type_10(input_data, "yCoordList")
-        self.z_coord_list = mmtfDecoder.decode_type_10(input_data, "zCoordList")
-        self.group_list = input_data['groupList']
-        self.chain_id_list = mmtfDecoder.decode_type_5(input_data, "chainIdList")
-        self.alt_loc_list = mmtfDecoder.decode_type_6(input_data, "altLocList", self.num_atoms)
-
-    def pass_data_on(self, data_setters):
-        """Write the data from the getters to the setters.
-
-        Parameters
-        ----------
-        data_setters : DataTransferInterface
-            a series of functions that can fill a chemical
-        """
-        data_setters.init_structure(self.num_bonds, len(self.x_coord_list), len(self.group_type_list),
-                                    len(self.chain_id_list), len(self.chains_per_model), self.structure_id)
-        decoder_utils.add_entity_info(self, data_setters)
-        decoder_utils.add_atomic_information(self, data_setters)
-        decoder_utils.add_header_info(self, data_setters)
-        decoder_utils.add_xtalographic_info(self, data_setters)
-        decoder_utils.generate_bio_assembly(self, data_setters)
-        decoder_utils.add_inter_group_bonds(self, data_setters)
-        data_setters.finalize_structure()
+        # TODO new
+        self.bondResonanceList = None
+        self.x_coord_list = mmtfDecoder.decode(input_data, 'xCoordList', required=True)
+        self.y_coord_list = mmtfDecoder.decode(input_data, 'yCoordList', required=True)
+        self.z_coord_list = mmtfDecoder.decode(input_data, 'zCoordList', required=True)
+        self.b_factor_list = mmtfDecoder.decode(input_data, 'bFactorList')
+        self.atom_id_list = mmtfDecoder.decode_n(input_data, 'atomIdList', self.num_atoms)
+        self.alt_loc_list = mmtfDecoder.decode_n(input_data, 'altLocList', self.num_atoms)
+        self.occupancy_list = mmtfDecoder.decode_n(input_data, 'occupancyList', self.num_atoms)
+        self.group_id_list = mmtfDecoder.decode_n(input_data, 'groupIdList', self.num_groups, required=True)
+        self.group_type_list = mmtfDecoder.decode(input_data, 'groupTypeList', required=True)
+        self.sec_struct_list = mmtfDecoder.decode(input_data, 'secStructList')
+        self.ins_code_list = mmtfDecoder.decode_n(input_data, "insCodeList", self.num_groups)
+        self.sequence_index_list = mmtfDecoder.decode_n(input_data, "sequenceIndexList", self.num_atoms)
+        self.chain_id_list = mmtfDecoder.decode(input_data, 'chainIdList', required=True)
+        self.chain_name_list = mmtfDecoder.decode(input_data, 'chainNameList')
+        self.groups_per_chain = mmtfDecoder.get_value(input_data, 'groupsPerChain', required=True)
+        self.chains_per_model = mmtfDecoder.get_value(input_data, 'chainsPerModel', required=True)
 
