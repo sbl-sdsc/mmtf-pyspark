@@ -26,7 +26,6 @@ def get_value(input_data, field_name, required=False):
     else:
         return None
 
-
 def decode(input_data, field_name, required=False):
     if field_name in input_data:
         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
@@ -45,16 +44,16 @@ def decode(input_data, field_name, required=False):
     else:
         return []
 
-
 def decode_n(input_data, field_name, n, required=False):
     if field_name in input_data:
         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
+        length = np.frombuffer(input_data[field_name][4:8], '>i4').byteswap().newbyteorder()
         if encoding == 6:
-            return decode_type_6(input_data, field_name, n)
+            return decode_type_6(input_data, field_name, length)
         elif encoding == 8:
-            return decode_type_8(input_data, field_name, n)
+            return decode_type_8(input_data, field_name, length)
         elif encoding == 9:
-            return decode_type_9(input_data, field_name, n)
+            return decode_type_9(input_data, field_name, length)
         else:
             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
     elif required:
@@ -62,72 +61,43 @@ def decode_n(input_data, field_name, n, required=False):
     else:
         return []
 
-
 def decode_type_2(input_data, field_name):
-    if field_name in input_data:
-        return np.frombuffer(input_data[field_name][12:], '>i1').byteswap().newbyteorder()
-    else:
-        return []
-
+    return np.frombuffer(input_data[field_name][12:], '>i1').byteswap().newbyteorder()
 
 def decode_type_4(input_data, field_name):
-    if field_name in input_data:
-        return np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
-    else:
-        return []
-
+    return np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
 
 def decode_type_5(input_data, field_name):
-    if field_name in input_data:
         return np.frombuffer(input_data[field_name][12:], 'S4').astype(str)
-    else:
-        return []
-
 
 def decode_type_6(input_data, field_name, n):
-    if field_name in input_data:
-        int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
+    int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
         return run_length_decoder_ascii(int_array, n)
-    else:
-        return []
-
 
 def decode_type_8(input_data, field_name, n):
-    if field_name in input_data:
-        int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
-        if USE_NUMBA:
-            return np.cumsum(run_length_decoder_jit(int_array, n)).astype(np.int32)
-        else:
-            return np.cumsum(run_length_decoder(int_array, n)).astype(np.int32)
+    int_array = np.frombuffer(input_data[field_name][12:], '>i4').byteswap().newbyteorder()
+    if USE_NUMBA:
+        return np.cumsum(run_length_decoder_jit(int_array, n)).astype(np.int32)
     else:
-        return []
-
+        return np.cumsum(run_length_decoder(int_array, n)).astype(np.int32)
 
 def decode_type_9(input_data, field_name, n):
-    if field_name in input_data:
-        buffer = input_data[field_name]
-        int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
-        divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
-        if USE_NUMBA:
-            return (run_length_decoder_jit(int_array, n) / divisor).astype(np.float32)
-        else:
-            return (run_length_decoder(int_array, n) / divisor).astype(np.float32)
+    buffer = input_data[field_name]
+    int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
+    divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+    if USE_NUMBA:
+        return (run_length_decoder_jit(int_array, n) / divisor).astype(np.float32)
     else:
-        return []
-
+        return (run_length_decoder(int_array, n) / divisor).astype(np.float32)
 
 def decode_type_10(input_data, field_name):
-    if field_name in input_data:
-        buffer = input_data[field_name]
-        int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
-        decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
-        if USE_NUMBA:
-            return (recursive_index_decode_jit(int_array, decode_num)).astype(np.float32)
-        else:
-            return (recursive_index_decode(int_array, decode_num)).astype(np.float32)
+    buffer = input_data[field_name]
+    int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+    decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+    if USE_NUMBA:
+        return (recursive_index_decode_jit(int_array, decode_num)).astype(np.float32)
     else:
-        return []
-
+        return (recursive_index_decode(int_array, decode_num)).astype(np.float32)
 
 def run_length_decoder(in_array, n):
     """Decodes a run length encoded array
@@ -147,7 +117,6 @@ def run_length_decoder(in_array, n):
         x[l:h] = v
     return x
 
-
 @jit(nopython=True)
 def run_length_decoder_jit(x, n):
     """Decodes a run length encoded array
@@ -164,7 +133,6 @@ def run_length_decoder_jit(x, n):
         y[start:end] = x[i]
         start = end
     return y
-
 
 def recursive_index_decode(int_array, decode_num=1000):
     """Unpack an array of integers using recursive indexing.
