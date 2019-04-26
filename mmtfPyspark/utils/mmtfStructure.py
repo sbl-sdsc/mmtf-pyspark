@@ -45,20 +45,9 @@ class MmtfStructure(object):
         self.num_chains = mmtfDecoder.get_value(input_data, 'numChains', required=True)
         self.num_models = mmtfDecoder.get_value(input_data, 'numModels', required=True)
         self.group_list = mmtfDecoder.get_values(input_data, 'groupList', required=True)
-        # TODO need encoder for bytes/ byteswap
-        if "bondAtomList" in input_data:
-            self.bond_atom_list = np.frombuffer(
-                input_data["bondAtomList"][12:], '>i4')
-        else:
-            self.bond_atom_list = None
-        # TODO need encoder for bytes/ byteswap
-        if "bondOrderList" in input_data:
-            self.bond_order_list = np.frombuffer(
-                input_data["bondOrderList"][12:], '>i1')
-        else:
-            self.bond_order_list = None
-        # TODO new
-        self.bondResonanceList = None
+        self.bond_atom_list = mmtfDecoder.decode(input_data, 'bondAtomList')
+        self.bond_order_list = mmtfDecoder.decode(input_data, 'bondOrderList')
+        self.bondResonanceList = None  # TODO
         self.x_coord_list = mmtfDecoder.decode(input_data, 'xCoordList', required=True)
         self.y_coord_list = mmtfDecoder.decode(input_data, 'yCoordList', required=True)
         self.z_coord_list = mmtfDecoder.decode(input_data, 'zCoordList', required=True)

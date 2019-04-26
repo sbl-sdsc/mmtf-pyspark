@@ -53,7 +53,7 @@ def decode_n(input_data, field_name, n):
         elif encoding == 9:
             decode_type_9(input_data, field_name, n)
         else:
-        # throw exception here
+            raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
     else:
         return []
 
