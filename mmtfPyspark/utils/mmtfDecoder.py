@@ -29,7 +29,7 @@ def get_value(input_data, field_name, required=False):
 
 def decode(input_data, field_name, required=False):
     if field_name in input_data:
-        encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
+        encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
         if encoding == 2:
             return decode_type_2(input_data, field_name)
         elif encoding == 4:
@@ -48,15 +48,14 @@ def decode(input_data, field_name, required=False):
 
 def decode_n(input_data, field_name, n, required=False):
     if field_name in input_data:
-        encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
-        length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()
-        print(field_name, length, type(length))
+        encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
+        length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
         if encoding == 6:
-            return decode_type_6(input_data, field_name, n)
+            return decode_type_6(input_data, field_name, length)
         elif encoding == 8:
-            return decode_type_8(input_data, field_name, n)
+            return decode_type_8(input_data, field_name, length)
         elif encoding == 9:
-            return decode_type_9(input_data, field_name, n)
+            return decode_type_9(input_data, field_name, length)
         else:
             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
     elif required:
@@ -93,7 +92,7 @@ def decode_type_8(input_data, field_name, n):
 def decode_type_9(input_data, field_name, n):
     buffer = input_data[field_name]
     int_array = np.frombuffer(buffer[12:], '>i4').byteswap().newbyteorder()
-    divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+    divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()[0]
     if USE_NUMBA:
         return (run_length_decoder_jit(int_array, n) / divisor).astype(np.float32)
     else:
@@ -103,11 +102,11 @@ def decode_type_9(input_data, field_name, n):
 def decode_type_10(input_data, field_name):
     buffer = input_data[field_name]
     int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
-    decode_num = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+    divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
     if USE_NUMBA:
-        return (recursive_index_decode_jit(int_array, decode_num)).astype(np.float32)
+        return (recursive_index_decode_jit(int_array, divisor)).astype(np.float32)
     else:
-        return (recursive_index_decode(int_array, decode_num)).astype(np.float32)
+        return (recursive_index_decode(int_array, divisor)).astype(np.float32)
 
 
 def run_length_decoder(in_array, n):
@@ -146,14 +145,14 @@ def run_length_decoder_jit(x, n):
     return y
 
 
-def recursive_index_decode(int_array, decode_num=1000):
+def recursive_index_decode(int_array, divisor=1000):
     """Unpack an array of integers using recursive indexing.
 
     Parameters
     ----------
     int_array : list
        the input array of integers
-    decode_num : int
+    divisor : int
        the number used for decoding [1000]
 
     Returns
@@ -163,19 +162,19 @@ def recursive_index_decode(int_array, decode_num=1000):
     """
     maximum = 32767
     minimum = -32768
-    out_arr = np.cumsum(int_array) / decode_num
+    out_arr = np.cumsum(int_array) / divisor
     return out_arr[(int_array != maximum) & (int_array != minimum)]
 
 
 @jit(nopython=True)
-def recursive_index_decode_jit(int_array, decode_num=1000):
+def recursive_index_decode_jit(int_array, divisor=1000):
     """Unpack an array of integers using recursive indexing.
 
     Parameters
     ----------
     int_array : list
        the input array of integers
-    decode_num : int
+    divisor : int
        the number used for decoding [1000]
 
     Returns
@@ -185,7 +184,7 @@ def recursive_index_decode_jit(int_array, decode_num=1000):
     """
     maximum = 32767
     minimum = -32768
-    out_arr = np.cumsum(int_array) / decode_num
+    out_arr = np.cumsum(int_array) / divisor
     return out_arr[(int_array != maximum) & (int_array != minimum)]
 
 
