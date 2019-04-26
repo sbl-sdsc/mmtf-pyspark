@@ -46,7 +46,7 @@ def decode(input_data, field_name, required=False):
         return []
 
 
-def decode_n(input_data, field_name, n):
+def decode_n(input_data, field_name, n, required=False):
     if field_name in input_data:
         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
         if encoding == 6:
@@ -57,6 +57,8 @@ def decode_n(input_data, field_name, n):
             decode_type_9(input_data, field_name, n)
         else:
             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
+    elif required:
+        raise Exception('ERROR: Invalid MMTF File, field: {} is missing!'.format(field_name))
     else:
         return []
 
