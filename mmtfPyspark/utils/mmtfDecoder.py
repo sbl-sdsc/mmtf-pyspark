@@ -31,13 +31,13 @@ def decode(input_data, field_name, required=False):
     if field_name in input_data:
         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
         if encoding == 2:
-            decode_type_2(input_data, field_name)
+            return decode_type_2(input_data, field_name)
         elif encoding == 4:
-            decode_type_4(input_data, field_name)
+            return decode_type_4(input_data, field_name)
         elif encoding == 5:
-            decode_type_5(input_data, field_name)
+            return decode_type_5(input_data, field_name)
         elif encoding == 10:
-            decode_type_10(input_data, field_name)
+            return decode_type_10(input_data, field_name)
         else:
             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
     elif required:
@@ -50,11 +50,11 @@ def decode_n(input_data, field_name, n, required=False):
     if field_name in input_data:
         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()
         if encoding == 6:
-            decode_type_6(input_data, field_name, n)
+            return decode_type_6(input_data, field_name, n)
         elif encoding == 8:
-            decode_type_8(input_data, field_name, n)
+            return decode_type_8(input_data, field_name, n)
         elif encoding == 9:
-            decode_type_9(input_data, field_name, n)
+            return decode_type_9(input_data, field_name, n)
         else:
             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
     elif required:
