@@ -52,11 +52,11 @@ def decode_n(input_data, field_name, n, required=False):
         length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()
         print(field_name, length, type(length))
         if encoding == 6:
-            return decode_type_6(input_data, field_name, length)
+            return decode_type_6(input_data, field_name, n)
         elif encoding == 8:
-            return decode_type_8(input_data, field_name, length)
+            return decode_type_8(input_data, field_name, n)
         elif encoding == 9:
-            return decode_type_9(input_data, field_name, length)
+            return decode_type_9(input_data, field_name, n)
         else:
             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
     elif required:
