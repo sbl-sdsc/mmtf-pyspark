@@ -71,7 +71,7 @@ def _decode_type_4(input_data, field_name):
     return np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
 
 
-def decode_type_5(input_data, field_name):
+def _decode_type_5(input_data, field_name):
         return np.frombuffer(input_data[field_name], 'S4', offset=12).astype(str)
 
 
