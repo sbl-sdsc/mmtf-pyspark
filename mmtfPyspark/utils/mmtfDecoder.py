@@ -19,6 +19,14 @@ USE_NUMBA = True
 
 
 def get_value(input_data, field_name, required=False):
+    """
+    Return an unencoded value from an MMTF data structure.
+
+    :param input_data:
+    :param field_name:
+    :param required:
+    :return:
+    """
     if field_name in input_data:
         return input_data[field_name]
     elif required:
@@ -28,23 +36,25 @@ def get_value(input_data, field_name, required=False):
 
 
 def decode(input_data, field_name, required=False):
+    """Decode MMTF binary data using one of the supported encoding strategies.
+    See https://github.com/rcsb/mmtf/blob/master/spec.md#codecs.
+    """
     if field_name in input_data:
-        #encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
-        encoding = np.frombuffer(input_data[field_name], '>i4', count=1).byteswap().newbyteorder()[0]
+        encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
         if encoding == 2:
-            return decode_type_2(input_data, field_name)
+            return _decode_type_2(input_data, field_name)
         elif encoding == 4:
-            return decode_type_4(input_data, field_name)
+            return _decode_type_4(input_data, field_name)
         elif encoding == 5:
-            return decode_type_5(input_data, field_name)
+            return _decode_type_5(input_data, field_name)
         elif encoding == 6:
-            return decode_type_6(input_data, field_name)
+            return _decode_type_6(input_data, field_name)
         elif encoding == 8:
-            return decode_type_8(input_data, field_name)
+            return _decode_type_8(input_data, field_name)
         elif encoding == 9:
-            return decode_type_9(input_data, field_name)
+            return _decode_type_9(input_data, field_name)
         elif encoding == 10:
-            return decode_type_10(input_data, field_name)
+            return _decode_type_10(input_data, field_name)
         else:
             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
     elif required:
@@ -53,11 +63,11 @@ def decode(input_data, field_name, required=False):
         return []
 
 
-def decode_type_2(input_data, field_name):
+def _decode_type_2(input_data, field_name):
     return np.frombuffer(input_data[field_name], '>i1', offset=12).byteswap().newbyteorder()
 
 
-def decode_type_4(input_data, field_name):
+def _decode_type_4(input_data, field_name):
     return np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
 
 
@@ -65,13 +75,13 @@ def decode_type_5(input_data, field_name):
         return np.frombuffer(input_data[field_name], 'S4', offset=12).astype(str)
 
 
-def decode_type_6(input_data, field_name):
+def _decode_type_6(input_data, field_name):
     length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
     int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
     return run_length_decoder_ascii(int_array, length)
 
 
-def decode_type_8(input_data, field_name):
+def _decode_type_8(input_data, field_name):
     length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
     int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
     if USE_NUMBA:
@@ -80,7 +90,7 @@ def decode_type_8(input_data, field_name):
         return np.cumsum(run_length_decoder(int_array, length)).astype(np.int32)
 
 
-def decode_type_9(input_data, field_name):
+def _decode_type_9(input_data, field_name):
     length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
     buffer = input_data[field_name]
     int_array = np.frombuffer(buffer, '>i4', offset=12).byteswap().newbyteorder()
@@ -91,7 +101,7 @@ def decode_type_9(input_data, field_name):
         return (run_length_decoder(int_array, length) / divisor).astype(np.float32)
 
 
-def decode_type_10(input_data, field_name):
+def _decode_type_10(input_data, field_name):
     buffer = input_data[field_name]
     #int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
     int_array = np.frombuffer(buffer, '>i2', offset=12).byteswap().newbyteorder()
@@ -160,12 +170,12 @@ def recursive_index_decode(int_array, divisor=1000):
 
 
 @jit(nopython=True)
-def recursive_index_decode_jit(int_array, divisor=1000):
+def recursive_index_decode_jit(x, divisor):
     """Unpack an array of integers using recursive indexing.
 
     Parameters
     ----------
-    int_array : list
+    x : list
        the input array of integers
     divisor : int
        the number used for decoding [1000]
@@ -177,8 +187,8 @@ def recursive_index_decode_jit(int_array, divisor=1000):
     """
     maximum = 32767
     minimum = -32768
-    out_arr = np.cumsum(int_array) / divisor
-    return out_arr[(int_array != maximum) & (int_array != minimum)]
+    y = np.cumsum(x) / divisor
+    return y[(x != maximum) & (x != minimum)]
 
 
 def run_length_decoder_ascii(x, n):

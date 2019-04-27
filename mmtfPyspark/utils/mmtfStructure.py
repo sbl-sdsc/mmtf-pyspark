@@ -20,9 +20,14 @@ class MmtfStructure(object):
     chain_counter = 0
     group_counter = 0
     atom_counter = 0
+    # TODO
+
 
     def __init__(self, input_data):
         """Decodes a msgpack unpacked data to mmtf structure"""
+        # TODO temporary
+        self.input_data = input_data
+
 
         self.mmtf_version = mmtfDecoder.get_value(input_data, 'mmtfVersion', required=True)
         self.mmtf_producer = mmtfDecoder.get_value(input_data, 'mmtfProducer', required=True)
@@ -51,13 +56,18 @@ class MmtfStructure(object):
         self.x_coord_list = mmtfDecoder.decode(input_data, 'xCoordList', required=True)
         self.y_coord_list = mmtfDecoder.decode(input_data, 'yCoordList', required=True)
         self.z_coord_list = mmtfDecoder.decode(input_data, 'zCoordList', required=True)
-        self.b_factor_list = mmtfDecoder.decode(input_data, 'bFactorList')
-        self.atom_id_list = mmtfDecoder.decode(input_data, 'atomIdList')
-        self.alt_loc_list = mmtfDecoder.decode(input_data, 'altLocList')
-        self.occupancy_list = mmtfDecoder.decode(input_data, 'occupancyList')
+        self._b_factor_list = None
+        self._atom_id_list = None
+        self._alt_loc_list = None
+        self._occupancy_list = None
+        self._sec_struct_list = None
+        #self.b_factor_list = mmtfDecoder.decode(input_data, 'bFactorList')
+        #self.atom_id_list = mmtfDecoder.decode(input_data, 'atomIdList')
+        #self.alt_loc_list = mmtfDecoder.decode(input_data, 'altLocList')
+        #self.occupancy_list = mmtfDecoder.decode(input_data, 'occupancyList')
         self.group_id_list = mmtfDecoder.decode(input_data, 'groupIdList', required=True)
         self.group_type_list = mmtfDecoder.decode(input_data, 'groupTypeList', required=True)
-        self.sec_struct_list = mmtfDecoder.decode(input_data, 'secStructList')
+        #self.sec_struct_list = mmtfDecoder.decode(input_data, 'secStructList')
         self.ins_code_list = mmtfDecoder.decode(input_data, 'insCodeList')
         self.sequence_index_list = mmtfDecoder.decode(input_data, 'sequenceIndexList')
         self.chain_id_list = mmtfDecoder.decode(input_data, 'chainIdList', required=True)
@@ -65,3 +75,52 @@ class MmtfStructure(object):
         self.groups_per_chain = mmtfDecoder.get_value(input_data, 'groupsPerChain', required=True)
         self.chains_per_model = mmtfDecoder.get_value(input_data, 'chainsPerModel', required=True)
 
+    @property
+    def b_factor_list(self):
+        if self._b_factor_list is not None:
+            return self._b_factor_list
+        elif 'bFactorList' in self.input_data:
+            self._b_factor_list = mmtfDecoder.decode(self.input_data, 'bFactorList')
+            return self._b_factor_list
+        else:
+            return None
+
+    @property
+    def atom_id_list(self):
+        if self._atom_id_list is not None:
+            return self._atom_id_list
+        elif 'atomIdList' in self.input_data:
+            self._atom_id_list = mmtfDecoder.decode(self.input_data, 'atomIdList')
+            return self._atom_id_list
+        else:
+            return None
+
+    @property
+    def alt_loc_list(self):
+        if self._alt_loc_list is not None:
+            return self._alt_loc_list
+        elif 'altLocList' in self.input_data:
+            self._alt_loc_list = mmtfDecoder.decode(self.input_data, 'altLocList')
+            return self._alt_loc_list
+        else:
+            return None
+
+    @property
+    def occupancy_list(self):
+        if self._occupancy_list is not None:
+            return self._occupancy_list
+        elif 'occupancyList' in self.input_data:
+            self._occupancy_list = mmtfDecoder.decode(self.input_data, 'occupancyList')
+            return self._occupancy_list
+        else:
+            return None
+
+    @property
+    def sec_struct_list(self):
+        if self._sec_struct_list is not None:
+            return self._sec_struct_list
+        elif 'secStructList' in self.input_data:
+            self._sec_struct_list = mmtfDecoder.decode(self.input_data, 'secStructList')
+            return self._sec_struct_list
+        else:
+            return None
