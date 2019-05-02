@@ -271,7 +271,6 @@ class BioInteractionFingerprint:
 
         # Find interactions between pairs of chains in bio assembly
         transforms = self.get_transforms(structure)
-        print(transforms)
         for qi, q_transform in enumerate(transforms):
             print("q:", qi, q_transform)
             qt = q_chains.get_group(q_transform[0])  #  chain id
@@ -313,7 +312,7 @@ class BioInteractionFingerprint:
 
     def get_transforms(self, col):
         """Return a dictionary of chain indices/transformation matrices for given bio assembly"""
-        trans = dict()
+        trans = list()
         chain_ids = col.structure.chain_id_list
         assembly = col.structure.bio_assembly[self.bio]
         for i, transforms in enumerate(assembly['transformList']):
