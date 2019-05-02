@@ -317,7 +317,7 @@ class BioInteractionFingerprint:
         assembly = col.structure.bio_assembly[self.bio]
         for i, transforms in enumerate(assembly['transformList']):
             for index in transforms['chainIndexList']:
-                trans.append(chain_ids[index], transforms['matrix'])
+                trans.append((chain_ids[index], transforms['matrix']))
         return trans
 
     def calc_interactions(self, structure_id, q, t, tree_q, tree_t, trans_q, trans_t):
