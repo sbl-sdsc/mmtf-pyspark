@@ -236,7 +236,7 @@ class BioInteractionFingerprint:
         self.distance_cutoff = distance_cutoff
         self.inter = inter
         self.intra = intra
-        self.bio_assembly = bio
+        self.bio = bio
         self.level = level
 
     def __call__(self, t):
@@ -304,7 +304,7 @@ class BioInteractionFingerprint:
                 tree_q = cKDTree(cqt)
                 tree_t = cKDTree(ctt)
 
-                rows.add(self.calc_interactions(structure_id, q_t, t_t, tree_q, tree_t, qi, ti))
+                rows.add(self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qi, ti))
 
         return rows
 
@@ -312,7 +312,7 @@ class BioInteractionFingerprint:
         """Return a dictionary of chain indices/transformation matrices for given bio assembly"""
         trans = dict()
         chain_ids = col.structure.chain_id_list
-        assembly = col.structure.bio_assembly[self.bio_assembly]
+        assembly = col.structure.bio_assembly[self.bio]
         for i, transforms in enumerate(assembly['transformList']):
             for index in transforms['chainIndexList']:
                 trans[chain_ids[index]] = transforms['matrix']
