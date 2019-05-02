@@ -271,11 +271,12 @@ class BioInteractionFingerprint:
 
         # Find interactions between pairs of chains in bio assembly
         transforms = self.get_transforms(structure)
+        print(transforms)
         for qi, q_transform in enumerate(transforms):
-            qt = q_chains.get_group(q_transform[0])  # [0] chain id
+            qt = q_chains.get_group(q_transform[0])  #  chain id
             if qt is None or qt.shape[0] == 0:
                 continue
-            qmat = np.array(q_transform[1]).reshape((4, 4))  # [1] matrix
+            qmat = np.array(q_transform[1]).reshape((4, 4))  #  matrix
 
             for ti, t_transform in enumerate(transforms):
                 # exclude self interactions
