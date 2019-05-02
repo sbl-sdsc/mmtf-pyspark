@@ -21,7 +21,7 @@ from scipy.spatial import cKDTree
 class InteractionExtractorDf(object):
 
     @staticmethod
-    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, level='group'):
+    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, bio=-1, level='group'):
         '''Returns a dataset of ligand - macromolecule interactions
 
         The dataset contains the following columns. When level='chain' or level='group' is specified,
@@ -54,7 +54,10 @@ class InteractionExtractorDf(object):
         '''
 
         # find all interactions
-        row = structure.flatMap(InteractionFingerprint(query, target, distance_cutoff, inter, intra, level))
+        if bio == -1:
+            row = structure.flatMap(InteractionFingerprint(query, target, distance_cutoff, inter, intra, level))
+        else:
+            row = structure.flatMap(BioInteractionFingerprint(query, target, distance_cutoff, inter, intra, bio, level))
 
         # TODO consider adding parameters
         # chem: add element, entity_type(LGO, PRO, DNA, etc.)
@@ -227,13 +230,13 @@ class InteractionFingerprint:
 
 class BioInteractionFingerprint:
 
-    def __init__(self, query, target, distance_cutoff, inter, intra, bio_assembly=0, level='group'):
+    def __init__(self, query, target, distance_cutoff, inter, intra, bio=0, level='group'):
         self.query = query
         self.target = target
         self.distance_cutoff = distance_cutoff
         self.inter = inter
         self.intra = intra
-        self.bio_assembly = bio_assembly
+        self.bio_assembly = bio
         self.level = level
 
     def __call__(self, t):
