@@ -122,44 +122,26 @@ class InteractionFingerprint:
         structure_id = t[0]
         structure = t[1]
 
-
-        # if there is only a single chain, there are no intermolecular interactions
-        # if structure.num_chains == 1 and self.inter and not self.intra:
-        #     return []
-            # if there is only a single chain, there are no intermolecular interactions
-        #if len(structure.entity_list) == 1 and structure.num_chains == 1 and self.inter and not self.intra:
-         #   return []
-
+        # Get a dataframe representation of the structure
         df = ColumnarStructure(structure, True).get_df()
         if df is None:
             return []
 
         # Apply query filter
-#        try:
         q = df.query(self.query)
-#        except:
-#            return []
 
         if q is None or q.shape[0] == 0:
             return []
 
         # Apply target filter
         if self.target == self.query:
+            # if query and target are identical, reuse the query dataframe
             t = q
         else:
- #           try:
             t = df.query(self.target)
- #           except:
- #               return []
 
         if t is None or t.shape[0] == 0:
             return []
-
-        # if self.intra and not self.inter:
-        #     return self.calc_intra_interactions(structure_id, q, t)
-        #
-        # if not self.intra and self.inter:
-        #     return self.calc_inter_interactions(structure_id, q, t)
 
         # Stack coordinates into an nx3 array
         cq = np.column_stack((q['x'].values, q['y'].values, q['z'].values))
@@ -171,7 +153,7 @@ class InteractionFingerprint:
         sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=self.distance_cutoff, output_type='dict')
 
         # Add interactions to rows.
-        # There are redundant interactions when aggregating the results at the 'group' level,
+        # There are redundant interactions when aggregating the results at the 'chain' and 'group' level,
         # since multiple atoms in a group may be involved in interactions.
         # Therefore we use a set of rows to store only unique interactions.
         rows = set()
@@ -242,64 +224,134 @@ class InteractionFingerprint:
 
         return rows
 
-    def calc_intra_interactions(self, structure_id, q, t):
-        # Group dataframes by chains
-        qc = q.groupby("chain_id")
-        tc = t.groupby("chain_id")
 
-        # intramolecular interactions are within the same chain.
-        # find the chains in common between query and target
-        qc_keys = set(qc.groups.keys())
-        tc_keys = set(tc.groups.keys())
-        keys = qc_keys.intersection(tc_keys)
+class BioInteractionFingerprint:
 
-        rows = list()
-        for key in keys:
-            rows += self.calc_interactions(structure_id, qc.get_group(key), tc.get_group(key))
+    def __init__(self, query, target, distance_cutoff, inter, intra, bio_assembly=0, level='group'):
+        self.query = query
+        self.target = target
+        self.distance_cutoff = distance_cutoff
+        self.inter = inter
+        self.intra = intra
+        self.bio_assembly = bio_assembly
+        self.level = level
+
+    def __call__(self, t):
+        structure_id = t[0]
+        structure = ColumnarStructure(t[1], True)
+
+        # Get a dataframe representation of the structure
+        df = structure.get_df()
+        if df is None:
+            return []
+
+        # Apply query filter
+        q = df.query(self.query)
+
+        if q is None or q.shape[0] == 0:
+            return []
+
+        # Apply target filter
+        if self.target == self.query:
+            # if query and target are identical, reuse the query dataframe
+            t = q
+        else:
+            t = df.query(self.target)
+
+        if t is None or t.shape[0] == 0:
+            return []
+
+        q_chains = q.groupby('chain_id')
+        t_chains = t.groupby('chain_id')
+
+        rows = set()
+
+        # Find interactions between pairs of chains in bio assembly
+        transforms = self.get_transforms(structure)
+        for qi, q_transform in enumerate(transforms):
+            qt = q_chains.get_group(q_transform[0])  # [0] chain id
+            if qt is None or qt.shape[0] == 0:
+                continue
+            qmat = np.array(q_transform[1]).reshape((4, 4))  # [1] matrix
+
+            for ti, t_transform in enumerate(transforms):
+                # exclude self interactions
+                if qi == ti:
+                    continue
+                tt = t_chains.get_group(t_transform[0])
+                if tt is None or tt.shape[0] == 0:
+                    continue
+                tmat = np.array(t_transform[1]).reshape((4, 4))
+
+                # Stack coordinates into an nx3 array
+                cq = np.column_stack((qt['x'].values, qt['y'].values, qt['z'].values)).copy()
+                ct = np.column_stack((tt['x'].values, tt['y'].values, tt['z'].values)).copy()
+
+                # Apply bio assembly transformations
+                # apply rotation
+                cqt = np.matmul(cq, qmat[0:3, 0:3])
+                # apply translation
+                cqt += qmat[3, 0:3].transpose()
+                # apply rotation
+                ctt = np.matmul(ct, tmat[0:3, 0:3])
+                # apply translation
+                ctt += tmat[3, 0:3].transpose()
+
+                # Calculate distances between the two atom sets
+                tree_q = cKDTree(cqt)
+                tree_t = cKDTree(ctt)
+
+                rows.add(self.calc_interactions(structure_id, q_t, t_t, tree_q, tree_t, qi, ti))
 
         return rows
 
-    def calc_inter_interactions(self, structure_id, q, t):
-        # Group dataframes by chains
-        qc = q.groupby("chain_id")
-        tc = t.groupby("chain_id")
+    def get_transforms(self, col):
+        """Return a dictionary of chain indices/transformation matrices for given bio assembly"""
+        trans = dict()
+        chain_ids = col.structure.chain_id_list
+        assembly = col.structure.bio_assembly[self.bio_assembly]
+        for i, transforms in enumerate(assembly['transformList']):
+            for index in transforms['chainIndexList']:
+                trans[chain_ids[index]] = transforms['matrix']
+        return trans
 
-        rows = list()
-        for qkey in qc.groups.keys():
-            for tkey in tc.groups.keys():
-                if qkey != tkey:
-                    rows += self.calc_interactions(structure_id, qc.get_group(qkey), tc.get_group(tkey))
-
-        return rows
-
-    def calc_interactions(self, structure_id, q, t):
-        # Stack coordinates into an nx3 array
-        cq = np.column_stack((q['x'].values, q['y'].values, q['z'].values))
-        ct = np.column_stack((t['x'].values, t['y'].values, t['z'].values))
-
-        # Calculate distances between the two atom sets
-        tree_t = cKDTree(ct)
-        tree_q = cKDTree(cq)
+    def calc_interactions(self, structure_id, q, t, tree_q, tree_t, trans_q, trans_t):
         sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=self.distance_cutoff, output_type='dict')
 
         # Add interactions to rows.
-        # There are redundant interactions when aggregating the results at the 'group' level,
+        # There are redundant interactions when aggregating the results at the 'chain' and 'group' level,
         # since multiple atoms in a group may be involved in interactions.
         # Therefore we use a set of rows to store only unique interactions.
-        rows = set([])
+        rows = set()
         for ind, dis in sparse_dm.items():
             i = ind[0]  # polymer target atom index
             j = ind[1]  # polymer query atom index
 
             tr = t.iloc[[i]]
             qr = q.iloc[[j]]
+            qcid = qr['chain_id'].item()
+            tcid = tr['chain_id'].item()
+
+            # handle intra vs inter-chain interactions
+            # TODO should compare chain_id since ligands may have the same chain id as proteins
+            if qcid == tcid:
+                # cases with interactions in the same chain
+                if not self.intra:
+                    # exclude intrachain interactions
+                    continue
+
+                elif qr['group_number'].item() == tr['group_number'].item():
+                    # exclude interactions within the same chain and group
+                    continue
+
+            else:
+                # case with interactions in different chains
+                if not self.inter:
+                    # exclude inter-chain interactions
+                    continue
 
             # exclude self interactions (this can happen if the query and target criteria overlap)
             if dis < 0.001:
-                continue
-
-            # exclude interactions within the same group
-            if qr['chain_id'].item() == tr['chain_id'].item() and qr['group_number'].item() == tr['group_number'].item():
                 continue
 
             if self.level == 'chain':

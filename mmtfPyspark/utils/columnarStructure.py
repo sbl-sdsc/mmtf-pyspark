@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 
 
+# TODO use model number as input and return only one model at a time, e.g. default: model=1
 class ColumnarStructure(object):
     '''Column based data structure to efficiently access structure information
 

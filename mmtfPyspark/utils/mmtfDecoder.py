@@ -41,6 +41,9 @@ def decode(input_data, field_name, required=False):
     """
     if field_name in input_data:
         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
+        # TODO call method by string?
+        # method_to_call = getattr(, "_decode_type" + str(encoding))
+        # return method_to_call()
         if encoding == 2:
             return _decode_type_2(input_data, field_name)
         elif encoding == 4:
