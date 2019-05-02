@@ -273,12 +273,14 @@ class BioInteractionFingerprint:
         transforms = self.get_transforms(structure)
         print(transforms)
         for qi, q_transform in enumerate(transforms):
+            print("q:", qi, q_transform)
             qt = q_chains.get_group(q_transform[0])  #  chain id
             if qt is None or qt.shape[0] == 0:
                 continue
             qmat = np.array(q_transform[1]).reshape((4, 4))  #  matrix
 
             for ti, t_transform in enumerate(transforms):
+                print("t:", ti, t_transform)
                 # exclude self interactions
                 if qi == ti:
                     continue
