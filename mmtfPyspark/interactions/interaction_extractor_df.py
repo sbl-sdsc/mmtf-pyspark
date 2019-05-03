@@ -310,7 +310,7 @@ class BioInteractionFingerprint:
                 tree_q = cKDTree(cqt)
                 tree_t = cKDTree(ctt)
 
-                rows.add(self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qi, ti))
+                rows.union(self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qi, ti))
 
         return rows
 
