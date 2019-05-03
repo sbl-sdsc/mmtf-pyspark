@@ -153,79 +153,81 @@ class InteractionFingerprint:
         # Calculate distances between the two atom sets
         tree_t = cKDTree(ct)
         tree_q = cKDTree(cq)
-        sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=self.distance_cutoff, output_type='dict')
 
-        # Add interactions to rows.
-        # There are redundant interactions when aggregating the results at the 'chain' and 'group' level,
-        # since multiple atoms in a group may be involved in interactions.
-        # Therefore we use a set of rows to store only unique interactions.
-        rows = set()
-        for ind, dis in sparse_dm.items():
-            i = ind[0]  # polymer target atom index
-            j = ind[1]  # polymer query atom index
-
-            tr = t.iloc[[i]]
-            qr = q.iloc[[j]]
-            qcid = qr['chain_id'].item()
-            tcid = tr['chain_id'].item()
-
-            # handle intra vs inter-chain interactions
-            # TODO should compare chain_id since ligands may have the same chain id as proteins
-            if qcid == tcid:
-                # cases with interactions in the same chain
-                if not self.intra:
-                    # exclude intrachain interactions
-                    continue
-
-                elif qr['group_number'].item() == tr['group_number'].item():
-                    # exclude interactions within the same chain and group
-                    continue
-
-            else:
-                # case with interactions in different chains
-                if not self.inter:
-                    # exclude inter-chain interactions
-                    continue
-
-            # exclude self interactions (this can happen if the query and target criteria overlap)
-            if dis < 0.001:
-                continue
-
-            if self.level == 'chain':
-                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
-                          qr['group_name'].item(),  # queryGroupId
-                          qr['chain_name'].item(),  # queryChainId
-                          qr['group_number'].item(),  # queryGroupNumber
-                          tr['chain_name'].item()  # targetChainId
-                          )
-                rows.add(row)
-
-            elif self.level == 'group':
-                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
-                          qr['group_name'].item(),  # queryGroupId
-                          qr['chain_name'].item(),  # queryChainId
-                          qr['group_number'].item(),  # queryGroupNumber
-                          tr['group_name'].item(),  # targetGroupId
-                          tr['chain_name'].item(),  # targetChainId
-                          tr['group_number'].item(),  # targetGroupNumber
-                          )
-                rows.add(row)
-
-            elif self.level == 'atom':
-                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
-                          qr['group_name'].item(),  # queryGroupId
-                          qr['chain_name'].item(),  # queryChainId
-                          qr['group_number'].item(),  # queryGroupNumber
-                          qr['atom_name'].item(),  # queryAtomName
-                          tr['group_name'].item(),  # targetGroupId
-                          tr['chain_name'].item(),  # targetChainId
-                          tr['group_number'].item(),  # targetGroupNumber
-                          tr['atom_name'].item(),  # targetAtomName
-                          dis,  # distance
-                          )
-                rows.add(row)
-
-        return rows
+        return self.calc_interactions(structure_id, q, t, tree_q, tree_t, 0, 0)
+        # sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=self.distance_cutoff, output_type='dict')
+        #
+        # # Add interactions to rows.
+        # # There are redundant interactions when aggregating the results at the 'chain' and 'group' level,
+        # # since multiple atoms in a group may be involved in interactions.
+        # # Therefore we use a set of rows to store only unique interactions.
+        # rows = set()
+        # for ind, dis in sparse_dm.items():
+        #     i = ind[0]  # polymer target atom index
+        #     j = ind[1]  # polymer query atom index
+        #
+        #     tr = t.iloc[[i]]
+        #     qr = q.iloc[[j]]
+        #     qcid = qr['chain_id'].item()
+        #     tcid = tr['chain_id'].item()
+        #
+        #     # handle intra vs inter-chain interactions
+        #     # TODO should compare chain_id since ligands may have the same chain id as proteins
+        #     if qcid == tcid:
+        #         # cases with interactions in the same chain
+        #         if not self.intra:
+        #             # exclude intrachain interactions
+        #             continue
+        #
+        #         elif qr['group_number'].item() == tr['group_number'].item():
+        #             # exclude interactions within the same chain and group
+        #             continue
+        #
+        #     else:
+        #         # case with interactions in different chains
+        #         if not self.inter:
+        #             # exclude inter-chain interactions
+        #             continue
+        #
+        #     # exclude self interactions (this can happen if the query and target criteria overlap)
+        #     if dis < 0.001:
+        #         continue
+        #
+        #     if self.level == 'chain':
+        #         row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+        #                   qr['group_name'].item(),  # queryGroupId
+        #                   qr['chain_name'].item(),  # queryChainId
+        #                   qr['group_number'].item(),  # queryGroupNumber
+        #                   tr['chain_name'].item()  # targetChainId
+        #                   )
+        #         rows.add(row)
+        #
+        #     elif self.level == 'group':
+        #         row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+        #                   qr['group_name'].item(),  # queryGroupId
+        #                   qr['chain_name'].item(),  # queryChainId
+        #                   qr['group_number'].item(),  # queryGroupNumber
+        #                   tr['group_name'].item(),  # targetGroupId
+        #                   tr['chain_name'].item(),  # targetChainId
+        #                   tr['group_number'].item(),  # targetGroupNumber
+        #                   )
+        #         rows.add(row)
+        #
+        #     elif self.level == 'atom':
+        #         row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+        #                   qr['group_name'].item(),  # queryGroupId
+        #                   qr['chain_name'].item(),  # queryChainId
+        #                   qr['group_number'].item(),  # queryGroupNumber
+        #                   qr['atom_name'].item(),  # queryAtomName
+        #                   tr['group_name'].item(),  # targetGroupId
+        #                   tr['chain_name'].item(),  # targetChainId
+        #                   tr['group_number'].item(),  # targetGroupNumber
+        #                   tr['atom_name'].item(),  # targetAtomName
+        #                   dis,  # distance
+        #                   )
+        #         rows.add(row)
+        #
+        # return rows
 
 
 class BioInteractionFingerprint:
@@ -267,7 +269,7 @@ class BioInteractionFingerprint:
         q_chains = q.groupby('chain_id')
         t_chains = t.groupby('chain_id')
 
-        rows = set()
+        rows = list()
 
         # Find interactions between pairs of chains in bio assembly
         transforms = self.get_transforms(structure)
@@ -312,7 +314,7 @@ class BioInteractionFingerprint:
 #                tree_q = cKDTree(cqt)
 #                tree_t = cKDTree(ctt)
 
-                rows.union(self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qi, ti))
+                rows += self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qi, ti)
 
         return rows
 
@@ -333,7 +335,11 @@ class BioInteractionFingerprint:
         # There are redundant interactions when aggregating the results at the 'chain' and 'group' level,
         # since multiple atoms in a group may be involved in interactions.
         # Therefore we use a set of rows to store only unique interactions.
-        rows = set()
+        if self.level == 'atom':
+            rows = list()
+        else:
+            rows = set()
+
         for ind, dis in sparse_dm.items():
             i = ind[0]  # polymer target atom index
             j = ind[1]  # polymer query atom index
@@ -401,4 +407,4 @@ class BioInteractionFingerprint:
                 print('row',  qr['group_name'].item(), qr['chain_name'].item(), qr['group_number'].item(), qr['atom_name'].item())
                 rows.add(row)
 
-        return rows
+        return list(rows)
