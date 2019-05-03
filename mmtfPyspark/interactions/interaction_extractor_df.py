@@ -391,10 +391,10 @@ class BioInteractionFingerprint:
                 ctt += tmat[3, 0:3].transpose()
 
                 # Calculate distances between the two atom sets
-                tree_q = cKDTree(cq)
-                tree_t = cKDTree(ct)
-#                tree_q = cKDTree(cqt)
-#                tree_t = cKDTree(ctt)
+#                tree_q = cKDTree(cq)
+#                tree_t = cKDTree(ct)
+                tree_q = cKDTree(cqt)
+                tree_t = cKDTree(ctt)
 
                 rows += self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qi, ti)
 
