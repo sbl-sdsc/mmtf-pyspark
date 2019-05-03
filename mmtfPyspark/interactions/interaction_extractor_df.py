@@ -306,7 +306,7 @@ class InteractionFingerprint:
                           dis,  # distance
                           )
                 print('row',  qr['group_name'].item(), qr['chain_name'].item(), qr['group_number'].item(), qr['atom_name'].item())
-                rows.add(row)
+                rows.append(row)
 
         return list(rows)
 
@@ -487,6 +487,6 @@ class BioInteractionFingerprint:
                           dis,  # distance
                           )
                 print('row',  qr['group_name'].item(), qr['chain_name'].item(), qr['group_number'].item(), qr['atom_name'].item())
-                rows.add(row)
+                rows.append(row)
 
         return list(rows)
