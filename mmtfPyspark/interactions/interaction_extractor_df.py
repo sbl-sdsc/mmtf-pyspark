@@ -272,7 +272,7 @@ class BioInteractionFingerprint:
         # Find interactions between pairs of chains in bio assembly
         transforms = self.get_transforms(structure)
         for qi, q_transform in enumerate(transforms):
-            print("q:", qi, q_transform)
+            #print("q:", qi, q_transform)
             if q_transform[0] in q_chains.groups.keys():
                 qt = q_chains.get_group(q_transform[0])  #  chain id
             else:
@@ -281,7 +281,7 @@ class BioInteractionFingerprint:
             qmat = np.array(q_transform[1]).reshape((4, 4))  #  matrix
 
             for ti, t_transform in enumerate(transforms):
-                print("t:", ti, t_transform)
+                #print("t:", ti, t_transform)
                 # exclude self interactions
                 if qi == ti:
                     continue
@@ -313,6 +313,7 @@ class BioInteractionFingerprint:
 #                tree_t = cKDTree(ctt)
 
                 rows.union(self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qi, ti))
+                print("len rows:", len(rows))
 
         return rows
 
@@ -398,6 +399,7 @@ class BioInteractionFingerprint:
                           tr['atom_name'].item(),  # targetAtomName
                           dis,  # distance
                           )
+                print('row', row)
                 rows.add(row)
 
         return rows
