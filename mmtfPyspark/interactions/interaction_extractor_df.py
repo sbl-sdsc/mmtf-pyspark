@@ -88,7 +88,7 @@ class InteractionExtractorDf(object):
                       StructField("queryGroupNumber", StringType(), nullable),
                       StructField("targetGroupId", StringType(), nullable),
                       StructField("targetChainId", StringType(), nullable),
-                      StructField("targetGroupNumber", StringType(), nullable),
+                      StructField("targetGroupNumber", StringType(), nullable)
                       # StructField("sequenceIndex", IntegerType(), nullable),
                       # StructField("sequence", StringType(), nullable)
                       ]
@@ -102,7 +102,7 @@ class InteractionExtractorDf(object):
                       StructField("targetChainId", StringType(), nullable),
                       StructField("targetGroupNumber", StringType(), nullable),
                       StructField("targetAtomName", StringType(), nullable),
-                      StructField("distance", FloatType(), nullable),
+                      StructField("distance", FloatType(), nullable)
                       # StructField("sequenceIndex", IntegerType(), nullable),
                       # StructField("sequence", StringType(), nullable)
                       ]
@@ -272,7 +272,7 @@ class BioInteractionFingerprint:
         # Find interactions between pairs of chains in bio assembly
         transforms = self.get_transforms(structure)
         for qi, q_transform in enumerate(transforms):
-            #print("q:", qi, q_transform)
+            print("q:", qi, q_transform[0])
             if q_transform[0] in q_chains.groups.keys():
                 qt = q_chains.get_group(q_transform[0])  #  chain id
             else:
@@ -281,7 +281,7 @@ class BioInteractionFingerprint:
             qmat = np.array(q_transform[1]).reshape((4, 4))  #  matrix
 
             for ti, t_transform in enumerate(transforms):
-                #print("t:", ti, t_transform)
+                print("t:", ti, t_transform[0])
                 # exclude self interactions
                 if qi == ti:
                     continue
@@ -313,7 +313,6 @@ class BioInteractionFingerprint:
 #                tree_t = cKDTree(ctt)
 
                 rows.union(self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qi, ti))
-                print("len rows:", len(rows))
 
         return rows
 
@@ -399,7 +398,7 @@ class BioInteractionFingerprint:
                           tr['atom_name'].item(),  # targetAtomName
                           dis,  # distance
                           )
-                print('row', row)
+                print('row',  qr['group_name'].item(), qr['chain_name'].item(), qr['group_number'].item(), qr['atom_name'].item())
                 rows.add(row)
 
         return rows
