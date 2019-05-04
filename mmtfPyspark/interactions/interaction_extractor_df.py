@@ -356,23 +356,28 @@ class BioInteractionFingerprint:
         # Find interactions between pairs of chains in bio assembly
         transforms = self.get_transforms(structure)
         for qi, q_transform in enumerate(transforms):
-            print("q:", qi, q_transform[0])
-            if q_transform[0] in q_chains.groups.keys():
-                qt = q_chains.get_group(q_transform[0])  #  chain id
+            qchain = q_transform[0]
+
+            if qchain in q_chains.groups.keys():
+                qt = q_chains.get_group(qchain)  #  chain id
             else:
                 continue
 
             qmat = np.array(q_transform[1]).reshape((4, 4))  #  matrix
 
             for ti, t_transform in enumerate(transforms):
-                print("t:", ti, t_transform[0])
-                # exclude self interactions
-                if qi == ti:
+                tchain = t_transform[0]
+
+                # exclude self interactions (same transformation and same chain id)
+                if qi == ti and qchain == tchain:
                     continue
-                if t_transform[0] in t_chains.groups.keys():
-                    tt = t_chains.get_group(t_transform[0])
+
+                if tchain in t_chains.groups.keys():
+                    tt = t_chains.get_group(tchain)
                 else:
                     continue
+
+                print("q:", qi, qchain, "t:", ti, tchain)
 
                 tmat = np.array(t_transform[1]).reshape((4, 4))
 
@@ -410,7 +415,7 @@ class BioInteractionFingerprint:
                 trans.append((chain_ids[index], transforms['matrix']))
         return trans
 
-    def calc_interactions(self, structure_id, q, t, tree_q, tree_t, trans_q, trans_t):
+    def calc_interactions(self, structure_id, q, t, tree_q, tree_t, qi, ti):
         sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=self.distance_cutoff, output_type='dict')
 
         # Add interactions to rows.
@@ -463,7 +468,7 @@ class BioInteractionFingerprint:
                 rows.add(row)
 
             elif self.level == 'group':
-                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+                row = Row(structure_id + "." + tr['chain_name'].item() + '-' + qi + ':' + ti,  # structureChainId
                           qr['group_name'].item(),  # queryGroupId
                           qr['chain_name'].item(),  # queryChainId
                           qr['group_number'].item(),  # queryGroupNumber
@@ -475,7 +480,7 @@ class BioInteractionFingerprint:
 
             elif self.level == 'atom':
                 #print('adding interations:',  qr['group_name'].item())
-                row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
+                row = Row(structure_id + "." + tr['chain_name'].item()  + '-' + qi + ':' + ti,  # structureChainId
                           qr['group_name'].item(),  # queryGroupId
                           qr['chain_name'].item(),  # queryChainId
                           qr['group_number'].item(),  # queryGroupNumber
