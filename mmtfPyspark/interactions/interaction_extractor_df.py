@@ -355,21 +355,23 @@ class BioInteractionFingerprint:
 
         # Find interactions between pairs of chains in bio assembly
         transforms = self.get_transforms(structure)
-        for qi, q_transform in enumerate(transforms):
-            qchain = q_transform[0]
+        for q_transform in transforms:
+            qindex = q_transform[0] # transformation id
+            qchain = q_transform[1] # chain id
 
             if qchain in q_chains.groups.keys():
-                qt = q_chains.get_group(qchain)  #  chain id
+                qt = q_chains.get_group(qchain)
             else:
                 continue
 
-            qmat = np.array(q_transform[1]).reshape((4, 4))  #  matrix
+            qmat = np.array(q_transform[2]).reshape((4, 4))  #  matrix
 
-            for ti, t_transform in enumerate(transforms):
-                tchain = t_transform[0]
+            for t_transform in transforms:
+                tindex = t_transform[0]
+                tchain = t_transform[1]
 
                 # exclude self interactions (same transformation and same chain id)
-                if qi == ti and qchain == tchain:
+                if qindex == tindex and qchain == tchain:
                     continue
 
                 if tchain in t_chains.groups.keys():
@@ -377,9 +379,9 @@ class BioInteractionFingerprint:
                 else:
                     continue
 
-                print("q:", qi, qchain, "t:", ti, tchain)
+                print("q:", qindex, qchain, "t:", tindex, tchain)
 
-                tmat = np.array(t_transform[1]).reshape((4, 4))
+                tmat = np.array(t_transform[2]).reshape((4, 4))
 
                 # Stack coordinates into an nx3 array
                 cq = np.column_stack((qt['x'].values, qt['y'].values, qt['z'].values)).copy()
@@ -401,7 +403,7 @@ class BioInteractionFingerprint:
                 tree_q = cKDTree(cqt)
                 tree_t = cKDTree(ctt)
 
-                rows += self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qi, ti)
+                rows += self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qindex, tindex)
 
         return rows
 
@@ -412,7 +414,7 @@ class BioInteractionFingerprint:
         assembly = col.structure.bio_assembly[self.bio]
         for i, transforms in enumerate(assembly['transformList']):
             for index in transforms['chainIndexList']:
-                trans.append((chain_ids[index], transforms['matrix']))
+                trans.append((i, chain_ids[index], transforms['matrix']))
         return trans
 
     def calc_interactions(self, structure_id, q, t, tree_q, tree_t, qi, ti):
