@@ -66,7 +66,8 @@ class InteractionExtractorDf(object):
 
         # Convert RDD of rows to a dataset using a schema
         spark = SparkSession.builder.getOrCreate()
-        schema = InteractionExtractorDf._get_schema(level)
+        #schema = InteractionExtractorDf._get_schema(level)
+        schema = InteractionExtractorDf._get_schema_new(level)
         return spark.createDataFrame(row, schema)
 
     @staticmethod
