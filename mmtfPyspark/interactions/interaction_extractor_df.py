@@ -428,26 +428,26 @@ class BioInteractionFingerprint:
 
             tr = t.iloc[[i]]
             qr = q.iloc[[j]]
-            qcid = qr['chain_id'].item()
-            tcid = tr['chain_id'].item()
-
-            # handle intra vs inter-chain interactions
+            # qcid = qr['chain_id'].item()
+            # tcid = tr['chain_id'].item()
+            #
+            # # handle intra vs inter-chain interactions
             # TODO should compare chain_id since ligands may have the same chain id as proteins
-            if qcid == tcid:
-                # cases with interactions in the same chain
-                if not self.intra:
-                    # exclude intrachain interactions
-                    continue
-
-                elif qr['group_number'].item() == tr['group_number'].item():
-                    # exclude interactions within the same chain and group
-                    continue
-
-            else:
-                # case with interactions in different chains
-                if not self.inter:
-                    # exclude inter-chain interactions
-                    continue
+            # if qcid == tcid:
+            #     # cases with interactions in the same chain
+            #     if not self.intra:
+            #         # exclude intrachain interactions
+            #         continue
+            #
+            #     elif qr['group_number'].item() == tr['group_number'].item():
+            #         # exclude interactions within the same chain and group
+            #         continue
+            #
+            # else:
+            #     # case with interactions in different chains
+            #     if not self.inter:
+            #         # exclude inter-chain interactions
+            #         continue
 
             # exclude self interactions (this can happen if the query and target criteria overlap)
             if dis < 0.001:
@@ -474,7 +474,7 @@ class BioInteractionFingerprint:
                 rows.add(row)
 
             elif self.level == 'atom':
-                print('adding interations:',  qr['group_name'].item())
+                #print('adding interations:',  qr['group_name'].item())
                 row = Row(structure_id + "." + tr['chain_name'].item(),  # structureChainId
                           qr['group_name'].item(),  # queryGroupId
                           qr['chain_name'].item(),  # queryChainId
@@ -486,7 +486,7 @@ class BioInteractionFingerprint:
                           tr['atom_name'].item(),  # targetAtomName
                           dis,  # distance
                           )
-                print('row',  qr['group_name'].item(), qr['chain_name'].item(), qr['group_number'].item(), qr['atom_name'].item())
+                #print('row',  qr['group_name'].item(), qr['chain_name'].item(), qr['group_number'].item(), qr['atom_name'].item())
                 rows.append(row)
 
         return list(rows)
