@@ -110,6 +110,39 @@ class InteractionExtractorDf(object):
         schema = StructType(fields)
         return schema
 
+    @staticmethod
+    def _get_schema_new(level, bio=-1):
+        fields = []
+        nullable = False
+
+        fields.append(StructField("structureChainId", StringType(), nullable))
+
+        # define query columns
+        fields.append(StructField("queryChainId", StringType(), nullable))
+        if bio != -1:
+            fields.append(StructField("queryTrans", IntegerType(), nullable))
+        fields.append(StructField("queryGroupId", StringType(), nullable))
+        fields.append(StructField("queryGroupNumber", StringType(), nullable))
+        if level == 'atom':
+            fields.append(StructField("queryAtomName", StringType(), nullable))
+
+        # define target columns
+        fields.append(StructField("targetChainId", StringType(), nullable))
+        if bio != -1:
+            fields.append(StructField("targetTrans", IntegerType(), nullable))
+        if level == 'group':
+            fields.append(StructField("targetGroupId", StringType(), nullable))
+            fields.append(StructField("targetGroupNumber", StringType(), nullable))
+
+        elif level == 'atom':
+            fields.append(StructField("targetAtomName", StringType(), nullable))
+            fields.append(StructField("distance", FloatType(), nullable))
+                      # StructField("sequenceIndex", IntegerType(), nullable),
+                      # StructField("sequence", StringType(), nullable)
+
+        schema = StructType(fields)
+        return schema
+
 
 class InteractionFingerprint:
 
@@ -261,13 +294,13 @@ class BioInteractionFingerprint:
         return rows
 
     def get_transforms(self, col):
-        """Return a dictionary of chain indices/transformation matrices for given bio assembly"""
+        """Return a dictionary of transformation index, chain indices/transformation matrices for given bio assembly"""
         trans = list()
         chain_ids = col.structure.chain_id_list
         assembly = col.structure.bio_assembly[self.bio]
-        for i, transforms in enumerate(assembly['transformList']):
+        for id, transforms in enumerate(assembly['transformList']):
             for index in transforms['chainIndexList']:
-                trans.append((i, chain_ids[index], transforms['matrix']))
+                trans.append((id, chain_ids[index], transforms['matrix']))
         return trans
 
 
