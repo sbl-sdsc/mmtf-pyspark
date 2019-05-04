@@ -468,7 +468,7 @@ class BioInteractionFingerprint:
                 rows.add(row)
 
             elif self.level == 'group':
-                row = Row(structure_id + "." + tr['chain_name'].item() + '-' + qi + ':' + ti,  # structureChainId
+                row = Row(structure_id + "." + tr['chain_name'].item() + '-' + str(qi) + ':' + str(ti),  # structureChainId
                           qr['group_name'].item(),  # queryGroupId
                           qr['chain_name'].item(),  # queryChainId
                           qr['group_number'].item(),  # queryGroupNumber
@@ -480,7 +480,7 @@ class BioInteractionFingerprint:
 
             elif self.level == 'atom':
                 #print('adding interations:',  qr['group_name'].item())
-                row = Row(structure_id + "." + tr['chain_name'].item()  + '-' + qi + ':' + ti,  # structureChainId
+                row = Row(structure_id + "." + tr['chain_name'].item()  + '-' + str(qi) + ':' + str(ti),  # structureChainId
                           qr['group_name'].item(),  # queryGroupId
                           qr['chain_name'].item(),  # queryChainId
                           qr['group_number'].item(),  # queryGroupNumber
