@@ -349,44 +349,65 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
         else:
             id = structure_id + "." + tr['chain_name'].item() + '-' + str(qindex) + ':' + str(tindex)
 
-        if level == 'chain':
-            # row = Row(id,  # structureChainId
-            #             qr['chain_name'].item(),  # queryChainId
-            #             qr['group_name'].item(),  # queryGroupId
-            #             qr['group_number'].item(),  # queryGroupNumber
-            #             tr['chain_name'].item()  # targetChainId
-            #           )
-            row = (id,  # structureChainId
-                    qr['chain_name'].item(),  # queryChainId
-                    qr['group_name'].item(),  # queryGroupId
-                    qr['group_number'].item(),  # queryGroupNumber
-                    tr['chain_name'].item()
-                   )
-            rows.add(row)
+        # if level == 'chain':
+        #     # row = Row(id,  # structureChainId
+        #     #             qr['chain_name'].item(),  # queryChainId
+        #     #             qr['group_name'].item(),  # queryGroupId
+        #     #             qr['group_number'].item(),  # queryGroupNumber
+        #     #             tr['chain_name'].item()  # targetChainId
+        #     #           )
+        #     row = (id,  # structureChainId
+        #             qr['chain_name'].item(),  # queryChainId
+        #             qr['group_name'].item(),  # queryGroupId
+        #             qr['group_number'].item(),  # queryGroupNumber
+        #             tr['chain_name'].item()
+        #            )
+        #     rows.add(row)
+        #
+        # elif level == 'group':
+        #     row = Row(id,  # structureChainId
+        #                 qr['chain_name'].item(),  # queryChainId
+        #                 qr['group_name'].item(),  # queryGroupId
+        #                 qr['group_number'].item(),  # queryGroupNumber
+        #                 tr['chain_name'].item(),  # targetChainId
+        #                 tr['group_name'].item(),  # targetGroupId
+        #                 tr['group_number'].item(),  # targetGroupNumber
+        #               )
+        #     rows.add(row)
+        #
+        # elif level == 'atom':
+        #     row = Row(id,  # structureChainId
+        #                 qr['chain_name'].item(),  # queryChainId
+        #                 qr['group_name'].item(),  # queryGroupId
+        #                 qr['group_number'].item(),  # queryGroupNumber
+        #                 qr['atom_name'].item(),  # queryAtomName
+        #                 tr['chain_name'].item(),  # targetChainId
+        #                 tr['group_name'].item(),  # targetGroupId
+        #                 tr['group_number'].item(),  # targetGroupNumber
+        #                 tr['atom_name'].item(),  # targetAtomName
+        #                 dis,  # distance
+        #                 )
+        #     rows.append(row)
 
-        elif level == 'group':
-            row = Row(id,  # structureChainId
-                        qr['chain_name'].item(),  # queryChainId
-                        qr['group_name'].item(),  # queryGroupId
-                        qr['group_number'].item(),  # queryGroupNumber
-                        tr['chain_name'].item(),  # targetChainId
-                        tr['group_name'].item(),  # targetGroupId
-                        tr['group_number'].item(),  # targetGroupNumber
-                      )
-            rows.add(row)
+        # -----
+        # add query data
+        row = (id, qr['chain_name'].item())
+        if qindex >= 0:
+            row += (qindex,)
+        row += (qr['group_name'].item(),  qr['group_number'].item())
+        if level == 'atom':
+            row += (qr['atom_name'].item(),)
 
-        elif level == 'atom':
-            row = Row(id,  # structureChainId
-                        qr['chain_name'].item(),  # queryChainId
-                        qr['group_name'].item(),  # queryGroupId
-                        qr['group_number'].item(),  # queryGroupNumber
-                        qr['atom_name'].item(),  # queryAtomName
-                        tr['chain_name'].item(),  # targetChainId
-                        tr['group_name'].item(),  # targetGroupId
-                        tr['group_number'].item(),  # targetGroupNumber
-                        tr['atom_name'].item(),  # targetAtomName
-                        dis,  # distance
-                        )
+        # add target data
+        row += (tr['chain_name'].item(),)
+        if tindex >= 0:
+            row += (tr['chain_name'].item(),)
+        if level == 'group' or level == 'atom':
+            row += (tr['group_name'].item(), tr['group_number'].item())
+        if level == 'atom':
+            row += (tr['atom_name'].item(), dis)
             rows.append(row)
+        else:
+            rows.add(row)
 
     return list(rows)
