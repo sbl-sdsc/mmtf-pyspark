@@ -21,7 +21,7 @@ from scipy.spatial import cKDTree
 class InteractionExtractorDf(object):
 
     @staticmethod
-    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, bio=0, level='group'):
+    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, bio=None, level='group'):
         '''Returns a dataset of ligand - macromolecule interactions
 
         The dataset contains the following columns. When level='chain' or level='group' is specified,
@@ -54,7 +54,7 @@ class InteractionExtractorDf(object):
         '''
 
         # find all interactions
-        if bio == 0:
+        if bio is None:
             row = structure.flatMap(InteractionFingerprint(query, target, distance_cutoff, inter, intra, level))
         else:
             row = structure.flatMap(BioInteractionFingerprint(query, target, distance_cutoff, inter, intra, bio, level))
@@ -120,7 +120,7 @@ class InteractionExtractorDf(object):
 
         # define query columns
         fields.append(StructField("q_chain_name", StringType(), nullable))
-        if bio > 0:
+        if bio is not None:
             fields.append(StructField("q_trans", IntegerType(), nullable))
         fields.append(StructField("q_group_name", StringType(), nullable))
         fields.append(StructField("q_group_number", StringType(), nullable))
@@ -129,7 +129,7 @@ class InteractionExtractorDf(object):
 
         # define target columns
         fields.append(StructField("t_chain_id", StringType(), nullable))
-        if bio > 0:
+        if bio is not None:
             fields.append(StructField("t_trans", IntegerType(), nullable))
         if level == 'group' or level == 'atom':
             fields.append(StructField("t_group_name", StringType(), nullable))
