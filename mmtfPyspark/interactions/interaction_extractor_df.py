@@ -206,7 +206,7 @@ class BioInteractionFingerprint:
         structure_id = t[0]
 
         # if the specified bio assembly does not exist, return an empty list
-        if len(t[1].bio_assembly) <= self.bio:
+        if len(t[1].bio_assembly) < self.bio:
             return []
 
         structure = ColumnarStructure(t[1], True)
@@ -350,14 +350,18 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
             id = structure_id + "." + tr['chain_name'].item() + '-' + str(qindex) + ':' + str(tindex)
 
         if level == 'chain':
-            row_list = [id, qr['chain_name'].item(), qr['group_name'].item(), qr['group_number'].item(), tr['chain_name'].item()]
-            row = Row(row_list)
             # row = Row(id,  # structureChainId
             #             qr['chain_name'].item(),  # queryChainId
             #             qr['group_name'].item(),  # queryGroupId
             #             qr['group_number'].item(),  # queryGroupNumber
             #             tr['chain_name'].item()  # targetChainId
             #           )
+            row = (id,  # structureChainId
+                    qr['chain_name'].item(),  # queryChainId
+                    qr['group_name'].item(),  # queryGroupId
+                    qr['group_number'].item(),  # queryGroupNumber
+                    tr['chain_name'].item()
+                   )
             rows.add(row)
 
         elif level == 'group':
