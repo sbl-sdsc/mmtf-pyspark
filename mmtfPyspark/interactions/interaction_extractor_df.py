@@ -188,7 +188,7 @@ class InteractionFingerprint:
         tree_q = cKDTree(cq)
 
         return calc_interactions(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
-                                     self.level, self.distance_cutoff)
+                                     self.level, self.distance_cutoff, self.bio)
 
 
 class BioInteractionFingerprint:
@@ -286,7 +286,7 @@ class BioInteractionFingerprint:
                 tree_t = cKDTree(ctt)
 
                 rows += calc_interactions(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
-                                          self.level, self.distance_cutoff, qindex, tindex)
+                                          self.level, self.distance_cutoff, self.bio, qindex, tindex)
 
         return rows
 
@@ -301,7 +301,7 @@ class BioInteractionFingerprint:
         return trans
 
 
-def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, distance_cutoff, qindex=0, tindex=0):
+def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, distance_cutoff, bio=None, qindex=0, tindex=0):
     sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=distance_cutoff, output_type='dict')
 
     # Add interactions to rows.
@@ -392,7 +392,7 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
         # -----
         # add query data
         row = (id, qr['chain_name'].item())
-        if qindex >= 0:
+        if bio is not None:
             row += (qindex,)
         row += (qr['group_name'].item(),  qr['group_number'].item())
         if level == 'atom':
@@ -400,8 +400,8 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
 
         # add target data
         row += (tr['chain_name'].item(),)
-        if tindex >= 0:
-            row += (tr['chain_name'].item(),)
+        if bio is not None:
+            row += (tindex,)
         if level == 'group' or level == 'atom':
             row += (tr['group_name'].item(), tr['group_number'].item())
         if level == 'atom':
