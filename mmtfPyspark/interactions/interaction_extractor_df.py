@@ -134,8 +134,7 @@ class InteractionExtractorDf(object):
         if level == 'group' or level == 'atom':
             fields.append(StructField("t_group_name", StringType(), nullable))
             fields.append(StructField("t_group_number", StringType(), nullable))
-
-        elif level == 'atom':
+        if level == 'atom':
             fields.append(StructField("t_atom_name", StringType(), nullable))
             fields.append(StructField("distance", FloatType(), nullable))
                       # StructField("sequenceIndex", IntegerType(), nullable),
