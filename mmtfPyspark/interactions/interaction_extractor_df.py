@@ -67,7 +67,7 @@ class InteractionExtractorDf(object):
         # Convert RDD of rows to a dataset using a schema
         spark = SparkSession.builder.getOrCreate()
         #schema = InteractionExtractorDf._get_schema(level)
-        schema = InteractionExtractorDf._get_schema_new(level)
+        schema = InteractionExtractorDf._get_schema_new(level, bio)
         return spark.createDataFrame(row, schema)
 
     @staticmethod
@@ -112,7 +112,7 @@ class InteractionExtractorDf(object):
         return schema
 
     @staticmethod
-    def _get_schema_new(level, bio=-1):
+    def _get_schema_new(level, bio=0):
         fields = []
         nullable = False
 
@@ -350,12 +350,14 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
             id = structure_id + "." + tr['chain_name'].item() + '-' + str(qindex) + ':' + str(tindex)
 
         if level == 'chain':
-            row = Row(id,  # structureChainId
-                        qr['chain_name'].item(),  # queryChainId
-                        qr['group_name'].item(),  # queryGroupId
-                        qr['group_number'].item(),  # queryGroupNumber
-                        tr['chain_name'].item()  # targetChainId
-                      )
+            row_list = [id, qr['chain_name'].item(), qr['group_name'].item(), qr['group_number'].item(), tr['chain_name'].item()]
+            row = Row(row_list)
+            # row = Row(id,  # structureChainId
+            #             qr['chain_name'].item(),  # queryChainId
+            #             qr['group_name'].item(),  # queryGroupId
+            #             qr['group_number'].item(),  # queryGroupNumber
+            #             tr['chain_name'].item()  # targetChainId
+            #           )
             rows.add(row)
 
         elif level == 'group':
