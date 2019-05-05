@@ -21,7 +21,7 @@ from scipy.spatial import cKDTree
 class InteractionExtractorDf(object):
 
     @staticmethod
-    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, bio=-1, level='group'):
+    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, bio=0, level='group'):
         '''Returns a dataset of ligand - macromolecule interactions
 
         The dataset contains the following columns. When level='chain' or level='group' is specified,
@@ -54,7 +54,7 @@ class InteractionExtractorDf(object):
         '''
 
         # find all interactions
-        if bio == -1:
+        if bio == 0:
             row = structure.flatMap(InteractionFingerprint(query, target, distance_cutoff, inter, intra, level))
         else:
             row = structure.flatMap(BioInteractionFingerprint(query, target, distance_cutoff, inter, intra, bio, level))
@@ -116,27 +116,27 @@ class InteractionExtractorDf(object):
         fields = []
         nullable = False
 
-        fields.append(StructField("structureChainId", StringType(), nullable))
+        fields.append(StructField("structure_chain_id", StringType(), nullable))
 
         # define query columns
-        fields.append(StructField("queryChainId", StringType(), nullable))
-        if bio != -1:
-            fields.append(StructField("queryTrans", IntegerType(), nullable))
-        fields.append(StructField("queryGroupId", StringType(), nullable))
-        fields.append(StructField("queryGroupNumber", StringType(), nullable))
+        fields.append(StructField("q_chain_name", StringType(), nullable))
+        if bio > 0:
+            fields.append(StructField("q_trans", IntegerType(), nullable))
+        fields.append(StructField("q_group_name", StringType(), nullable))
+        fields.append(StructField("q_group_number", StringType(), nullable))
         if level == 'atom':
-            fields.append(StructField("queryAtomName", StringType(), nullable))
+            fields.append(StructField("q_atom_name", StringType(), nullable))
 
         # define target columns
-        fields.append(StructField("targetChainId", StringType(), nullable))
-        if bio != -1:
-            fields.append(StructField("targetTrans", IntegerType(), nullable))
-        if level == 'group':
-            fields.append(StructField("targetGroupId", StringType(), nullable))
-            fields.append(StructField("targetGroupNumber", StringType(), nullable))
+        fields.append(StructField("t_chain_id", StringType(), nullable))
+        if bio > 0:
+            fields.append(StructField("t_trans", IntegerType(), nullable))
+        if level == 'group' or level == 'atom':
+            fields.append(StructField("t_group_name", StringType(), nullable))
+            fields.append(StructField("t_group_number", StringType(), nullable))
 
         elif level == 'atom':
-            fields.append(StructField("targetAtomName", StringType(), nullable))
+            fields.append(StructField("t_atom_name", StringType(), nullable))
             fields.append(StructField("distance", FloatType(), nullable))
                       # StructField("sequenceIndex", IntegerType(), nullable),
                       # StructField("sequence", StringType(), nullable)
@@ -188,7 +188,7 @@ class InteractionFingerprint:
         tree_t = cKDTree(ct)
         tree_q = cKDTree(cq)
 
-        return calc_interactions_new(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
+        return calc_interactions(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
                                      self.level, self.distance_cutoff)
 
 
@@ -241,22 +241,22 @@ class BioInteractionFingerprint:
         # Find interactions between pairs of chains in bio assembly
         transforms = self.get_transforms(structure)
         for q_transform in transforms:
-            qindex = q_transform[0] # transformation id
-            qchain = q_transform[1] # chain id
+            qindex = q_transform[0]  # transformation id
+            qchain = q_transform[1]  # chain id
 
             if qchain in q_chains.groups.keys():
                 qt = q_chains.get_group(qchain)
             else:
                 continue
 
-            qmat = np.array(q_transform[2]).reshape((4, 4))  #  matrix
+            qmat = np.array(q_transform[2]).reshape((4, 4))  # matrix
 
             for t_transform in transforms:
                 tindex = t_transform[0]
                 tchain = t_transform[1]
 
-                # exclude self interactions (same transformation and same chain id)
-                if qindex == tindex and qchain == tchain:
+                # exclude intra interactions (same transformation and same chain id)
+                if not self.intra and qindex == tindex and qchain == tchain:
                     continue
 
                 if tchain in t_chains.groups.keys():
@@ -282,15 +282,12 @@ class BioInteractionFingerprint:
                 # apply translation
                 ctt += tmat[3, 0:3].transpose()
 
-                # Calculate distances between the two atom sets
-#                tree_q = cKDTree(cq)
-#                tree_t = cKDTree(ct)
+                # Calculate KD tree for the two coordinate sets
                 tree_q = cKDTree(cqt)
                 tree_t = cKDTree(ctt)
 
-                # rows += self.calc_interactions(structure_id, qt, tt, tree_q, tree_t, qindex, tindex)
-                rows += calc_interactions_new(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
-                                              self.level, self.distance_cutoff, qindex, tindex)
+                rows += calc_interactions(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
+                                          self.level, self.distance_cutoff, qindex, tindex)
 
         return rows
 
@@ -298,14 +295,14 @@ class BioInteractionFingerprint:
         """Return a dictionary of transformation index, chain indices/transformation matrices for given bio assembly"""
         trans = list()
         chain_ids = col.structure.chain_id_list
-        assembly = col.structure.bio_assembly[self.bio]
+        assembly = col.structure.bio_assembly[self.bio - 1]  # bio assembly id are one-based
         for id, transforms in enumerate(assembly['transformList']):
             for index in transforms['chainIndexList']:
                 trans.append((id, chain_ids[index], transforms['matrix']))
         return trans
 
 
-def calc_interactions_new(structure_id, q, t, tree_q, tree_t, inter, intra, level, distance_cutoff, qindex=-1, tindex=-1):
+def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, distance_cutoff, qindex=0, tindex=0):
     sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=distance_cutoff, output_type='dict')
 
     # Add interactions to rows.
@@ -329,7 +326,7 @@ def calc_interactions_new(structure_id, q, t, tree_q, tree_t, inter, intra, leve
         qr = q.iloc[[j]]
 
         # Intra/inter doesn't apply to bio assemblies
-        if qindex == -1 or tindex == -1:
+        if qindex == 0 and tindex == 0:
             id = structure_id + "." + tr['chain_name'].item()
 
             qcid = qr['chain_id'].item()
@@ -355,8 +352,8 @@ def calc_interactions_new(structure_id, q, t, tree_q, tree_t, inter, intra, leve
 
         if level == 'chain':
             row = Row(id,  # structureChainId
-                        qr['group_name'].item(),  # queryGroupId
                         qr['chain_name'].item(),  # queryChainId
+                        qr['group_name'].item(),  # queryGroupId
                         qr['group_number'].item(),  # queryGroupNumber
                         tr['chain_name'].item()  # targetChainId
                       )
@@ -364,23 +361,23 @@ def calc_interactions_new(structure_id, q, t, tree_q, tree_t, inter, intra, leve
 
         elif level == 'group':
             row = Row(id,  # structureChainId
-                        qr['group_name'].item(),  # queryGroupId
                         qr['chain_name'].item(),  # queryChainId
+                        qr['group_name'].item(),  # queryGroupId
                         qr['group_number'].item(),  # queryGroupNumber
-                        tr['group_name'].item(),  # targetGroupId
                         tr['chain_name'].item(),  # targetChainId
+                        tr['group_name'].item(),  # targetGroupId
                         tr['group_number'].item(),  # targetGroupNumber
                       )
             rows.add(row)
 
         elif level == 'atom':
             row = Row(id,  # structureChainId
-                        qr['group_name'].item(),  # queryGroupId
                         qr['chain_name'].item(),  # queryChainId
+                        qr['group_name'].item(),  # queryGroupId
                         qr['group_number'].item(),  # queryGroupNumber
                         qr['atom_name'].item(),  # queryAtomName
-                        tr['group_name'].item(),  # targetGroupId
                         tr['chain_name'].item(),  # targetChainId
+                        tr['group_name'].item(),  # targetGroupId
                         tr['group_number'].item(),  # targetGroupNumber
                         tr['atom_name'].item(),  # targetAtomName
                         dis,  # distance
