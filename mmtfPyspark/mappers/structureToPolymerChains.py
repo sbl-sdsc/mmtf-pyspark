@@ -12,6 +12,7 @@ __email__ = "marshuang80@gmail.com"
 __version__ = "0.2.0"
 __status__ = "debug"
 #from mmtf.utils import *
+from mmtf.utils import decoder_utils
 from mmtf.api.mmtf_writer import MMTFEncoder
 from mmtfPyspark.utils import MmtfStructure
 
@@ -37,10 +38,7 @@ class StructureToPolymerChains(object):
 
     def __call__(self, t):
 
-        if type(t[1]) == MmtfStructure and t[1].alt_loc_set == False:
-            structure = t[1].set_alt_loc_list()
-        else:
-            structure = t[1]
+        structure = t[1]
 
         # Precalculate indices
         numChains = structure.chains_per_model[0]

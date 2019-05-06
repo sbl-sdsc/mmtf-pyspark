@@ -12,23 +12,24 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         'mmtfPyspark.interactions'
                         ]
 
-mmtfPyspark_dependencies = ['pyspark==2.3.2',
-                            'biopython>=1.71',
-                            'msgpack==0.5.6',
-                            'numpy==1.14.5',
+mmtfPyspark_dependencies = ['msgpack==0.5.6',
+                            'numpy==1.15.4',
                             'ipywidgets==7.4.2',
+                            'mmtf-python==1.1.2',
+                            'requests==2.20.0',
+                            'matplotlib==2.2.3',
+                            'numba==0.41.0',
                             'seaborn==0.8.1',
-                            'sympy>=1.1.1',
+                            'sympy==1.1.1',
                             'py3Dmol==0.8.0',
-                            'scipy>=1.1.0',
-                            'scikit-learn>=0.19.0',
-                            'pandas==0.23.1',
+                            'scipy==1.1.0',
+                            'scikit-learn==0.20.0',
+                            'pandas==0.23.4',
                             'py4j==0.10.7',
                             'pyarrow==0.11.1',
-                            'requests==2.20.0',
-                            'matplotlib==2.2.2',
                             'xlrd==1.1.0',
-                            'mmtf-python==1.1.2'
+                            'nose',
+                            'cython',
                             ]
 
 LONG_DESCRIPTION = """
