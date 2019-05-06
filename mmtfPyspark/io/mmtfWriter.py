@@ -32,8 +32,6 @@ def write_sequence_file(path, structure, compressed=True):
        if true, apply gzip compression
     '''
     # Can't apply first() function on list
-    if type(structure.first()[1]) == MmtfStructure:
-        structure = structure.map(lambda s: (s[0], s[1].set_alt_loc_list()))
 
     structure.map(lambda t: (t[0], _to_byte_array(t[1], compressed)))\
              .saveAsHadoopFile(path,
@@ -59,8 +57,7 @@ def write_mmtf_files(path, structure):
     if not os.path.exists(path):
         os.makedirs(path)
 
-    structure = structure.map(lambda s: (s[0], s[1].set_alt_loc_list())) \
-                         .map(lambda t: (t[0], _to_byte_array(t[1], False))) \
+    structure = structure.map(lambda t: (t[0], _to_byte_array(t[1], False))) \
                          .foreach(lambda t: gzip.open(path + t[0] + '.mmtf.gz', mode='wb').write(t[1]))
 
 
@@ -90,10 +87,6 @@ def _to_byte_array(structure, compressed):
     list
        MMTF encoded and optionally gzipped structure data
     '''
-
-    if type(structure) == MmtfStructure:
-        if not structure.alt_loc_set:
-            structure = structure.set_alt_loc_list()
 
     byte_array = bytearray(msgpack.packb(MMTFEncoder.encode_data(structure), use_bin_type = True))
 

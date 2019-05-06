@@ -1,0 +1,5 @@
+#!/bin/bash
+export MASTER=local[1]
+export SPARK_DRIVER_MEMORY=2G
+exec "$@"
+
