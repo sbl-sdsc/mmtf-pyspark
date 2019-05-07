@@ -123,7 +123,6 @@ def print_chain_info(structure):
 
 def print_chain_group_info(structure):
     structure = _check_structure_or_tuple(structure)
-    structure = structure.set_alt_loc_list()
 
     print("*** CHAIN AND GROUP DATA ***")
     chainIndex = 0
@@ -214,9 +213,6 @@ def print_chain_entity_group_atom_info(structure):
 
                 for m in range(0, (len(structure.group_list[groupType]["atomNameList"]))):
                     atomId = structure.atom_id_list[atomIndex]
-
-                    if not structure.alt_loc_set:
-                        structure = structure.set_alt_loc_list()
 
                     altLocId = structure.alt_loc_list[atomIndex]
                     x = structure.x_coord_list[atomIndex]
