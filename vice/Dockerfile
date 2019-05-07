@@ -14,7 +14,7 @@ RUN python3 -m pip install ipykernel \
     && pip install biopython==1.72
 
 # Install OpenJDK & PySpark
-RUN conda install openjdk==8.0.152 pyspark==2.4.1 -y
+RUN conda install openjdk==8.0.152 pyspark==2.4.2 -y
 
 # Install mmtfPySpark
 RUN pip install git+https://github.com/sbl-sdsc/mmtf-pyspark.git
