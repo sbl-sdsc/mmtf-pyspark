@@ -37,9 +37,6 @@ class StructureToBioassembly(object):
 
     def __call__(self, t):
         structure = t[1]
-        if not structure.alt_loc_set:
-            structure = structure.set_alt_loc_list()
-        # print(structure.group_type_list)
 
         bioassemblies = structure.bio_assembly
 
