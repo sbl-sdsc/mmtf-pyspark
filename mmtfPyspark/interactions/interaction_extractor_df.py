@@ -337,9 +337,9 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
                 if not intra:
                 # exclude intrachain interactions
                     continue
-            elif qr['group_number'].item() == tr['group_number'].item():
+                if qr['group_number'].item() == tr['group_number'].item():
                 # exclude interactions within the same chain and group
-                continue
+                    continue
             else:
                 # case with interactions in different chains
                 if not inter:
