@@ -188,7 +188,7 @@ class InteractionFingerprint:
         tree_q = cKDTree(cq)
 
         return calc_interactions(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
-                                     self.level, self.distance_cutoff, self.bio)
+                                     self.level, self.distance_cutoff)
 
 
 class BioInteractionFingerprint:
@@ -286,7 +286,7 @@ class BioInteractionFingerprint:
                 tree_t = cKDTree(ctt)
 
                 rows += calc_interactions(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
-                                          self.level, self.distance_cutoff, None, qindex, tindex)
+                                          self.level, self.distance_cutoff, self.bio, qindex, tindex)
 
         return rows
 
