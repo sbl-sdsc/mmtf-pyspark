@@ -128,7 +128,7 @@ class InteractionExtractorDf(object):
             fields.append(StructField("q_atom_name", StringType(), nullable))
 
         # define target columns
-        fields.append(StructField("t_chain_id", StringType(), nullable))
+        fields.append(StructField("t_chain_name", StringType(), nullable))
         if bio is not None:
             fields.append(StructField("t_trans", IntegerType(), nullable))
         if level == 'group' or level == 'atom':
@@ -286,7 +286,7 @@ class BioInteractionFingerprint:
                 tree_t = cKDTree(ctt)
 
                 rows += calc_interactions(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
-                                          self.level, self.distance_cutoff, self.bio, qindex, tindex)
+                                          self.level, self.distance_cutoff, None, qindex, tindex)
 
         return rows
 
