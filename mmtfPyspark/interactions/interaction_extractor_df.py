@@ -324,8 +324,8 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
         tr = t.iloc[[i]]
         qr = q.iloc[[j]]
 
-        # Intra/inter doesn't apply to bio assemblies
-        if bio and qindex == 0 and tindex == 0:
+        # Intra/inter logic is applied for asymmetric units (bio is None)
+        if bio is None and qindex == 0 and tindex == 0:
             id = structure_id + "." + tr['chain_name'].item()
 
             qcid = qr['chain_id'].item()
