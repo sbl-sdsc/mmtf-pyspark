@@ -232,8 +232,9 @@ class BioInteractionFingerprint:
         if t is None or t.shape[0] == 0:
             return []
 
-        q_chains = q.groupby('chain_id')
-        t_chains = t.groupby('chain_id')
+        # group by chain ids and convert grouped df to a regular df
+        q_chains = q.groupby('chain_id').to_frame().reset_index()
+        t_chains = t.groupby('chain_id').to_frame().reset_index()
 
         rows = list()
 
