@@ -324,12 +324,17 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
         tr = t.iloc[[i]]
         qr = q.iloc[[j]]
 
-        # Intra/inter logic is applied for asymmetric units (bio is None)
-        if bio is None and qindex == 0 and tindex == 0:
-            id = structure_id + "." + tr['chain_name'].item()
+        qcid = qr['chain_id'].item()
+        tcid = tr['chain_id'].item()
 
-            qcid = qr['chain_id'].item()
-            tcid = tr['chain_id'].item()
+        qgn = qr['group_number'].item()
+        tgn = tr['group_number'].item()
+
+        # Intra/inter logic is applied for asymmetric units (bio is None)
+        # TODO why check qindex and tindex?
+        # if bio is None and qindex == 0 and tindex == 0:
+        if bio is None:
+            id = structure_id + "." + tr['chain_name'].item()
 
             # handle intra vs inter-chain interactions
             if qcid == tcid:
@@ -337,7 +342,7 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
                 if not intra:
                 # exclude intrachain interactions
                     continue
-                if qr['group_number'].item() == tr['group_number'].item():
+                if qgn == tgn:
                 # exclude interactions within the same chain and group
                     continue
             else:
@@ -347,6 +352,10 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
                     continue
 
         else:
+            if qindex == tindex and qcid == tcid and qgn == tgn:
+                # exclude interactions within the same chain, transform, and group
+                continue
+
             id = structure_id + "." + tr['chain_name'].item() + '-' + str(qindex) + ':' + str(tindex)
 
         # if level == 'chain':
