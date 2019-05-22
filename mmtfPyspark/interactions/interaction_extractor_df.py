@@ -245,7 +245,7 @@ class BioInteractionFingerprint:
             qchain = q_transform[1]  # chain id
 
             if qchain in q_chains.groups.keys():
-                qt = q_chains.get_group(qchain).reset_index()
+                qt = q_chains.get_group(qchain).reset_index(drop=True)
             else:
                 continue
 
@@ -260,13 +260,14 @@ class BioInteractionFingerprint:
                     continue
 
                 if tchain in t_chains.groups.keys():
-                    tt = t_chains.get_group(tchain).reset_index()
+                    tt = t_chains.get_group(tchain).reset_index(drop=True)
                 else:
                     continue
 
                 print("q:", qindex, qchain, "t:", tindex, tchain)
                 print("qt:", qt.shape[0], " tt:", tt.shape[0])
 
+                # reshape to a 4x4 transformation matrix
                 tmat = np.array(t_transform[2]).reshape((4, 4))
 
                 # Stack coordinates into an nx3 array
@@ -332,9 +333,6 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
         qgn = qr['group_number'].item()
         tgn = tr['group_number'].item()
 
-        # Intra/inter logic is applied for asymmetric units (bio is None)
-        # TODO why check qindex and tindex?
-        # if bio is None and qindex == 0 and tindex == 0:
         if bio is None:
             id = structure_id + "." + tr['chain_name'].item()
 
@@ -358,7 +356,7 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
                 # exclude interactions within the same chain, transform, and group
                 continue
 
-            id = structure_id + "." + tr['chain_name'].item() + '-' + str(qindex) + ':' + str(tindex)
+            id = structure_id + '.' + tr['chain_name'].item() + '-' + str(qindex) + ':' + str(tindex)
 
         # if level == 'chain':
         #     # row = Row(id,  # structureChainId
