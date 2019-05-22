@@ -233,8 +233,8 @@ class BioInteractionFingerprint:
             return []
 
         # group by chain ids and convert grouped df to a regular df
-        q_chains = q.groupby('chain_id').to_frame().reset_index()
-        t_chains = t.groupby('chain_id').to_frame().reset_index()
+        q_chains = q.groupby('chain_id')
+        t_chains = t.groupby('chain_id')
 
         rows = list()
 
@@ -245,7 +245,7 @@ class BioInteractionFingerprint:
             qchain = q_transform[1]  # chain id
 
             if qchain in q_chains.groups.keys():
-                qt = q_chains.get_group(qchain)
+                qt = q_chains.get_group(qchain).reset_index()
             else:
                 continue
 
@@ -260,7 +260,7 @@ class BioInteractionFingerprint:
                     continue
 
                 if tchain in t_chains.groups.keys():
-                    tt = t_chains.get_group(tchain)
+                    tt = t_chains.get_group(tchain).reset_index()
                 else:
                     continue
 
