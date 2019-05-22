@@ -264,6 +264,7 @@ class BioInteractionFingerprint:
                     continue
 
                 print("q:", qindex, qchain, "t:", tindex, tchain)
+                print("qt:", qt.shape[0], " tt:", tt.shape[0])
 
                 tmat = np.array(t_transform[2]).reshape((4, 4))
 
@@ -403,7 +404,7 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
         row = (id, qr['chain_name'].item())
         if bio is not None:
             row += (qindex,)
-        row += (qr['group_name'].item(),  qr['group_number'].item())
+        row += (qr['group_name'].item(),  qgn)
         if level == 'atom':
             row += (qr['atom_name'].item(),)
 
@@ -412,7 +413,7 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
         if bio is not None:
             row += (tindex,)
         if level == 'group' or level == 'atom':
-            row += (tr['group_name'].item(), tr['group_number'].item())
+            row += (tr['group_name'].item(), tgn)
         if level == 'atom':
             row += (tr['atom_name'].item(), dis)
             rows.append(row)
