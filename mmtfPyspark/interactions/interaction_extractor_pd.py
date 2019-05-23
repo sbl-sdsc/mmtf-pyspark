@@ -70,46 +70,46 @@ class InteractionExtractorDf(object):
         schema = InteractionExtractorDf._get_schema_new(level, bio)
         return spark.createDataFrame(row, schema)
 
-    @staticmethod
-    def _get_schema(level):
-        fields = []
-        nullable = False
-
-        if level == 'chain':
-            fields = [StructField("structureChainId", StringType(), nullable),
-                      StructField("queryGroupId", StringType(), nullable),
-                      StructField("queryChainId", StringType(), nullable),
-                      StructField("queryGroupNumber", StringType(), nullable),
-                      StructField("targetChainId", StringType(), nullable)
-                      ]
-        elif level == 'group':
-            fields = [StructField("structureChainId", StringType(), nullable),
-                      StructField("queryGroupId", StringType(), nullable),
-                      StructField("queryChainId", StringType(), nullable),
-                      StructField("queryGroupNumber", StringType(), nullable),
-                      StructField("targetGroupId", StringType(), nullable),
-                      StructField("targetChainId", StringType(), nullable),
-                      StructField("targetGroupNumber", StringType(), nullable)
-                      # StructField("sequenceIndex", IntegerType(), nullable),
-                      # StructField("sequence", StringType(), nullable)
-                      ]
-        elif level == 'atom':
-            fields = [StructField("structureChainId", StringType(), nullable),
-                      StructField("queryGroupId", StringType(), nullable),
-                      StructField("queryChainId", StringType(), nullable),
-                      StructField("queryGroupNumber", StringType(), nullable),
-                      StructField("queryAtomName", StringType(), nullable),
-                      StructField("targetGroupId", StringType(), nullable),
-                      StructField("targetChainId", StringType(), nullable),
-                      StructField("targetGroupNumber", StringType(), nullable),
-                      StructField("targetAtomName", StringType(), nullable),
-                      StructField("distance", FloatType(), nullable)
-                      # StructField("sequenceIndex", IntegerType(), nullable),
-                      # StructField("sequence", StringType(), nullable)
-                      ]
-
-        schema = StructType(fields)
-        return schema
+    # @staticmethod
+    # def _get_schema(level):
+    #     fields = []
+    #     nullable = False
+    #
+    #     if level == 'chain':
+    #         fields = [StructField("structureChainId", StringType(), nullable),
+    #                   StructField("queryGroupId", StringType(), nullable),
+    #                   StructField("queryChainId", StringType(), nullable),
+    #                   StructField("queryGroupNumber", StringType(), nullable),
+    #                   StructField("targetChainId", StringType(), nullable)
+    #                   ]
+    #     elif level == 'group':
+    #         fields = [StructField("structureChainId", StringType(), nullable),
+    #                   StructField("queryGroupId", StringType(), nullable),
+    #                   StructField("queryChainId", StringType(), nullable),
+    #                   StructField("queryGroupNumber", StringType(), nullable),
+    #                   StructField("targetGroupId", StringType(), nullable),
+    #                   StructField("targetChainId", StringType(), nullable),
+    #                   StructField("targetGroupNumber", StringType(), nullable)
+    #                   # StructField("sequenceIndex", IntegerType(), nullable),
+    #                   # StructField("sequence", StringType(), nullable)
+    #                   ]
+    #     elif level == 'atom':
+    #         fields = [StructField("structureChainId", StringType(), nullable),
+    #                   StructField("queryGroupId", StringType(), nullable),
+    #                   StructField("queryChainId", StringType(), nullable),
+    #                   StructField("queryGroupNumber", StringType(), nullable),
+    #                   StructField("queryAtomName", StringType(), nullable),
+    #                   StructField("targetGroupId", StringType(), nullable),
+    #                   StructField("targetChainId", StringType(), nullable),
+    #                   StructField("targetGroupNumber", StringType(), nullable),
+    #                   StructField("targetAtomName", StringType(), nullable),
+    #                   StructField("distance", FloatType(), nullable)
+    #                   # StructField("sequenceIndex", IntegerType(), nullable),
+    #                   # StructField("sequence", StringType(), nullable)
+    #                   ]
+    #
+    #     schema = StructType(fields)
+    #     return schema
 
     @staticmethod
     def _get_schema_new(level, bio=0):
@@ -131,14 +131,22 @@ class InteractionExtractorDf(object):
         fields.append(StructField("t_chain_name", StringType(), nullable))
         if bio is not None:
             fields.append(StructField("t_trans", IntegerType(), nullable))
-        if level == 'group' or level == 'atom':
+        if level == 'group' or level == 'atom' or level == 'coord':
             fields.append(StructField("t_group_name", StringType(), nullable))
             fields.append(StructField("t_group_number", StringType(), nullable))
-        if level == 'atom':
+        if level == 'atom' or level == 'coord':
             fields.append(StructField("t_atom_name", StringType(), nullable))
             fields.append(StructField("distance", FloatType(), nullable))
                       # StructField("sequenceIndex", IntegerType(), nullable),
                       # StructField("sequence", StringType(), nullable)
+
+        if level == 'coord':
+            fields.append(StructField("q_x", FloatType(), nullable))
+            fields.append(StructField("q_y", FloatType(), nullable))
+            fields.append(StructField("q_z", FloatType(), nullable))
+            fields.append(StructField("t_x", FloatType(), nullable))
+            fields.append(StructField("t_y", FloatType(), nullable))
+            fields.append(StructField("t_z", FloatType(), nullable))
 
         schema = StructType(fields)
         return schema
@@ -159,7 +167,7 @@ class InteractionFingerprint:
         structure = t[1]
 
         # Get a dataframe representation of the structure
-        df = ColumnarStructure(structure, True).get_df()
+        df = ColumnarStructure(structure, True).to_pandas()
         if df is None:
             return []
 
@@ -184,11 +192,14 @@ class InteractionFingerprint:
         ct = np.column_stack((t['x'].values, t['y'].values, t['z'].values))
 
         # Calculate distances between the two atom sets
-        tree_t = cKDTree(ct)
-        tree_q = cKDTree(cq)
+#        tree_t = cKDTree(ct)
+#        tree_q = cKDTree(cq)
 
-        return calc_interactions(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
-                                     self.level, self.distance_cutoff)
+        # return calc_interactions(structure_id, q, t, tree_q, tree_t, self.inter, self.intra,
+        #                              self.level, self.distance_cutoff)
+
+        return calc_interactions(structure_id, q, t, cq, ct, self.inter, self.intra,
+                             self.level, self.distance_cutoff)
 
 
 class BioInteractionFingerprint:
@@ -285,10 +296,12 @@ class BioInteractionFingerprint:
                 ctt += tmat[3, 0:3].transpose()
 
                 # Calculate KD tree for the two coordinate sets
-                tree_q = cKDTree(cqt)
-                tree_t = cKDTree(ctt)
+                #tree_q = cKDTree(cqt)
+                #tree_t = cKDTree(ctt)
 
-                rows += calc_interactions(structure_id, qt, tt, tree_q, tree_t, self.inter, self.intra,
+#                rows += calc_interactions(structure_id, qt, tt, tree_q, tree_t, self.inter, self.intra,
+#                                          self.level, self.distance_cutoff, self.bio, qindex, tindex)
+                rows += calc_interactions(structure_id, qt, tt, cqt, ctt, self.inter, self.intra,
                                           self.level, self.distance_cutoff, self.bio, qindex, tindex)
 
         return rows
@@ -304,7 +317,11 @@ class BioInteractionFingerprint:
         return trans
 
 
-def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, distance_cutoff, bio=None, qindex=0, tindex=0):
+#def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, distance_cutoff, bio=None, qindex=0, tindex=0):
+def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_cutoff, bio=None, qindex=0, tindex=0):
+    tree_q = cKDTree(qc)
+    tree_t = cKDTree(tc)
+
     sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=distance_cutoff, output_type='dict')
 
     # Add interactions to rows.
@@ -411,12 +428,18 @@ def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, d
         row += (tr['chain_name'].item(),)
         if bio is not None:
             row += (tindex,)
-        if level == 'group' or level == 'atom':
+        if level == 'group' or level == 'atom' or level == 'coord':
             row += (tr['group_name'].item(), tgn)
-        if level == 'atom':
+        if level == 'atom' or level == 'coord':
             row += (tr['atom_name'].item(), dis)
+        if level == 'coord':
+            rows += (qc[j][0], qc[j][1], qc[j][2], tc[i][0], tc[i][1], tc[i][2])
+
+        # add row
+        if level == 'atom' or level == 'coord':
             rows.append(row)
         else:
+            # add to a set to remove redundant info at the group or chain level
             rows.add(row)
 
     return list(rows)
