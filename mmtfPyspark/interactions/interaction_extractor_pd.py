@@ -182,7 +182,7 @@ class BioInteractionFingerprint:
         structure = ColumnarStructure(t[1], True)
 
         # Get a dataframe representation of the structure
-        df = structure.get_df()
+        df = structure.to_pandas()
         if df is None:
             return []
 
@@ -328,47 +328,6 @@ def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_
 
             id = structure_id + '.' + tr['chain_name'].item() + '-' + str(qindex) + ':' + str(tindex)
 
-        # if level == 'chain':
-        #     # row = Row(id,  # structureChainId
-        #     #             qr['chain_name'].item(),  # queryChainId
-        #     #             qr['group_name'].item(),  # queryGroupId
-        #     #             qr['group_number'].item(),  # queryGroupNumber
-        #     #             tr['chain_name'].item()  # targetChainId
-        #     #           )
-        #     row = (id,  # structureChainId
-        #             qr['chain_name'].item(),  # queryChainId
-        #             qr['group_name'].item(),  # queryGroupId
-        #             qr['group_number'].item(),  # queryGroupNumber
-        #             tr['chain_name'].item()
-        #            )
-        #     rows.add(row)
-        #
-        # elif level == 'group':
-        #     row = Row(id,  # structureChainId
-        #                 qr['chain_name'].item(),  # queryChainId
-        #                 qr['group_name'].item(),  # queryGroupId
-        #                 qr['group_number'].item(),  # queryGroupNumber
-        #                 tr['chain_name'].item(),  # targetChainId
-        #                 tr['group_name'].item(),  # targetGroupId
-        #                 tr['group_number'].item(),  # targetGroupNumber
-        #               )
-        #     rows.add(row)
-        #
-        # elif level == 'atom':
-        #     row = Row(id,  # structureChainId
-        #                 qr['chain_name'].item(),  # queryChainId
-        #                 qr['group_name'].item(),  # queryGroupId
-        #                 qr['group_number'].item(),  # queryGroupNumber
-        #                 qr['atom_name'].item(),  # queryAtomName
-        #                 tr['chain_name'].item(),  # targetChainId
-        #                 tr['group_name'].item(),  # targetGroupId
-        #                 tr['group_number'].item(),  # targetGroupNumber
-        #                 tr['atom_name'].item(),  # targetAtomName
-        #                 dis,  # distance
-        #                 )
-        #     rows.append(row)
-
-        # -----
         # add query data
         row = (id, qr['chain_name'].item())
         if bio is not None:
@@ -386,7 +345,8 @@ def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_
         if level == 'atom' or level == 'coord':
             row += (tr['atom_name'].item(), dis)
         if level == 'coord':
-            rows += (qc[j][0], qc[j][1], qc[j][2], tc[i][0], tc[i][1], tc[i][2])
+            rows += (qc[j][0].item(), qc[j][1].item(), qc[j][2].item(),
+                     tc[i][0].item(), tc[i][1].item(), tc[i][2].item())
 
         # add row
         if level == 'atom' or level == 'coord':
