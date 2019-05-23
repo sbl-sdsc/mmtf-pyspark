@@ -106,6 +106,7 @@ class InteractionExtractorPd(object):
                     fields.append(StructField("t_y", FloatType(), nullable))
                     fields.append(StructField("t_z", FloatType(), nullable))
 
+        print("fields:", len(fields))
         schema = StructType(fields)
         return schema
 
@@ -331,21 +332,21 @@ def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_
         if bio is not None:
             row += (qindex,)
         row += (qr['group_name'].item(), qgn,)
-        if level == 'atom' or level == 'coord':
+        if level != 'chain':
             row += (qr['atom_name'].item(),)
 
         # add target data
         row += (tr['chain_name'].item(),)
         if bio is not None:
             row += (tindex,)
-        if level == 'group' or level == 'atom' or level == 'coord':
+        if level != 'chain':
             row += (tr['group_name'].item(), tgn,)
-        if level == 'atom' or level == 'coord':
-            row += (tr['atom_name'].item(), dis,)
-        if level == 'coord':
-            rows += (qc[j][0].item(), qc[j][1].item(), qc[j][2].item(),
-                     tc[i][0].item(), tc[i][1].item(), tc[i][2].item(),)
-
+            if level == 'atom' or level == 'coord':
+                row += (tr['atom_name'].item(), dis,)
+                if level == 'coord':
+                    row += (qc[j][0].item(), qc[j][1].item(), qc[j][2].item(),
+                            tc[i][0].item(), tc[i][1].item(), tc[i][2].item(),)
+  
         # add row
         if level == 'atom' or level == 'coord':
             rows.append(row)
