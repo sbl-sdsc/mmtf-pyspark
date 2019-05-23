@@ -85,29 +85,26 @@ class InteractionExtractorPd(object):
             fields.append(StructField("q_trans", IntegerType(), nullable))
         fields.append(StructField("q_group_name", StringType(), nullable))
         fields.append(StructField("q_group_number", StringType(), nullable))
-        if level == 'atom':
+        if level != 'chain':
             fields.append(StructField("q_atom_name", StringType(), nullable))
 
         # define target columns
         fields.append(StructField("t_chain_name", StringType(), nullable))
         if bio is not None:
             fields.append(StructField("t_trans", IntegerType(), nullable))
-        if level == 'group' or level == 'atom' or level == 'coord':
+        if level != 'chain':
             fields.append(StructField("t_group_name", StringType(), nullable))
             fields.append(StructField("t_group_number", StringType(), nullable))
-        if level == 'atom' or level == 'coord':
-            fields.append(StructField("t_atom_name", StringType(), nullable))
-            fields.append(StructField("distance", FloatType(), nullable))
-                      # StructField("sequenceIndex", IntegerType(), nullable),
-                      # StructField("sequence", StringType(), nullable)
-
-        if level == 'coord':
-            fields.append(StructField("q_x", FloatType(), nullable))
-            fields.append(StructField("q_y", FloatType(), nullable))
-            fields.append(StructField("q_z", FloatType(), nullable))
-            fields.append(StructField("t_x", FloatType(), nullable))
-            fields.append(StructField("t_y", FloatType(), nullable))
-            fields.append(StructField("t_z", FloatType(), nullable))
+            if level == 'atom' or level == 'coord':
+                fields.append(StructField("t_atom_name", StringType(), nullable))
+                fields.append(StructField("distance", FloatType(), nullable))
+                if level == 'coord':
+                    fields.append(StructField("q_x", FloatType(), nullable))
+                    fields.append(StructField("q_y", FloatType(), nullable))
+                    fields.append(StructField("q_z", FloatType(), nullable))
+                    fields.append(StructField("t_x", FloatType(), nullable))
+                    fields.append(StructField("t_y", FloatType(), nullable))
+                    fields.append(StructField("t_z", FloatType(), nullable))
 
         schema = StructType(fields)
         return schema
@@ -272,7 +269,6 @@ class BioInteractionFingerprint:
         return trans
 
 
-#def calc_interactions(structure_id, q, t, tree_q, tree_t, inter, intra, level, distance_cutoff, bio=None, qindex=0, tindex=0):
 def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_cutoff, bio=None, qindex=0, tindex=0):
     tree_q = cKDTree(qc)
     tree_t = cKDTree(tc)
