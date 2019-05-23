@@ -45,7 +45,7 @@ class InteractionExtractorPd(object):
            a set of PDB structures
         query : Pandas query string to select 'query' atoms
         target: Pandas query string to select 'target' atoms
-        level : 'chain', 'group' or 'atom' to aggregate results
+        level : 'chain', 'group', 'atom', or 'coord' to aggregate results
 
         Returns
         -------
@@ -60,9 +60,11 @@ class InteractionExtractorPd(object):
             row = structure.flatMap(BioInteractionFingerprint(query, target, distance_cutoff, inter, intra, bio, level))
 
         # TODO consider adding parameters
+        # only hetero or homo interactions
         # chem: add element, entity_type(LGO, PRO, DNA, etc.)
-        # geom=True -> add distance, order parameters([q3,q4,q5,q6]
         # seq=True -> add sequence index, sequence
+        # geom=True -> add distance, order parameters([q3,q4,q5,q6]
+
 
         # Convert RDD of rows to a dataset using a schema
         spark = SparkSession.builder.getOrCreate()
@@ -100,12 +102,12 @@ class InteractionExtractorPd(object):
                       # StructField("sequence", StringType(), nullable)
 
         if level == 'coord':
-            fields.append(StructField("q_x", DoubleType(), nullable))
-            fields.append(StructField("q_y", DoubleType(), nullable))
-            fields.append(StructField("q_z", DoubleType(), nullable))
-            fields.append(StructField("t_x", DoubleType(), nullable))
-            fields.append(StructField("t_y", DoubleType(), nullable))
-            fields.append(StructField("t_z", DoubleType(), nullable))
+            fields.append(StructField("q_x", FloatType(), nullable))
+            fields.append(StructField("q_y", FloatType(), nullable))
+            fields.append(StructField("q_z", FloatType(), nullable))
+            fields.append(StructField("t_x", FloatType(), nullable))
+            fields.append(StructField("t_y", FloatType(), nullable))
+            fields.append(StructField("t_z", FloatType(), nullable))
 
         schema = StructType(fields)
         return schema
@@ -333,7 +335,7 @@ def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_
         if bio is not None:
             row += (qindex,)
         row += (qr['group_name'].item(), qgn,)
-        if level == 'atom':
+        if level == 'atom' or level == 'coord':
             row += (qr['atom_name'].item(),)
 
         # add target data
@@ -345,8 +347,8 @@ def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_
         if level == 'atom' or level == 'coord':
             row += (tr['atom_name'].item(), dis,)
         if level == 'coord':
-            rows += (float(qc[j][0].item()), float(qc[j][1].item()), float(qc[j][2].item()),
-                     float(tc[i][0].item()), float(tc[i][1].item()), float(tc[i][2].item()),)
+            rows += (qc[j][0].item(), qc[j][1].item(), qc[j][2].item(),
+                     tc[i][0].item(), tc[i][1].item(), tc[i][2].item(),)
 
         # add row
         if level == 'atom' or level == 'coord':
