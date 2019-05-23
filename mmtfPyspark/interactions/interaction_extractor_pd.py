@@ -100,12 +100,12 @@ class InteractionExtractorPd(object):
                       # StructField("sequence", StringType(), nullable)
 
         if level == 'coord':
-            fields.append(StructField("q_x", FloatType(), nullable))
-            fields.append(StructField("q_y", FloatType(), nullable))
-            fields.append(StructField("q_z", FloatType(), nullable))
-            fields.append(StructField("t_x", FloatType(), nullable))
-            fields.append(StructField("t_y", FloatType(), nullable))
-            fields.append(StructField("t_z", FloatType(), nullable))
+            fields.append(StructField("q_x", DoubleType(), nullable))
+            fields.append(StructField("q_y", DoubleType(), nullable))
+            fields.append(StructField("q_z", DoubleType(), nullable))
+            fields.append(StructField("t_x", DoubleType(), nullable))
+            fields.append(StructField("t_y", DoubleType(), nullable))
+            fields.append(StructField("t_z", DoubleType(), nullable))
 
         schema = StructType(fields)
         return schema
