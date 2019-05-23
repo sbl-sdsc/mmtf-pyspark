@@ -2,8 +2,7 @@
 '''interaction_extractor.py
 
 This class creates dataset of ligand - macromolecule and macromolecule -
-macromolecule interaction information. Criteria to select interactions are
-specified by the InteractionFilter.
+macromolecule interaction information.
 
 '''
 __author__ = "Peter W Rose"
@@ -13,7 +12,6 @@ __status__ = "experimental"
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from mmtfPyspark.utils import ColumnarStructure
-#from pyspark.sql import Row
 import numpy as np
 from scipy.spatial import cKDTree
 
@@ -21,8 +19,8 @@ from scipy.spatial import cKDTree
 class InteractionExtractorPd(object):
 
     @staticmethod
-    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, bio=None, level='group'):
-        '''Returns a dataset of ligand - macromolecule interactions
+    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, bio=1, level='group'):
+        '''Return a dataset of pairwise interactions
 
         The dataset contains the following columns. When level='chain' or level='group' is specified,
         only a subset of these columns is returned.
@@ -36,8 +34,6 @@ class InteractionExtractorPd(object):
         - targetGroupNumber - group number of the target group (residue) including insertion code (e.g. 101A)
         - targetAtomName - atom name of the target atom
         - distance - distance between interaction atoms
-        - sequenceIndex - zero-based index of interacting groups (residues) mapped onto target sequence
-        - sequence - interacting polymer sequence
 
         Parameters
         ----------
@@ -55,10 +51,9 @@ class InteractionExtractorPd(object):
 
         # find all interactions
         if bio is None:
-            #row = structure.flatMap(InteractionFingerprint(query, target, distance_cutoff, inter, intra, level))
-            rows = structure.flatMap(AsymmetricUnitInteractionFingerprint(query, target, distance_cutoff, inter, intra, level))
+            rows = structure.flatMap(AsymmetricUnitInteractions(query, target, distance_cutoff, inter, intra, level))
         else:
-            rows = structure.flatMap(BioInteractionFingerprint(query, target, distance_cutoff, inter, intra, bio, level))
+            rows = structure.flatMap(BioAssemblyInteractions(query, target, distance_cutoff, inter, intra, bio, level))
 
         # TODO consider adding parameters
         # only hetero or homo interactions
@@ -72,7 +67,7 @@ class InteractionExtractorPd(object):
         return spark.createDataFrame(rows, schema)
 
     @staticmethod
-    def _get_schema(level, bio=0):
+    def _get_schema(level, bio=1):
         fields = []
         nullable = False
 
@@ -112,49 +107,7 @@ class InteractionExtractorPd(object):
         return schema
 
 
-class InteractionFingerprint:
-
-    def __init__(self, query, target, distance_cutoff, inter, intra, level='group'):
-        self.query = query
-        self.target = target
-        self.distance_cutoff = distance_cutoff
-        self.inter = inter
-        self.intra = intra
-        self.level = level
-
-    def __call__(self, t):
-        structure_id = t[0]
-        structure = t[1]
-
-        # Get a dataframe representation of the structure
-        df = ColumnarStructure(structure, True).to_pandas()
-        if df is None:
-            return []
-
-        # Apply query filter
-        q = df.query(self.query)
-
-        if q is None or q.shape[0] == 0:
-            return []
-
-        # Apply target filter
-        if self.target == self.query:
-            # if query and target are identical, reuse the query dataframe
-            t = q
-        else:
-            t = df.query(self.target)
-
-        if t is None or t.shape[0] == 0:
-            return []
-
-        # Stack coordinates into an nx3 array
-        cq = np.column_stack((q['x'].values, q['y'].values, q['z'].values))
-        ct = np.column_stack((t['x'].values, t['y'].values, t['z'].values))
-
-        return calc_interactions(structure_id, q, t, cq, ct, self.inter, self.intra,
-                                 self.level, self.distance_cutoff)
-
-class AsymmetricUnitInteractionFingerprint:
+class AsymmetricUnitInteractions:
 
     def __init__(self, query, target, distance_cutoff, inter, intra, level='group'):
         self.query = query
@@ -212,12 +165,13 @@ class AsymmetricUnitInteractionFingerprint:
                 cq = np.column_stack((qt['x'].values, qt['y'].values, qt['z'].values)).copy()
                 ct = np.column_stack((tt['x'].values, tt['y'].values, tt['z'].values)).copy()
 
-                rows += calc_interactions(structure_id, qt, tt, cq, ct, self.inter, self.intra,
-                                          self.level, self.distance_cutoff, None, -1, -1)
+                rows += _calc_interactions(structure_id, qt, tt, cq, ct, self.inter, self.intra,
+                                           self.level, self.distance_cutoff, None, -1, -1)
 
         return rows
 
-class BioInteractionFingerprint:
+
+class BioAssemblyInteractions:
 
     def __init__(self, query, target, distance_cutoff, inter, intra, bio=1, level='group'):
         self.query = query
@@ -310,7 +264,7 @@ class BioInteractionFingerprint:
                 # apply translation
                 ctt += tmat[3, 0:3].transpose()
 
-                rows += calc_interactions(structure_id, qt, tt, cqt, ctt, self.inter, self.intra,
+                rows += _calc_interactions(structure_id, qt, tt, cqt, ctt, self.inter, self.intra,
                                           self.level, self.distance_cutoff, self.bio, qindex, tindex)
 
         return rows
@@ -326,7 +280,7 @@ class BioInteractionFingerprint:
         return trans
 
 
-def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_cutoff, bio=None, qindex=0, tindex=0):
+def _calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_cutoff, bio=None, qindex=0, tindex=0):
     # Calculate distances between the two atom sets
     tree_q = cKDTree(qc)
     tree_t = cKDTree(tc)
@@ -359,31 +313,16 @@ def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_
         tgn = tr['group_number'].item()
 
         if bio is None:
-            id = structure_id + "." + tr['chain_name'].item()
-
-            # handle intra vs inter-chain interactions
-            if qcid == tcid:
-                 # cases with interactions in the same chain
-                if not intra:
-                # exclude intrachain interactions
-                    continue
-                if qgn == tgn:
-                # exclude interactions within the same chain and group
-                    continue
-            else:
-                # case with interactions in different chains
-                if not inter:
-                    # exclude inter-chain interactions
-                    continue
-
+            # exclude interactions within the same chain and group
+            if qcid == tcid and qgn == tgn:
+                continue
         else:
+            # exclude interactions within the same chain, transform, and group
             if qindex == tindex and qcid == tcid and qgn == tgn:
-                # exclude interactions within the same chain, transform, and group
                 continue
 
-            id = structure_id + '.' + tr['chain_name'].item() + '-' + str(qindex) + ':' + str(tindex)
-
-        # add query data
+        # add query data to a row
+        id = structure_id + "." + tr['chain_name'].item()
         row = (id, qr['chain_name'].item(),)
         if bio is not None:
             row += (qindex,)
@@ -391,7 +330,7 @@ def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_
         if level != 'chain':
             row += (qr['atom_name'].item(),)
 
-        # add target data
+        # add target data to a row
         row += (tr['chain_name'].item(),)
         if bio is not None:
             row += (tindex,)
