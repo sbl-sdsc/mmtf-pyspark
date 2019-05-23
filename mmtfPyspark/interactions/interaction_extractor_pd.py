@@ -345,8 +345,8 @@ def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_
         if level == 'atom' or level == 'coord':
             row += (tr['atom_name'].item(), dis,)
         if level == 'coord':
-            rows += (qc[j][0].item(), qc[j][1].item(), qc[j][2].item(),
-                     tc[i][0].item(), tc[i][1].item(), tc[i][2].item(),)
+            rows += (float(qc[j][0].item()), float(qc[j][1].item()), float(qc[j][2].item()),
+                     float(tc[i][0].item()), float(tc[i][1].item()), float(tc[i][2].item()),)
 
         # add row
         if level == 'atom' or level == 'coord':
