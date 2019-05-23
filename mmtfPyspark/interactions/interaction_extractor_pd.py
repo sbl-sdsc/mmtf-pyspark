@@ -13,12 +13,12 @@ __status__ = "experimental"
 from pyspark.sql import SparkSession
 from pyspark.sql.types import *
 from mmtfPyspark.utils import ColumnarStructure
-from pyspark.sql import Row
+#from pyspark.sql import Row
 import numpy as np
 from scipy.spatial import cKDTree
 
 
-class InteractionExtractorDf(object):
+class InteractionExtractorPd(object):
 
     @staticmethod
     def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, bio=None, level='group'):
@@ -67,49 +67,8 @@ class InteractionExtractorDf(object):
         # Convert RDD of rows to a dataset using a schema
         spark = SparkSession.builder.getOrCreate()
         #schema = InteractionExtractorDf._get_schema(level)
-        schema = InteractionExtractorDf._get_schema_new(level, bio)
+        schema = InteractionExtractorPd._get_schema_new(level, bio)
         return spark.createDataFrame(row, schema)
-
-    # @staticmethod
-    # def _get_schema(level):
-    #     fields = []
-    #     nullable = False
-    #
-    #     if level == 'chain':
-    #         fields = [StructField("structureChainId", StringType(), nullable),
-    #                   StructField("queryGroupId", StringType(), nullable),
-    #                   StructField("queryChainId", StringType(), nullable),
-    #                   StructField("queryGroupNumber", StringType(), nullable),
-    #                   StructField("targetChainId", StringType(), nullable)
-    #                   ]
-    #     elif level == 'group':
-    #         fields = [StructField("structureChainId", StringType(), nullable),
-    #                   StructField("queryGroupId", StringType(), nullable),
-    #                   StructField("queryChainId", StringType(), nullable),
-    #                   StructField("queryGroupNumber", StringType(), nullable),
-    #                   StructField("targetGroupId", StringType(), nullable),
-    #                   StructField("targetChainId", StringType(), nullable),
-    #                   StructField("targetGroupNumber", StringType(), nullable)
-    #                   # StructField("sequenceIndex", IntegerType(), nullable),
-    #                   # StructField("sequence", StringType(), nullable)
-    #                   ]
-    #     elif level == 'atom':
-    #         fields = [StructField("structureChainId", StringType(), nullable),
-    #                   StructField("queryGroupId", StringType(), nullable),
-    #                   StructField("queryChainId", StringType(), nullable),
-    #                   StructField("queryGroupNumber", StringType(), nullable),
-    #                   StructField("queryAtomName", StringType(), nullable),
-    #                   StructField("targetGroupId", StringType(), nullable),
-    #                   StructField("targetChainId", StringType(), nullable),
-    #                   StructField("targetGroupNumber", StringType(), nullable),
-    #                   StructField("targetAtomName", StringType(), nullable),
-    #                   StructField("distance", FloatType(), nullable)
-    #                   # StructField("sequenceIndex", IntegerType(), nullable),
-    #                   # StructField("sequence", StringType(), nullable)
-    #                   ]
-    #
-    #     schema = StructType(fields)
-    #     return schema
 
     @staticmethod
     def _get_schema_new(level, bio=0):
@@ -295,12 +254,6 @@ class BioInteractionFingerprint:
                 # apply translation
                 ctt += tmat[3, 0:3].transpose()
 
-                # Calculate KD tree for the two coordinate sets
-                #tree_q = cKDTree(cqt)
-                #tree_t = cKDTree(ctt)
-
-#                rows += calc_interactions(structure_id, qt, tt, tree_q, tree_t, self.inter, self.intra,
-#                                          self.level, self.distance_cutoff, self.bio, qindex, tindex)
                 rows += calc_interactions(structure_id, qt, tt, cqt, ctt, self.inter, self.intra,
                                           self.level, self.distance_cutoff, self.bio, qindex, tindex)
 
@@ -328,7 +281,7 @@ def calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_
     # There are redundant interactions when aggregating the results at the 'chain' and 'group' level,
     # since multiple atoms in a group may be involved in interactions.
     # Therefore we use a set of rows to store only unique interactions.
-    if level == 'atom':
+    if level == 'atom' or level == 'coord':
         rows = list()
     else:
         rows = set()
