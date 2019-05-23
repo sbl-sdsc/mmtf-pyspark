@@ -1,6 +1,6 @@
 from .interactionFilter import InteractionFilter
 from .interaction_extractor import InteractionExtractor
-from .interaction_extractor_df import InteractionExtractorDf
+from .interaction_extractor_pd import InteractionExtractorPd
 from .interactionCenter import InteractionCenter
 from .coordinationGeometry import CoordinateGeometry
 from .atomInteraction import AtomInteraction
