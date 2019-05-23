@@ -62,7 +62,7 @@ class ColumnarStructure(object):
         else:
             self.numModels = structure.num_models
 
-    def get_df(self, multi_index=False):
+    def to_pandas(self, multi_index=False):
         if self.df is None:
             self.initialize_core_data()
             self.df = pd.DataFrame({'chain_name': self.get_chain_names(),
