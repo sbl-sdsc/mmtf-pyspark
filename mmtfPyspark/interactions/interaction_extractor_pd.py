@@ -355,7 +355,7 @@ def _calc_interactions(structure_id, q, t, qc, tc, level, distance_cutoff, bio=N
         if bio is not None:
             row += (qindex,)
         if level != 'chain':
-            row += (qr['group_name'].item(), qgn,)
+            row += (qgn, qr['group_name'].item(),)
             if level == 'atom' or level == 'coord':
                 row += (qr['atom_name'].item(),)
 
@@ -364,7 +364,7 @@ def _calc_interactions(structure_id, q, t, qc, tc, level, distance_cutoff, bio=N
         if bio is not None:
             row += (tindex,)
         if level != 'chain':
-            row += (tr['group_name'].item(), tgn,)
+            row += (tgn, tr['group_name'].item(),)
             if level == 'atom' or level == 'coord':
                 row += (tr['atom_name'].item(), dis,)
                 if level == 'coord':
