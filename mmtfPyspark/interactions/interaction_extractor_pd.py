@@ -80,10 +80,13 @@ class InteractionExtractorPd(object):
         fields.append(StructField("q_chain_name", StringType(), nullable))
         if bio is not None:
             fields.append(StructField("q_trans", IntegerType(), nullable))
-        fields.append(StructField("q_group_name", StringType(), nullable))
-        fields.append(StructField("q_group_number", StringType(), nullable))
+
         if level != 'chain':
-            fields.append(StructField("q_atom_name", StringType(), nullable))
+            fields.append(StructField("q_group_number", StringType(), nullable))
+            fields.append(StructField("q_group_name", StringType(), nullable))
+
+            if level == 'atom' or level == 'coord':
+                fields.append(StructField("q_atom_name", StringType(), nullable))
 
         # define target columns
         fields.append(StructField("t_chain_name", StringType(), nullable))
@@ -91,8 +94,9 @@ class InteractionExtractorPd(object):
             fields.append(StructField("t_trans", IntegerType(), nullable))
 
         if level != 'chain':
-            fields.append(StructField("t_group_name", StringType(), nullable))
             fields.append(StructField("t_group_number", StringType(), nullable))
+            fields.append(StructField("t_group_name", StringType(), nullable))
+
 
             if level == 'atom' or level == 'coord':
                 fields.append(StructField("t_atom_name", StringType(), nullable))
@@ -350,9 +354,10 @@ def _calc_interactions(structure_id, q, t, qc, tc, level, distance_cutoff, bio=N
         row = (id, qr['chain_name'].item(),)
         if bio is not None:
             row += (qindex,)
-        row += (qr['group_name'].item(), qgn,)
         if level != 'chain':
-            row += (qr['atom_name'].item(),)
+            row += (qr['group_name'].item(), qgn,)
+            if level == 'atom' or level == 'coord':
+                row += (qr['atom_name'].item(),)
 
         # add target data to a row
         row += (tr['chain_name'].item(),)
