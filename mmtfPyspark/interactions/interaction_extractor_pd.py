@@ -19,26 +19,29 @@ from scipy.spatial import cKDTree
 class InteractionExtractorPd(object):
 
     @staticmethod
-    def get_interactions(structure, query, target, distance_cutoff, inter=True, intra=False, bio=1, level='group'):
+    def get_interactions(structure, distance_cutoff, query=None, target=None, inter=True, intra=False, bio=1, level='group'):
         '''Return a dataset of pairwise interactions
 
-        The dataset contains the following columns. When level='chain' or level='group' is specified,
-        only a subset of these columns is returned.
+        The dataset contains some or all of the following columns depending on the specified level.
         - structureChainId - pdbId.chainName of interacting chain
-        - queryGroupId - id of the query group (residue) from the PDB chemical component dictionary
-        - queryChainId - chain name of the query group (residue)
-        - queryGroupNumber - group number of the query group (residue) including insertion code (e.g. 101A)
-        - queryAtomName - atom name of the query atom
-        - targetGroupId - id of the query group (residue) from the PDB chemical component dictionary
-        - targetChainId - chain name of the target group (residue)
-        - targetGroupNumber - group number of the target group (residue) including insertion code (e.g. 101A)
-        - targetAtomName - atom name of the target atom
+        - q_chain_name -  chain name of the query
+        - q_trans - id of bio assembly transformation applied to query
+        - q_group_name - id of the query group (residue) from the PDB chemical component dictionary
+        - q_group_number - group number of the query group (residue) including insertion code (e.g. 101A)
+        - q_atom_name - atom name of the query atom
+        - t_chain_name" - chain name of the target
+        - t_trans - id of bio assembly transformation applied to target
+        - t_group_name - id of the target group (residue) from the PDB chemical component dictionary
+        - t_group_number - group number of the target group (residue) including insertion code (e.g. 101A)
+        - t_atom_name - atom name of the target atom
         - distance - distance between interaction atoms
+        - q_x, q_y, q_z - coordinates of query atoms
+        - t_x, t_y, t_z - coordinates of target atoms
 
         Parameters
         ----------
-        structures : PythonRDD
-           a set of PDB structures
+        structure : mmtf structure
+        distance_cutoff : distance threshold for interactions
         query : Pandas query string to select 'query' atoms
         target: Pandas query string to select 'target' atoms
         level : 'chain', 'group', 'atom', or 'coord' to aggregate results
@@ -46,7 +49,7 @@ class InteractionExtractorPd(object):
         Returns
         -------
         dataset
-           dataset with interacting residue and atom information
+           dataset with pairwise interaction information
         '''
 
         # find all interactions
@@ -109,7 +112,7 @@ class InteractionExtractorPd(object):
 
 class AsymmetricUnitInteractions:
 
-    def __init__(self, query, target, distance_cutoff, inter, intra, level='group'):
+    def __init__(self, query, target, distance_cutoff, inter, intra, level):
         self.query = query
         self.target = target
         self.distance_cutoff = distance_cutoff
@@ -122,19 +125,25 @@ class AsymmetricUnitInteractions:
         structure_id = t[0]
 
         # Get a pandas dataframe representation of the structure
-        structure = ColumnarStructure(t[1], True)
+        structure = ColumnarStructure(t[1])
+
         df = structure.to_pandas()
         if df is None:
             return []
 
         # Apply query filter
-        q = df.query(self.query)
+        if self.query is None:
+            q = df
+        else:
+            q = df.query(self.query)
 
         if q is None or q.shape[0] == 0:
             return []
 
         # Apply target filter
-        if self.target == self.query:
+        if self.target is None:
+            t = df
+        elif self.target == self.query:
             # if query and target are identical, reuse the query dataframe
             t = q
         else:
@@ -159,21 +168,24 @@ class AsymmetricUnitInteractions:
                 if not self.intra and q_chain == t_chain:
                     continue
 
+                if not self.inter and q_chain != t_chain:
+                    continue
+
                 tt = t_chains.get_group(t_chain).reset_index(drop=True)
 
                 # Stack coordinates into an nx3 array
                 cq = np.column_stack((qt['x'].values, qt['y'].values, qt['z'].values)).copy()
                 ct = np.column_stack((tt['x'].values, tt['y'].values, tt['z'].values)).copy()
 
-                rows += _calc_interactions(structure_id, qt, tt, cq, ct, self.inter, self.intra,
-                                           self.level, self.distance_cutoff, None, -1, -1)
+                rows += _calc_interactions(structure_id, qt, tt, cq, ct, self.level,
+                                           self.distance_cutoff, None, -1, -1)
 
         return rows
 
 
 class BioAssemblyInteractions:
 
-    def __init__(self, query, target, distance_cutoff, inter, intra, bio=1, level='group'):
+    def __init__(self, query, target, distance_cutoff, inter, intra, bio, level):
         self.query = query
         self.target = target
         self.distance_cutoff = distance_cutoff
@@ -185,11 +197,14 @@ class BioAssemblyInteractions:
     def __call__(self, t):
         structure_id = t[0]
 
+        if self.bio < 1:
+            raise ValueError('bio assembly number must be >= 1, was:', self.bio)
+
         # if the specified bio assembly does not exist, return an empty list
         if len(t[1].bio_assembly) < self.bio:
             return []
 
-        structure = ColumnarStructure(t[1], True)
+        structure = ColumnarStructure(t[1])
 
         # Get a pandas dataframe representation of the structure
         df = structure.to_pandas()
@@ -197,13 +212,18 @@ class BioAssemblyInteractions:
             return []
 
         # Apply query filter
-        q = df.query(self.query)
+        if self.query is None:
+            q = df
+        else:
+            q = df.query(self.query)
 
         if q is None or q.shape[0] == 0:
             return []
 
         # Apply target filter
-        if self.target == self.query:
+        if self.target is None:
+            t = df
+        elif self.target == self.query:
             # if query and target are identical, reuse the query dataframe
             t = q
         else:
@@ -212,7 +232,7 @@ class BioAssemblyInteractions:
         if t is None or t.shape[0] == 0:
             return []
 
-        # group by chain ids
+        # Group by chain ids
         q_chains = q.groupby('chain_id')
         t_chains = t.groupby('chain_id')
 
@@ -229,7 +249,16 @@ class BioAssemblyInteractions:
             else:
                 continue
 
-            qmat = np.array(q_transform[2]).reshape((4, 4))  # matrix
+            # Stack coordinates into an nx3 array
+            cq = np.column_stack((qt['x'].values, qt['y'].values, qt['z'].values)).copy()
+            # Create transformation matrix
+            qmat = np.array(q_transform[2]).reshape((4, 4))
+
+            # Apply bio assembly transformations
+            #   apply rotation
+            cqt = np.matmul(cq, qmat[0:3, 0:3])
+            #   apply translation
+            cqt += qmat[3, 0:3].transpose()
 
             for t_transform in transforms:
                 tindex = t_transform[0]
@@ -239,33 +268,28 @@ class BioAssemblyInteractions:
                 if not self.intra and qindex == tindex and qchain == tchain:
                     continue
 
+                if not self.inter and qindex != tindex and qchain != tchain:
+                    continue
+
                 if tchain in t_chains.groups.keys():
                     tt = t_chains.get_group(tchain).reset_index(drop=True)
                 else:
                     continue
 
-                print("q:", qindex, qchain, "t:", tindex, tchain)
-                print("qt:", qt.shape[0], " tt:", tt.shape[0])
-
-                # reshape to a 4x4 transformation matrix
-                tmat = np.array(t_transform[2]).reshape((4, 4))
-
                 # Stack coordinates into an nx3 array
-                cq = np.column_stack((qt['x'].values, qt['y'].values, qt['z'].values)).copy()
                 ct = np.column_stack((tt['x'].values, tt['y'].values, tt['z'].values)).copy()
 
+                # Get a 4x4 transformation matrix
+                tmat = np.array(t_transform[2]).reshape((4, 4))
+
                 # Apply bio assembly transformations
-                # apply rotation
-                cqt = np.matmul(cq, qmat[0:3, 0:3])
-                # apply translation
-                cqt += qmat[3, 0:3].transpose()
-                # apply rotation
+                #   apply rotation
                 ctt = np.matmul(ct, tmat[0:3, 0:3])
-                # apply translation
+                #   apply translation
                 ctt += tmat[3, 0:3].transpose()
 
-                rows += _calc_interactions(structure_id, qt, tt, cqt, ctt, self.inter, self.intra,
-                                          self.level, self.distance_cutoff, self.bio, qindex, tindex)
+                rows += _calc_interactions(structure_id, qt, tt, cqt, ctt, self.level,
+                                           self.distance_cutoff, self.bio, qindex, tindex)
 
         return rows
 
@@ -280,7 +304,7 @@ class BioAssemblyInteractions:
         return trans
 
 
-def _calc_interactions(structure_id, q, t, qc, tc, inter, intra, level, distance_cutoff, bio=None, qindex=0, tindex=0):
+def _calc_interactions(structure_id, q, t, qc, tc, level, distance_cutoff, bio=None, qindex=0, tindex=0):
     # Calculate distances between the two atom sets
     tree_q = cKDTree(qc)
     tree_t = cKDTree(tc)
