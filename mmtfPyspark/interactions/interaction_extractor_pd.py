@@ -1,12 +1,12 @@
 #!/user/bin/env python
 '''interaction_extractor.py
 
-This class creates dataset of ligand - macromolecule and macromolecule -
-macromolecule interaction information.
+This class calculates pairwise intra- and inter-molecular interactions at specified
+levels of granularity within biological assemblies and asymmetric units.
 
 '''
 __author__ = "Peter W Rose"
-__version__ = "0.3.0"
+__version__ = "0.3.6"
 __status__ = "experimental"
 
 from pyspark.sql import SparkSession
@@ -19,10 +19,10 @@ from scipy.spatial import cKDTree
 class InteractionExtractorPd(object):
 
     @staticmethod
-    def get_interactions(structure, distance_cutoff, query=None, target=None, inter=True, intra=False, bio=1, level='group'):
-        '''Return a dataset of pairwise interactions
+    def get_interactions(structure, distance_cutoff=4.0, query=None, target=None, inter=True, intra=False, bio=1, level='group'):
+        '''Return a dataframe of pairwise interactions
 
-        The dataset contains some or all of the following columns depending on the specified level.
+        The dataframe contains some or all of the following columns depending on the specified level.
         - structureChainId - pdbId.chainName of interacting chain
         - q_chain_name -  chain name of the query
         - q_trans - id of bio assembly transformation applied to query
@@ -44,12 +44,15 @@ class InteractionExtractorPd(object):
         distance_cutoff : distance threshold for interactions
         query : Pandas query string to select 'query' atoms
         target: Pandas query string to select 'target' atoms
-        level : 'chain', 'group', 'atom', or 'coord' to aggregate results
+        inter: calculate intermolecular interaction if True
+        intra: calculate intramolecular interactions if True
+        bio : biological assembly number: None for asymmetric unit or 1, 2, ... for bio assembly
+        level : 'chain', 'group', 'atom', or 'coord' granularity level at which to aggregate results
 
         Returns
         -------
-        dataset
-           dataset with pairwise interaction information
+        dataframe
+           Spark dataframe with pairwise interaction information
         '''
 
         # find all interactions
@@ -70,7 +73,7 @@ class InteractionExtractorPd(object):
         return spark.createDataFrame(rows, schema)
 
     @staticmethod
-    def _get_schema(level, bio=1):
+    def _get_schema(level, bio):
         fields = []
         nullable = False
 
@@ -96,7 +99,6 @@ class InteractionExtractorPd(object):
         if level != 'chain':
             fields.append(StructField("t_group_number", StringType(), nullable))
             fields.append(StructField("t_group_name", StringType(), nullable))
-
 
             if level == 'atom' or level == 'coord':
                 fields.append(StructField("t_atom_name", StringType(), nullable))
@@ -308,8 +310,8 @@ class BioAssemblyInteractions:
         return trans
 
 
-def _calc_interactions(structure_id, q, t, qc, tc, level, distance_cutoff, bio=None, qindex=0, tindex=0):
-    # Calculate distances between the two atom sets
+def _calc_interactions(structure_id, q, t, qc, tc, level, distance_cutoff, bio, qindex, tindex):
+    """Calculate distances between the two atom sets"""
     tree_q = cKDTree(qc)
     tree_t = cKDTree(tc)
     sparse_dm = tree_t.sparse_distance_matrix(tree_q, max_distance=distance_cutoff, output_type='dict')
