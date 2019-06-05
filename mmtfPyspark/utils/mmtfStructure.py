@@ -11,23 +11,14 @@ __version__ = "0.2.0"
 __status__ = "Done"
 
 import numpy as np
-from mmtf.utils import decoder_utils
 from mmtfPyspark.utils import mmtfDecoder
 
 
 class MmtfStructure(object):
-    model_counter = 0
-    chain_counter = 0
-    group_counter = 0
-    atom_counter = 0
-    # TODO
-
 
     def __init__(self, input_data):
         """Decodes a msgpack unpacked data to mmtf structure"""
-        # TODO temporary
         self.input_data = input_data
-
 
         self.mmtf_version = mmtfDecoder.get_value(input_data, 'mmtfVersion', required=True)
         self.mmtf_producer = mmtfDecoder.get_value(input_data, 'mmtfProducer', required=True)
@@ -51,40 +42,29 @@ class MmtfStructure(object):
         self.num_models = mmtfDecoder.get_value(input_data, 'numModels', required=True)
         self.group_list = mmtfDecoder.get_value(input_data, 'groupList', required=True)
         self._bond_atom_list = None
-        #self.bond_atom_list = mmtfDecoder.decode(input_data, 'bondAtomList')
         self._bond_order_list = None
-        #self.bond_order_list = mmtfDecoder.decode(input_data, 'bondOrderList')
-        self.bondResonanceList = None  # TODO
+        self._bondResonanceList = None  # TODO
         self._x_coord_list = None
         self._y_coord_list = None
         self._z_coord_list = None
-        #self.x_coord_list = mmtfDecoder.decode(input_data, 'xCoordList', required=True)
-        #self.y_coord_list = mmtfDecoder.decode(input_data, 'yCoordList', required=True)
-        #self.z_coord_list = mmtfDecoder.decode(input_data, 'zCoordList', required=True)
         self._b_factor_list = None
         self._atom_id_list = None
         self._alt_loc_list = None
         self._occupancy_list = None
         self._sec_struct_list = None
-        #self.b_factor_list = mmtfDecoder.decode(input_data, 'bFactorList')
-        #self.atom_id_list = mmtfDecoder.decode(input_data, 'atomIdList')
-        #self.alt_loc_list = mmtfDecoder.decode(input_data, 'altLocList')
-        #self.occupancy_list = mmtfDecoder.decode(input_data, 'occupancyList')
         self._group_id_list = None
-        #self.group_id_list = mmtfDecoder.decode(input_data, 'groupIdList', required=True)
         self._group_type_list = None
-        #self.group_type_list = mmtfDecoder.decode(input_data, 'groupTypeList', required=True)
-        #self.sec_struct_list = mmtfDecoder.decode(input_data, 'secStructList')
         self._ins_code_list = None
-        #self.ins_code_list = mmtfDecoder.decode(input_data, 'insCodeList')
         self._sequence_index_list = None
-        #self.sequence_index_list = mmtfDecoder.decode(input_data, 'sequenceIndexList')
         self._chain_id_list = None
-        #self.chain_id_list = mmtfDecoder.decode(input_data, 'chainIdList', required=True)
         self._chain_name_list = None
-        #self.chain_name_list = mmtfDecoder.decode(input_data, 'chainNameList')
         self.groups_per_chain = mmtfDecoder.get_value(input_data, 'groupsPerChain', required=True)
         self.chains_per_model = mmtfDecoder.get_value(input_data, 'chainsPerModel', required=True)
+        # calculated indices
+        self.groupToAtomIndices = None
+        self.chainToAtomIndices = None
+        self.chainToGroupIndices = None
+        self.calc_indices()
 
     @property
     def bond_atom_list(self):
@@ -245,4 +225,35 @@ class MmtfStructure(object):
             return self._chain_name_list
         else:
             return None
+
+    def calc_indices(self):
+
+        if self.groupToAtomIndices is None:
+            self.groupToAtomIndices = np.empty(self.num_groups + 1, dtype=np.int32)
+            self.chainToAtomIndices = np.empty(self.num_chains + 1, dtype=np.int32)
+            self.chainToGroupIndices = np.empty(self.num_chains + 1, dtype=np.int32)
+
+            chainCount, groupCount, atomCount = 0, 0, 0
+
+            # Loop over all models
+            for m in range(self.num_models):
+
+                # Loop over all chains
+                for i in range(self.chains_per_model[m]):
+
+                    self.chainToAtomIndices[chainCount] = atomCount
+                    self.chainToGroupIndices[chainCount] = groupCount
+
+                    # Loop over all groups in chain
+                    for j in range(self.groups_per_chain[i]):
+                        self.groupToAtomIndices[groupCount] = atomCount
+                        groupCount += 1
+                        groupType = self.group_type_list[groupCount]
+                        atomCount += len(self.group_list[groupType]['atomNameList'])
+
+                    chainCount += 1
+
+            self.groupToAtomIndices[groupCount] = atomCount
+            self.chainToAtomIndices[chainCount] = atomCount
+            self.chainToGroupIndices[chainCount] = groupCount
 
