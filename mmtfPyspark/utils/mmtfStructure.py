@@ -245,11 +245,11 @@ class MmtfStructure(object):
                     self.chainToGroupIndices[chainCount] = groupCount
 
                     # Loop over all groups in chain
-                    for j in range(self.groups_per_chain[i]):
+                    for _ in range(self.groups_per_chain[i]):
                         self.groupToAtomIndices[groupCount] = atomCount
-                        groupCount += 1
                         groupType = self.group_type_list[groupCount]
-                        atomCount += len(self.group_list[groupType]['atomNameList'])
+                        atomCount += len(self.group_list[groupType]['elementList'])
+                        groupCount += 1
 
                     chainCount += 1
 
