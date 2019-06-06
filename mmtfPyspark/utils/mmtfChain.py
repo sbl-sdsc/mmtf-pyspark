@@ -10,8 +10,6 @@ __version__ = "0.4.0"
 __status__ = "Experimental"
 
 import numpy as np
-from mmtfPyspark.utils import MmtfStructure
-from mmtfPyspark.utils import mmtfDecoder
 
 
 class MmtfChain(object):
