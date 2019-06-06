@@ -60,6 +60,8 @@ class MmtfStructure(object):
         self._chain_name_list = None
         self.groups_per_chain = mmtfDecoder.get_value(input_data, 'groupsPerChain', required=True)
         self.chains_per_model = mmtfDecoder.get_value(input_data, 'chainsPerModel', required=True)
+        # calculated data
+        self._chain_names = None
         # calculated indices
         self.groupToAtomIndices = None
         self.chainToAtomIndices = None
@@ -227,6 +229,18 @@ class MmtfStructure(object):
             return self._chain_name_list
         else:
             return None
+
+    @property
+    def chain_names(self):
+        if self._chain_names is None:
+            self._chain_names = np.empty(self.num_atoms, dtype=np.object_)
+
+            for i in range(self.num_chains):
+                start = self.chainToAtomIndices[i]
+                end = self.chainToAtomIndices[i + 1]
+                self._chain_names[start:end] = self.structure.chain_name_list[i]
+
+        return self._chain_ames
 
     def calc_indices(self):
 

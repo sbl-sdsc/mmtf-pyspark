@@ -56,7 +56,42 @@ class MmtfChain(object):
     @property
     def coords(self):
         """Return 3xn coordinate array"""
-        return np.column_stack(self.x_coord_list, self.y_coord_list, self.z_coord_list)
+        return np.column_stack((self.x_coord_list, self.y_coord_list, self.z_coord_list))
+
+    @property
+    def b_factor_list(self):
+        """Return b factors"""
+        if self.structure.b_factor_list is None:
+            return None
+        return self.structure.b_factor_list[self.start:self.end]
+
+    @property
+    def occupancy_list(self):
+        """Return occupancies"""
+        if self.structure.occupancy_list is None:
+            return None
+        return self.structure.occupancy_list[self.start:self.end]
+
+    @property
+    def alt_loc_list(self):
+        """Return alternative location codes"""
+        if self.structure.alt_loc_list is None:
+            return None
+        return self.structure.alt_loc_list[self.start:self.end]
+
+    @property
+    def ins_code_list(self):
+        """Return insertion codes"""
+        if self.structure.ins_code_list is None:
+            return None
+        return self.structure.ins_code_list[self.start:self.end]
+
+    # calculated properties
+    @property
+    def chain_names(self):
+        """Return chain names"""
+        return self.chain_names[self.start:self.end]
+
 
 
 
