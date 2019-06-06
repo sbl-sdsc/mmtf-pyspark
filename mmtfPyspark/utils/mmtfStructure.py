@@ -65,6 +65,8 @@ class MmtfStructure(object):
         self.chainToAtomIndices = None
         self.chainToGroupIndices = None
         self.calc_indices()
+        self.entityChainIndex = None
+        self.chain_to_entity_index()
 
     @property
     def bond_atom_list(self):
@@ -257,3 +259,22 @@ class MmtfStructure(object):
             self.chainToAtomIndices[chainCount] = atomCount
             self.chainToGroupIndices[chainCount] = groupCount
 
+    def chain_to_entity_index(self):
+        '''Returns an array that maps a chain index to an entity index
+
+        Returns
+        -------
+        :obj:`array <numpy.ndarray>`
+           index that maps chain index to an entity index
+        '''
+
+        if self.entityChainIndex is None:
+            self.entityChainIndex = np.empty(self.structure.num_chains, dtype=np.int32)
+
+            for i, entity in enumerate(self.structure.entity_list):
+
+                chainIndexList = entity['chainIndexList']
+                # pd.read_msgpack returns tuple, msgpack-python returns list
+                if type(chainIndexList) is not list:
+                    chainIndexList = list(chainIndexList)
+                self.entityChainIndex[chainIndexList] = i

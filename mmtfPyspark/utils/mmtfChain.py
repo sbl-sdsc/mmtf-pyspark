@@ -9,6 +9,7 @@ __maintainer__ = "Peter Rose"
 __version__ = "0.4.0"
 __status__ = "Experimental"
 
+import numpy as np
 from mmtfPyspark.utils import MmtfStructure
 
 
@@ -16,8 +17,21 @@ class MmtfChain(MmtfStructure):
 
     def __init__(self, input_data, chain_name):
         """Decodes a msgpack unpacked data to mmtf structure"""
+        self.start = None
+        self.end = None
+
         MmtfStructure.__init__(self, input_data)
-        if chain_name not in self.chain_name_list:
-            raise ValueError("Structure" + self.structure_id + " does not chain: " + chain_name)
+        indices = np.where(self.chain_name_list == chain_name)
+        if indices[0].size == 0:
+            raise ValueError("Structure " + self.structure_id + " does not chain: " + chain_name)
+
+        # find start and end of polymer chain
+        for i in indices[0]:
+            ind = self.entityChainIndex[i]
+            if self.entity_list[ind]['type'] == 'polymer':
+                self.start = self.chainToAtomIndices[i]
+                self.end = self.chainToAtomIndices[i+1]
+
         self.chain_name = chain_name
+
 
