@@ -37,6 +37,7 @@ class MmtfChain(MmtfStructure):
 
     @property
     def atom_id_list(self):
+        """Return atom id list"""
         if self._atom_id_list is not None:
             return self._atom_id_list[self.start:self.end]
         elif 'atomIdList' in self.input_data:
