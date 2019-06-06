@@ -44,6 +44,7 @@ def decode(input_data, field_name, required=False):
         # TODO call method by string?
         # method_to_call = getattr(, "_decode_type" + str(encoding))
         # return method_to_call()
+        # see: https://jaxenter.com/implement-switch-case-statement-python-138315.html
         if encoding == 2:
             return _decode_type_2(input_data, field_name)
         elif encoding == 4:
