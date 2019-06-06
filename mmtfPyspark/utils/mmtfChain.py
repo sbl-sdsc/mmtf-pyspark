@@ -11,6 +11,7 @@ __status__ = "Experimental"
 
 import numpy as np
 from mmtfPyspark.utils import MmtfStructure
+from mmtfPyspark.utils import mmtfDecoder
 
 
 class MmtfChain(MmtfStructure):
@@ -36,6 +37,12 @@ class MmtfChain(MmtfStructure):
 
     @property
     def atom_id_list(self):
-        return self.atom_id_list[self.start:self.end]
+        if self._atom_id_list is not None:
+            return self._atom_id_list[self.start:self.end]
+        elif 'atomIdList' in self.input_data:
+            self._atom_id_list = mmtfDecoder.decode(self.input_data, 'atomIdList')
+            return self._atom_id_list[self.start:self.end]
+        else:
+            return None
 
 
