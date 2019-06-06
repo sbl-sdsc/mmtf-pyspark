@@ -9,7 +9,6 @@ __maintainer__ = "Peter Rose"
 __version__ = "0.4.0"
 __status__ = "Experimental"
 
-from numpy import np
 from mmtfPyspark.utils import MmtfStructure
 
 
