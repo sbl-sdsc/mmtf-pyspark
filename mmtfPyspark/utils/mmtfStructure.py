@@ -269,9 +269,9 @@ class MmtfStructure(object):
         '''
 
         if self.entityChainIndex is None:
-            self.entityChainIndex = np.empty(self.structure.num_chains, dtype=np.int32)
+            self.entityChainIndex = np.empty(self.num_chains, dtype=np.int32)
 
-            for i, entity in enumerate(self.structure.entity_list):
+            for i, entity in enumerate(self.entity_list):
 
                 chainIndexList = entity['chainIndexList']
                 # pd.read_msgpack returns tuple, msgpack-python returns list
