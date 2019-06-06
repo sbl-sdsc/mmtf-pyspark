@@ -170,7 +170,7 @@ class AsymmetricUnitInteractions:
 
             for t_chain in t_chains.groups.keys():
 
-                # exclude intra interactions (same transformation and same chain id)
+                # exclude intra interactions (same chain id)
                 if not self.intra and q_chain == t_chain:
                     continue
 
