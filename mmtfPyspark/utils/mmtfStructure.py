@@ -11,7 +11,7 @@ __version__ = "0.2.0"
 __status__ = "Done"
 
 import numpy as np
-from mmtfPyspark.utils import mmtfDecoder
+from mmtfPyspark.utils import mmtfDecoder, MmtfChain
 
 
 class MmtfStructure(object):
@@ -278,3 +278,7 @@ class MmtfStructure(object):
                 if type(chainIndexList) is not list:
                     chainIndexList = list(chainIndexList)
                 self.entityChainIndex[chainIndexList] = i
+
+    def get_chain(self, chain_name):
+        return MmtfChain(self, chain_name)
+
