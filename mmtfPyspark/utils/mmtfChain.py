@@ -23,7 +23,7 @@ class MmtfChain(MmtfStructure):
         MmtfStructure.__init__(self, input_data)
         indices = np.where(self.chain_name_list == chain_name)
         if indices[0].size == 0:
-            raise ValueError("Structure " + self.structure_id + " does not chain: " + chain_name)
+            raise ValueError("Structure " + self.structure_id + " does not contain chain: " + chain_name)
 
         # find start and end of polymer chain
         for i in indices[0]:
@@ -33,5 +33,9 @@ class MmtfChain(MmtfStructure):
                 self.end = self.chainToAtomIndices[i+1]
 
         self.chain_name = chain_name
+
+    @property
+    def atom_id_list(self):
+        return self.atom_id_list[self.start:self.end]
 
 
