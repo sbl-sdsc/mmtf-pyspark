@@ -11,7 +11,7 @@ __version__ = "0.2.0"
 __status__ = "Done"
 
 import numpy as np
-from mmtfPyspark.utils import mmtfDecoder, MmtfChain, mmtfModel
+from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel
 
 
 class MmtfStructure(object):
@@ -394,8 +394,8 @@ class MmtfStructure(object):
                     # Loop over all groups in chain
                     for _ in range(self.groups_per_chain[chainCount]):
                         self.groupToAtomIndices[groupCount] = atomCount
-                        groupType = self.group_type_list[groupCount]
-                        atomCount += len(self.group_list[groupType]['elementList'])
+                        group_type = self.group_type_list[groupCount]
+                        atomCount += len(self.group_list[group_type]['elementList'])
                         groupCount += 1
 
                     chainCount += 1
@@ -404,7 +404,7 @@ class MmtfStructure(object):
             self.chainToAtomIndices[chainCount] = atomCount
             self.chainToGroupIndices[chainCount] = groupCount
             self.modelToAtomIndices[self.num_models] = atomCount
-            self.modelToGroupsIndices[self.num_models] = groupCount
+            self.modelToGroupIndices[self.num_models] = groupCount
             self.modelToChainIndices[self.num_models] = chainCount
 
     def chain_to_entity_index(self):
@@ -423,6 +423,7 @@ class MmtfStructure(object):
 
                 chainIndexList = entity['chainIndexList']
                 # pd.read_msgpack returns tuple, msgpack-python returns list
+                # TODO check this
                 if type(chainIndexList) is not list:
                     chainIndexList = list(chainIndexList)
                 self.entityChainIndex[chainIndexList] = i
