@@ -332,6 +332,8 @@ class MmtfStructure(object):
                     # Loop over all groups in chain
                     for _ in range(self.groups_per_chain[i]):
                         self.groupToAtomIndices[groupCount] = atomCount
+                        if groupCount >= len(self.group_type_list):
+                            print("structure id:", self.structure_id)
                         groupType = self.group_type_list[groupCount]
                         atomCount += len(self.group_list[groupType]['elementList'])
                         groupCount += 1
