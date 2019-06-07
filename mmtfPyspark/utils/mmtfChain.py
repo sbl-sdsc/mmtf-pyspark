@@ -105,6 +105,11 @@ class MmtfChain(object):
         """Return group names"""
         return self.structure.atom_names[self.start:self.end]
 
+    @property
+    def elements(self):
+        """Return group names"""
+        return self.structure.elements[self.start:self.end]
+
 
 
 

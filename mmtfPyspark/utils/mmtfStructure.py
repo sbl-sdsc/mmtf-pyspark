@@ -66,6 +66,7 @@ class MmtfStructure(object):
         self._group_numbers = None
         self._group_names = None
         self._atom_names = None
+        self._elements = None
         # calculated indices
         self.groupToAtomIndices = None
         self.chainToAtomIndices = None
@@ -267,7 +268,7 @@ class MmtfStructure(object):
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
-                self._group_numbers[start:end] = f'{self.structure.group_id_list[i]}{self.structure.ins_code_list[i]}'
+                self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
 
         return self._group_numbers
 
@@ -296,6 +297,19 @@ class MmtfStructure(object):
                 self._atom_names[start:end] = self.group_list[index]['atomNameList']
 
         return self._atom_names
+
+    @property
+    def elements(self):
+        if self._elements is None:
+            self._elements = np.empty(self.num_atoms, dtype=np.object_)
+
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                index = self.group_type_list[i]
+                self._elements[start:end] = self.group_list[index]['elementList']
+
+        return self._elements
 
     def calc_indices(self):
 
@@ -349,5 +363,15 @@ class MmtfStructure(object):
                 self.entityChainIndex[chainIndexList] = i
 
     def get_chain(self, chain_name):
+        """Return specified polymer chain"""
         return MmtfChain(self, chain_name)
+
+    def get_chains(self):
+        """Return polymer chains"""
+        chains = []
+        for chain_name in set(self.chain_name_list):
+            chains.append(MmtfChain(self, chain_name))
+
+        return chains
+
 
