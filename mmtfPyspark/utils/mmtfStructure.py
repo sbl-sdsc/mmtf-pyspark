@@ -329,10 +329,11 @@ class MmtfStructure(object):
                 for i in range(self.chains_per_model[m]):
                     self.chainToAtomIndices[chainCount] = atomCount
                     self.chainToGroupIndices[chainCount] = groupCount
-                    print("groups per chain:", self.groups_per_chain[i])
+                    print("groups per chain: model:", m, self.groups_per_chain[i])
 
                     # Loop over all groups in chain
-                    for _ in range(self.groups_per_chain[i]):
+                    #for _ in range(self.groups_per_chain[i]):
+                    for _ in range(self.groups_per_chain[chainCount]):
                         self.groupToAtomIndices[groupCount] = atomCount
                         if groupCount >= len(self.group_type_list):
                             print("structure id:", self.structure_id)
