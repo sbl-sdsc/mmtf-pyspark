@@ -479,7 +479,7 @@ class ColumnarStructure(object):
                     self.chainToGroupIndices[chainCount] = groupCount
 
                     # Loop over all groups in chain
-                    for j in range(self.structure.groups_per_chain[i]):
+                    for j in range(self.structure.groups_per_chain[chainCount]):
 
                         groupType = self.structure.group_type_list[groupCount]
                         self.groupToAtomIndices[groupCount] = atomCount
