@@ -79,18 +79,35 @@ class MmtfChain(object):
             return None
         return self.structure.alt_loc_list[self.start:self.end]
 
-    @property
-    def ins_code_list(self):
-        """Return insertion codes"""
-        if self.structure.ins_code_list is None:
-            return None
-        return self.structure.ins_code_list[self.start:self.end]
-
     # calculated properties
     @property
     def chain_names(self):
         """Return chain names"""
-        return self.chain_names[self.start:self.end]
+        return self.structure.chain_names[self.start:self.end]
+
+    @property
+    def chain_ids(self):
+        """Return chain ids"""
+        return self.structure.chain_ids[self.start:self.end]
+
+    @property
+    def group_numbers(self):
+        """Return group numbers"""
+        return self.structure.group_numbers[self.start:self.end]
+
+    @property
+    def group_names(self):
+        """Return group names"""
+        return self.structure.group_names[self.start:self.end]
+
+    @property
+    def atom_names(self):
+        """Return group names"""
+        return self.structure.atom_names[self.start:self.end]
+
+
+
+
 
 
 

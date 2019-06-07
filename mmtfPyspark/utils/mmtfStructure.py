@@ -60,8 +60,12 @@ class MmtfStructure(object):
         self._chain_name_list = None
         self.groups_per_chain = mmtfDecoder.get_value(input_data, 'groupsPerChain', required=True)
         self.chains_per_model = mmtfDecoder.get_value(input_data, 'chainsPerModel', required=True)
-        # calculated data
+        # calculated atom level data
         self._chain_names = None
+        self._chain_ids = None
+        self._group_numbers = None
+        self._group_names = None
+        self._atom_names = None
         # calculated indices
         self.groupToAtomIndices = None
         self.chainToAtomIndices = None
@@ -230,6 +234,7 @@ class MmtfStructure(object):
         else:
             return None
 
+    # calculated atom level data
     @property
     def chain_names(self):
         if self._chain_names is None:
@@ -240,7 +245,57 @@ class MmtfStructure(object):
                 end = self.chainToAtomIndices[i + 1]
                 self._chain_names[start:end] = self.structure.chain_name_list[i]
 
-        return self._chain_ames
+        return self._chain_names
+
+    @property
+    def chain_ids(self):
+        if self._chain_ids is None:
+            self._chain_ids = np.empty(self.num_atoms, dtype=np.object_)
+
+            for i in range(self.num_chains):
+                start = self.chainToAtomIndices[i]
+                end = self.chainToAtomIndices[i + 1]
+                self._chain_ids[start:end] = self.structure.chain_id_list[i]
+
+        return self._chain_ids
+
+    @property
+    def group_numbers(self):
+        if self._group_numbers is None:
+            self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
+
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                self._group_numbers[start:end] = f'{self.structure.group_id_list[i]}{self.structure.ins_code_list[i]}'
+
+        return self._group_numbers
+
+    @property
+    def group_names(self):
+        if self._group_names is None:
+            self._group_names = np.empty(self.num_atoms, dtype=np.object_)
+
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                index = self.group_type_list[i]
+                self._group_names[start:end] = self.group_list[index]['groupName']
+
+        return self._group_names
+
+    @property
+    def atom_names(self):
+        if self._atom_names is None:
+            self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
+
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                index = self.group_type_list[i]
+                self._atom_names[start:end] = self.group_list[index]['atomNameList']
+
+        return self._atom_names
 
     def calc_indices(self):
 
