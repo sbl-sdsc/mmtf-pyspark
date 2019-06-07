@@ -244,7 +244,7 @@ class MmtfStructure(object):
             for i in range(self.num_chains):
                 start = self.chainToAtomIndices[i]
                 end = self.chainToAtomIndices[i + 1]
-                self._chain_names[start:end] = self.structure.chain_name_list[i]
+                self._chain_names[start:end] = self.chain_name_list[i]
 
         return self._chain_names
 
@@ -256,7 +256,7 @@ class MmtfStructure(object):
             for i in range(self.num_chains):
                 start = self.chainToAtomIndices[i]
                 end = self.chainToAtomIndices[i + 1]
-                self._chain_ids[start:end] = self.structure.chain_id_list[i]
+                self._chain_ids[start:end] = self.chain_id_list[i]
 
         return self._chain_ids
 

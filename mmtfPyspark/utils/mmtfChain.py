@@ -20,6 +20,10 @@ class MmtfChain(object):
         self.chain_name = chain_name
         self.start = None
         self.end = None
+        self.num_atoms = 0
+        self.num_groups = 0
+        self.num_chains = 1
+        self.num_models = 1
 
         indices = np.where(structure.chain_name_list == self.chain_name)
         if indices[0].size == 0:
@@ -31,6 +35,8 @@ class MmtfChain(object):
             if structure.entity_list[ind]['type'] == 'polymer':
                 self.start = structure.chainToAtomIndices[i]
                 self.end = structure.chainToAtomIndices[i+1]
+                self.num_atoms = self.end - self.start
+                self.num_groups = structure.chainToGroupIndices[i+1] - structure.chainToGroupIndices[i]
                 break
 
     @property
