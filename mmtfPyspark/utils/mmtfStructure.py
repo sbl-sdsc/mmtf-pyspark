@@ -319,15 +319,17 @@ class MmtfStructure(object):
             self.chainToGroupIndices = np.empty(self.num_chains + 1, dtype=np.int32)
 
             chainCount, groupCount, atomCount = 0, 0, 0
+            print("num_groups:", self.num_groups)
+            print("groupTypeList:", len(self.group_type_list))
 
             # Loop over all models
             for m in range(self.num_models):
 
                 # Loop over all chains
                 for i in range(self.chains_per_model[m]):
-
                     self.chainToAtomIndices[chainCount] = atomCount
                     self.chainToGroupIndices[chainCount] = groupCount
+                    print("groups per chain:", self.groups_per_chain[i])
 
                     # Loop over all groups in chain
                     for _ in range(self.groups_per_chain[i]):
