@@ -403,9 +403,9 @@ class MmtfStructure(object):
             self.groupToAtomIndices[groupCount] = atomCount
             self.chainToAtomIndices[chainCount] = atomCount
             self.chainToGroupIndices[chainCount] = groupCount
-            self.modelToAtomIndices[self.num_models + 1] = atomCount
-            self.modelToGroupsIndices[self.num_models + 1] = groupCount
-            self.modelToChainIndices[self.num_models + 1] = chainCount
+            self.modelToAtomIndices[self.num_models] = atomCount
+            self.modelToGroupsIndices[self.num_models] = groupCount
+            self.modelToChainIndices[self.num_models] = chainCount
 
     def chain_to_entity_index(self):
         '''Returns an array that maps a chain index to an entity index
