@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-'''mmtfChain.py
+'''mmtfModel.py
 
-Decode msgpack unpacked data to mmtf chain
+Extracts the specified model from a structure
 
 '''
 __author__ = "Peter Rose"
@@ -12,32 +12,25 @@ __status__ = "Experimental"
 import numpy as np
 
 
-class MmtfChain(object):
+class MmtfModel(object):
 
-    def __init__(self, structure, chain_name):
-        """Extracts the specified polymer chain from a structure"""
+    def __init__(self, structure, model_number):
+        """Extracts the specified model from a structure"""
         self.structure = structure
-        self.chain_name = chain_name
+        self.model_number = model_number
         self.start = None
         self.end = None
-        self.num_atoms = 0
-        self.num_groups = 0
-        self.num_chains = 1
-        self.num_models = 1
 
-        indices = np.where(structure.chain_name_list == self.chain_name)
-        if indices[0].size == 0:
-            raise ValueError("Structure " + structure.structure_id + " does not contain chain: " + self.chain_name)
+        if model_number >= structure.num_models:
+            raise ValueError("Structure " + structure.structure_id + " does not contain model: " + model_number)
 
         # find start and end of the first polymer chain
-        for i in indices[0]:
-            ind = structure.entityChainIndex[i]
-            if structure.entity_list[ind]['type'] == 'polymer':
-                self.start = structure.chainToAtomIndices[i]
-                self.end = structure.chainToAtomIndices[i+1]
-                self.num_atoms = self.end - self.start
-                self.num_groups = structure.chainToGroupIndices[i+1] - structure.chainToGroupIndices[i]
-                break
+        self.start = structure.modelToAtomIndices[model_number]
+        self.end = structure.modelToAtomIndices[model_number+1]
+        self.num_atoms = self.end - self.start
+        self.num_groups = structure.modelToGroupIndices[model_number+1] - structure.modelToGroupIndices[model_number]
+        self.num_chains = structure.modelToChainIndices[model_number+1] - structure.modelToChainIndices[model_number]
+        self.num_models = 1
 
     @property
     def atom_id_list(self):

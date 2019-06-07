@@ -11,7 +11,7 @@ __version__ = "0.2.0"
 __status__ = "Done"
 
 import numpy as np
-from mmtfPyspark.utils import mmtfDecoder, MmtfChain
+from mmtfPyspark.utils import mmtfDecoder, MmtfChain, mmtfModel
 
 
 class MmtfStructure(object):
@@ -67,10 +67,17 @@ class MmtfStructure(object):
         self._group_names = None
         self._atom_names = None
         self._elements = None
+        self._chem_comp_types = None
+        self._polymer = None
+        self._entity_indices = None
+        self._sequence_positions = None
         # calculated indices
         self.groupToAtomIndices = None
         self.chainToAtomIndices = None
         self.chainToGroupIndices = None
+        self.modelToAtomIndices = None
+        self.modelToGroupIndices = None
+        self.modelToChainIndices = None
         self.calc_indices()
         self.entityChainIndex = None
         self.chain_to_entity_index()
@@ -311,17 +318,73 @@ class MmtfStructure(object):
 
         return self._elements
 
+    @property
+    def chem_comp_types(self):
+        if self._chem_comp_types is None:
+            self._chem_comp_types = np.empty(self.num_atoms, dtype=np.object_)
+
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                index = self.group_type_list[i]
+                self._chem_comp_types[start:end] = self.group_list[index]['chemCompType']
+
+        return self._chem_comp_types
+
+    @property
+    def polymer(self):
+        if self._polymer is None:
+            self._polymer = np.empty(self.num_atoms, dtype=np.bool)
+
+            for i in range(self.num_chains):
+                start = self.chainToAtomIndices[i]
+                end = self.chainToAtomIndices[i + 1]
+                index = self.entityChainIndex[i]
+                self._polymer[start:end] = self.entity_list[index]['type'] == 'polymer'
+
+        return self._polymer
+
+    @property
+    def entity_indices(self):
+        if self._entity_indices is None:
+            self._entity_indices = np.empty(self.num_atoms, dtype=np.int32)
+
+            for i in range(self.num_chains):
+                start = self.chainToAtomIndices[i]
+                end = self.chainToAtomIndices[i + 1]
+                self._entity_indices[start:end] = self.entityChainIndex[i]
+
+        return self._entity_indices
+
+    @property
+    def sequence_positions(self):
+        if self._sequence_positions is None:
+            self._sequence_positions = np.empty(self.num_atoms, dtype=np.int32)
+
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                self._sequencePositions[start:end] = self.sequence_index_list[i]
+
+        return self._sequencePositions
+
     def calc_indices(self):
 
         if self.groupToAtomIndices is None:
             self.groupToAtomIndices = np.empty(self.num_groups + 1, dtype=np.int32)
             self.chainToAtomIndices = np.empty(self.num_chains + 1, dtype=np.int32)
             self.chainToGroupIndices = np.empty(self.num_chains + 1, dtype=np.int32)
+            self.modelToAtomIndices = np.empty(self.num_models + 1, dtype=np.int32)
+            self.modelToGroupIndices = np.empty(self.num_models + 1, dtype=np.int32)
+            self.modelToChainIndices = np.empty(self.num_models + 1, dtype=np.int32)
 
             chainCount, groupCount, atomCount = 0, 0, 0
 
             # Loop over all models
             for m in range(self.num_models):
+                self.modelToAtomIndices[m] = atomCount
+                self.modelToGroupIndices[m] = groupCount
+                self.modelToChainIndices[m] = chainCount
 
                 # Loop over all chains
                 for i in range(self.chains_per_model[m]):
@@ -340,6 +403,9 @@ class MmtfStructure(object):
             self.groupToAtomIndices[groupCount] = atomCount
             self.chainToAtomIndices[chainCount] = atomCount
             self.chainToGroupIndices[chainCount] = groupCount
+            self.modelToAtomIndices[self.num_models + 1] = atomCount
+            self.modelToGroupsIndices[self.num_models + 1] = groupCount
+            self.modelToChainIndices[self.num_models + 1] = chainCount
 
     def chain_to_entity_index(self):
         '''Returns an array that maps a chain index to an entity index
@@ -372,5 +438,17 @@ class MmtfStructure(object):
             chains.append(MmtfChain(self, chain_name))
 
         return chains
+
+    def get_model(self, model_number):
+        """Return specified model"""
+        return MmtfModel(self, model_number)
+
+    def get_models(self):
+        """Return models"""
+        models = []
+        for model_number in range(self.num_models):
+            models.append(MmtfModel(self, model_number))
+
+        return models
 
 
