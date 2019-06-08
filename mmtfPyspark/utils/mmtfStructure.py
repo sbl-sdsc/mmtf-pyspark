@@ -143,6 +143,16 @@ class MmtfStructure(object):
             return None
 
     @property
+    def occupancy_list(self):
+        if self._occupancy_list is not None:
+            return self._occupancy_list
+        elif 'occupancyList' in self.input_data:
+            self._occupancy_list = mmtfDecoder.decode(self.input_data, 'occupancyList')
+            return self._occupancy_list
+        else:
+            return None
+
+    @property
     def atom_id_list(self):
         if self._atom_id_list is not None:
             return self._atom_id_list
@@ -159,16 +169,6 @@ class MmtfStructure(object):
         elif 'altLocList' in self.input_data:
             self._alt_loc_list = mmtfDecoder.decode(self.input_data, 'altLocList')
             return self._alt_loc_list
-        else:
-            return None
-
-    @property
-    def occupancy_list(self):
-        if self._occupancy_list is not None:
-            return self._occupancy_list
-        elif 'occupancyList' in self.input_data:
-            self._occupancy_list = mmtfDecoder.decode(self.input_data, 'occupancyList')
-            return self._occupancy_list
         else:
             return None
 
@@ -364,9 +364,9 @@ class MmtfStructure(object):
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
-                self._sequencePositions[start:end] = self.sequence_index_list[i]
+                self._sequence_positions[start:end] = self.sequence_index_list[i]
 
-        return self._sequencePositions
+        return self._sequence_positions
 
     def calc_indices(self):
 

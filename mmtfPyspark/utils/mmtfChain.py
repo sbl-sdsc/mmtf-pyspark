@@ -39,6 +39,24 @@ class MmtfChain(object):
                 self.num_groups = structure.chainToGroupIndices[i+1] - structure.chainToGroupIndices[i]
                 break
 
+        self.mmtf_version = structure.mmtf_version
+        self.mmtf_producer = structure.mmtf_producer
+        self.unit_cell = structure.unit_cell
+        self.space_group = structure.space_group
+        self.structure_id = structure.structure_id + "." + chain_name
+        self.title = structure.title
+        self.deposition_date = structure.deposition_date
+        self.release_date = structure.release_date
+        self.ncs_operator_list = structure.ncs_operator_list
+        # TODO
+        self.bio_assembly = None
+        self.entity_list = structure.entity_list
+
+        self.experimental_methods = structure.experimental_methods
+        self.resolution = structure.resolution
+        self.r_free = structure.r_free
+        self.r_work = structure.r_work
+
     @property
     def atom_id_list(self):
         """Return atom id list"""
