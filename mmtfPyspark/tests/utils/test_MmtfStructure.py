@@ -58,10 +58,6 @@ class TestMmtfStructure(unittest.TestCase):
         self.assertListEqual([0, 0, 0], structure.entity_indices[0:3].tolist())
         self.assertListEqual([0, 0, 0], structure.sequence_positions[0:3].tolist())
 
-
-
-
-
     def test_4HHB_chain(self):
         print('test_4HHB_chain')
         path = '../../../resources/files/'
