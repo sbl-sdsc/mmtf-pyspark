@@ -10,6 +10,7 @@ __version__ = "0.4.0"
 __status__ = "Experimental"
 
 import numpy as np
+from mmtfPyspark.utils import MmtfChain
 
 
 class MmtfModel(object):
@@ -128,6 +129,18 @@ class MmtfModel(object):
     def sequence_positions(self):
         """Return sequence_positions"""
         return self.structure.sequence_positions[self.start:self.end]
+
+    def get_chain(self, chain_name):
+        """Return specified polymer chain"""
+        return MmtfChain(self, chain_name)
+
+    def get_chains(self):
+        """Return polymer chains"""
+        chains = []
+        for chain_name in set(self.chain_name_list):
+            chains.append(MmtfChain(self, chain_name))
+
+        return chains
 
 
 
