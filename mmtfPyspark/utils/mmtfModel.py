@@ -137,7 +137,7 @@ class MmtfModel(object):
     def get_chains(self):
         """Return polymer chains"""
         chains = []
-        for chain_name in set(self.chain_name_list):
+        for chain_name in set(self.structure.chain_name_list):
             chains.append(MmtfChain(self, chain_name))
 
         return chains
