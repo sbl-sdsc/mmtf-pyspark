@@ -33,6 +33,8 @@ class MmtfModel(object):
         self.num_chains = structure.modelToChainIndices[model_number+1] - structure.modelToChainIndices[model_number]
         self.num_models = 1
 
+        self.chain_name_list = self.structure.chain_name_list
+
     @property
     def atom_id_list(self):
         """Return atom id list"""
@@ -137,7 +139,7 @@ class MmtfModel(object):
     def get_chains(self):
         """Return polymer chains"""
         chains = []
-        for chain_name in set(self.structure.chain_name_list):
+        for chain_name in set(self.chain_name_list):
             chains.append(MmtfChain(self, chain_name))
 
         return chains
