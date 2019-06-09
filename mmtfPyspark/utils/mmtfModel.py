@@ -39,7 +39,7 @@ class MmtfModel(object):
         self.mmtf_producer = structure.mmtf_producer
         self.unit_cell = structure.unit_cell
         self.space_group = structure.space_group
-        self.structure_id = structure.structure_id + "-m" + model_number
+        self.structure_id = structure.structure_id + "-m" + str(model_number)
         self.title = structure.title
         self.deposition_date = structure.deposition_date
         self.release_date = structure.release_date
