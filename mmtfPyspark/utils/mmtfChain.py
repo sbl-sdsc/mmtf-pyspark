@@ -25,9 +25,9 @@ class MmtfChain(object):
         self.num_chains = 1
         self.num_models = 1
 
-        indices = np.where(structure.chain_name_list == self.chain_name)
+        indices = np.where(structure.chain_name_list == chain_name)
         if indices[0].size == 0:
-            raise ValueError("Structure " + structure.structure_id + " does not contain chain: " + self.chain_name)
+            raise ValueError("Structure " + structure.structure_id + " does not contain chain: " + chain_name)
 
         # find start and end of the first polymer chain
         for i in indices[0]:
