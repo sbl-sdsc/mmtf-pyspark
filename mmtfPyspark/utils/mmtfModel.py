@@ -53,6 +53,9 @@ class MmtfModel(object):
         self.r_free = structure.r_free
         self.r_work = structure.r_work
 
+        self.chainToAtomIndices = structure.chainToAtomIndices
+        self.chainToGroupIndices = structure.chainToGroupIndices
+
     @property
     def atom_id_list(self):
         """Return atom id list"""
