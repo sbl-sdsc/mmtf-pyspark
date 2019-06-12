@@ -53,8 +53,21 @@ class MmtfModel(object):
         self.r_free = structure.r_free
         self.r_work = structure.r_work
 
-        self.chainToAtomIndices = structure.chainToAtomIndices
-        self.chainToGroupIndices = structure.chainToGroupIndices
+        # calculated indices
+        self.modelToAtomIndices = None
+        self.modelToGroupIndices = None
+        self.modelToChainIndices = None
+        self.groupToAtomIndices = structure.groupToAtomIndices[
+                                  structure.modelToGroupIndices[model_number]:
+                                  structure.modelToGroupIndices[model_number+1]
+        ]
+        self.chainToAtomIndices = structure.chainToAtomIndices[
+                                  structure.modelToChainIndices[model_number]:
+                                  structure.modelToChainIndices[model_number+1]]
+
+        self.chainToGroupIndices = structure.chainToGroupIndices[
+                                   structure.modelToChainIndices[model_number]:
+                                   structure.modelToChainIndices[model_number + 1]]
 
     @property
     def atom_id_list(self):
