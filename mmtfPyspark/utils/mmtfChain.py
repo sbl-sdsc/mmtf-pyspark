@@ -159,24 +159,24 @@ class MmtfChain(object):
 
     def to_pandas(self, multi_index=False):
         if self.df is None:
-            self.df = pd.DataFrame({'chain_name': self.get_chain_names(),
-                                    'chain_id': self.get_chain_ids(),
-                                    'group_number': self.get_group_numbers(),
-                                    'group_name': self.get_group_names(),
-                                    'atom_name': self.get_atom_names(),
-                                    'altloc': self.get_alt_loc_list(),
-                                    'x': self.get_x_coords(),
-                                    'y': self.get_y_coords(),
-                                    'z': self.get_z_coords(),
-                                    'o': self.get_occupancies(),
-                                    'b': self.get_b_factors(),
-                                    'element': self.get_elements(),
-                                    'polymer': self.is_polymer(),
+            self.df = pd.DataFrame({'chain_name': self.chain_names,
+                                    'chain_id': self.chain_ids,
+                                    'group_number': self.group_numbers,
+                                    'group_name': self.group_names,
+                                    'atom_name': self.atom_names,
+                                    'altloc': self.alt_loc_list,
+                                    'x': self.x_coord_list,
+                                    'y': self.y_coord_list,
+                                    'z': self.z_coord_list,
+                                    'o': self.occupancy_list,
+                                    'b': self.b_factor_list,
+                                    'element': self.elements,
+                                    'polymer': self.polymer,
                                     #                               'entity': self.get_entity_indices(),
                                     #                                   'seq_index': self.get_sequence_positions()
                                     })
             if multi_index:
-                self.df.set_index(['chain_name', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
+                self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
 
         return self.df
 
