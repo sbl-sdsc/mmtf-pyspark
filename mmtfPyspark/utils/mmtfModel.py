@@ -10,6 +10,7 @@ __version__ = "0.4.0"
 __status__ = "Experimental"
 
 import numpy as np
+import pandas as pd
 from mmtfPyspark.utils import MmtfChain
 
 
@@ -68,6 +69,8 @@ class MmtfModel(object):
         self.chainToGroupIndices = structure.chainToGroupIndices[
                                    structure.modelToChainIndices[model_number]:
                                    structure.modelToChainIndices[model_number + 1]]
+        # dataframes
+        self.df = None
 
     @property
     def atom_id_list(self):
@@ -178,6 +181,28 @@ class MmtfModel(object):
 
         return chains
 
+    def to_pandas(self, multi_index=False):
+        if self.df is None:
+            self.df = pd.DataFrame({'chain_name': self.get_chain_names(),
+                                    'chain_id': self.get_chain_ids(),
+                                    'group_number': self.get_group_numbers(),
+                                    'group_name': self.get_group_names(),
+                                    'atom_name': self.get_atom_names(),
+                                    'altloc': self.get_alt_loc_list(),
+                                    'x': self.get_x_coords(),
+                                    'y': self.get_y_coords(),
+                                    'z': self.get_z_coords(),
+                                    'o': self.get_occupancies(),
+                                    'b': self.get_b_factors(),
+                                    'element': self.get_elements(),
+                                    'polymer': self.is_polymer(),
+                                    #                               'entity': self.get_entity_indices(),
+                                    #                                   'seq_index': self.get_sequence_positions()
+                                    })
+            if multi_index:
+                self.df.set_index(['chain_name', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
+
+        return self.df
 
 
 

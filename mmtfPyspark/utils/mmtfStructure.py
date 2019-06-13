@@ -11,6 +11,7 @@ __version__ = "0.2.0"
 __status__ = "Done"
 
 import numpy as np
+import pandas as pd
 from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel
 
 
@@ -81,6 +82,8 @@ class MmtfStructure(object):
         self.calc_indices()
         self.entityChainIndex = None
         self.chain_to_entity_index()
+        # dataframes
+        self.df = None
 
     @property
     def bond_atom_list(self):
@@ -367,6 +370,29 @@ class MmtfStructure(object):
                 self._sequence_positions[start:end] = self.sequence_index_list[i]
 
         return self._sequence_positions
+
+    def to_pandas(self, multi_index=False):
+        if self.df is None:
+            self.df = pd.DataFrame({'chain_name': self.get_chain_names(),
+                                    'chain_id': self.get_chain_ids(),
+                                    'group_number': self.get_group_numbers(),
+                                    'group_name': self.get_group_names(),
+                                    'atom_name': self.get_atom_names(),
+                                    'altloc': self.get_alt_loc_list(),
+                                    'x': self.get_x_coords(),
+                                    'y': self.get_y_coords(),
+                                    'z': self.get_z_coords(),
+                                    'o': self.get_occupancies(),
+                                    'b': self.get_b_factors(),
+                                    'element': self.get_elements(),
+                                    'polymer': self.is_polymer(),
+                                    #                               'entity': self.get_entity_indices(),
+                                    #                                   'seq_index': self.get_sequence_positions()
+                                    })
+            if multi_index:
+                self.df.set_index(['chain_name', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
+
+        return self.df
 
     def calc_indices(self):
 
