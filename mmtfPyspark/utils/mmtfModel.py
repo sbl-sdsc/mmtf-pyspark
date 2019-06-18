@@ -12,7 +12,6 @@ __status__ = "Experimental"
 import numpy as np
 import pandas as pd
 from mmtfPyspark.utils import MmtfChain
-from mmtfPyspark.utils import mmtfCodec
 
 
 class MmtfModel(object):
