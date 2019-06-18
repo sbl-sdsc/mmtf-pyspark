@@ -6,3 +6,4 @@ from .mmtfStructure import MmtfStructure
 from .dsspSecondaryStructure import DsspSecondaryStructure
 from .distanceBox import DistanceBox
 from .structureToAllInteractions import StructureToAllInteractions
+from .mmtfCodec import encode_array, decode_array

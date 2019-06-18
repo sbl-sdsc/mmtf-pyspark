@@ -12,6 +12,7 @@ __status__ = "Experimental"
 import numpy as np
 import pandas as pd
 from mmtfPyspark.utils import MmtfChain
+from mmtfPyspark.utils import mmtfCodec
 
 
 class MmtfModel(object):
@@ -24,7 +25,7 @@ class MmtfModel(object):
         self.end = None
 
         if model_number >= structure.num_models:
-            raise ValueError("Structure " + structure.structure_id + " does not contain model: " + model_number)
+            raise ValueError("Structure " + structure.structure_id + " does not contain model: " + str(model_number))
 
         # find start and end of the first polymer chain
         self.start = structure.modelToAtomIndices[model_number]
@@ -176,7 +177,7 @@ class MmtfModel(object):
     def get_chains(self):
         """Return polymer chains"""
         chains = []
-        for chain_name in set(self.structure.chain_name_list):
+        for chain_name in sorted(set(self.structure.chain_name_list)):
             chains.append(MmtfChain(self, chain_name))
 
         return chains
