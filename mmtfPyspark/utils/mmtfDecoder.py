@@ -96,6 +96,7 @@ def _decode_type_8(input_data, field_name):
 
 
 def _decode_type_9(input_data, field_name):
+    return mmtfCodec.decode_array(input_data[field_name])
     length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
     buffer = input_data[field_name]
     int_array = np.frombuffer(buffer, '>i4', offset=12).byteswap().newbyteorder()
