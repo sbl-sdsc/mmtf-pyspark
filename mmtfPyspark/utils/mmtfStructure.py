@@ -84,7 +84,7 @@ class MmtfStructure(object):
         self.chain_to_entity_index()
         # dataframes
         self.df = None
-        self.decoder = Codec()
+        self.decoder = Codec("test")
 
     @property
     def bond_atom_list(self):
@@ -202,7 +202,7 @@ class MmtfStructure(object):
             return self._group_type_list
         elif 'groupTypeList' in self.input_data:
             #self._group_type_list = mmtfDecoder(self.input_data, 'groupTypeList', required=True)
-            self._group_type_list = self.decoder.decode_array(self.input_data['groupTypeList'])
+            self._group_type_list = Codec("test").decode_array(self.input_data['groupTypeList'])
             return self._group_type_list
         else:
             return None

@@ -9,6 +9,9 @@ from numba import njit
 
 class Codec(object):
 
+    def __init__(self, name):
+        print("New codec", name)
+
     def decode_array(self, input_array):
         """Parse the header of an input byte array and then decode using the input array,
     the codec and the appropirate parameter.
