@@ -91,7 +91,8 @@ class MmtfStructure(object):
         if self._bond_atom_list is not None:
             return self._bond_atom_list
         elif 'bondAtomList' in self.input_data:
-            self._bond_atom_list = self.decoder.decode(self.input_data, 'bondAtomList')
+            #self._bond_atom_list = mmtfDecoder(self.input_data, 'bondAtomList')
+            self._bond_atom_list = self.decoder.decode_array(self.input_data['bondAtomList'])
             return self._bond_atom_list
         else:
             return None
@@ -101,7 +102,8 @@ class MmtfStructure(object):
         if self._bond_order_list is not None:
             return self._bond_order_list
         elif 'bondOrderList' in self.input_data:
-            self._bond_order_list = self.decoder.decode(self.input_data, 'bondOrderList')
+            #self._bond_order_list = mmtfDecoder(self.input_data, 'bondOrderList')
+            self._bond_order_list = self.decoder.decode_array(self.input_data['bondOrderList'])
             return self._bond_order_list
         else:
             return None
@@ -111,7 +113,8 @@ class MmtfStructure(object):
         if self._x_coord_list is not None:
             return self._x_coord_list
         elif 'xCoordList' in self.input_data:
-            self._x_coord_list = self.decoder.decode(self.input_data, 'xCoordList', required=True)
+            #self._x_coord_list = mmtfDecoder(self.input_data, 'xCoordList', required=True)
+            self._x_coord_list = self.decoder.decode_array(self.input_data['xCoordList'])
             return self._x_coord_list
         else:
             return None
@@ -121,7 +124,8 @@ class MmtfStructure(object):
         if self._y_coord_list is not None:
             return self._y_coord_list
         elif 'yCoordList' in self.input_data:
-            self._y_coord_list = self.decoder.decode(self.input_data, 'yCoordList', required=True)
+            #self._y_coord_list = mmtfDecoder(self.input_data, 'yCoordList', required=True)
+            self._y_coord_list = self.decoder.decode_array(self.input_data['yCoordList'])
             return self._y_coord_list
         else:
             return None
@@ -131,7 +135,8 @@ class MmtfStructure(object):
         if self._z_coord_list is not None:
             return self._z_coord_list
         elif 'zCoordList' in self.input_data:
-            self._z_coord_list = self.decoder.decode(self.input_data, 'zCoordList', required=True)
+            #self._z_coord_list = mmtfDecoder(self.input_data, 'zCoordList', required=True)
+            self._z_coord_list = self.decoder.decode_array(self.input_data['zCoordList'])
             return self._z_coord_list
         else:
             return None
@@ -141,7 +146,8 @@ class MmtfStructure(object):
         if self._b_factor_list is not None:
             return self._b_factor_list
         elif 'bFactorList' in self.input_data:
-            self._b_factor_list = self.decoder.decode(self.input_data, 'bFactorList')
+            #self._b_factor_list = mmtfDecoder(self.input_data, 'bFactorList')
+            self._b_factor_list = self.decoder.decode_array(self.input_data['bFactorList'])
             return self._b_factor_list
         else:
             return None
@@ -151,7 +157,8 @@ class MmtfStructure(object):
         if self._occupancy_list is not None:
             return self._occupancy_list
         elif 'occupancyList' in self.input_data:
-            self._occupancy_list = self.decoder.decode(self.input_data, 'occupancyList')
+            #self._occupancy_list = mmtfDecoder(self.input_data, 'occupancyList')
+            self._occupancy_list = self.decoder.decode_array(self.input_data['occupancyList'])
             return self._occupancy_list
         else:
             return None
@@ -161,7 +168,8 @@ class MmtfStructure(object):
         if self._atom_id_list is not None:
             return self._atom_id_list
         elif 'atomIdList' in self.input_data:
-            self._atom_id_list = self.decoder.decode(self.input_data, 'atomIdList')
+            #self._atom_id_list = mmtfDecoder(self.input_data, 'atomIdList')
+            self._atom_id_list = self.decoder.decode_array(self.input_data['atomIdList'])
             return self._atom_id_list
         else:
             return None
@@ -171,7 +179,8 @@ class MmtfStructure(object):
         if self._alt_loc_list is not None:
             return self._alt_loc_list
         elif 'altLocList' in self.input_data:
-            self._alt_loc_list = self.decoder.decode(self.input_data, 'altLocList')
+            #self._alt_loc_list = mmtfDecoder(self.input_data, 'altLocList')
+            self._alt_loc_list = self.decoder.decode_array(self.input_data['altLocList'])
             return self._alt_loc_list
         else:
             return None
@@ -181,7 +190,8 @@ class MmtfStructure(object):
         if self._group_id_list is not None:
             return self._group_id_list
         elif 'groupIdList' in self.input_data:
-            self._group_id_list = self.decoder.decode(self.input_data, 'groupIdList', required=True)
+            #self._group_id_list = mmtfDecoder(self.input_data, 'groupIdList', required=True)
+            self._group_id_list = self.decoder.decode_array(self.input_data['groupIdList'])
             return self._group_id_list
         else:
             return None
@@ -191,7 +201,8 @@ class MmtfStructure(object):
         if self._group_type_list is not None:
             return self._group_type_list
         elif 'groupTypeList' in self.input_data:
-            self._group_type_list = self.decoder.decode(self.input_data, 'groupTypeList', required=True)
+            #self._group_type_list = mmtfDecoder(self.input_data, 'groupTypeList', required=True)
+            self._group_type_list = self.decoder.decode_array(self.input_data['groupTypeList'])
             return self._group_type_list
         else:
             return None
@@ -201,7 +212,8 @@ class MmtfStructure(object):
         if self._sec_struct_list is not None:
             return self._sec_struct_list
         elif 'secStructList' in self.input_data:
-            self._sec_struct_list = self.decoder.decode(self.input_data, 'secStructList')
+            #self._sec_struct_list = mmtfDecoder(self.input_data, 'secStructList')
+            self._sec_struct_list = self.decoder.decode_array(self.input_data['secStructList'])
             return self._sec_struct_list
         else:
             return None
@@ -211,7 +223,8 @@ class MmtfStructure(object):
         if self._ins_code_list is not None:
             return self._ins_code_list
         elif 'insCodeList' in self.input_data:
-            self._ins_code_list = self.decoder.decode(self.input_data, 'insCodeList')
+            #self._ins_code_list = mmtfDecoder(self.input_data, 'insCodeList')
+            self._ins_code_list = self.decoder.decode_array(self.input_data['insCodeList'])
             return self._ins_code_list
         else:
             return None
@@ -221,7 +234,8 @@ class MmtfStructure(object):
         if self._sequence_index_list is not None:
             return self._sequence_index_list
         elif 'sequenceIndexList' in self.input_data:
-            self._sequence_index_list = self.decoder.decode(self.input_data, 'sequenceIndexList')
+            #self._sequence_index_list = mmtfDecoder(self.input_data, 'sequenceIndexList')
+            self._sequence_index_list = self.decoder.decode_array(self.input_data['sequenceIndexList'])
             return self._sequence_index_list
         else:
             return None
@@ -231,7 +245,8 @@ class MmtfStructure(object):
         if self._chain_id_list is not None:
             return self._chain_id_list
         elif 'chainIdList' in self.input_data:
-            self._chain_id_list = self.decoder.decode(self.input_data, 'chainIdList', required=True)
+            #self._chain_id_list = mmtfDecoder(self.input_data, 'chainIdList', required=True)
+            self._chain_id_list = self.decoder.decode_array(self.input_data['chainIdList'])
             return self._chain_id_list
         else:
             return None
@@ -241,7 +256,8 @@ class MmtfStructure(object):
         if self._chain_name_list is not None:
             return self._chain_name_list
         elif 'chainNameList' in self.input_data:
-            self._chain_name_list = self.decoder.decode(self.input_data, 'chainNameList')
+            #self._chain_name_list = mmtfDecoder(self.input_data, 'chainNameList')
+            self._chain_name_list = self.decoder.decode_array(self.input_data['chainNameList'])
             return self._chain_name_list
         else:
             return None
@@ -374,6 +390,7 @@ class MmtfStructure(object):
 
     def to_pandas(self, multi_index=False):
         if self.df is None:
+            self.calc_core_group_data()
             self.df = pd.DataFrame({'chain_name': self.chain_names,
                                     'chain_id': self.chain_ids,
                                     'group_number': self.group_numbers,
@@ -394,6 +411,26 @@ class MmtfStructure(object):
                 self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
 
         return self.df
+
+    def calc_core_group_data(self):
+        if self._group_numbers is None:
+            self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
+            self._group_names = np.empty(self.num_atoms, dtype=np.object_)
+            self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
+            self._elements = np.empty(self.num_atoms, dtype=np.object_)
+            self._polymer = np.empty(self.num_atoms, dtype=np.bool)
+
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
+                index = self.group_type_list[i]
+                group = self.group_list[index]
+                self._group_names[start:end] = group['groupName']
+                self._atom_names[start:end] = group['atomNameList']
+                self._elements[start:end] = group['elementList']
+                self._polymer[start:end] = group['type'] == 'polymer'
+
 
     def calc_indices(self):
 
