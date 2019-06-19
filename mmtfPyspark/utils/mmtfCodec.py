@@ -420,9 +420,9 @@ def parse_header(input_array):
     :param input_array the array to parse
     :return the codec, the length of the decoded array, the parameter and the remainder
     of the array"""
-    codec = struct.unpack(">i", input_array[0:4])
-    length = struct.unpack(">i", input_array[4:8])
-    param = struct.unpack(">i", input_array[8:12])
+    codec = struct.unpack(">i", input_array[0:4])[0]
+    length = struct.unpack(">i", input_array[4:8])[0]
+    param = struct.unpack(">i", input_array[8:12])[0]
     return codec, length, param, input_array[12:]
 
 
@@ -447,8 +447,8 @@ def decode_array(input_array):
     the codec and the appropirate parameter.
     :param input_array: the array to be decoded
     :return the decoded array"""
-    codec, length, param, input_array = parse_header(input_array)
-    return codec_dict[codec].decode(input_array, length, param)
+    codec, length, param, in_array = parse_header(input_array)
+    return codec_dict[codec].decode(in_array, length, param)
 
 
 # In[26]:

@@ -107,7 +107,7 @@ def _decode_type_9(input_data, field_name):
 
 
 def _decode_type_10(input_data, field_name):
-    return mmtfCodec.decode_array(input_data)
+    return mmtfCodec.decode_array(input_data[field_name])
     # buffer = input_data[field_name]
     # #int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
     # int_array = np.frombuffer(buffer, '>i2', offset=12).byteswap().newbyteorder()
