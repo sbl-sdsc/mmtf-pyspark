@@ -69,15 +69,18 @@ def decode(input_data, field_name, required=False):
 
 
 def _decode_type_2(input_data, field_name):
-    return np.frombuffer(input_data[field_name], '>i1', offset=12).byteswap().newbyteorder()
+    return mmtfCodec.decode_array(input_data[field_name])
+#    return np.frombuffer(input_data[field_name], '>i1', offset=12).byteswap().newbyteorder()
 
 
 def _decode_type_4(input_data, field_name):
-    return np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
+    return mmtfCodec.decode_array(input_data[field_name])
+#    return np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
 
 
 def _decode_type_5(input_data, field_name):
-        return np.frombuffer(input_data[field_name], 'S4', offset=12).astype(str)
+    return mmtfCodec.decode_array(input_data[field_name])
+#       return np.frombuffer(input_data[field_name], 'S4', offset=12).astype(str)
 
 
 def _decode_type_6(input_data, field_name):

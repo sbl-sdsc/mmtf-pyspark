@@ -7,15 +7,39 @@ import numpy as np
 from numba import njit
 
 
-def decode_array(input_array):
-    """Parse the header of an input byte array and then decode using the input array,
+class Codec(object):
+
+    def decode_array(self, input_array):
+        """Parse the header of an input byte array and then decode using the input array,
     the codec and the appropirate parameter.
     :param input_array: the array to be decoded
     :return the decoded array"""
-    codec, length, param, in_array = parse_header(input_array)
-    decode_func = codec_dict.get(codec)
-    return decode_func.decode(in_array, length, param)
+
+        codec, length, param, in_array = parse_header(input_array)
+        decode_func = getattr(self, "decode" + str(codec))
+        return decode_func(in_array, length, param)
+
+
 #    return codec_dict[codec].decode(in_array, length, param)
+
+# def decode(input_data, field_name, required=False):
+#     """Decode MMTF binary data using one of the supported encoding strategies.
+#     See https://github.com/rcsb/mmtf/blob/master/spec.md#codecs.
+#     """
+#     if field_name in input_data:
+#         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
+#         # TODO call method by string?
+#         # method_to_call = getattr(, "_decode_type" + str(encoding))
+#         # return method_to_call()
+#         # see: https://jaxenter.com/implement-switch-case-statement-python-138315.html
+#
+#             return _decode_type_10(input_data, field_name)
+#         else:
+#             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
+#     elif required:
+#         raise Exception('ERROR: Invalid MMTF File, field: {} is missing!'.format(field_name))
+#     else:
+#         return []
 
 @njit
 def f2id_numba(x, multiplier):
@@ -273,150 +297,112 @@ def encode_chain_list(in_strings):
             out_bytes += nb
     return out_bytes
 
+    # In[14]:
 
-# In[14]:
-
-
-class Type10(object):
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
 
-    @staticmethod
-    def decode(in_array, length, param):
-        int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
-        return ri_decode(int_array, param).astype(np.float32)
 
-    @staticmethod
-    def encode(in_array, param):
-        y = ri_encode(f2id_numba(in_array, param))
-        return y.byteswap().newbyteorder().tobytes()
-
-# In[16]:
+def decode10(in_array, length, param):
+    int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
+    return ri_decode(int_array, param).astype(np.float32)
 
 
-class Type9():
+def encode10(in_array, param):
+    y = ri_encode(f2id_numba(in_array, param))
+    return y.byteswap().newbyteorder().tobytes()
+
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
 
-    @staticmethod
-    def decode(in_array, length, param):
-        int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
-        return run_length_div_decode(int_array, length, param)
 
-    @staticmethod
-    def encode(in_array, param):
-        y = run_length_div_encode(in_array, param)
-        return y.byteswap().newbyteorder().tobytes()
+def decode9(in_array, length, param):
+    int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
+    return run_length_div_decode(int_array, length, param)
 
 
-# In[17]:
+def encode9(in_array, param):
+    y = run_length_div_encode(in_array, param)
+    return y.byteswap().newbyteorder().tobytes()
 
-
-class Type8():
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
 
-    @staticmethod
-    def decode(in_array, length, param):
-        int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
-        return np.cumsum(run_length_decode(int_array, length))
 
-    @staticmethod
-    def encode(in_array, param):
-        y = run_length_encode(delta(in_array))
-        return y.byteswap().newbyteorder().tobytes()
+def decode8(in_array, length, param):
+    int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
+    return np.cumsum(run_length_decode(int_array, length))
 
 
-# In[18]:
+def encode8(in_array, param):
+    y = run_length_encode(delta(in_array))
+    return y.byteswap().newbyteorder().tobytes()
 
-
-class Type6():
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
 
-    @staticmethod
-    def decode(in_array, length, param):
-        int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
-        return run_length_decoder_ascii(int_array, length)
 
-    @staticmethod
-    def encode(in_array, param):
-        y = run_length_encode_ascii(in_array)
-        # y = run_length_encode_asc(in_array)
-        return y.byteswap().newbyteorder().tobytes()
+def decode6(in_array, length, param):
+    int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
+    return run_length_decoder_ascii(int_array, length)
 
 
-# In[19]:
+def encode6(in_array, param):
+    y = run_length_encode_ascii(in_array)
+    # y = run_length_encode_asc(in_array)
+    return y.byteswap().newbyteorder().tobytes()
 
-
-class Type5():
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
 
-    @staticmethod
-    def decode(in_array, length, param):
-        return np.frombuffer(in_array, 'S4').astype(str)
 
-    @staticmethod
-    def encode(in_array, param):
-        return encode_chain_list(in_array)
+def decode5(in_array, length, param):
+    return np.frombuffer(in_array, 'S4').astype(str)
 
 
-# In[20]:
+def encode5(in_array, param):
+    return encode_chain_list(in_array)
 
-
-class Type4():
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
 
-    @staticmethod
-    def decode(in_array, length, param):
-        return np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
 
-    @staticmethod
-    def encode(in_array, param):
-        return in_array.astype(np.int32).byteswap().newbyteorder().tobytes()
+def decode4(in_array, length, param):
+    return np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
 
 
-# In[21]:
+def encode4(in_array, param):
+    return in_array.astype(np.int32).byteswap().newbyteorder().tobytes()
 
-
-class Type2():
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
 
-    @staticmethod
-    def decode(in_array, length, param):
-        return np.frombuffer(in_array, '>i1')
 
-    @staticmethod
-    def encode(in_array, param):
-        return in_array.astype(np.int8).tobytes()
+def decode2(in_array, length, param):
+    return np.frombuffer(in_array, '>i1')
+
+
+def encode2(in_array, param):
+    return in_array.astype(np.int8).tobytes()
 
 
 # In[22]:
 
 
-codec_dict = {10: Type10,
-              9: Type9,
-              8: Type8,
-              6: Type6,
-              5: Type5,
-              4: Type4,
-              2: Type2}
-
-
-#               4: FourByteToInt}
-
-
-# In[23]:
+# codec_dict = {10: Type10,
+#               9: Type9,
+#               8: Type8,
+#               6: Type6,
+#               5: Type5,
+#               4: Type4,
+#               2: Type2}
 
 
 def parse_header(input_array):
@@ -446,18 +432,20 @@ def add_header(input_array, codec, length, param):
 # In[25]:
 
 
-
-
 # In[26]:
 
 
-def encode_array(input_array, codec, param):
-    """Encode the array using the method and then add the header to this array.
-    :param input_array: the array to be encoded
-    :param codec: the integer index of the codec to use
-    :param param: the integer parameter to use in the function
-    :return an array with the header added to the fornt"""
-    return add_header(codec_dict[codec].encode(input_array, param), codec, len(input_array), param)
+# def encode_array(input_array, codec, param):
+#     """Encode the array using the method and then add the header to this array.
+#     :param input_array: the array to be encoded
+#     :param codec: the integer index of the codec to use
+#     :param param: the integer parameter to use in the function
+#     :return an array with the header added to the fornt"""
+#     return add_header(codec_dict[codec].encode(input_array, param), codec, len(input_array), param)
+
+
+# In[28]:
+
 
 def get_msgpack(data):
     """Get the msgpack of the encoded data."""
@@ -467,4 +455,3 @@ def get_msgpack(data):
 def write_file(file_path, data):
     with open(file_path, "wb") as out_f:
         out_f.write(data)
-
