@@ -81,9 +81,10 @@ def _decode_type_5(input_data, field_name):
 
 
 def _decode_type_6(input_data, field_name):
-    length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
-    int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
-    return run_length_decoder_ascii(int_array, length)
+    return mmtfCodec.decode_array(input_data[field_name])
+    # length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
+    # int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
+    # return run_length_decoder_ascii(int_array, length)
 
 
 def _decode_type_8(input_data, field_name):
