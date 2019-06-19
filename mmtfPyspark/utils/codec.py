@@ -17,6 +17,7 @@ class Codec(object):
 
         codec, length, param, in_array = parse_header(input_array)
         decode_func = getattr(self, "decode" + str(codec))
+        print("codec:", codec)
         return decode_func(in_array, length, param)
 
 
@@ -373,11 +374,11 @@ def encode5(in_array, param):
     byte integers in a byte array."""
 
 
-def decode4(in_array, length, param):
+def decode4(self, in_array, length, param):
     return np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
 
 
-def encode4(in_array, param):
+def encode4(self, in_array, param):
     return in_array.astype(np.int32).byteswap().newbyteorder().tobytes()
 
     """Covert an array of floats to integers, perform delta
