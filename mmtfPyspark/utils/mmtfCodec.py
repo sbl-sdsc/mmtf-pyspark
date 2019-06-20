@@ -17,6 +17,20 @@ def decode_array(input_array):
     return decode_func.decode(in_array, length, param)
 #    return codec_dict[codec].decode(in_array, length, param)
 
+
+class Type2(object):
+    """Covert an array of floats to integers, perform delta
+    encoding and then use recursive indexing to store as 2
+    byte integers in a byte array."""
+
+    @staticmethod
+    def decode(in_array, length, param):
+        return np.frombuffer(in_array, '>i1')
+
+    @staticmethod
+    def encode(in_array, param):
+        return in_array.astype(np.int8).tobytes()
+
 @njit
 def f2id_numba(x, multiplier):
     y = np.empty(x.shape[0], dtype=np.int32)
@@ -387,18 +401,7 @@ class Type4():
 # In[21]:
 
 
-class Type2():
-    """Covert an array of floats to integers, perform delta
-    encoding and then use recursive indexing to store as 2
-    byte integers in a byte array."""
 
-    @staticmethod
-    def decode(in_array, length, param):
-        return np.frombuffer(in_array, '>i1')
-
-    @staticmethod
-    def encode(in_array, param):
-        return in_array.astype(np.int8).tobytes()
 
 
 # In[22]:
