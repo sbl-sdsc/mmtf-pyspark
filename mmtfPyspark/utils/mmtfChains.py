@@ -44,7 +44,7 @@ class MmtfChains(object):
         self.mmtf_producer = structure.mmtf_producer
         self.unit_cell = structure.unit_cell
         self.space_group = structure.space_group
-        self.structure_id = structure.structure_id + "." + chain_names
+        self.structure_id = structure.structure_id + "." + chain_names[0]
         self.title = structure.title
         self.deposition_date = structure.deposition_date
         self.release_date = structure.release_date

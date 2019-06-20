@@ -137,7 +137,7 @@ class TestMmtfStructure(unittest.TestCase):
         structure = pdb.values().first()
         chain_list = ['A']
         chains = structure.get_multiple_chains(chain_list)
-        self.assertEqual(1, len(chains))
+        self.assertEqual(3, len(chains))
 
     def test_1J6T_structure(self):
         print('test_1J6T_structure')
