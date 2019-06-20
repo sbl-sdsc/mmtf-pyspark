@@ -21,6 +21,8 @@ class MmtfStructure(object):
         """Decodes a msgpack unpacked data to mmtf structure"""
         self.input_data = input_data
 
+        self.decoder = Codec()
+
         self.mmtf_version = mmtfDecoder.get_value(input_data, 'mmtfVersion', required=True)
         self.mmtf_producer = mmtfDecoder.get_value(input_data, 'mmtfProducer', required=True)
         self.unit_cell = mmtfDecoder.get_value(input_data, 'unitCell')
@@ -84,7 +86,7 @@ class MmtfStructure(object):
         self.chain_to_entity_index()
         # dataframes
         self.df = None
-        self.decoder = Codec("test")
+
 
     @property
     def bond_atom_list(self):

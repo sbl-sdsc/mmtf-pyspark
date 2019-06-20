@@ -9,9 +9,6 @@ from numba import njit
 
 class Codec(object):
 
-    def __init__(self, name):
-        print("New codec", name)
-
     def decode_array(self, input_array):
         """Parse the header of an input byte array and then decode using the input array,
     the codec and the appropirate parameter.
@@ -20,7 +17,6 @@ class Codec(object):
 
         codec, length, param, in_array = parse_header(input_array)
         decode_func = getattr(self, "decode" + str(codec))
-        print("codec:", codec)
         return decode_func(in_array, length, param)
 
     def decode2(self, in_array, length, param):
@@ -304,6 +300,7 @@ def encode_chain_list(in_strings):
             out_bytes += nb
     return out_bytes
 
+
 def parse_header(input_array):
     """Parse the header and return it along with the input array minus the header.
     :param input_array the array to parse
@@ -314,6 +311,7 @@ def parse_header(input_array):
     param = struct.unpack(">i", input_array[8:12])[0]
     return codec, length, param, input_array[12:]
 
+
 def add_header(input_array, codec, length, param):
     """Add the header to the appropriate array.
     :param the encoded array to add the header to
@@ -322,12 +320,3 @@ def add_header(input_array, codec, length, param):
     :param the parameter to add to the header
     :return the prepended encoded byte array"""
     return struct.pack(">i", codec) + struct.pack(">i", length) + struct.pack(">i", param) + input_array
-
-def get_msgpack(data):
-    """Get the msgpack of the encoded data."""
-    return msgpack.packb(data, use_bin_type=True)
-
-
-def write_file(file_path, data):
-    with open(file_path, "wb") as out_f:
-        out_f.write(data)

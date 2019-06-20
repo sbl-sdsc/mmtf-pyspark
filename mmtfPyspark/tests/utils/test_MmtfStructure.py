@@ -67,7 +67,7 @@ class TestMmtfStructure(unittest.TestCase):
         chain = structure.get_chain('A')
         self.assertEqual(1069, chain.num_atoms)
         self.assertEqual(141, chain.num_groups)
-        self.assertEqual(1, chain.num_chains, 1)
+        self.assertEqual(1, chain.num_chains)
         self.assertEqual(1, chain.num_models)
         self.assertEqual(np.testing.assert_allclose([6.204, 6.913, 8.504],
                                                     chain.x_coord_list[0:3], atol=0.001), None)
