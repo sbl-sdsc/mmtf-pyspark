@@ -2,6 +2,7 @@ from .columnarStructure import ColumnarStructure
 from .columnarStructureX import ColumnarStructureX
 from .codec import Codec
 from .mmtfChain import MmtfChain
+from .mmtfChains import MmtfChains
 from .mmtfModel import MmtfModel
 from .mmtfStructure import MmtfStructure
 from .dsspSecondaryStructure import DsspSecondaryStructure

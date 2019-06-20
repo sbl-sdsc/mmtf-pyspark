@@ -12,7 +12,7 @@ __status__ = "Done"
 
 import numpy as np
 import pandas as pd
-from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec, mmtfCodec
+from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfChains, MmtfModel, Codec, mmtfCodec
 
 
 class MmtfStructure(object):
@@ -20,9 +20,6 @@ class MmtfStructure(object):
     def __init__(self, input_data):
         """Decodes a msgpack unpacked data to mmtf structure"""
         self.input_data = input_data
-
-        self.decoder = Codec()
-        #self.decoder = mmtfCodec
 
         self.mmtf_version = mmtfDecoder.get_value(input_data, 'mmtfVersion', required=True)
         self.mmtf_producer = mmtfDecoder.get_value(input_data, 'mmtfProducer', required=True)
@@ -82,6 +79,8 @@ class MmtfStructure(object):
         self.modelToAtomIndices = None
         self.modelToGroupIndices = None
         self.modelToChainIndices = None
+        # precalculate indices
+        self.decoder = Codec()
         self.calc_indices()
         self.entityChainIndex = None
         self.chain_to_entity_index()
@@ -488,6 +487,10 @@ class MmtfStructure(object):
             chains.append(MmtfChain(self, chain_name))
 
         return chains
+
+    def get_multiple_chains(self, chain_names):
+        """Return specified polymer chain"""
+        return MmtfChains(self, chain_names)
 
     def get_model(self, model_number):
         """Return specified model"""
