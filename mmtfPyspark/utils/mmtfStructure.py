@@ -21,8 +21,8 @@ class MmtfStructure(object):
         """Decodes a msgpack unpacked data to mmtf structure"""
         self.input_data = input_data
 
-        #self.decoder = Codec()
-        self.decoder = mmtfCodec
+        self.decoder = Codec()
+        #self.decoder = mmtfCodec
 
         self.mmtf_version = mmtfDecoder.get_value(input_data, 'mmtfVersion', required=True)
         self.mmtf_producer = mmtfDecoder.get_value(input_data, 'mmtfProducer', required=True)
