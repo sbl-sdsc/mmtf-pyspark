@@ -12,7 +12,7 @@ __status__ = "Done"
 
 import numpy as np
 import pandas as pd
-from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec
+from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec, mmtfCodec
 
 
 class MmtfStructure(object):
@@ -22,7 +22,7 @@ class MmtfStructure(object):
         self.input_data = input_data
 
         #self.decoder = Codec()
-        self.decoder = mmtfDecoder
+        self.decoder = mmtfCodec
 
         self.mmtf_version = mmtfDecoder.get_value(input_data, 'mmtfVersion', required=True)
         self.mmtf_producer = mmtfDecoder.get_value(input_data, 'mmtfProducer', required=True)
