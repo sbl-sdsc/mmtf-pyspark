@@ -82,28 +82,6 @@ class Codec(object):
         return y.byteswap().newbyteorder().tobytes()
 
 
-
-#    return codec_dict[codec].decode(in_array, length, param)
-
-# def decode(input_data, field_name, required=False):
-#     """Decode MMTF binary data using one of the supported encoding strategies.
-#     See https://github.com/rcsb/mmtf/blob/master/spec.md#codecs.
-#     """
-#     if field_name in input_data:
-#         encoding = np.frombuffer(input_data[field_name][0:4], '>i4').byteswap().newbyteorder()[0]
-#         # TODO call method by string?
-#         # method_to_call = getattr(, "_decode_type" + str(encoding))
-#         # return method_to_call()
-#         # see: https://jaxenter.com/implement-switch-case-statement-python-138315.html
-#
-#             return _decode_type_10(input_data, field_name)
-#         else:
-#             raise Exception('ERROR: MMTF encoding type not supported : {}!'.format(field_name))
-#     elif required:
-#         raise Exception('ERROR: Invalid MMTF File, field: {} is missing!'.format(field_name))
-#     else:
-#         return []
-
 @njit
 def f2id_numba(x, multiplier):
     y = np.empty(x.shape[0], dtype=np.int32)
@@ -113,6 +91,7 @@ def f2id_numba(x, multiplier):
         y[i] = round((x[i] - x[i - 1]) * multiplier)
 
     return y
+
 
 @njit
 def ri_encode(int_array, max=32767, min=-32768):
@@ -140,6 +119,7 @@ def ri_encode(int_array, max=32767, min=-32768):
         i += 1
     return out_arr[:i]
 
+
 @njit
 def cum_sum(x):
     y = np.empty(x.shape[0], dtype=np.int32)
@@ -148,6 +128,7 @@ def cum_sum(x):
         y[i] = x[i - 1] + x[i]
 
     return y
+
 
 @njit
 def ri_decode(x, divisor):
@@ -171,6 +152,7 @@ def ri_decode(x, divisor):
     #    y = cum_sum(x) / divisor
     return y[(x != maximum) & (x != minimum)]
 
+
 @njit
 def run_length_div_decode(x, n, divisor):
     """Decodes a run length encoded array and scales/converts integer values to float
@@ -187,6 +169,7 @@ def run_length_div_decode(x, n, divisor):
         y[start:end] = x[i] / divisor
         start = end
     return y
+
 
 @njit
 def run_length_div_encode(x, divisor):
@@ -211,6 +194,7 @@ def run_length_div_encode(x, divisor):
 
     return y[:count + 1]
 
+
 @njit
 def delta(x):
     y = np.empty(x.shape[0], dtype=np.int32)
@@ -219,6 +203,7 @@ def delta(x):
         y[i] = x[i] - x[i - 1]
 
     return y
+
 
 @njit
 def run_length_decode(x, n):
@@ -236,6 +221,7 @@ def run_length_decode(x, n):
         y[start:end] = x[i]
         start = end
     return y
+
 
 @njit
 def run_length_encode(x):
@@ -260,6 +246,7 @@ def run_length_encode(x):
 
     return y[:count + 1]
 
+
 def run_length_decoder_ascii(x, n):
     """Decodes a run length encoded array
 
@@ -276,6 +263,7 @@ def run_length_decoder_ascii(x, n):
         y[start:end] = chr(x[i])
         start = end
     return y
+
 
 def run_length_encode_ascii(x):
     y = np.empty(x.shape[0] * 2, dtype=np.int32)
