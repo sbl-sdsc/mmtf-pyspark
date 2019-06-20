@@ -404,7 +404,6 @@ class MmtfStructure(object):
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
             self._elements = np.empty(self.num_atoms, dtype=np.object_)
-            self._polymer = np.empty(self.num_atoms, dtype=np.bool)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -415,7 +414,6 @@ class MmtfStructure(object):
                 self._group_names[start:end] = group['groupName']
                 self._atom_names[start:end] = group['atomNameList']
                 self._elements[start:end] = group['elementList']
-                self._polymer[start:end] = group['type'] == 'polymer'
 
 
     def calc_indices(self):
