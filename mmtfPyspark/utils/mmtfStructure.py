@@ -354,7 +354,7 @@ class MmtfStructure(object):
     @property
     def entity_types(self):
         if self._entity_type is None:
-            self._entity_type = np.empty(self.num_atoms, dtype=np.uint8)
+            self._entity_type = np.empty(self.num_atoms, dtype=np.object_)
 
             for i in range(self.num_chains):
                 start = self.chainToAtomIndices[i]
