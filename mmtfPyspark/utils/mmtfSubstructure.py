@@ -1,9 +1,5 @@
 #!/usr/bin/env python
-'''mmtfChain.py
 
-Decode msgpack unpacked data to mmtf chain
-
-'''
 __author__ = "Peter Rose"
 __maintainer__ = "Peter Rose"
 __version__ = "0.4.0"
@@ -13,9 +9,9 @@ import numpy as np
 import pandas as pd
 
 
-class MmtfChains(object):
+class MmtfSubstructure(object):
     """
-    Creates a subset of a structure using the specified criteria.
+    Extracts a substructure from a structure using the specified criteria.
 
     Parameters
     ----------
@@ -36,62 +32,51 @@ class MmtfChains(object):
     Examples
     --------
     Return a structure with the whole A and B chains
-    >>> chain = MmtfChains(structure, chain_names=['A','B'])
+    >>> chain = MmtfSubstructure(structure, 'AB', chain_names=['A','B'])
 
     Return a structure that contains only the polymer in chain A (no ligands, no waters)
-    >>> chain = MmtfChains(structure, chain_names=['A'], entity_types=['polymer'])
-
-
+    >>> chain = MmtfSubstructure(structure, 'A', chain_names=['A'], entity_types=['polymer'])
     """
-    def __init__(self, structure, chain_names=None, chain_ids=None, entity_types=None):
-        """
-        Parameters
-        ----------
-        structure : MmtfStructure
-            Structure in decoded mmtf format
-        chain_names : list, optional
-            Chains names
-        chain_ids : list, optional
-            Chain ids
-        entity_types : list
-            Entity types
 
-        Attributes
-        ----------
-        num_atoms : int
-            Number of atoms
-        num_groups : int
-            Number of groups
-        """
+    def __init__(self, structure, label, chain_names=None, chain_ids=None, group_names=None,
+                 chem_comp_types=None, entity_types=None):
         self.structure = structure
-        self.start = None
-        self.end = None
 
         # Apply criteria to select atoms
-        self.mask = None
+        self.mask = np.full(structure.num_atoms, False)
         if chain_names is not None:
-            self.mask = np.in1d(structure.chain_names, list(chain_names)).reshape(structure.chain_names.shape)
+            self.mask = self.mask & np.in1d(structure.chain_names, list(chain_names))\
+                .reshape(structure.chain_names.shape)
         if chain_ids is not None:
             self.mask = self.mask & np.in1d(structure.chain_ids, list(chain_ids)).reshape(structure.chain_ids.shape)
+        if group_names is not None:
+            self.mask = self.mask & np.in1d(structure.group_names, list(group_names))\
+                .reshape(structure.group_names.shape)
+        if chem_comp_types is not None:
+            self.mask = self.mask & np.in1d(structure.chem_comp_types, list(chem_comp_types))\
+                .reshape(structure.chem_comp_types.shape)
         if entity_types is not None:
-            self.mask = self.mask & np.in1d(structure.entity_types, list(entity_types)).reshape(structure.entity_types.shape)
+            self.mask = self.mask & np.in1d(structure.entity_types, list(entity_types))\
+                .reshape(structure.entity_types.shape)
 
+        # update counts
         self.num_atoms = np.count_nonzero(self.mask)
+        self.modified = structure.num_atoms != self.num_atoms
         # TODO number of groups calc.: need to consider chain name and insertion code
-        self.num_groups = np.unique(self.group_numbers).shape[0]
-        self.num_chains = np.unique(self.chain_ids).shape[0]
+        self.num_groups = np.unique(self.group_numbers).size
+        self.num_chains = np.unique(self.chain_ids).size
         self.num_models = structure.num_models
 
         self.mmtf_version = structure.mmtf_version
         self.mmtf_producer = structure.mmtf_producer
         self.unit_cell = structure.unit_cell
         self.space_group = structure.space_group
-        self.structure_id = structure.structure_id + "." + chain_names[0]
+        self.structure_id = structure.structure_id + "." + label
         self.title = structure.title
         self.deposition_date = structure.deposition_date
         self.release_date = structure.release_date
         self.ncs_operator_list = structure.ncs_operator_list
-        # TODO
+        # TODO bio assemblies, bonds, entity lists
         self.bio_assembly = None
         self.entity_list = structure.entity_list
 
@@ -99,8 +84,6 @@ class MmtfChains(object):
         self.resolution = structure.resolution
         self.r_free = structure.r_free
         self.r_work = structure.r_work
-        #
-
         # dataframes
         self.df = None
 

@@ -12,7 +12,7 @@ __status__ = "Done"
 
 import numpy as np
 import pandas as pd
-from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfChains, MmtfModel, Codec, mmtfCodec
+from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec
 
 
 class MmtfStructure(object):
@@ -352,7 +352,7 @@ class MmtfStructure(object):
         return self._polymer
 
     @property
-    def entity_type(self):
+    def entity_types(self):
         if self._entity_type is None:
             self._entity_type = np.empty(self.num_atoms, dtype=np.uint8)
 
@@ -403,8 +403,7 @@ class MmtfStructure(object):
                                     'o': self.occupancy_list,
                                     'b': self.b_factor_list,
                                     'element': self.elements,
-                                    'polymer': self.polymer,
-                                    #                               'entity': self.get_entity_indices(),
+                                    'entity': self.entity_types,
                                     #                                   'seq_index': self.get_sequence_positions()
                                     })
             if multi_index:
@@ -501,10 +500,6 @@ class MmtfStructure(object):
             chains.append(MmtfChain(self, chain_name))
 
         return chains
-
-    def get_multiple_chains(self, chain_names):
-        """Return specified polymer chain"""
-        return MmtfChains(self, chain_names)
 
     def get_model(self, model_number):
         """Return specified model"""

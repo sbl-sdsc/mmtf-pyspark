@@ -11,6 +11,7 @@ import unittest
 import numpy as np
 from pyspark.sql import SparkSession
 from mmtfPyspark.io import mmtfReader
+from mmtfPyspark.utils import MmtfSubstructure
 
 
 class TestMmtfStructure(unittest.TestCase):
@@ -130,14 +131,14 @@ class TestMmtfStructure(unittest.TestCase):
         self.assertEqual(4, len(chains))
 
     def test_4HHB_multiple_chains(self):
-        print('test_4HHB_chains')
+        print('test_4HHB_multiple_chains')
         path = '../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
         chain_list = ['A']
         chains = structure.get_multiple_chains(chain_list)
-        self.assertEqual(1168, chains.x_coord_list.shape[0])
+        self.assertEqual(1168, chains.x_coord_list.size)
         chain_list = ['A', 'B']
         chains = structure.get_multiple_chains(chain_list)
         self.assertEqual(2392, chains.x_coord_list.shape[0])
@@ -147,6 +148,25 @@ class TestMmtfStructure(unittest.TestCase):
         chain_list = ['A', 'B', 'C', 'D']
         chains = structure.get_multiple_chains(chain_list)
         self.assertEqual(4779, chains.x_coord_list.shape[0])
+
+    def test_4HHB_substuctures(self):
+        print('test_4HHB_subsets')
+        path = '../../../resources/files/'
+        pdb = mmtfReader.read_mmtf_files(path)
+        pdb = pdb.filter(lambda t: t[0] == '4HHB')
+        structure = pdb.values().first()
+
+        subset = MmtfSubstructure(structure, 'A', chain_names=['A'])
+        self.assertEqual(1168, subset.num_atoms)
+        #self.assertEqual(198, subset.num_groups)
+        self.assertEqual(3, subset.num_chains)
+        self.assertEqual(1, subset.num_models)
+
+        subset = MmtfSubstructure(structure, 'A', chain_names=['A'], entity_types=['polymer', 'non-polymer'])
+        self.assertEqual(1168+1, subset.num_atoms)
+        self.assertEqual(141+1, subset.num_groups)
+        self.assertEqual(2, subset.num_chains)
+        self.assertEqual(1, subset.num_models)
 
     def test_1J6T_structure(self):
         print('test_1J6T_structure')
