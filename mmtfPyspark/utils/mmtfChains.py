@@ -14,31 +14,73 @@ import pandas as pd
 
 
 class MmtfChains(object):
+    """
+    Creates a subset of a structure using the specified criteria.
 
-    def __init__(self, structure, chain_names):
-        """Extracts the specified polymer chain from a structure"""
+    Parameters
+    ----------
+    structure : MmtfStructure
+        Structure in decoded mmtf format
+    chain_names: list(str)
+        List of selected chain names
+            chain_names: list
+    chain_ids: list(str)
+        List of selected chain names
+    entity_types: list(str)
+        List of selected entities
+        * 'polymer' proteins and nucleic acids
+        * 'non-polymer' all other chemical entities, except water
+        * 'water' water and heavy water
+        * None (select all entities), default
+
+    Examples
+    --------
+    Return a structure with the whole A and B chains
+    >>> chain = MmtfChains(structure, chain_names=['A','B'])
+
+    Return a structure that contains only the polymer in chain A (no ligands, no waters)
+    >>> chain = MmtfChains(structure, chain_names=['A'], entity_types=['polymer'])
+
+
+    """
+    def __init__(self, structure, chain_names=None, chain_ids=None, entity_types=None):
+        """
+        Parameters
+        ----------
+        structure : MmtfStructure
+            Structure in decoded mmtf format
+        chain_names : list, optional
+            Chains names
+        chain_ids : list, optional
+            Chain ids
+        entity_types : list
+            Entity types
+
+        Attributes
+        ----------
+        num_atoms : int
+            Number of atoms
+        num_groups : int
+            Number of groups
+        """
         self.structure = structure
         self.start = None
         self.end = None
-        self.num_atoms = 0
-        self.num_groups = 0
-        self.num_chains = 1
-        self.num_models = 1
 
-        self.mask = np.in1d(structure.chain_names, list(chain_names)).reshape(structure.chain_names.shape)
-        # indices = np.where(structure.chain_name_list == chain_name)
-        # if indices[0].size == 0:
-        #     raise ValueError("Structure " + structure.structure_id + " does not contain chain: " + chain_name)
-        #
-        # # find start and end of the first polymer chain
-        # for i in indices[0]:
-        #     ind = structure.entityChainIndex[i]
-        #     if structure.entity_list[ind]['type'] == 'polymer':
-        #         self.start = structure.chainToAtomIndices[i]
-        #         self.end = structure.chainToAtomIndices[i+1]
-        #         self.num_atoms = self.end - self.start
-        #         self.num_groups = structure.chainToGroupIndices[i+1] - structure.chainToGroupIndices[i]
-        #        break
+        # Apply criteria to select atoms
+        self.mask = None
+        if chain_names is not None:
+            self.mask = np.in1d(structure.chain_names, list(chain_names)).reshape(structure.chain_names.shape)
+        if chain_ids is not None:
+            self.mask = self.mask & np.in1d(structure.chain_ids, list(chain_ids)).reshape(structure.chain_ids.shape)
+        if entity_types is not None:
+            self.mask = self.mask & np.in1d(structure.entity_types, list(entity_types)).reshape(structure.entity_types.shape)
+
+        self.num_atoms = np.count_nonzero(self.mask)
+        # TODO number of groups calc.: need to consider chain name and insertion code
+        self.num_groups = np.unique(self.group_numbers).shape[0]
+        self.num_chains = np.unique(self.chain_ids).shape[0]
+        self.num_models = structure.num_models
 
         self.mmtf_version = structure.mmtf_version
         self.mmtf_producer = structure.mmtf_producer
@@ -57,17 +99,19 @@ class MmtfChains(object):
         self.resolution = structure.resolution
         self.r_free = structure.r_free
         self.r_work = structure.r_work
+        #
+
         # dataframes
         self.df = None
 
     @property
     def atom_id_list(self):
-        """Return atom id list"""
+        """ndarray: atom id list."""
         return self.structure.atom_id_list[self.mask]
 
     @property
     def x_coord_list(self):
-        """Return x coordinates"""
+        """ndarray: x coordinates"""
         return self.structure.x_coord_list[self.mask]
 
     @property
@@ -148,6 +192,11 @@ class MmtfChains(object):
         return self.structure.polymer[self.mask]
 
     @property
+    def entity_types(self):
+        """Return entity types"""
+        return self.structure.entity_types[self.mask]
+
+    @property
     def entity_indices(self):
         """Return entity indices"""
         return self.structure.entity_indices[self.mask]
@@ -172,7 +221,7 @@ class MmtfChains(object):
                                     'b': self.b_factor_list,
                                     'element': self.elements,
                                     'polymer': self.polymer,
-                                    #                               'entity': self.get_entity_indices(),
+                                    'type': self.entity_types
                                     #                                   'seq_index': self.get_sequence_positions()
                                     })
             if multi_index:

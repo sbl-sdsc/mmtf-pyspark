@@ -70,6 +70,7 @@ class MmtfStructure(object):
         self._elements = None
         self._chem_comp_types = None
         self._polymer = None
+        self._entity_type = None
         self._entity_indices = None
         self._sequence_positions = None
         # calculated indices
@@ -349,6 +350,19 @@ class MmtfStructure(object):
                 self._polymer[start:end] = self.entity_list[index]['type'] == 'polymer'
 
         return self._polymer
+
+    @property
+    def entity_type(self):
+        if self._entity_type is None:
+            self._entity_type = np.empty(self.num_atoms, dtype=np.uint8)
+
+            for i in range(self.num_chains):
+                start = self.chainToAtomIndices[i]
+                end = self.chainToAtomIndices[i + 1]
+                index = self.entityChainIndex[i]
+                self._entity_type[start:end] = self.entity_list[index]['type']
+
+        return self._entity_type
 
     @property
     def entity_indices(self):
