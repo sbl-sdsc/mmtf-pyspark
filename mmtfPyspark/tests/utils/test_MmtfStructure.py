@@ -130,24 +130,24 @@ class TestMmtfStructure(unittest.TestCase):
         chains = structure.get_chains()
         self.assertEqual(4, len(chains))
 
-    def test_4HHB_multiple_chains(self):
-        print('test_4HHB_multiple_chains')
-        path = '../../../resources/files/'
-        pdb = mmtfReader.read_mmtf_files(path)
-        pdb = pdb.filter(lambda t: t[0] == '4HHB')
-        structure = pdb.values().first()
-        chain_list = ['A']
-        chains = structure.get_multiple_chains(chain_list)
-        self.assertEqual(1168, chains.x_coord_list.size)
-        chain_list = ['A', 'B']
-        chains = structure.get_multiple_chains(chain_list)
-        self.assertEqual(2392, chains.x_coord_list.shape[0])
-        chain_list = ['A', 'B', 'C']
-        chains = structure.get_multiple_chains(chain_list)
-        self.assertEqual(3563, chains.x_coord_list.shape[0])
-        chain_list = ['A', 'B', 'C', 'D']
-        chains = structure.get_multiple_chains(chain_list)
-        self.assertEqual(4779, chains.x_coord_list.shape[0])
+    # def test_4HHB_multiple_chains(self):
+    #     print('test_4HHB_multiple_chains')
+    #     path = '../../../resources/files/'
+    #     pdb = mmtfReader.read_mmtf_files(path)
+    #     pdb = pdb.filter(lambda t: t[0] == '4HHB')
+    #     structure = pdb.values().first()
+    #     chain_list = ['A']
+    #     chains = structure.get_multiple_chains(chain_list)
+    #     self.assertEqual(1168, chains.x_coord_list.size)
+    #     chain_list = ['A', 'B']
+    #     chains = structure.get_multiple_chains(chain_list)
+    #     self.assertEqual(2392, chains.x_coord_list.shape[0])
+    #     chain_list = ['A', 'B', 'C']
+    #     chains = structure.get_multiple_chains(chain_list)
+    #     self.assertEqual(3563, chains.x_coord_list.shape[0])
+    #     chain_list = ['A', 'B', 'C', 'D']
+    #     chains = structure.get_multiple_chains(chain_list)
+    #     self.assertEqual(4779, chains.x_coord_list.shape[0])
 
     def test_4HHB_substuctures(self):
         print('test_4HHB_subsets')

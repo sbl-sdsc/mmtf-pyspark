@@ -43,7 +43,7 @@ class MmtfSubstructure(object):
         self.structure = structure
 
         # Apply criteria to select atoms
-        self.mask = np.full(structure.num_atoms, False)
+        self.mask = np.full(structure.num_atoms, True)
         if chain_names is not None:
             self.mask = self.mask & np.in1d(structure.chain_names, list(chain_names))\
                 .reshape(structure.chain_names.shape)
