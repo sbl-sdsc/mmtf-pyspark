@@ -88,7 +88,7 @@ def _to_byte_array(structure, compressed):
        MMTF encoded and optionally gzipped structure data
     '''
 
-    byte_array = bytearray(msgpack.packb(structure.input_data), use_bin_type=True)
+    byte_array = bytearray(msgpack.packb(structure.input_data, use_bin_type=True))
     #byte_array = bytearray(msgpack.packb(MMTFEncoder.encode_data(structure), use_bin_type = True))
 
     if compressed:
