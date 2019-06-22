@@ -1,0 +1,11 @@
+name: mmtf-pyspark 
+
+dependencies:
+  - python>=3.6
+  - openjdk==8.0.152
+  - pyspark==2.3.2
+  - biopython==1.72
+  - numba==0.41.0
+  - pip
+  - pip:
+      - git+https://github.com/pwrose/mmtf-pyspark.git 
