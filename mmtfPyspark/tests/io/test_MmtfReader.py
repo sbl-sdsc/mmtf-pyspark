@@ -25,7 +25,7 @@ class ReadSequenceFileTest(unittest.TestCase):
     def test_mmtf(self):
         path = '../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
-        self.assertTrue(pdb.count() == 3)
+        self.assertEqual(4, pdb.count())
 
     def tearDown(self):
         self.spark.stop()

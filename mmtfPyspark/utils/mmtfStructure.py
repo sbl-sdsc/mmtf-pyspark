@@ -482,12 +482,13 @@ class MmtfStructure(object):
 
             for i, entity in enumerate(self.entity_list):
 
-                chainIndexList = entity['chainIndexList']
+                #chainIndexList = entity['chainIndexList']
                 # pd.read_msgpack returns tuple, msgpack-python returns list
                 # TODO check this
-                if type(chainIndexList) is not list:
-                    chainIndexList = list(chainIndexList)
-                self.entityChainIndex[chainIndexList] = i
+                #if type(chainIndexList) is not list:
+                #    chainIndexList = list(chainIndexList)
+                for index in entity['chainIndexList']:
+                    self.entityChainIndex[index] = i
 
     def get_chain(self, chain_name):
         """Return specified polymer chain"""

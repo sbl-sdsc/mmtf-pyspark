@@ -87,6 +87,8 @@ class MmtfSubstructure(object):
         # dataframes
         self.df = None
 
+        self._update_entity_list()
+
     @property
     def atom_id_list(self):
         """ndarray: atom id list."""
@@ -211,6 +213,11 @@ class MmtfSubstructure(object):
                 self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
 
         return self.df
+
+    def _update_entity_list(self):
+        etype = np.unique(self.entity_types)
+        if len(self.entity_list) != len(etype):
+            print('fewer entity types')
 
 
 

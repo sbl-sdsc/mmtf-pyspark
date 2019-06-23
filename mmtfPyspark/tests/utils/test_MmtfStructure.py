@@ -57,6 +57,8 @@ class TestMmtfStructure(unittest.TestCase):
         self.assertListEqual(['L-PEPTIDE LINKING', 'L-PEPTIDE LINKING'], structure.chem_comp_types[0:2].tolist())
         self.assertListEqual([True, True, True], structure.polymer[0:3].tolist())
         self.assertListEqual([0, 0, 0], structure.entity_indices[0:3].tolist())
+        self.assertListEqual([1, 1, 1], structure.entity_indices[1069:1072].tolist())
+
         self.assertListEqual([0, 0, 0], structure.sequence_positions[0:3].tolist())
 
     def test_4HHB_chain(self):
@@ -158,12 +160,12 @@ class TestMmtfStructure(unittest.TestCase):
 
         subset = MmtfSubstructure(structure, 'A', chain_names=['A'])
         self.assertEqual(1168, subset.num_atoms)
-        #self.assertEqual(198, subset.num_groups)
+        self.assertEqual(198, subset.num_groups)
         self.assertEqual(3, subset.num_chains)
         self.assertEqual(1, subset.num_models)
 
         subset = MmtfSubstructure(structure, 'A', chain_names=['A'], entity_types=['polymer', 'non-polymer'])
-        self.assertEqual(1168+1, subset.num_atoms)
+        self.assertEqual(1168-56, subset.num_atoms)
         self.assertEqual(141+1, subset.num_groups)
         self.assertEqual(2, subset.num_chains)
         self.assertEqual(1, subset.num_models)
