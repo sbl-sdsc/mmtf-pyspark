@@ -222,8 +222,7 @@ class MmtfSubstructure(object):
             old_indices = set(entity['chainIndexList'])
             updated_indices = old_indices.intersection(new_indices)
             if len(updated_indices) >= 0:
-                entity_list_new.append(self.make_entity_dict(chain_indices, sequence, description, entity_type))
-
+                entity_list_new.append(self.make_entity_dict(entity['chainIndexList'], entity['sequence'], entity['description'], entity['type']))
 
     def make_entity_dict(self, chain_indices, sequence, description, entity_type):
         out_d = {}
