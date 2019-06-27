@@ -56,8 +56,9 @@ class TestMmtfStructure(unittest.TestCase):
         self.assertListEqual(['N', 'C', 'C'], structure.elements[0:3].tolist())
         self.assertListEqual(['L-PEPTIDE LINKING', 'L-PEPTIDE LINKING'], structure.chem_comp_types[0:2].tolist())
         self.assertListEqual([True, True, True], structure.polymer[0:3].tolist())
-        self.assertListEqual([0, 0, 0], structure.entity_indices[0:3].tolist())
-        self.assertListEqual([1, 1, 1], structure.entity_indices[1069:1072].tolist())
+        self.assertListEqual([0, 0, 0], structure.entity_indices[0:3].tolist())  # hemoglobin alpha
+        self.assertListEqual([1, 1, 1], structure.entity_indices[1069:1072].tolist()) # hemoglobin beta
+        self.assertListEqual([4, 4, 4], structure.entity_indices[4776:4779].tolist()) # water
 
         self.assertListEqual([0, 0, 0], structure.sequence_positions[0:3].tolist())
 

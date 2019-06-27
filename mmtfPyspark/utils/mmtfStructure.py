@@ -388,7 +388,14 @@ class MmtfStructure(object):
 
         return self._sequence_positions
 
-    def to_pandas(self, multi_index=False):
+    def to_pandas(self, add_cols=None, multi_index=False):
+        # TODO option to add columns, see: https://stackoverflow.com/questions/47094437/adding-np-arrays-to-existing-pandas-dataframe
+        # x = np.zeros(38)
+        # for i in range(0, 10):
+        #     col_name = "char_" + str(i)
+        #
+        #     df[col_name] = pd.Series([x], index=df.index)
+
         if self.df is None:
             self.calc_core_group_data()
             self.df = pd.DataFrame({'chain_name': self.chain_names,
@@ -403,16 +410,22 @@ class MmtfStructure(object):
                                     'o': self.occupancy_list,
                                     'b': self.b_factor_list,
                                     'element': self.elements,
-                                    'entity': self.entity_types,
-                                    #                                   'seq_index': self.get_sequence_positions()
+                                    'entity_type:': self.entity_types
                                     })
+            if add_cols is not None:
+                if 'sequence_position' in add_cols:
+                    self.df = self.df['sequence_position'] = pd.Series([self.sequence_positions], index=self.df.index)
+                if 'chem_comp_type' in add_cols:
+                    self.df = self.df['chem_comp_type'] = pd.Series([self.chem_comp_types], index=self.df.index)
+
+
             if multi_index:
                 self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
 
         return self.df
 
     def calc_core_group_data(self):
-        if self._group_numbers is None:
+        if self._group_numbers is None or self._group_names is None or self._atom_names is None or self._elements:
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)

@@ -215,9 +215,23 @@ class MmtfSubstructure(object):
         return self.df
 
     def _update_entity_list(self):
-        etype = np.unique(self.entity_types)
-        if len(self.entity_list) != len(etype):
-            print('fewer entity types')
+        new_indices = set(np.unique(self.entity_indices))
+
+        entity_list_new = []
+        for entity in self.entity_list:
+            old_indices = set(entity['chainIndexList'])
+            updated_indices = old_indices.intersection(new_indices)
+            if len(updated_indices) >= 0:
+                entity_list_new.append(self.make_entity_dict(chain_indices, sequence, description, entity_type))
+
+
+    def make_entity_dict(self, chain_indices, sequence, description, entity_type):
+        out_d = {}
+        out_d["description"] = description
+        out_d["type"] = entity_type
+        out_d["chainIndexList"] = chain_indices
+        out_d["sequence"] = sequence
+        return out_d
 
 
 
