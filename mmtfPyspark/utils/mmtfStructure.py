@@ -414,10 +414,9 @@ class MmtfStructure(object):
                                     })
             if add_cols is not None:
                 if 'sequence_position' in add_cols:
-                    self.df = self.df['sequence_position'] = pd.Series([self.sequence_positions], index=self.df.index)
+                    self.df['sequence_position'] = pd.Series([self.sequence_positions], index=self.df.index)
                 if 'chem_comp_type' in add_cols:
-                    self.df = self.df['chem_comp_type'] = pd.Series([self.chem_comp_types], index=self.df.index)
-
+                    self.df['chem_comp_type'] = pd.Series([self.chem_comp_types], index=self.df.index)
 
             if multi_index:
                 self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
