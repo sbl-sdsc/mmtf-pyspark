@@ -115,7 +115,7 @@ def read_sequence_file(path, pdbId=None, fraction=None, seed=123):
         raise Exception("Inappropriate combination of parameters")
 
 
-def read_mmtf_files(path):
+def read_mmtf_files(path, first_model=False):
     '''Read the specified PDB entries from a MMTF file
 
     Parameters
@@ -135,7 +135,7 @@ def read_mmtf_files(path):
     spark = SparkSession.builder.getOrCreate()
     sc = spark.sparkContext
 
-    return sc.parallelize(_get_files(path)).map(_call_mmtf).filter(lambda t: t is not None)
+    return sc.parallelize(_get_files(path)).map(lambda f: _call_mmtf(f, first_model)).filter(lambda t: t is not None)
 
 
 def download_mmtf_files(pdbIds, reduced=False):
@@ -250,7 +250,7 @@ def _call_sequence_file(t):
     return (t[0], decoder)
 
 
-def _call_mmtf(f):
+def _call_mmtf(f, first_model=False):
     '''Call function for mmtf files'''
 
     if ".mmtf.gz" in f:
@@ -258,7 +258,7 @@ def _call_mmtf(f):
         data = gzip.open(f, 'rb')
         #unpack = msgpack.unpack(data, raw=False)
         unpack = pd.read_msgpack(data)
-        decoder = MmtfStructure(unpack)
+        decoder = MmtfStructure(unpack, first_model)
         return (name, decoder)
 
     elif ".mmtf" in f:
@@ -267,7 +267,7 @@ def _call_mmtf(f):
         #decoder = MmtfStructure(unpack)
         name = f.split('/')[-1].split('.')[0].upper()
         unpack = pd.read_msgpack(f)
-        decoder = MmtfStructure(unpack)
+        decoder = MmtfStructure(unpack, first_model)
         return (name, decoder)
 
 
