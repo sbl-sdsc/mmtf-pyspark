@@ -476,6 +476,16 @@ class MmtfStructure(object):
 
         return self.df
 
+    def entity_to_pandas(self):
+        for id, entity in enumerate(self.entity_list):
+            entity['id'] = id + 1
+
+        df = pd.DataFrame.from_dict(self.entity_list[0])
+        for i in range(1,len(self.entity_list)):
+            df = df.append(pd.DataFrame.from_dict(self.entity_list[i]))
+
+        return df
+
     def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None or self._elements:
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
@@ -518,7 +528,7 @@ class MmtfStructure(object):
                 for i in range(self.chains_per_model[m]):
                     self.chainToAtomIndices[chainCount] = atomCount
                     self.chainToGroupIndices[chainCount] = groupCount
-                    # self.chainIdToEntityIndices[self.chain_id_list[chainCount]] = self.entityChainIndex[chainCount]
+                    self.chainIdToEntityIndices[self.chain_id_list[chainCount]] = self.entityChainIndex[chainCount]
 
                     # Loop over all groups in chain
                     for _ in range(self.groups_per_chain[chainCount]):
