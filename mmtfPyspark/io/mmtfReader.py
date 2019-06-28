@@ -30,7 +30,7 @@ text = "org.apache.hadoop.io.Text"
 byteWritable = "org.apache.hadoop.io.BytesWritable"
 
 
-def read_full_sequence_file(pdbId=None, fraction=None, seed=123):
+def read_full_sequence_file(pdbId=None, first_model=False, fraction=None, seed=123):
     '''Reads a MMTF-Hadoop Sequence file using the default file location.
     The default file location is determined by :func:`get_mmtf_full_path() <mmtfPyspark.io.mmtfReader.get_mmtf_full_path>`
 
@@ -45,10 +45,10 @@ def read_full_sequence_file(pdbId=None, fraction=None, seed=123):
     seed : int, optional
        random seed
     '''
-    return read_sequence_file(get_mmtf_full_path(), pdbId, fraction, seed)
+    return read_sequence_file(get_mmtf_full_path(), pdbId, first_model, fraction, seed)
 
 
-def read_reduced_sequence_file(pdbId=None, fraction=None, seed=123):
+def read_reduced_sequence_file(pdbId=None, first_model=False, fraction=None, seed=123):
     '''Reads a MMTF-Hadoop Sequence file using the default file location.
     The default file location is determined by :func:`get_mmtf_reduced_path()
     <mmtfPyspark.io.mmtfReader.get_mmtf_reducedget_mmtf_reduced_path>`
@@ -64,10 +64,10 @@ def read_reduced_sequence_file(pdbId=None, fraction=None, seed=123):
     seed : int, optional
        random seed
     '''
-    return read_sequence_file(get_mmtf_reduced_path(), pdbId, fraction, seed)
+    return read_sequence_file(get_mmtf_reduced_path(), pdbId, first_model, fraction, seed)
 
 
-def read_sequence_file(path, pdbId=None, fraction=None, seed=123):
+def read_sequence_file(path, pdbId=None, first_model=False, fraction=None, seed=123):
     '''Reads an MMTF Hadoop Sequence File. Can read all files from path,
     randomly rample a fraction, or a subset based on input list.
     See <a href="http://mmtf.rcsb.org/download.html"> for file download information</a>
@@ -100,16 +100,16 @@ def read_sequence_file(path, pdbId=None, fraction=None, seed=123):
 
     # Read in all structures from a directory
     if (pdbId == None and fraction == None):
-        return infiles.map(_call_sequence_file)
+        return infiles.map(lambda t: _call_sequence_file(t, first_model))
 
     # Read in a specified list of pdbIds
     elif(pdbId != None and fraction == None):
         pdbIdSet = set(pdbId)
-        return infiles.filter(lambda t: str(t[0]) in pdbIdSet).map(_call_sequence_file)
+        return infiles.filter(lambda t: str(t[0]) in pdbIdSet).map(lambda t: _call_sequence_file(t, first_model))
 
     # Read in a random fraction of structures from a directory
     elif (pdbId == None and fraction != None):
-        return infiles.sample(False, fraction, seed).map(_call_sequence_file)
+        return infiles.sample(False, fraction, seed).map(lambda t: _call_sequence_file(t, first_model))
 
     else:
         raise Exception("Inappropriate combination of parameters")
@@ -138,7 +138,7 @@ def read_mmtf_files(path, first_model=False):
     return sc.parallelize(_get_files(path)).map(lambda f: _call_mmtf(f, first_model)).filter(lambda t: t is not None)
 
 
-def download_mmtf_files(pdbIds, reduced=False):
+def download_mmtf_files(pdbIds, reduced=False, first_model=False):
     '''Download and reads the specified PDB entries using `MMTF web services <http://mmtf.rcsb.org/download.html>`_
     with either full or reduced format
 
@@ -158,11 +158,11 @@ def download_mmtf_files(pdbIds, reduced=False):
     sc = spark.sparkContext
 
     return sc.parallelize(set(pdbIds)) \
-             .map(lambda t: _get_structure(t, reduced)) \
+             .map(lambda t: _get_structure(t, reduced, first_model)) \
              .filter(lambda t: t is not None)
 
 
-def download_full_mmtf_files(pdbIds):
+def download_full_mmtf_files(pdbIds, first_model=False):
     '''Download and reads the specified PDB entries in full mmtf format using `MMTF web services
     <http://mmtf.rcsb.org/download.html>`_
 
@@ -180,11 +180,11 @@ def download_full_mmtf_files(pdbIds):
     sc = spark.sparkContext
 
     return sc.parallelize(set(pdbIds)) \
-             .map(lambda t: _get_structure(t, False)) \
+             .map(lambda t: _get_structure(t, False, first_model)) \
              .filter(lambda t: t is not None)
 
 
-def download_reduced_mmtf_files(pdbIds):
+def download_reduced_mmtf_files(pdbIds, first_model=False):
     '''Download and reads the specified PDB entries in reduced mmtf format using `MMTF web services
     <http://mmtf.rcsb.org/download.html>`_
 
@@ -202,11 +202,11 @@ def download_reduced_mmtf_files(pdbIds):
     sc = spark.sparkContext
     
     return sc.parallelize(set(pdbIds)) \
-             .map(lambda t: _get_structure(t, True)) \
+             .map(lambda t: _get_structure(t, True, first_model)) \
              .filter(lambda t: t is not None)
 
 
-def _get_structure(pdbId, reduced):
+def _get_structure(pdbId, reduced, first_model):
     '''Download and decode a list of structure from a list of PDBid
 
     Parameters
@@ -231,13 +231,13 @@ def _get_structure(pdbId, reduced):
         else:
             data = response.read()
         unpack = pd.read_msgpack(data)
-        decoder = MmtfStructure(unpack)
+        decoder = MmtfStructure(unpack, first_model)
         return (pdbId, decoder)
     except urllib.error.HTTPError:
         print(f"ERROR: {pdbId} is not a valid pdbId")
 
 
-def _call_sequence_file(t):
+def _call_sequence_file(t, first_model):
     '''Call function for hadoop sequence files'''
     # TODO: check if all sequence files are gzipped
     # data = default_api.ungzip_data(t[1])
@@ -246,7 +246,7 @@ def _call_sequence_file(t):
     # return (str(t[0]), decoder)
     data = gzip.decompress(t[1])
     unpack = pd.read_msgpack(data)
-    decoder = MmtfStructure(unpack)
+    decoder = MmtfStructure(unpack, first_model)
     return (t[0], decoder)
 
 
@@ -288,6 +288,7 @@ def _get_files(user_path):
     for dirpath, dirnames, filenames in walk(user_path):
         for f in filenames:
             if path.isdir(f):
+                # TODO fix this
                 files += getFiles(f)
             else:
                 files.append(dirpath + '/' + f)
