@@ -564,7 +564,8 @@ class MmtfStructure(object):
                 #if type(chainIndexList) is not list:
                 #    chainIndexList = list(chainIndexList)
                 for index in entity['chainIndexList']:
-                    self.entityChainIndex[index] = i
+                    if index < self.num_chains:
+                        self.entityChainIndex[index] = i
 
     def get_chain(self, chain_name):
         """Return specified polymer chain"""
