@@ -535,16 +535,13 @@ class MmtfStructure(object):
             self.modelToGroupIndices[self.num_models] = groupCount
             self.modelToChainIndices[self.num_models] = chainCount
 
-            if self.numAtoms < self.structure.num_atoms:
+            if self.truncated:
                 self.groupToAtomIndices = self.groupToAtomIndices[:groupCount + 1]
                 self.chainToAtomIndices = self.chainToAtomIndices[:chainCount + 1]
                 self.chainToGroupIndices = self.chainToGroupIndices[:chainCount + 1]
-
-
-            # TODO
-            self.num_atoms = atomCount
-            self.num_groups = groupCount
-            self.num_chains = chainCount
+                self.num_atoms = atomCount
+                self.num_groups = groupCount
+                self.num_chains = chainCount
 
     def chain_to_entity_index(self):
         '''Returns an array that maps a chain index to an entity index
