@@ -568,7 +568,7 @@ class MmtfStructure(object):
                 #    chainIndexList = list(chainIndexList)
                 # TODO need to update entity_list when self.truncate
                 for index in entity['chainIndexList']:
-                    if index < self.num_groups:
+                    if index < self.num_chains:
                         self.entityChainIndex[index] = i
 
     def get_chain(self, chain_name):
