@@ -555,6 +555,7 @@ class MmtfStructure(object):
 
         if self.entityChainIndex is None:
             self.entityChainIndex = np.empty(self.num_chains, dtype=np.int32)
+            print("chain_to_entity_index: num_chains", self.num_chains)
 
             for i, entity in enumerate(self.entity_list):
 
@@ -564,8 +565,6 @@ class MmtfStructure(object):
                 #if type(chainIndexList) is not list:
                 #    chainIndexList = list(chainIndexList)
                 for index in entity['chainIndexList']:
-#                    if index < self.num_chains:
-                    print("entity", i , entity)
                     self.entityChainIndex[index] = i
 
     def get_chain(self, chain_name):
