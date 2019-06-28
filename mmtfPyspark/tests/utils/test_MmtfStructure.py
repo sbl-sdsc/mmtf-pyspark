@@ -27,6 +27,7 @@ class TestMmtfStructure(unittest.TestCase):
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
+        print(structure.entities_to_pandas())
         self.assertEqual('1.0.0', structure.mmtf_version)
         self.assertEqual('UNKNOWN', structure.mmtf_producer)
         self.assertEqual(np.testing.assert_allclose([63.150, 83.590, 53.800, 90.00, 99.34, 90.00],

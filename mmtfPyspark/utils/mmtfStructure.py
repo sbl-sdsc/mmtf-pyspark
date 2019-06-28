@@ -80,6 +80,7 @@ class MmtfStructure(object):
         self.modelToAtomIndices = None
         self.modelToGroupIndices = None
         self.modelToChainIndices = None
+        self._chain_entity_index = None
         self.chainIdToEntityIndices = None
         # precalculate indices
         # TODO
@@ -476,15 +477,18 @@ class MmtfStructure(object):
 
         return self.df
 
-    def entity_to_pandas(self):
-        for id, entity in enumerate(self.entity_list):
-            entity['id'] = id + 1
+    def entities_to_pandas(self):
+        data = []
+        for entity_id, entity in enumerate(self.entity_list):
+            chain_ids = []
+            for chain_index in entity['chainIdList']:
+                if chain_index < self.num_chains:
+                    chain_ids.append(self.chain_id_list[chain_index])
 
-        df = pd.DataFrame.from_dict(self.entity_list[0])
-        for i in range(1,len(self.entity_list)):
-            df = df.append(pd.DataFrame.from_dict(self.entity_list[i]))
+            if len(chain_ids) > 0:
+                data.append([entity_id, entity['description'], entity['type'], chain_ids, entity['sequence']])
 
-        return df
+        return pd.DataFrame(data, columns=['description', 'type', 'chain_ids', 'sequence'])
 
     def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None or self._elements:
@@ -514,7 +518,6 @@ class MmtfStructure(object):
             self.modelToAtomIndices = np.empty(self.num_models + 1, dtype=np.int32)
             self.modelToGroupIndices = np.empty(self.num_models + 1, dtype=np.int32)
             self.modelToChainIndices = np.empty(self.num_models + 1, dtype=np.int32)
-            self.chainIdToEntityIndices = {}
 
             chainCount, groupCount, atomCount = 0, 0, 0
 
@@ -528,7 +531,6 @@ class MmtfStructure(object):
                 for i in range(self.chains_per_model[m]):
                     self.chainToAtomIndices[chainCount] = atomCount
                     self.chainToGroupIndices[chainCount] = groupCount
-                    self.chainIdToEntityIndices[self.chain_id_list[chainCount]] = self.entityChainIndex[chainCount]
 
                     # Loop over all groups in chain
                     for _ in range(self.groups_per_chain[chainCount]):
@@ -554,8 +556,6 @@ class MmtfStructure(object):
                 self.num_groups = groupCount
                 self.num_chains = chainCount
 
-            print("na, ng, nc, nm:", self.num_atoms, self.num_groups, self.num_chains, self.num_models)
-
     def chain_to_entity_index(self):
         '''Returns an array that maps a chain index to an entity index
 
@@ -579,7 +579,7 @@ class MmtfStructure(object):
                 # TODO need to update entity_list when self.truncate
                 for index in entity['chainIndexList']:
                     if index < self.num_chains:
-                        self.entityChainIndex[index] = i
+                        self._chain_entity_index[index] = i
 
     def get_chain(self, chain_name):
         """Return specified polymer chain"""
