@@ -16,7 +16,7 @@ from mmtfPyspark.utils import MmtfChain
 
 class MmtfModel(object):
 
-    def __init__(self, structure, model_number):
+    def __init__(self, structure, model_numbe):
         """Extracts the specified model from a structure"""
         self.structure = structure
         self.model_number = model_number

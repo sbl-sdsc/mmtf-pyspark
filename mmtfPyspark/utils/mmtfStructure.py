@@ -17,7 +17,7 @@ from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec
 
 class MmtfStructure(object):
 
-    def __init__(self, input_data):
+    def __init__(self, input_data, first_model=False):
         """Decodes a msgpack unpacked data to mmtf structure"""
         self.input_data = input_data
 
@@ -40,7 +40,7 @@ class MmtfStructure(object):
         self.num_atoms = mmtfDecoder.get_value(input_data, 'numAtoms', required=True)
         self.num_groups = mmtfDecoder.get_value(input_data, 'numGroups', required=True)
         self.num_chains = mmtfDecoder.get_value(input_data, 'numChains', required=True)
-        self.num_models = mmtfDecoder.get_value(input_data, 'numModels', required=True)
+        self._num_models = mmtfDecoder.get_value(input_data, 'numModels', required=True)
         self.group_list = mmtfDecoder.get_value(input_data, 'groupList', required=True)
         self._bond_atom_list = None
         self._bond_order_list = None
@@ -80,11 +80,20 @@ class MmtfStructure(object):
         self.modelToAtomIndices = None
         self.modelToGroupIndices = None
         self.modelToChainIndices = None
+        self.chainIdToEntityIndices = None
         # precalculate indices
+        # TODO
+        self.truncated = False
+        if first_model and self._num_models != 1:
+            self.num_models = 1
+            self.truncated = True
+        else:
+            self.num_models = self._num_models
+
         self.decoder = Codec()
         self.calc_indices()
-        self.entityChainIndex = None
         self.chain_to_entity_index()
+        self.entityChainIndex = None
         # dataframes
         self.df = None
 
@@ -95,6 +104,8 @@ class MmtfStructure(object):
             return self._bond_atom_list
         elif 'bondAtomList' in self.input_data:
             self._bond_atom_list = self.decoder.decode_array(self.input_data['bondAtomList'])
+            # TODO
+            # if self.truncated: # truncate bond list ...
             return self._bond_atom_list
         else:
             return None
@@ -105,6 +116,8 @@ class MmtfStructure(object):
             return self._bond_order_list
         elif 'bondOrderList' in self.input_data:
             self._bond_order_list = self.decoder.decode_array(self.input_data['bondOrderList'])
+            # TODO
+            # if self.truncated: # truncate bond list ...
             return self._bond_order_list
         else:
             return None
@@ -115,7 +128,10 @@ class MmtfStructure(object):
             return self._x_coord_list
         elif 'xCoordList' in self.input_data:
             self._x_coord_list = self.decoder.decode_array(self.input_data['xCoordList'])
-            return self._x_coord_list
+            if self.truncated:
+                return self._x_coord_list[:self.num_atoms]
+            else:
+                return self._x_coord_list
         else:
             return None
 
@@ -125,7 +141,10 @@ class MmtfStructure(object):
             return self._y_coord_list
         elif 'yCoordList' in self.input_data:
             self._y_coord_list = self.decoder.decode_array(self.input_data['yCoordList'])
-            return self._y_coord_list
+            if self.truncated:
+                return self._y_coord_list[:self.num_atoms]
+            else:
+                return self._y_coord_list
         else:
             return None
 
@@ -135,7 +154,10 @@ class MmtfStructure(object):
             return self._z_coord_list
         elif 'zCoordList' in self.input_data:
             self._z_coord_list = self.decoder.decode_array(self.input_data['zCoordList'])
-            return self._z_coord_list
+            if self.truncated:
+                return self._z_coord_list[:self.num_atoms]
+            else:
+                return self._z_coord_list
         else:
             return None
 
@@ -145,7 +167,10 @@ class MmtfStructure(object):
             return self._b_factor_list
         elif 'bFactorList' in self.input_data:
             self._b_factor_list = self.decoder.decode_array(self.input_data['bFactorList'])
-            return self._b_factor_list
+            if self.truncated:
+                return self._b_factor_list[:self.num_atoms]
+            else:
+                return self._b_factor_list
         else:
             return None
 
@@ -155,7 +180,10 @@ class MmtfStructure(object):
             return self._occupancy_list
         elif 'occupancyList' in self.input_data:
             self._occupancy_list = self.decoder.decode_array(self.input_data['occupancyList'])
-            return self._occupancy_list
+            if self.truncated:
+                return self._occupancy_list[:self.num_atoms]
+            else:
+                return self._occupancy_list
         else:
             return None
 
@@ -165,7 +193,10 @@ class MmtfStructure(object):
             return self._atom_id_list
         elif 'atomIdList' in self.input_data:
             self._atom_id_list = self.decoder.decode_array(self.input_data['atomIdList'])
-            return self._atom_id_list
+            if self.truncated:
+                return self._atom_id_list[:self.num_atoms]
+            else:
+                return self._atom_id_list
         else:
             return None
 
@@ -175,7 +206,10 @@ class MmtfStructure(object):
             return self._alt_loc_list
         elif 'altLocList' in self.input_data:
             self._alt_loc_list = self.decoder.decode_array(self.input_data['altLocList'])
-            return self._alt_loc_list
+            if self.truncated:
+                return self._alt_loc_list[:self.num_atoms]
+            else:
+                return self._alt_loc_list
         else:
             return None
 
@@ -185,7 +219,10 @@ class MmtfStructure(object):
             return self._group_id_list
         elif 'groupIdList' in self.input_data:
             self._group_id_list = self.decoder.decode_array(self.input_data['groupIdList'])
-            return self._group_id_list
+            if self.truncated:
+                return self._group_id_list[:self.num_groups]
+            else:
+                return self._group_id_list
         else:
             return None
 
@@ -195,7 +232,10 @@ class MmtfStructure(object):
             return self._group_type_list
         elif 'groupTypeList' in self.input_data:
             self._group_type_list = self.decoder.decode_array(self.input_data['groupTypeList'])
-            return self._group_type_list
+            if self.truncated:
+                return self._group_type_list[:self.num_groups]
+            else:
+                return self._group_type_list
         else:
             return None
 
@@ -205,7 +245,10 @@ class MmtfStructure(object):
             return self._sec_struct_list
         elif 'secStructList' in self.input_data:
             self._sec_struct_list = self.decoder.decode_array(self.input_data['secStructList'])
-            return self._sec_struct_list
+            if self.truncated:
+                return self._sec_struct_list[:self.num_groups]
+            else:
+                return self._sec_struct_list
         else:
             return None
 
@@ -215,7 +258,10 @@ class MmtfStructure(object):
             return self._ins_code_list
         elif 'insCodeList' in self.input_data:
             self._ins_code_list = self.decoder.decode_array(self.input_data['insCodeList'])
-            return self._ins_code_list
+            if self.truncated:
+                return self._ins_code_list[:self.num_groups]
+            else:
+                return self._ins_code_list
         else:
             return None
 
@@ -225,7 +271,10 @@ class MmtfStructure(object):
             return self._sequence_index_list
         elif 'sequenceIndexList' in self.input_data:
             self._sequence_index_list = self.decoder.decode_array(self.input_data['sequenceIndexList'])
-            return self._sequence_index_list
+            if self.truncated:
+                return self._sequence_index_list[:self.num_groups]
+            else:
+                return self._sequence_index_list
         else:
             return None
 
@@ -235,7 +284,10 @@ class MmtfStructure(object):
             return self._chain_id_list
         elif 'chainIdList' in self.input_data:
             self._chain_id_list = self.decoder.decode_array(self.input_data['chainIdList'])
-            return self._chain_id_list
+            if self.truncated:
+                return self._chain_id_list[:self.num_chains]
+            else:
+                return self._chain_id_list
         else:
             return None
 
@@ -245,7 +297,10 @@ class MmtfStructure(object):
             return self._chain_name_list
         elif 'chainNameList' in self.input_data:
             self._chain_name_list = self.decoder.decode_array(self.input_data['chainNameList'])
-            return self._chain_name_list
+            if self.truncated:
+                return self._chain_name_list[:self.num_chains]
+            else:
+                return self._chain_name_list
         else:
             return None
 
@@ -389,13 +444,6 @@ class MmtfStructure(object):
         return self._sequence_positions
 
     def to_pandas(self, add_cols=None, multi_index=False):
-        # TODO option to add columns, see: https://stackoverflow.com/questions/47094437/adding-np-arrays-to-existing-pandas-dataframe
-        # x = np.zeros(38)
-        # for i in range(0, 10):
-        #     col_name = "char_" + str(i)
-        #
-        #     df[col_name] = pd.Series([x], index=df.index)
-
         if self.df is None:
             self.calc_core_group_data()
             self.df = pd.DataFrame({'chain_name': self.chain_names,
@@ -410,13 +458,17 @@ class MmtfStructure(object):
                                     'o': self.occupancy_list,
                                     'b': self.b_factor_list,
                                     'element': self.elements,
-                                    'entity_type:': self.entity_types
+                                    'polymer:': self.polymer
                                     })
             if add_cols is not None:
                 if 'sequence_position' in add_cols:
                     self.df['sequence_position'] = pd.Series(self.sequence_positions, index=self.df.index)
                 if 'chem_comp_type' in add_cols:
                     self.df['chem_comp_type'] = pd.Series(self.chem_comp_types, index=self.df.index)
+                if 'entity_index' in add_cols:
+                    self.df['entity_index'] = pd.Series(self.entity_indices, index=self.df.index)
+                if 'entity_type' in add_cols:
+                    self.df['entity_type'] = pd.Series(self.entity_types, index=self.df.index)
 
             if multi_index:
                 self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
@@ -444,12 +496,14 @@ class MmtfStructure(object):
     def calc_indices(self):
 
         if self.groupToAtomIndices is None:
+
             self.groupToAtomIndices = np.empty(self.num_groups + 1, dtype=np.int32)
             self.chainToAtomIndices = np.empty(self.num_chains + 1, dtype=np.int32)
             self.chainToGroupIndices = np.empty(self.num_chains + 1, dtype=np.int32)
             self.modelToAtomIndices = np.empty(self.num_models + 1, dtype=np.int32)
             self.modelToGroupIndices = np.empty(self.num_models + 1, dtype=np.int32)
             self.modelToChainIndices = np.empty(self.num_models + 1, dtype=np.int32)
+            self.chainIdToEntityIndices = {}
 
             chainCount, groupCount, atomCount = 0, 0, 0
 
@@ -463,6 +517,7 @@ class MmtfStructure(object):
                 for i in range(self.chains_per_model[m]):
                     self.chainToAtomIndices[chainCount] = atomCount
                     self.chainToGroupIndices[chainCount] = groupCount
+                    # self.chainIdToEntityIndices[self.chain_id_list[chainCount]] = self.entityChainIndex[chainCount]
 
                     # Loop over all groups in chain
                     for _ in range(self.groups_per_chain[chainCount]):
@@ -479,6 +534,17 @@ class MmtfStructure(object):
             self.modelToAtomIndices[self.num_models] = atomCount
             self.modelToGroupIndices[self.num_models] = groupCount
             self.modelToChainIndices[self.num_models] = chainCount
+
+            if self.numAtoms < self.structure.num_atoms:
+                self.groupToAtomIndices = self.groupToAtomIndices[:groupCount + 1]
+                self.chainToAtomIndices = self.chainToAtomIndices[:chainCount + 1]
+                self.chainToGroupIndices = self.chainToGroupIndices[:chainCount + 1]
+
+
+            # TODO
+            self.num_atoms = atomCount
+            self.num_groups = groupCount
+            self.num_chains = chainCount
 
     def chain_to_entity_index(self):
         '''Returns an array that maps a chain index to an entity index

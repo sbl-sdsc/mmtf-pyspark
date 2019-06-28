@@ -48,7 +48,8 @@ class MmtfSubstructure(object):
             self.mask = self.mask & np.in1d(structure.chain_names, list(chain_names))\
                 .reshape(structure.chain_names.shape)
         if chain_ids is not None:
-            self.mask = self.mask & np.in1d(structure.chain_ids, list(chain_ids)).reshape(structure.chain_ids.shape)
+            self.mask = self.mask & np.in1d(structure.chain_ids, list(chain_ids))\
+                .reshape(structure.chain_ids.shape)
         if group_names is not None:
             self.mask = self.mask & np.in1d(structure.group_names, list(group_names))\
                 .reshape(structure.group_names.shape)
@@ -62,8 +63,9 @@ class MmtfSubstructure(object):
         # update counts
         self.num_atoms = np.count_nonzero(self.mask)
         self.modified = structure.num_atoms != self.num_atoms
-        # TODO number of groups calc.: need to consider chain name and insertion code
+        # TODO number of groups calc.: need to consider chain name and insertion code, models
         self.num_groups = np.unique(self.group_numbers).size
+        # TODO consider multiple models
         self.num_chains = np.unique(self.chain_ids).size
         self.num_models = structure.num_models
 
@@ -191,7 +193,7 @@ class MmtfSubstructure(object):
         """Return sequence_positions"""
         return self.structure.sequence_positions[self.mask]
 
-    def to_pandas(self, multi_index=False):
+    def to_pandas(self, add_cols=None, multi_index=False):
         if self.df is None:
             self.df = pd.DataFrame({'chain_name': self.chain_names,
                                     'chain_id': self.chain_ids,
@@ -206,23 +208,37 @@ class MmtfSubstructure(object):
                                     'b': self.b_factor_list,
                                     'element': self.elements,
                                     'polymer': self.polymer,
-                                    'type': self.entity_types
-                                    #                                   'seq_index': self.get_sequence_positions()
                                     })
+
+            if add_cols is not None:
+                if 'sequence_position' in add_cols:
+                    self.df['sequence_position'] = pd.Series(self.sequence_positions, index=self.df.index)
+                if 'chem_comp_type' in add_cols:
+                    self.df['chem_comp_type'] = pd.Series(self.chem_comp_types, index=self.df.index)
+                if 'entity_index' in add_cols:
+                    self.df['entity_index'] = pd.Series(self.entity_indices, index=self.df.index)
+                if 'entity_type' in add_cols:
+                    self.df['entity_type'] = pd.Series(self.entity_types, index=self.df.index)
+
             if multi_index:
                 self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
 
         return self.df
 
-    def _update_entity_list(self):
-        new_indices = set(np.unique(self.entity_indices))
-
-        entity_list_new = []
-        for entity in self.entity_list:
-            old_indices = set(entity['chainIndexList'])
-            updated_indices = old_indices.intersection(new_indices)
-            if len(updated_indices) >= 0:
-                entity_list_new.append(self.make_entity_dict(entity['chainIndexList'], entity['sequence'], entity['description'], entity['type']))
+    # def _update_entity_list(self):
+    #     # updated_chain_ids = np.unique(self.chain_ids)
+    #     # for id in updated_chain_ids:
+    #     #     entity = self.structure.chainIdToEntityIndices[id]
+    #     # chainIdToEntityIndices
+    #
+    #     new_indices = set(np.unique(self.entity_indices))
+    #
+    #     entity_list_new = []
+    #     for entity in self.entity_list:
+    #         old_indices = set(entity['chainIndexList'])
+    #         updated_indices = old_indices.intersection(new_indices)
+    #         if len(updated_indices) >= 0:
+    #             entity_list_new.append(self.make_entity_dict(entity['chainIndexList'], entity['sequence'], entity['description'], entity['type']))
 
     def make_entity_dict(self, chain_indices, sequence, description, entity_type):
         out_d = {}
