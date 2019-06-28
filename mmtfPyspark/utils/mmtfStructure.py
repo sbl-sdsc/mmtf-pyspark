@@ -544,6 +544,8 @@ class MmtfStructure(object):
                 self.num_groups = groupCount
                 self.num_chains = chainCount
 
+            print("na, ng, nc, nm:", self.num_atoms, self.num_groups, self.num_chains, self.num_models)
+
     def chain_to_entity_index(self):
         '''Returns an array that maps a chain index to an entity index
 
