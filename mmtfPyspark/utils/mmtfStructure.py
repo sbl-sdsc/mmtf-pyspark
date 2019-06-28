@@ -92,8 +92,9 @@ class MmtfStructure(object):
 
         self.decoder = Codec()
         self.calc_indices()
-        self.chain_to_entity_index()
         self.entityChainIndex = None
+        self.chain_to_entity_index()
+
         # dataframes
         self.df = None
 
