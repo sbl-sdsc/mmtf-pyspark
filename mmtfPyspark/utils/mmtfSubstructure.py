@@ -63,10 +63,8 @@ class MmtfSubstructure(object):
         # update counts
         self.num_atoms = np.count_nonzero(self.mask)
         self.modified = structure.num_atoms != self.num_atoms
-        # TODO number of groups calc.: need to consider chain name and insertion code, models
-        self.num_groups = np.unique(self.group_numbers).size
-        # TODO consider multiple models
-        self.num_chains = np.unique(self.chain_ids).size
+        self.num_groups = np.unique(self.group_serial).size
+        self.num_chains = np.unique(self.chain_serial).size
         self.num_models = structure.num_models
 
         self.mmtf_version = structure.mmtf_version
@@ -191,6 +189,16 @@ class MmtfSubstructure(object):
         """Return sequence_positions"""
         return self.structure.sequence_positions[self.mask]
 
+    @property
+    def group_serial(self):
+        """Return group serial number"""
+        return self.structure.group_serial[self.mask]
+
+    @property
+    def chain_serial(self):
+        """Return chain serial number"""
+        return self.structure.chain_serial[self.mask]
+
     def to_pandas(self, add_cols=None, multi_index=False):
         if self.df is None:
             self.df = pd.DataFrame({'chain_name': self.chain_names,
@@ -227,7 +235,7 @@ class MmtfSubstructure(object):
         indices = np.unique(self.entity_indices)
         entities = self.structure.entities_to_pandas()
         return entities[entities['entity_id'] in indices]
-        
+
     # def _update_entity_list(self):
     #     # updated_chain_ids = np.unique(self.chain_ids)
     #     # for id in updated_chain_ids:

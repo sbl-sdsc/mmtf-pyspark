@@ -188,6 +188,11 @@ class MmtfChain(object):
 
         return self.df
 
+    def entities_to_pandas(self):
+        indices = np.unique(self.entity_indices)
+        entities = self.structure.entities_to_pandas()
+        return entities[entities['entity_id'] in indices]
+
 
 
 
