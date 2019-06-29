@@ -481,7 +481,7 @@ class MmtfStructure(object):
         data = []
         for entity_id, entity in enumerate(self.entity_list):
             chain_ids = []
-            for chain_index in entity['chainIdList']:
+            for chain_index in entity['chainIndexList']:
                 # when only the first model is used, not all chains are present
                 if chain_index < self.num_chains:
                     chain_ids.append(self.chain_id_list[chain_index])
