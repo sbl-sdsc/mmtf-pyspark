@@ -17,7 +17,7 @@ from mmtfPyspark.utils import MmtfSubstructure
 class TestMmtfStructure(unittest.TestCase):
 
     def setUp(self):
-        self.spark = SparkSession.builder.master("local[*]") \
+        self.spark = SparkSession.builder.master("local[1]") \
                                  .appName("TestMmtfStructure") \
                                  .getOrCreate()
 
@@ -27,7 +27,8 @@ class TestMmtfStructure(unittest.TestCase):
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
-        print(structure.entities_to_pandas())
+
+        # Check metadata
         self.assertEqual('1.0.0', structure.mmtf_version)
         self.assertEqual('UNKNOWN', structure.mmtf_producer)
         self.assertEqual(np.testing.assert_allclose([63.150, 83.590, 53.800, 90.00, 99.34, 90.00],
@@ -37,6 +38,17 @@ class TestMmtfStructure(unittest.TestCase):
         self.assertEqual(801, structure.num_groups)
         self.assertEqual(14, structure.num_chains)
         self.assertEqual(1, structure.num_models)
+
+        # Check entity info
+        ids = structure.entities_to_pandas()['chain_ids'].tolist()
+        self.assertEqual(5, len(ids))
+        self.assertListEqual(['A', 'C'], ids[0])  # Hemoglobin alpha
+        self.assertListEqual(['B', 'D'], ids[1])  # Hemoglobin beta
+        self.assertListEqual(['E', 'G', 'H', 'J'], ids[2])  # Heme
+        self.assertListEqual(['F', 'I'], ids[3])  # PO4
+        self.assertListEqual(['K', 'L', 'M', 'N'], ids[4])  # HOH
+
+        # Check atom info
         self.assertEqual(np.testing.assert_allclose([6.204, 6.913, 8.504],
                                                     structure.x_coord_list[0:3], atol=0.001), None)
         self.assertEqual(np.testing.assert_allclose([16.869, 17.759, 17.378],
@@ -108,6 +120,16 @@ class TestMmtfStructure(unittest.TestCase):
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '1J6T')
         structure = pdb.values().first()
+
+        # Check entity info
+        #self.assertEqual(3, len(structure.entity_list))
+        self.assertEqual(2, len(structure.entity_list))  # MMTF file only contains entities for first model
+        ids = structure.entities_to_pandas()['chain_ids'].tolist()
+        self.assertEqual(2, len(ids))
+        self.assertListEqual(['A'], ids[0])
+        self.assertListEqual(['B'], ids[1])
+        # self.assertListEqual(['C'], ids[2])  # PO3 missing in MMTF, present in model 2 and 3
+
         self.assertEqual(3555+3559+3559, structure.num_atoms)
         self.assertEqual(144+85+144+1+85+144+85+1, structure.num_groups)
         self.assertEqual(2+3+3, structure.num_chains)
@@ -137,6 +159,14 @@ class TestMmtfStructure(unittest.TestCase):
         pdb = mmtfReader.read_mmtf_files(path, first_model=True)
         pdb = pdb.filter(lambda t: t[0] == '1J6T')
         structure = pdb.values().first()
+
+        # Check entity info
+        self.assertEqual(2, len(structure.entity_list))
+        ids = structure.entities_to_pandas()['chain_ids'].tolist()
+        self.assertEqual(2, len(ids))  # first model has only two entities (2nd, 3rd model have 3: +PO4)
+        self.assertListEqual(['A'], ids[0])
+        self.assertListEqual(['B'], ids[1])
+
         self.assertEqual(3555, structure.num_atoms)
         self.assertEqual(144+85, structure.num_groups)
         self.assertEqual(2, structure.num_chains)

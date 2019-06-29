@@ -80,7 +80,7 @@ class MmtfSubstructure(object):
         self.ncs_operator_list = structure.ncs_operator_list
         # TODO bio assemblies, bonds, entity lists
         self.bio_assembly = None
-        self.entity_list = structure.entity_list
+        self.entity_list = None
 
         self.experimental_methods = structure.experimental_methods
         self.resolution = structure.resolution
@@ -88,8 +88,6 @@ class MmtfSubstructure(object):
         self.r_work = structure.r_work
         # dataframes
         self.df = None
-
-        self._update_entity_list()
 
     @property
     def atom_id_list(self):
@@ -225,6 +223,11 @@ class MmtfSubstructure(object):
 
         return self.df
 
+    def entities_to_pandas(self):
+        indices = np.unique(self.entity_indices)
+        entities = self.structure.entities_to_pandas()
+        return entities[entities['entity_id'] in indices]
+        
     # def _update_entity_list(self):
     #     # updated_chain_ids = np.unique(self.chain_ids)
     #     # for id in updated_chain_ids:

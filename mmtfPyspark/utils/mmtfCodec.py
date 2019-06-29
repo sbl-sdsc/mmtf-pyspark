@@ -72,7 +72,7 @@ def ri_encode(int_array, max=32767, min=-32768):
     return out_arr[:i]
 
 
-# In[4]:
+# # In[4]:
 
 
 @njit
@@ -158,7 +158,15 @@ def run_length_div_encode(x, divisor):
 
     return y[:count + 1]
 
-
+# TODO use np.unique for run-length encoding?
+# >>> a = np.array([1, 2, 6, 4, 2, 3, 2])
+# >>> u, indices = np.unique(a, return_inverse=True)
+# >>> u
+# array([1, 2, 3, 4, 6])
+# >>> indices
+# array([0, 1, 4, 3, 1, 2, 1])
+# >>> u[indices]
+# array([1, 2, 6, 4, 2, 3, 2])
 # In[8]:
 
 
