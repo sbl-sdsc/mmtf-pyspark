@@ -480,13 +480,14 @@ class MmtfStructure(object):
     def entities_to_pandas(self):
         data = []
         for entity_id, entity in enumerate(self.entity_list):
-            chain_ids = []
+            chain_ids = set()
             for chain_index in entity['chainIndexList']:
                 # when only the first model is used, not all chains are present
                 if chain_index < self.num_chains:
-                    chain_ids.append(self.chain_id_list[chain_index])
+                    chain_ids.add(self.chain_id_list[chain_index])
 
             if len(chain_ids) > 0:
+                chain_ids = sorted(chain_ids)
                 data.append([entity_id, entity['description'], entity['type'], chain_ids, entity['sequence']])
 
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
