@@ -489,7 +489,7 @@ class MmtfStructure(object):
             if len(chain_ids) > 0:
                 data.append([entity_id, entity['description'], entity['type'], chain_ids, entity['sequence']])
 
-        return pd.DataFrame(data, columns=['description', 'type', 'chain_ids', 'sequence'])
+        return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
 
     def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None or self._elements:
