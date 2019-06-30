@@ -80,8 +80,8 @@ class MmtfStructure(object):
         self.modelToAtomIndices = None
         self.modelToGroupIndices = None
         self.modelToChainIndices = None
-        self.group_serial = None
-        self.chain_serial = None
+        self._group_serial = None
+        self._chain_serial = None
         self._chain_entity_index = None
         self.chainIdToEntityIndices = None
         # precalculate indices
@@ -398,6 +398,18 @@ class MmtfStructure(object):
         return self._chem_comp_types
 
     @property
+    def group_serial(self):
+        if self._group_serial is None:
+            self._group_serial = np.empty(self.num_atoms, dtype=np.object_)
+
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                self._group_serial[start:end] = i
+
+        return self._group_serial
+
+    @property
     def polymer(self):
         if self._polymer is None:
             self._polymer = np.empty(self.num_atoms, dtype=np.bool)
@@ -434,6 +446,18 @@ class MmtfStructure(object):
                 self._entity_indices[start:end] = self.entityChainIndex[i]
 
         return self._entity_indices
+
+    @property
+    def chain_serial(self):
+        if self._chain_serial is None:
+            self._chain_serial = np.empty(self.num_atoms, dtype=np.int32)
+
+            for i in range(self.num_chains):
+                start = self.chainToAtomIndices[i]
+                end = self.chainToAtomIndices[i + 1]
+                self._chain_serial[start:end] = i
+
+        return self._chain_serial
 
     @property
     def sequence_positions(self):
@@ -516,8 +540,6 @@ class MmtfStructure(object):
 
         if self.groupToAtomIndices is None:
 
-            self.group_serial = np.empty(self.num_atoms, dtype=np.int32)
-            self.chain_serial = np.empty(self.num_atoms, dtype=np.int32)
             self.groupToAtomIndices = np.empty(self.num_groups + 1, dtype=np.int32)
             self.chainToAtomIndices = np.empty(self.num_chains + 1, dtype=np.int32)
             self.chainToGroupIndices = np.empty(self.num_chains + 1, dtype=np.int32)
@@ -541,8 +563,6 @@ class MmtfStructure(object):
                     # Loop over all groups in chain
                     for _ in range(self.groups_per_chain[chainCount]):
                         self.groupToAtomIndices[groupCount] = atomCount
-                        self.group_serial[atomCount] = groupCount
-                        self.chain_serial[atomCount] = chainCount
                         group_type = self.group_type_list[groupCount]
                         atomCount += len(self.group_list[group_type]['elementList'])
                         groupCount += 1
