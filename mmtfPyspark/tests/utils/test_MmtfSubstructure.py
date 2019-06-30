@@ -133,8 +133,7 @@ class TestMmtfSubstructure(unittest.TestCase):
 
         chain = MmtfSubstructure(structure, 'B', chain_names=['B'], entity_types=['polymer'])
         self.assertEqual(1123, chain.num_atoms)
-        # TODO
-        # self.assertEqual(146, chain.num_groups)
+        self.assertEqual(146, chain.num_groups)
         self.assertEqual(1, chain.num_chains)
         self.assertEqual(1, chain.num_models)
         self.assertEqual(np.testing.assert_allclose([9.223, 8.694, 9.668],
@@ -159,6 +158,24 @@ class TestMmtfSubstructure(unittest.TestCase):
         self.assertListEqual([True, True, True], chain.polymer[0:3].tolist())
         self.assertListEqual([1, 1, 1], chain.entity_indices[0:3].tolist())
         self.assertListEqual([0, 0, 0], chain.sequence_positions[0:3].tolist())
+
+    def test_4HHB_group_names(self):
+        print('test_4HHB_chain_ids')
+        path = '../../../resources/files/'
+        pdb = mmtfReader.read_mmtf_files(path)
+        pdb = pdb.filter(lambda t: t[0] == '4HHB')
+        structure = pdb.values().first()
+        chain = MmtfSubstructure(structure, 'HEM', chain_names=['A'], group_names=['HEM'])
+        self.assertEqual(43, chain.num_atoms)
+        self.assertEqual(1, chain.num_groups)
+        self.assertEqual(1, chain.num_chains)
+        self.assertEqual(1, chain.num_models)
+
+        chain = MmtfSubstructure(structure, 'HEM', group_names=['HEM'])
+        self.assertEqual(43*4, chain.num_atoms)
+        self.assertEqual(1*4, chain.num_groups)
+        self.assertEqual(1*4, chain.num_chains)
+        self.assertEqual(1, chain.num_models)
 
     # def test_4HHB_chains(self):
     #     print('test_4HHB_chains')

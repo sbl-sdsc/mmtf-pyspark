@@ -39,7 +39,7 @@ class MmtfSubstructure(object):
     """
 
     def __init__(self, structure, label, chain_names=None, chain_ids=None, group_names=None,
-                 chem_comp_types=None, entity_types=None):
+                 group_numbers=None, chem_comp_types=None, entity_types=None):
         self.structure = structure
 
         # Apply criteria to select atoms
@@ -53,6 +53,9 @@ class MmtfSubstructure(object):
         if group_names is not None:
             self.mask = self.mask & np.in1d(structure.group_names, list(group_names))\
                 .reshape(structure.group_names.shape)
+        if group_numbers is not None:
+            self.mask = self.mask & np.in1d(structure.group_numbers, list(group_numbers)) \
+                .reshape(structure.group_numbers.shape)
         if chem_comp_types is not None:
             self.mask = self.mask & np.in1d(structure.chem_comp_types, list(chem_comp_types))\
                 .reshape(structure.chem_comp_types.shape)
