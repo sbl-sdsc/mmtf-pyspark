@@ -177,6 +177,24 @@ class TestMmtfSubstructure(unittest.TestCase):
         self.assertEqual(1*4, chain.num_chains)
         self.assertEqual(1, chain.num_models)
 
+    def test_4HHB_group_numbers(self):
+        print('test_4HHB_chain_ids')
+        path = '../../../resources/files/'
+        pdb = mmtfReader.read_mmtf_files(path)
+        pdb = pdb.filter(lambda t: t[0] == '4HHB')
+        structure = pdb.values().first()
+        chain = MmtfSubstructure(structure, 'HEM', chain_names=['A'], group_numbers=['1', '10'])
+        self.assertEqual(43, chain.num_atoms)
+        self.assertEqual(1, chain.num_groups)
+        self.assertEqual(1, chain.num_chains)
+        self.assertEqual(1, chain.num_models)
+
+        chain = MmtfSubstructure(structure, 'HEM', group_names=['HEM'])
+        self.assertEqual(43*4, chain.num_atoms)
+        self.assertEqual(1*4, chain.num_groups)
+        self.assertEqual(1*4, chain.num_chains)
+        self.assertEqual(1, chain.num_models)
+
     # def test_4HHB_chains(self):
     #     print('test_4HHB_chains')
     #     path = '../../../resources/files/'

@@ -54,6 +54,7 @@ class MmtfSubstructure(object):
             self.mask = self.mask & np.in1d(structure.group_names, list(group_names))\
                 .reshape(structure.group_names.shape)
         if group_numbers is not None:
+            # TODO this should be a range, e.g. tuple ('1',10),(20,30)
             self.mask = self.mask & np.in1d(structure.group_numbers, list(group_numbers)) \
                 .reshape(structure.group_numbers.shape)
         if chem_comp_types is not None:
