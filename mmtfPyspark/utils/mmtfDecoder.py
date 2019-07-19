@@ -10,6 +10,7 @@ __status__ = "experimental"
 
 import numpy as np
 from numba import jit
+from mmtfPyspark.utils import mmtfCodec
 
 USE_NUMBA = True
 
@@ -44,6 +45,7 @@ def decode(input_data, field_name, required=False):
         # TODO call method by string?
         # method_to_call = getattr(, "_decode_type" + str(encoding))
         # return method_to_call()
+        # see: https://jaxenter.com/implement-switch-case-statement-python-138315.html
         if encoding == 2:
             return _decode_type_2(input_data, field_name)
         elif encoding == 4:
@@ -67,52 +69,59 @@ def decode(input_data, field_name, required=False):
 
 
 def _decode_type_2(input_data, field_name):
-    return np.frombuffer(input_data[field_name], '>i1', offset=12).byteswap().newbyteorder()
+    return mmtfCodec.decode_array(input_data[field_name])
+#    return np.frombuffer(input_data[field_name], '>i1', offset=12).byteswap().newbyteorder()
 
 
 def _decode_type_4(input_data, field_name):
-    return np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
+    return mmtfCodec.decode_array(input_data[field_name])
+#    return np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
 
 
 def _decode_type_5(input_data, field_name):
-        return np.frombuffer(input_data[field_name], 'S4', offset=12).astype(str)
+    return mmtfCodec.decode_array(input_data[field_name])
+#       return np.frombuffer(input_data[field_name], 'S4', offset=12).astype(str)
 
 
 def _decode_type_6(input_data, field_name):
-    length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
-    int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
-    return run_length_decoder_ascii(int_array, length)
+    return mmtfCodec.decode_array(input_data[field_name])
+    # length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
+    # int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
+    # return run_length_decoder_ascii(int_array, length)
 
 
 def _decode_type_8(input_data, field_name):
-    length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
-    int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
-    if USE_NUMBA:
-        return np.cumsum(run_length_decoder_jit(int_array, length)).astype(np.int32)
-    else:
-        return np.cumsum(run_length_decoder(int_array, length)).astype(np.int32)
+    return mmtfCodec.decode_array(input_data[field_name])
+    # length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
+    # int_array = np.frombuffer(input_data[field_name], '>i4', offset=12).byteswap().newbyteorder()
+    # if USE_NUMBA:
+    #     return np.cumsum(run_length_decoder_jit(int_array, length)).astype(np.int32)
+    # else:
+    #     return np.cumsum(run_length_decoder(int_array, length)).astype(np.int32)
 
 
 def _decode_type_9(input_data, field_name):
-    length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
-    buffer = input_data[field_name]
-    int_array = np.frombuffer(buffer, '>i4', offset=12).byteswap().newbyteorder()
-    divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()[0]
-    if USE_NUMBA:
-        return (run_length_decoder_jit(int_array, length) / divisor).astype(np.float32)
-    else:
-        return (run_length_decoder(int_array, length) / divisor).astype(np.float32)
+    return mmtfCodec.decode_array(input_data[field_name])
+    # length = np.frombuffer(input_data[field_name][4:8], '>i').byteswap().newbyteorder()[0]
+    # buffer = input_data[field_name]
+    # int_array = np.frombuffer(buffer, '>i4', offset=12).byteswap().newbyteorder()
+    # divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()[0]
+    # if USE_NUMBA:
+    #     return (run_length_decoder_jit(int_array, length) / divisor).astype(np.float32)
+    # else:
+    #     return (run_length_decoder(int_array, length) / divisor).astype(np.float32)
 
 
 def _decode_type_10(input_data, field_name):
-    buffer = input_data[field_name]
-    #int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
-    int_array = np.frombuffer(buffer, '>i2', offset=12).byteswap().newbyteorder()
-    divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
-    if USE_NUMBA:
-        return (recursive_index_decode_jit(int_array, divisor)).astype(np.float32)
-    else:
-        return (recursive_index_decode(int_array, divisor)).astype(np.float32)
+    return mmtfCodec.decode_array(input_data[field_name])
+    # buffer = input_data[field_name]
+    # #int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+    # int_array = np.frombuffer(buffer, '>i2', offset=12).byteswap().newbyteorder()
+    # divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+    # if USE_NUMBA:
+    #     return (recursive_index_decode_jit(int_array, divisor)).astype(np.float32)
+    # else:
+    #    return (recursive_index_decode(int_array, divisor)).astype(np.float32)
 
 
 def run_length_decoder(in_array, n):

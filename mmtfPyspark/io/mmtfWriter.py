@@ -10,7 +10,7 @@ __email__ = "marshuang80@gmail.com"
 __version__ = "0.2.0"
 __status__ = "Done"
 
-from mmtf.api.mmtf_writer import MMTFEncoder
+#from mmtf.api.mmtf_writer import MMTFEncoder
 from mmtfPyspark.utils import MmtfStructure
 from pyspark.sql import SparkSession
 import gzip
@@ -88,7 +88,8 @@ def _to_byte_array(structure, compressed):
        MMTF encoded and optionally gzipped structure data
     '''
 
-    byte_array = bytearray(msgpack.packb(MMTFEncoder.encode_data(structure), use_bin_type = True))
+    byte_array = bytearray(msgpack.packb(structure.input_data, use_bin_type=True))
+    #byte_array = bytearray(msgpack.packb(MMTFEncoder.encode_data(structure), use_bin_type = True))
 
     if compressed:
         return gzip.compress(byte_array)
