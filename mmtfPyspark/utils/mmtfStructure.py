@@ -474,58 +474,60 @@ class MmtfStructure(object):
     def to_pandas(self, add_cols=None, multi_index=False):
         if self.df is None:
             self.calc_core_group_data()
-            # self.df = pd.DataFrame({'chain_name': self.chain_names,
-            #                         'chain_id': self.chain_ids,
-            #                         'group_number': self.group_numbers,
-            #                         'group_name': self.group_names,
-            #                         'atom_name': self.atom_names,
-            #                         'altloc': self.alt_loc_list,
-            #                         'x': self.x_coord_list,
-            #                         'y': self.y_coord_list,
-            #                         'z': self.z_coord_list,
-            #                         'o': self.occupancy_list,
-            #                         'b': self.b_factor_list,
-            #                         'element': self.elements,
-            #                         'polymer:': self.polymer
-            #                         })
-            # if add_cols is not None:
-            #     if 'sequence_position' in add_cols:
-            #         self.df['sequence_position'] = pd.Series(self.sequence_positions, index=self.df.index)
-            #     if 'chem_comp_type' in add_cols:
-            #         self.df['chem_comp_type'] = pd.Series(self.chem_comp_types, index=self.df.index)
-            #     if 'entity_index' in add_cols:
-            #         self.df['entity_index'] = pd.Series(self.entity_indices, index=self.df.index)
-            #     if 'entity_type' in add_cols:
-            #         self.df['entity_type'] = pd.Series(self.entity_types, index=self.df.index)
-
-            cols = {'chain_name': self.chain_names,
-                    'chain_id': self.chain_ids,
-                    'group_number': self.group_numbers,
-                    'group_name': self.group_names,
-                    'atom_name': self.atom_names,
-                    'altloc': self.alt_loc_list,
-                    'x': self.x_coord_list,
-                    'y': self.y_coord_list,
-                    'z': self.z_coord_list,
-                    'o': self.occupancy_list,
-                    'b': self.b_factor_list,
-                    'element': self.elements,
-                    'polymer:': self.polymer}
-
+            self.df = pd.DataFrame({'chain_name': self.chain_names,
+                                    'chain_id': self.chain_ids,
+                                    'group_number': self.group_numbers,
+                                    'group_name': self.group_names,
+                                    'atom_name': self.atom_names,
+                                    'altloc': self.alt_loc_list,
+                                    'x': self.x_coord_list,
+                                    'y': self.y_coord_list,
+                                    'z': self.z_coord_list,
+                                    'o': self.occupancy_list,
+                                    'b': self.b_factor_list,
+                                    'element': self.elements,
+                                    'polymer:': self.polymer
+                                    })
             if add_cols is not None:
                 if 'sequence_position' in add_cols:
-                    cols.update({'sequence_position': self.sequence_positions})
+                    self.df['sequence_position'] = pd.Series(self.sequence_positions, index=self.df.index)
                 if 'chem_comp_type' in add_cols:
-                    cols.update({'chem_comp_type': self.chem_comp_types})
+                    self.df['chem_comp_type'] = pd.Series(self.chem_comp_types, index=self.df.index)
                 if 'entity_index' in add_cols:
-                    cols.update({'entity_index': self.entity_indices})
+                    self.df['entity_index'] = pd.Series(self.entity_indices, index=self.df.index)
                 if 'entity_type' in add_cols:
-                    cols.update({'entity_type': self.entity_types})
+                    self.df['entity_type'] = pd.Series(self.entity_types, index=self.df.index)
 
-            self.df = pd.DataFrame(cols)
+            # cols = {'chain_name': self.chain_names,
+            #         'chain_id': self.chain_ids,
+            #         'group_number': self.group_numbers,
+            #         'group_name': self.group_names,
+            #         'atom_name': self.atom_names,
+            #         'altloc': self.alt_loc_list,
+            #         'x': self.x_coord_list,
+            #         'y': self.y_coord_list,
+            #         'z': self.z_coord_list,
+            #         'o': self.occupancy_list,
+            #         'b': self.b_factor_list,
+            #         'element': self.elements,
+            #         'polymer:': self.polymer}
+            #
+            # if add_cols is not None:
+            #     if 'sequence_position' in add_cols:
+            #         cols.update({'sequence_position': self.sequence_positions})
+            #     if 'chem_comp_type' in add_cols:
+            #         cols.update({'chem_comp_type': self.chem_comp_types})
+            #     if 'entity_index' in add_cols:
+            #         cols.update({'entity_index': self.entity_indices})
+            #     if 'entity_type' in add_cols:
+            #         cols.update({'entity_type': self.entity_types})
+            #
+            # self.df = pd.DataFrame(cols)
+            # print(self.df)
 
             if multi_index:
-                self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'], inplace=True)
+                self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'],
+                                  inplace=True)
 
         return self.df
 
