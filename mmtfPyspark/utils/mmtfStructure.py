@@ -154,6 +154,7 @@ class MmtfStructure(object):
 
     @property
     def z_coord_list(self):
+        return self.decoder.decode_array(self.input_data['zCoordList'])
         if self._z_coord_list is not None:
             return self._z_coord_list
         elif 'zCoordList' in self.input_data:
