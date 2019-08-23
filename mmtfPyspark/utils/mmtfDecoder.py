@@ -12,7 +12,7 @@ import numpy as np
 from numba import jit
 from mmtfPyspark.utils import mmtfCodec
 
-USE_NUMBA = True
+USE_NUMBA = False
 
 #
 # Byte arrays in message pack are in big endian format, e.g. >i4.
@@ -113,6 +113,8 @@ def _decode_type_9(input_data, field_name):
 
 
 def _decode_type_10(input_data, field_name):
+    # TODO debugging decoding error
+    return np.empty(1000, np.float32)
     #return mmtfCodec.decode_array(input_data[field_name])
     buffer = input_data[field_name]
     #int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()

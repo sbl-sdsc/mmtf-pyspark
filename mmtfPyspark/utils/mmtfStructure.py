@@ -154,9 +154,6 @@ class MmtfStructure(object):
 
     @property
     def z_coord_list(self):
-        # TODO trying to figure out why this doesn't work when run in Jupyter Notebook
-        #return self.decoder.decode_array(self.input_data['zCoordList'])
-        return np.empty(100, dtype=str)
         if self._z_coord_list is not None:
             return self._z_coord_list
         elif 'zCoordList' in self.input_data:
