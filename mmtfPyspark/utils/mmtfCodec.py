@@ -88,7 +88,7 @@ def cum_sum(x):
 # In[5]:
 
 
-@njit
+#@njit
 def ri_decode(x, divisor):
     """Unpack an array of integers using recursive indexing.
 
