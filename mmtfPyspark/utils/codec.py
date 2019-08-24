@@ -118,7 +118,7 @@ def ri_encode(int_array, max=32767, min=-32768):
 
 @njit
 def cum_sum(x):
-    y = np.empty(x.shape[0], dtype=np.int32)
+    y = np.empty(x.shape[0], dtype=np.float32)
     y[0] = x[0]
     for i in range(1, x.shape[0]):
         y[i] = x[i - 1] + x[i]
