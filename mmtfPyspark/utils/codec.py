@@ -144,8 +144,8 @@ def ri_decode(x, divisor):
     """
     maximum = 32767
     minimum = -32768
-    #y = np.cumsum(x) / divisor
-    y = cum_sum(x) / divisor
+    y = np.cumsum(x) / divisor
+    #y = cum_sum(x) / divisor
     return y[(x != maximum) & (x != minimum)]
 
 
