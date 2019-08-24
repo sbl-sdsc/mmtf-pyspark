@@ -286,9 +286,6 @@ def encode_chain_list(in_strings):
     return out_bytes
 
 
-# In[14]:
-
-
 class Type10:
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
@@ -296,9 +293,8 @@ class Type10:
 
     @staticmethod
     def decode(in_array, length, param):
-        #int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
-        #return ri_decode(int_array, param).astype(np.float32)
-        return np.empty(length, np.float32)
+        int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
+        return ri_decode(int_array, param).astype(np.float32)
 
     @staticmethod
     def encode(in_array, param):
