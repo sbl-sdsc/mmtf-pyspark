@@ -300,7 +300,7 @@ def encode_chain_list(in_strings):
 # In[14]:
 
 
-class Type10(object):
+class Type10():
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
