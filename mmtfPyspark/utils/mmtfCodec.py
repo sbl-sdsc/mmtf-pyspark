@@ -436,9 +436,9 @@ def parse_header(input_array):
     :param input_array the array to parse
     :return the codec, the length of the decoded array, the parameter and the remainder
     of the array"""
-    codec = struct.unpack(">i", input_array[0:4])[0]
-    length = struct.unpack(">i", input_array[4:8])[0]
-    param = struct.unpack(">i", input_array[8:12])[0]
+    codec = struct.unpack(">i", input_array[0:4])[0].byteswap().newbyteorder()
+    length = struct.unpack(">i", input_array[4:8])[0].byteswap().newbyteorder()
+    param = struct.unpack(">i", input_array[8:12])[0].byteswap().newbyteorder()
     return codec, length, param, input_array[12:]
 
 
