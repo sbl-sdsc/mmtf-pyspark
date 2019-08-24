@@ -70,9 +70,10 @@ class Codec(object):
         return y.byteswap().newbyteorder().tobytes()
 
     def decode10(self, in_array, length, param):
-        int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
-        print("decode10", int_array)
-        return ri_decode(int_array, param).astype(np.float32)
+        return np.empty(length, np.float)
+        #int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
+        #print("decode10", int_array)
+        #return ri_decode(int_array, param).astype(np.float32)
 
     def encode10(self, in_array, param):
         y = ri_encode(f2id_numba(in_array, param))
