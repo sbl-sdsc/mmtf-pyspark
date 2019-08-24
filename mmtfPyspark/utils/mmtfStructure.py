@@ -143,7 +143,8 @@ class MmtfStructure(object):
         if self._x_coord_list is not None:
             return self._x_coord_list
         elif 'xCoordList' in self.input_data:
-            self._x_coord_list = mmtfDecoder.decode(self.input_data, 'xCoordList', True)
+            #self._x_coord_list = mmtfDecoder.decode(self.input_data, 'xCoordList', True)
+            self._x_coord_list = self.decoder.decode_array(self.input_data['xCoordList'])
             if self.truncated:
                 return self._x_coord_list[:self.num_atoms]
             else:
