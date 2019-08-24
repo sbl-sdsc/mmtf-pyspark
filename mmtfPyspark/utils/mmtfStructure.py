@@ -127,6 +127,18 @@ class MmtfStructure(object):
             return None
 
     @property
+    def occupancy_list(self):
+        if self._occupancy_list is not None:
+            return self._occupancy_list
+        elif 'occupancyList' in self.input_data:
+            self._occupancy_list = self.decoder.decode_array(self.input_data['occupancyList'])
+            if self.truncated:
+                return self._occupancy_list[:self.num_atoms]
+            else:
+                return self._occupancy_list
+        else:
+            return None
+    @property
     def x_coord_list(self):
         if self._x_coord_list is not None:
             return self._x_coord_list
@@ -175,19 +187,6 @@ class MmtfStructure(object):
                 return self._b_factor_list[:self.num_atoms]
             else:
                 return self._b_factor_list
-        else:
-            return None
-
-    @property
-    def occupancy_list(self):
-        if self._occupancy_list is not None:
-            return self._occupancy_list
-        elif 'occupancyList' in self.input_data:
-            self._occupancy_list = self.decoder.decode_array(self.input_data['occupancyList'])
-            if self.truncated:
-                return self._occupancy_list[:self.num_atoms]
-            else:
-                return self._occupancy_list
         else:
             return None
 
