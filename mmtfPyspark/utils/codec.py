@@ -126,7 +126,7 @@ def cum_sum(x):
     return y
 
 
-#@njit
+@njit
 def ri_decode(x, divisor):
     """Unpack an array of integers using recursive indexing.
 
