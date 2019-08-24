@@ -71,9 +71,7 @@ class Codec(object):
 
     def decode10(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
-        print("decode10", int_array)
-        return int_array
-        #return ri_decode(int_array, param).astype(np.float32)
+        return ri_decode(int_array, param).astype(np.float32)
 
     def encode10(self, in_array, param):
         y = ri_encode(f2id_numba(in_array, param))
@@ -128,7 +126,7 @@ def cum_sum(x):
     return y
 
 
-@njit
+#@njit
 def ri_decode(x, divisor):
     """Unpack an array of integers using recursive indexing.
 
