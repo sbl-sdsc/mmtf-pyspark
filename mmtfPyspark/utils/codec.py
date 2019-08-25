@@ -161,7 +161,7 @@ def ri_decode(x, divisor):
     return y[(x != maximum) & (x != minimum)]
 
 
-@njit(cache=True)
+@njit
 def run_length_div_decode(x, n, divisor):
     """Decodes a run length encoded array and scales/converts integer values to float
 
@@ -213,7 +213,7 @@ def delta(x):
     return y
 
 
-@njit(cache=True)
+@njit
 def run_length_decode(x, n):
     """Decodes a run length encoded array
 
@@ -274,7 +274,7 @@ def run_length_encode(x):
 
     return y[:count + 1]
 
-
+@jit
 def run_length_decoder_ascii(x, n):
     """Decodes a run length encoded array
 
@@ -341,7 +341,7 @@ def parse_header(input_array):
     codec = struct.unpack(">i", input_array[0:4])[0]
     length = struct.unpack(">i", input_array[4:8])[0]
     param = struct.unpack(">i", input_array[8:12])[0]
-    print("parse_header", codec, length, param)
+    #print("parse_header", codec, length, param)
     return codec, length, param, input_array[12:]
 
 
