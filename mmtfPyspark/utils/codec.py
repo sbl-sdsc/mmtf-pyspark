@@ -130,7 +130,7 @@ def cum_sum(x):
 def reverse_index_decode(x, divisor):
     y = np.empty(x.shape[0], dtype=np.float32)
     y[0] = x[0]
-    for i in range(1, x.shape[0]):
+    for i in range(1, x.shape[0]-1):
         y[i] = x[i - 1] + x[i]
 
     y = y / divisor
@@ -138,7 +138,6 @@ def reverse_index_decode(x, divisor):
     minimum = -32768
     return y[(x != maximum) & (x != minimum)]
 
-@njit
 def ri_decode(x, divisor):
     """Unpack an array of integers using recursive indexing.
 
