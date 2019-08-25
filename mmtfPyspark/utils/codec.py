@@ -118,26 +118,26 @@ def ri_encode(int_array, max=32767, min=-32768):
     return out_arr[:i]
 
 
-@njit
-def cum_sum(x):
-    y = np.empty(x.shape[0], dtype=np.float32)
-    y[0] = x[0]
-    for i in range(1, x.shape[0]):
-        y[i] = x[i - 1] + x[i]
+# @njit
+# def cum_sum(x):
+#     y = np.empty(x.shape[0], dtype=np.float32)
+#     y[0] = x[0]
+#     for i in range(1, x.shape[0]):
+#         y[i] = x[i - 1] + x[i]
+#
+#     return y
 
-    return y
-
-@njit
-def reverse_index_decode(x, divisor):
-    y = np.empty(x.shape[0], dtype=np.float32)
-    y[0] = x[0]
-    for i in range(1, x.shape[0]-1):
-        y[i] = x[i - 1] + x[i]
-
-    y = y / divisor
-    maximum = 32767
-    minimum = -32768
-    return y[(x != maximum) & (x != minimum)]
+# @njit
+# def reverse_index_decode(x, divisor):
+#     y = np.empty(x.shape[0], dtype=np.float32)
+#     y[0] = x[0]
+#     for i in range(1, x.shape[0]-1):
+#         y[i] = x[i - 1] + x[i]
+#
+#     y = y / divisor
+#     maximum = 32767
+#     minimum = -32768
+#     return y[(x != maximum) & (x != minimum)]
 
 def ri_decode(x, divisor):
     """Unpack an array of integers using recursive indexing.
@@ -161,7 +161,7 @@ def ri_decode(x, divisor):
     return y[(x != maximum) & (x != minimum)]
 
 
-@njit
+@njit(cache=True)
 def run_length_div_decode(x, n, divisor):
     """Decodes a run length encoded array and scales/converts integer values to float
 
@@ -213,7 +213,7 @@ def delta(x):
     return y
 
 
-@njit
+@njit(cache=True)
 def run_length_decode(x, n):
     """Decodes a run length encoded array
 
