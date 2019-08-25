@@ -72,6 +72,7 @@ class Codec(object):
     def decode10(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
         return ri_decode(int_array, param).astype(np.float32)
+        return reverse_index_decode(int_array, param)
 
     def encode10(self, in_array, param):
         y = ri_encode(f2id_numba(in_array, param))
@@ -125,6 +126,17 @@ def cum_sum(x):
 
     return y
 
+@njit
+def reverse_index_decode(x, divisor):
+    y = np.empty(x.shape[0], dtype=np.float32)
+    y[0] = x[0]
+    for i in range(1, x.shape[0]):
+        y[i] = x[i - 1] + x[i]
+
+    y = y / divisor
+    maximum = 32767
+    minimum = -32768
+    return y[(x != maximum) & (x != minimum)]
 
 @njit
 def ri_decode(x, divisor):
