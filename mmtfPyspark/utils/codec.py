@@ -55,8 +55,8 @@ class Codec(object):
 
     def decode8(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
-        #return np.cumsum(run_length_decode(int_array, length))
-        return run_length_decode_cumsum(int_array, length)
+        return np.cumsum(run_length_decode(int_array, length))
+        #return run_length_decode_cumsum(int_array, length)
 
     def encode8(self, in_array, param):
         y = run_length_encode(delta(in_array))
@@ -72,8 +72,8 @@ class Codec(object):
 
     def decode10(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
-        #return ri_decode(int_array, param).astype(np.float32)
-        return reverse_index_decode(int_array, param)
+        return ri_decode(int_array, param).astype(np.float32)
+        #return reverse_index_decode(int_array, param)
 
     def encode10(self, in_array, param):
         y = ri_encode(f2id_numba(in_array, param))
