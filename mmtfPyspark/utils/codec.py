@@ -4,7 +4,7 @@
 import msgpack
 import struct
 import numpy as np
-from numba import njit, jit
+from numba import njit, jit, float32, int32
 
 
 class Codec(object):
@@ -39,15 +39,7 @@ class Codec(object):
 
     def decode6(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
-        return run_length_decoder_ascii(int_array, length)
-
-    def encode6(self, in_array, param):
-        y = run_length_encode_ascii(in_array)
-        return y.byteswap().newbyteorder().tobytes()
-
-    def decode6(self, in_array, length, param):
-        int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
-        return run_length_decoder_ascii(int_array, length)
+        return run_length_decode_ascii(int_array, length)
 
     def encode6(self, in_array, param):
         y = run_length_encode_ascii(in_array)
@@ -161,7 +153,7 @@ def ri_decode(x, divisor):
     return y[(x != maximum) & (x != minimum)]
 
 
-@njit
+@njit(float32[:](int32[:], int32, int32))
 def run_length_div_decode(x, n, divisor):
     """Decodes a run length encoded array and scales/converts integer values to float
 
@@ -172,6 +164,7 @@ def run_length_div_decode(x, n, divisor):
     """
     y = np.empty(n, dtype=np.float32)
     start = 0
+    # TODO x.shape[0]-2?
     for i in range(0, x.shape[0] - 1, 2):
         end = x[i + 1] + start
         y[start:end] = x[i] / divisor
@@ -213,7 +206,7 @@ def delta(x):
     return y
 
 
-@njit
+@njit(int32[:](int32[:], int32))
 def run_length_decode(x, n):
     """Decodes a run length encoded array
 
@@ -275,7 +268,7 @@ def run_length_encode(x):
     return y[:count + 1]
 
 @jit
-def run_length_decoder_ascii(x, n):
+def run_length_decode_ascii(x, n):
     """Decodes a run length encoded array
 
     Parameters
