@@ -153,7 +153,7 @@ def ri_decode(x, divisor):
     return y[(x != maximum) & (x != minimum)]
 
 
-@njit(float32[:](int32[:], int32, int32))
+#@njit(float32[:](int32[:], int32, int32))
 def run_length_div_decode(x, n, divisor):
     """Decodes a run length encoded array and scales/converts integer values to float
 
@@ -206,7 +206,7 @@ def delta(x):
     return y
 
 
-@njit(int32[:](int32[:], int32))
+#@njit(int32[:](int32[:], int32))
 def run_length_decode(x, n):
     """Decodes a run length encoded array
 
@@ -267,7 +267,7 @@ def run_length_encode(x):
 
     return y[:count + 1]
 
-@jit
+#@jit
 def run_length_decode_ascii(x, n):
     """Decodes a run length encoded array
 
