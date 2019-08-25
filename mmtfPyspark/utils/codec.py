@@ -55,7 +55,8 @@ class Codec(object):
 
     def decode8(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
-        return np.cumsum(run_length_decode(int_array, length))
+        #return np.cumsum(run_length_decode(int_array, length))
+        return run_length_decode_cumsum(int_array, length)
 
     def encode8(self, in_array, param):
         y = run_length_encode(delta(in_array))
@@ -71,7 +72,7 @@ class Codec(object):
 
     def decode10(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
-        return ri_decode(int_array, param).astype(np.float32)
+        #return ri_decode(int_array, param).astype(np.float32)
         return reverse_index_decode(int_array, param)
 
     def encode10(self, in_array, param):
@@ -227,6 +228,26 @@ def run_length_decode(x, n):
         end = x[i + 1] + start
         y[start:end] = x[i]
         start = end
+    return y
+
+@njit
+def run_length_decode_cumsum(x, n):
+    """Decodes a run length encoded array
+
+    Parameters
+    ----------
+    x : encoded array of integers (value, repeat pairs)
+    n : number of element in decoded array
+    """
+    y = np.empty(n, dtype=np.int32)
+    start = 0
+    csum = 0
+    for i in range(0, x.shape[0] - 1, 2):
+        end = x[i + 1] + start
+        csum = csum + x[i]
+        y[start:end] = csum
+        start = end
+
     return y
 
 
