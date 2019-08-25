@@ -69,6 +69,7 @@ class MmtfStructure(object):
         self._atom_names = None
         self._elements = None
         self._chem_comp_types = None
+        self._code = None
         self._polymer = None
         self._entity_type = None
         self._entity_indices = None
@@ -143,7 +144,6 @@ class MmtfStructure(object):
         if self._x_coord_list is not None:
             return self._x_coord_list
         elif 'xCoordList' in self.input_data:
-            #self._x_coord_list = mmtfDecoder.decode(self.input_data, 'xCoordList', True)
             self._x_coord_list = self.decoder.decode_array(self.input_data['xCoordList'])
             if self.truncated:
                 return self._x_coord_list[:self.num_atoms]
@@ -312,7 +312,8 @@ class MmtfStructure(object):
     @property
     def chain_names(self):
         if self._chain_names is None:
-            self._chain_names = np.empty(self.num_atoms, dtype=np.object_)
+            #self._chain_names = np.empty(self.num_atoms, dtype=np.object_)
+            self._chain_names = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_chains):
                 start = self.chainToAtomIndices[i]
@@ -324,7 +325,8 @@ class MmtfStructure(object):
     @property
     def chain_ids(self):
         if self._chain_ids is None:
-            self._chain_ids = np.empty(self.num_atoms, dtype=np.object_)
+            #self._chain_ids = np.empty(self.num_atoms, dtype=np.object_)
+            self._chain_ids = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_chains):
                 start = self.chainToAtomIndices[i]
@@ -336,7 +338,8 @@ class MmtfStructure(object):
     @property
     def group_numbers(self):
         if self._group_numbers is None:
-            self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
+            #self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
+            self._group_numbers = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -348,7 +351,8 @@ class MmtfStructure(object):
     @property
     def group_names(self):
         if self._group_names is None:
-            self._group_names = np.empty(self.num_atoms, dtype=np.object_)
+            #self._group_names = np.empty(self.num_atoms, dtype=np.object_)
+            self._group_names = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -361,7 +365,8 @@ class MmtfStructure(object):
     @property
     def atom_names(self):
         if self._atom_names is None:
-            self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
+            #self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
+            self._atom_names = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -374,7 +379,8 @@ class MmtfStructure(object):
     @property
     def elements(self):
         if self._elements is None:
-            self._elements = np.empty(self.num_atoms, dtype=np.object_)
+            #self._elements = np.empty(self.num_atoms, dtype=np.object_)
+            self._elements = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -387,7 +393,8 @@ class MmtfStructure(object):
     @property
     def chem_comp_types(self):
         if self._chem_comp_types is None:
-            self._chem_comp_types = np.empty(self.num_atoms, dtype=np.object_)
+            #self._chem_comp_types = np.empty(self.num_atoms, dtype=np.object_)
+            self._chem_comp_types = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -398,9 +405,22 @@ class MmtfStructure(object):
         return self._chem_comp_types
 
     @property
+    def code(self):
+        if self._code is None:
+            self._code = np.empty(self.num_atoms, dtype=np.char)
+
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                index = self.group_type_list[i]
+                self._code[start:end] = self.group_list[index]['singleLetterCode']
+
+        return self._chem_comp_types
+
+    @property
     def group_serial(self):
         if self._group_serial is None:
-            self._group_serial = np.empty(self.num_atoms, dtype=np.object_)
+            self._group_serial = np.empty(self.num_atoms, dtype=np.int32)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -425,7 +445,8 @@ class MmtfStructure(object):
     @property
     def entity_types(self):
         if self._entity_type is None:
-            self._entity_type = np.empty(self.num_atoms, dtype=np.object_)
+            #self._entity_type = np.empty(self.num_atoms, dtype=np.object_)
+            self._entity_type = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_chains):
                 start = self.chainToAtomIndices[i]
@@ -474,29 +495,6 @@ class MmtfStructure(object):
     def to_pandas(self, add_cols=None, use_categories=False, multi_index=False):
         if self.df is None:
             self.calc_core_group_data()
-            # self.df = pd.DataFrame({'chain_name': self.chain_names,
-            #                         'chain_id': self.chain_ids,
-            #                         'group_number': self.group_numbers,
-            #                         'group_name': self.group_names,
-            #                         'atom_name': self.atom_names,
-            #                         'altloc': self.alt_loc_list,
-            #                         'x': self.x_coord_list,
-            #                         'y': self.y_coord_list,
-            #                         'z': self.z_coord_list,
-            #                         'o': self.occupancy_list,
-            #                         'b': self.b_factor_list,
-            #                         'element': self.elements,
-            #                         'polymer:': self.polymer
-            #                         })
-            # if add_cols is not None:
-            #     if 'sequence_position' in add_cols:
-            #         self.df['sequence_position'] = pd.Series(self.sequence_positions, index=self.df.index)
-            #     if 'chem_comp_type' in add_cols:
-            #         self.df['chem_comp_type'] = pd.Series(self.chem_comp_types, index=self.df.index)
-            #     if 'entity_index' in add_cols:
-            #         self.df['entity_index'] = pd.Series(self.entity_indices, index=self.df.index)
-            #     if 'entity_type' in add_cols:
-            #         self.df['entity_type'] = pd.Series(self.entity_types, index=self.df.index)
 
             cols = {'chain_name': self.chain_names,
                     'chain_id': self.chain_ids,
@@ -513,6 +511,8 @@ class MmtfStructure(object):
                     'polymer:': self.polymer}
 
             if add_cols is not None:
+                if 'code' in add_cols:
+                    cols.update({'code': self.code})
                 if 'sequence_position' in add_cols:
                     cols.update({'sequence_position': self.sequence_positions})
                 if 'chem_comp_type' in add_cols:
@@ -526,9 +526,10 @@ class MmtfStructure(object):
 
             if use_categories:
                 self.df['chain_name'] = self.df['chain_name'].astype('category')
+                self.df['chain_id'] = self.df['chain_id'].astype('category')
                 self.df['group_name'] = self.df['group_name'].astype('category')
                 self.df['atom_name'] = self.df['atom_name'].astype('category')
-                self.df['altloc'] = self.df['altloc'].astype('category')
+                self.df['element'] = self.df['element'].astype('category')
 
             if multi_index:
                 self.df.set_index(['chain_name', 'chain_id', 'group_number', 'group_name', 'atom_name', 'altloc'],

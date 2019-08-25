@@ -149,7 +149,6 @@ def ri_decode(x, divisor):
     maximum = 32767
     minimum = -32768
     y = np.cumsum(x) / divisor
-    #y = cum_sum(x) / divisor
     return y[(x != maximum) & (x != minimum)]
 
 
@@ -164,7 +163,6 @@ def run_length_div_decode(x, n, divisor):
     """
     y = np.empty(n, dtype=np.float32)
     start = 0
-    # TODO x.shape[0]-2?
     for i in range(0, x.shape[0] - 1, 2):
         end = x[i + 1] + start
         y[start:end] = x[i] / divisor
