@@ -353,7 +353,7 @@ class MmtfStructure(object):
     def group_numbers(self):
         if self._group_numbers is None:
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object)
-            codec, length, param, in_array = self.codec.parse_header(self.input_data['insCodeList'])
+            codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
 
             if length == 2:
                 for i in range(self.num_groups):
