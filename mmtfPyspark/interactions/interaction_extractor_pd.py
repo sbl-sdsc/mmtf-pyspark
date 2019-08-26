@@ -135,7 +135,7 @@ class AsymmetricUnitInteractions:
         structure = t[1]
 
         df = structure.to_pandas()
-        print(df.info())
+
         if df is None:
             return []
 
