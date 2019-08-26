@@ -221,6 +221,24 @@ def run_length_decode(x, n):
         start = end
     return y
 
+
+def run_length_decoder_np(in_array, n):
+    """Decodes a run length encoded array
+    Parameters
+    ----------
+    in_array : list
+       the input list to apply run length decoder on
+    """
+    lengths = np.array(in_array[1::2])
+    values = np.array(in_array[0::2])
+    starts = np.insert(np.array([0]), 1, np.cumsum(lengths))[:-1]
+    ends = starts + lengths
+    x = np.full(n, np.nan)
+    for l, h, v in zip(starts, ends, values):
+        x[l:h] = v
+    return x
+
+
 @njit
 def run_length_decode_cumsum(x, n):
     """Decodes a run length encoded array

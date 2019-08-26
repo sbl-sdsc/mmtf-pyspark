@@ -131,7 +131,8 @@ class AsymmetricUnitInteractions:
         structure_id = t[0]
 
         # Get a pandas dataframe representation of the structure
-        structure = ColumnarStructure(t[1])
+        #structure = ColumnarStructure(t[1])
+        structure = t[1]
 
         df = structure.to_pandas()
         if df is None:
