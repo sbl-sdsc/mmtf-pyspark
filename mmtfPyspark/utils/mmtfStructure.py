@@ -407,7 +407,7 @@ class MmtfStructure(object):
     @property
     def code(self):
         if self._code is None:
-            self._code = np.empty(self.num_atoms, dtype=np.char)
+            self._code = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -508,7 +508,7 @@ class MmtfStructure(object):
                     'o': self.occupancy_list,
                     'b': self.b_factor_list,
                     'element': self.elements,
-                    'polymer:': self.polymer}
+                    'polymer': self.polymer}
 
             if add_cols is not None:
                 if 'code' in add_cols:
