@@ -64,6 +64,7 @@ class MmtfStructure(object):
         # calculated atom level data
         self._chain_names = None
         self._chain_ids = None
+        self._group_ids = None
         self._group_numbers = None
         self._group_names = None
         self._atom_names = None
@@ -336,15 +337,34 @@ class MmtfStructure(object):
         return self._chain_ids
 
     @property
-    def group_numbers(self):
-        if self._group_numbers is None:
-            #self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
-            self._group_numbers = np.empty(self.num_atoms, dtype=np.object)
+    def group_ids(self):
+        if self._group_ids is None:
+            # self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
+            self._group_ids = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
-                self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
+                self._group_ids[start:end] = self.group_id_list[i]
+
+        return self._group_ids
+
+    @property
+    def group_numbers(self):
+        if self._group_numbers is None:
+            self._group_numbers = np.empty(self.num_atoms, dtype=np.object)
+            codec, length, param, in_array = self.codec.parse_header(self.input_data['insCodeList'])
+
+            if length > 2:
+                for i in range(self.num_groups):
+                    start = self.groupToAtomIndices[i]
+                    end = self.groupToAtomIndices[i + 1]
+                    self._group_numbers[start:end] = str(self.group_id_list[i])
+            else:
+                for i in range(self.num_groups):
+                    start = self.groupToAtomIndices[i]
+                    end = self.groupToAtomIndices[i + 1]
+                    self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
 
         return self._group_numbers
 

@@ -36,6 +36,18 @@ class Codec(object):
         decode_func = getattr(self, "decode" + str(codec))
         return decode_func(in_array, length, param)
 
+    @staticmethod
+    def parse_header(input_array):
+        """Parse the header and return it along with the input array minus the header.
+        :param input_array the array to parse
+        :return the codec, the length of the decoded array, the parameter and the remainder
+        of the array"""
+        codec = struct.unpack(">i", input_array[0:4])[0]
+        length = struct.unpack(">i", input_array[4:8])[0]
+        param = struct.unpack(">i", input_array[8:12])[0]
+        # print("parse_header", codec, length, param)
+        return codec, length, param, input_array[12:]
+
     def decode2(self, in_array, length, param):
         return np.frombuffer(in_array, '>i1')
 
@@ -359,16 +371,16 @@ def encode_chain_list(in_strings):
     return out_bytes
 
 
-def parse_header(input_array):
-    """Parse the header and return it along with the input array minus the header.
-    :param input_array the array to parse
-    :return the codec, the length of the decoded array, the parameter and the remainder
-    of the array"""
-    codec = struct.unpack(">i", input_array[0:4])[0]
-    length = struct.unpack(">i", input_array[4:8])[0]
-    param = struct.unpack(">i", input_array[8:12])[0]
-    #print("parse_header", codec, length, param)
-    return codec, length, param, input_array[12:]
+# def parse_header(input_array):
+#     """Parse the header and return it along with the input array minus the header.
+#     :param input_array the array to parse
+#     :return the codec, the length of the decoded array, the parameter and the remainder
+#     of the array"""
+#     codec = struct.unpack(">i", input_array[0:4])[0]
+#     length = struct.unpack(">i", input_array[4:8])[0]
+#     param = struct.unpack(">i", input_array[8:12])[0]
+#     #print("parse_header", codec, length, param)
+#     return codec, length, param, input_array[12:]
 
 
 def add_header(input_array, codec, length, param):
