@@ -305,8 +305,8 @@ class BioAssemblyInteractions:
     def get_transforms(self, col):
         """Return a dictionary of transformation index, chain indices/transformation matrices for given bio assembly"""
         trans = list()
-        chain_ids = col.structure.chain_id_list
-        assembly = col.structure.bio_assembly[self.bio - 1]  # bio assembly id are one-based
+        chain_ids = col.chain_id_list
+        assembly = col.bio_assembly[self.bio - 1]  # bio assembly id are one-based
         for id, transforms in enumerate(assembly['transformList']):
             for index in transforms['chainIndexList']:
                 trans.append((id, chain_ids[index], transforms['matrix']))
