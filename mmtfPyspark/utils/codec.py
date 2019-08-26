@@ -9,6 +9,23 @@ from numba import njit, jit, float32, int32
 
 class Codec(object):
 
+    @staticmethod
+    def get_value(input_data, field_name, required=False):
+        """
+        Return an unencoded value from an MMTF data structure.
+
+        :param input_data:
+        :param field_name:
+        :param required:
+        :return:
+        """
+        if field_name in input_data:
+            return input_data[field_name]
+        elif required:
+            raise Exception('ERROR: Invalid MMTF File, field: {} is missing!'.format(field_name))
+        else:
+            return None
+
     def decode_array(self, input_array):
         """Parse the header of an input byte array and then decode using the input array,
     the codec and the appropirate parameter.

@@ -134,7 +134,7 @@ class AsymmetricUnitInteractions:
         #structure = ColumnarStructure(t[1])
         structure = t[1]
 
-        df = structure.to_pandas()
+        df = structure.to_pandas(use_categories=True)
 
         if df is None:
             return []
@@ -216,7 +216,7 @@ class BioAssemblyInteractions:
         structure = t[1]
 
         # Get a pandas dataframe representation of the structure
-        df = structure.to_pandas()
+        df = structure.to_pandas(use_categries=True)
         if df is None:
             return []
 
