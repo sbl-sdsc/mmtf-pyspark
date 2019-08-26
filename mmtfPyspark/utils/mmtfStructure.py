@@ -355,7 +355,7 @@ class MmtfStructure(object):
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object)
             codec, length, param, in_array = self.codec.parse_header(self.input_data['insCodeList'])
 
-            if length > 2:
+            if length == 2:
                 for i in range(self.num_groups):
                     start = self.groupToAtomIndices[i]
                     end = self.groupToAtomIndices[i + 1]
