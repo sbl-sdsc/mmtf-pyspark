@@ -32,7 +32,7 @@ class Codec(object):
     :param input_array: the array to be decoded
     :return the decoded array"""
 
-        codec, length, param, in_array = parse_header(input_array)
+        codec, length, param, in_array = self.parse_header(input_array)
         decode_func = getattr(self, "decode" + str(codec))
         return decode_func(in_array, length, param)
 
