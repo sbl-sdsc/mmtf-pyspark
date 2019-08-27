@@ -313,7 +313,6 @@ class MmtfStructure(object):
     @property
     def chain_names(self):
         if self._chain_names is None:
-            #self._chain_names = np.empty(self.num_atoms, dtype=np.object_)
             self._chain_names = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_chains):
@@ -326,7 +325,6 @@ class MmtfStructure(object):
     @property
     def chain_ids(self):
         if self._chain_ids is None:
-            #self._chain_ids = np.empty(self.num_atoms, dtype=np.object_)
             self._chain_ids = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_chains):
@@ -339,7 +337,6 @@ class MmtfStructure(object):
     @property
     def group_ids(self):
         if self._group_ids is None:
-            # self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
             self._group_ids = np.empty(self.num_atoms, dtype=np.int32)
 
             for i in range(self.num_groups):
@@ -371,7 +368,6 @@ class MmtfStructure(object):
     @property
     def group_names(self):
         if self._group_names is None:
-            #self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._group_names = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
@@ -385,7 +381,6 @@ class MmtfStructure(object):
     @property
     def atom_names(self):
         if self._atom_names is None:
-            #self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
@@ -399,7 +394,6 @@ class MmtfStructure(object):
     @property
     def elements(self):
         if self._elements is None:
-            #self._elements = np.empty(self.num_atoms, dtype=np.object_)
             self._elements = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
@@ -413,7 +407,6 @@ class MmtfStructure(object):
     @property
     def chem_comp_types(self):
         if self._chem_comp_types is None:
-            #self._chem_comp_types = np.empty(self.num_atoms, dtype=np.object_)
             self._chem_comp_types = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_groups):
@@ -465,7 +458,6 @@ class MmtfStructure(object):
     @property
     def entity_types(self):
         if self._entity_type is None:
-            #self._entity_type = np.empty(self.num_atoms, dtype=np.object_)
             self._entity_type = np.empty(self.num_atoms, dtype=np.object)
 
             for i in range(self.num_chains):
@@ -514,8 +506,10 @@ class MmtfStructure(object):
 
     def to_pandas(self, add_cols=None, use_categories=False, multi_index=False):
         if self.df is None:
+            # pre-calculate required group-level data for efficiency
             self.calc_core_group_data()
 
+            # default columns
             cols = {'chain_name': self.chain_names,
                     'chain_id': self.chain_ids,
                     'group_number': self.group_numbers,
