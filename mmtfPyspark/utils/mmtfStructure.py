@@ -340,7 +340,7 @@ class MmtfStructure(object):
     def group_ids(self):
         if self._group_ids is None:
             # self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
-            self._group_ids = np.empty(self.num_atoms, dtype=np.object)
+            self._group_ids = np.empty(self.num_atoms, dtype=np.int32)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -354,8 +354,8 @@ class MmtfStructure(object):
         if self._group_numbers is None:
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object)
             codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
-
-            if length == 2:
+            print("length:", length, len(in_array))
+            if len(in_array) == 2:
                 for i in range(self.num_groups):
                     start = self.groupToAtomIndices[i]
                     end = self.groupToAtomIndices[i + 1]
