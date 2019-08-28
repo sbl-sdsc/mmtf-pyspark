@@ -568,8 +568,10 @@ class MmtfStructure(object):
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
 
     def calc_core_group_data(self):
-        if self._group_numbers is None or self._group_names is None or self._atom_names is None or self._elements:
+        if self._group_ids is None or self._group_names is None or self._atom_names is None \
+                or self._elements:
             #self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
+            self._group_ids = np.empty(self.num_atoms, dtype=np.int32)
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
             self._elements = np.empty(self.num_atoms, dtype=np.object_)
@@ -580,6 +582,7 @@ class MmtfStructure(object):
                 #self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
                 index = self.group_type_list[i]
                 group = self.group_list[index]
+                self._group_ids[start:end] = self.group_id_list[i]
                 self._group_names[start:end] = group['groupName']
                 self._atom_names[start:end] = group['atomNameList']
                 self._elements[start:end] = group['elementList']
