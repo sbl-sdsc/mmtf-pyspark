@@ -569,7 +569,7 @@ class MmtfStructure(object):
 
     def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None or self._elements:
-            self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
+            #self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
             self._elements = np.empty(self.num_atoms, dtype=np.object_)
@@ -577,7 +577,7 @@ class MmtfStructure(object):
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
-                self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
+                #self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
                 index = self.group_type_list[i]
                 group = self.group_list[index]
                 self._group_names[start:end] = group['groupName']
