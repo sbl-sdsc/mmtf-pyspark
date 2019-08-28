@@ -351,13 +351,13 @@ class MmtfStructure(object):
         if self._group_numbers is None:
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object)
             codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
-            print("length:", length, len(in_array))
             if len(in_array) == 8:
                 # default length when there are no insertion codes
-                for i in range(self.num_groups):
-                    start = self.groupToAtomIndices[i]
-                    end = self.groupToAtomIndices[i + 1]
-                    self._group_numbers[start:end] = str(self.group_id_list[i])
+                self._group_numbers = self.group_ids.astype(str)
+                # for i in range(self.num_groups):
+                #     start = self.groupToAtomIndices[i]
+                #     end = self.groupToAtomIndices[i + 1]
+                #     self._group_numbers[start:end] = str(self.group_id_list[i])
             else:
                 for i in range(self.num_groups):
                     start = self.groupToAtomIndices[i]
