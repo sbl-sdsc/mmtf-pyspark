@@ -12,7 +12,7 @@ __status__ = "Done"
 
 import numpy as np
 import pandas as pd
-from numba import jit
+#from numba import jit
 from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec
 
 
@@ -568,7 +568,7 @@ class MmtfStructure(object):
 
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
 
-    @jit
+ #   @jit
     def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements:

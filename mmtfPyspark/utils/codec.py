@@ -4,7 +4,7 @@
 import msgpack
 import struct
 import numpy as np
-from numba import njit, jit, float32, int32
+from numba import njit, jit, float32, int32, int16
 
 
 class Codec(object):
@@ -177,8 +177,14 @@ def ri_decode(x, divisor):
     """
     maximum = 32767
     minimum = -32768
-    y = np.cumsum(x) / divisor
+    #y = np.cumsum(x) / divisor
+    y = numba_cumsum(x) / divisor
     return y[(x != maximum) & (x != minimum)]
+
+
+@jit(int32[:](int16[:]))
+def numba_cumsum(x):
+    return np.cumsum(x, dtype=int32)
 
 
 #@njit(float32[:](int32[:], int32, int32))
