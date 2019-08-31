@@ -406,8 +406,6 @@ class MmtfStructure(object):
 
         return self._elements
 
-    np.hstack(i for i in a)
-
     @property
     def elements_new(self):
         if self._elements is None:
