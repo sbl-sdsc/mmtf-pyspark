@@ -183,9 +183,9 @@ def ri_decode(x, divisor):
     return y[(x != maximum) & (x != minimum)]
 
 
-@jit(int32[:](int16[:]))
+@jit(float32[:](int16[:]))
 def numba_cumsum(x):
-    return np.cumsum(x, dtype=np.int32)
+    return np.cumsum(x, dtype=np.float32)
 
 
 #@njit(float32[:](int32[:], int32, int32))
