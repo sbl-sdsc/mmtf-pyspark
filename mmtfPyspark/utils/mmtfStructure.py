@@ -625,7 +625,8 @@ class MmtfStructure(object):
     def calc_core_group_data_old(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements in None:
-            #codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
+            codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
+            no_ins_code = len(in_array) == 8
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
@@ -634,18 +635,16 @@ class MmtfStructure(object):
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
-                # if len(in_array) == 8:
-                #     # default length when there are no insertion codes
-                #     self._group_numbers[start:end] = str(self.group_id_list[i])
-                # else:
+                if no_ins_code:
+                     # default length when there are no insertion codes
+                     self._group_numbers[start:end] = str(self.group_id_list[i])
+                else:
                     # numba cannot handle the following line
                     #self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
-                    #self._group_numbers[start:end] = str(self.group_id_list[i]) + self.ins_code_list[i]
+                    self._group_numbers[start:end] = str(self.group_id_list[i]) + self.ins_code_list[i]
 
-                self._group_numbers[start:end] = str(self.group_id_list[i]) + self.ins_code_list[i]
                 index = self.group_type_list[i]
                 group = self.group_list[index]
-                #self._group_ids[start:end] = self.group_id_list[i]
                 self._group_names[start:end] = group['groupName']
                 self._atom_names[start:end] = group['atomNameList']
                 self._elements[start:end] = group['elementList']
