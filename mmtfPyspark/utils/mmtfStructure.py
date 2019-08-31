@@ -421,8 +421,6 @@ class MmtfStructure(object):
 
             start = 0
             for index in self.group_type_list:
-                #start = self.groupToAtomIndices[i]
-                #end = self.groupToAtomIndices[i + 1]
                 gl = self.group_list[index]['elementList']
                 end = start + len(gl)
                 self._elements[start:end] = gl
@@ -592,8 +590,28 @@ class MmtfStructure(object):
 
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
 
- #   @jit
     def calc_core_group_data(self):
+        if self._group_numbers is None or self._group_names is None or self._atom_names is None \
+                or self._elements:
+            self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
+            self._group_names = np.empty(self.num_atoms, dtype=np.object_)
+            self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
+            self._elements = np.empty(self.num_atoms, dtype=np.object_)
+            
+            start = 0
+            i = 0
+            for index in self.group_type_list:
+                gl = self.group_list[index]['elementList']
+                end = start + len(gl)
+                self._elements[start:end] = gl
+                self._group_names[start:end] = self.group_list[index]['groupName']
+                self._atom_names[start:end] = self.group_list[index]['atomNameList']
+                self._group_numbers[start:end] = str(self.group_id_list[i]) + self.ins_code_list[i]
+                start = end
+                i = i + 1
+
+ #   @jit
+    def calc_core_group_data_old(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements:
             codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
