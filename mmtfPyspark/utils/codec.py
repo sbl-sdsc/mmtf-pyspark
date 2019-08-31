@@ -160,6 +160,7 @@ def ri_encode(int_array, max=32767, min=-32768):
 #     minimum = -32768
 #     return y[(x != maximum) & (x != minimum)]
 
+@jit(float32(int16, int32))
 def ri_decode(x, divisor):
     """Unpack an array of integers using recursive indexing.
 
@@ -184,7 +185,7 @@ def ri_decode(x, divisor):
 
 @jit(int32[:](int16[:]))
 def numba_cumsum(x):
-    return np.cumsum(x, dtype=int32)
+    return np.cumsum(x, dtype=np.int32)
 
 
 #@njit(float32[:](int32[:], int32, int32))
@@ -231,6 +232,7 @@ def run_length_div_encode(x, divisor):
 
 @njit
 def delta(x):
+    # see np.ediff1d
     y = np.empty(x.shape[0], dtype=np.int32)
     y[0] = x[0]
     for i in range(1, x.shape[0]):
