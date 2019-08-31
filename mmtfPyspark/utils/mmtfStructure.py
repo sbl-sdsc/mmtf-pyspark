@@ -407,18 +407,28 @@ class MmtfStructure(object):
         return self._elements
 
     @property
-    def elements_new(self):
+    def elements_hstack(self):
         if self._elements is None:
+            # this method is slower
             self._elements = np.hstack(self.group_list[index]['elementList'] for index in self.group_type_list)
-            # self._elements = np.empty(self.num_atoms, dtype=np.object)
-            #
-            # for i in range(self.num_groups):
-            #     start = self.groupToAtomIndices[i]
-            #     end = self.groupToAtomIndices[i + 1]
-            #     index = self.group_type_list[i]
-            #     self._elements[start:end] = self.group_list[index]['elementList']
 
         return self._elements
+
+    @property
+    def elements_len(self):
+        if self._elements is None:
+            self._elements = np.empty(self.num_atoms, dtype=np.object)
+
+            start = 0
+            for index in self.group_type_list:
+                #start = self.groupToAtomIndices[i]
+                #end = self.groupToAtomIndices[i + 1]
+                gl = self.group_list[index]['elementList']
+                end = start + len(gl)
+                self._elements[start:end] = gl
+                start = end
+
+
 
     @property
     def chem_comp_types(self):
