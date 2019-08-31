@@ -601,12 +601,13 @@ class MmtfStructure(object):
             start = 0
             i = 0
             for index in self.group_type_list:
-                gl = self.group_list[index]['elementList']
+                group = self.group_list[index]
+                gl = group['elementList']
                 end = start + len(gl)
                 print(start, "-", end)
                 self._elements[start:end] = gl
-                self._group_names[start:end] = self.group_list[index]['groupName']
-                self._atom_names[start:end] = self.group_list[index]['atomNameList']
+                self._group_names[start:end] = group['groupName']
+                self._atom_names[start:end] = group['atomNameList']
                 self._group_numbers[start:end] = str(self.group_id_list[i]) + self.ins_code_list[i]
                 start = end
                 i = i + 1
