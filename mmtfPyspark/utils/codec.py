@@ -93,7 +93,8 @@ class Codec(object):
 
     def decode10(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
-        return ri_decode(int_array, param).astype(np.float32)
+        #return ri_decode(int_array, param).astype(np.float32)
+        return ri_decode(int_array, param)
         #return reverse_index_decode(int_array, param)
 
     def encode10(self, in_array, param):
@@ -160,7 +161,7 @@ def ri_encode(int_array, max=32767, min=-32768):
 #     minimum = -32768
 #     return y[(x != maximum) & (x != minimum)]
 
-@jit(float32[:](int16[:], int32))
+#@jit(float32[:](int16[:], int32))
 def ri_decode(x, divisor):
     """Unpack an array of integers using recursive indexing.
 
@@ -179,13 +180,13 @@ def ri_decode(x, divisor):
     maximum = 32767
     minimum = -32768
     #y = np.cumsum(x) / divisor
-    y = numba_cumsum(x) / divisor
+    y = np.cumsum(x, dtype=np.float32) / divisor
     return y[(x != maximum) & (x != minimum)]
 
 
-@jit(float32[:](int16[:]))
-def numba_cumsum(x):
-    return np.cumsum(x, dtype=np.float32)
+# @jit(float32[:](int16[:]))
+# def numba_cumsum(x):
+#     return np.cumsum(x, dtype=np.float32)
 
 
 #@njit(float32[:](int32[:], int32, int32))
