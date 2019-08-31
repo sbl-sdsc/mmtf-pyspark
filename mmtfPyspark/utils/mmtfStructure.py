@@ -568,10 +568,10 @@ class MmtfStructure(object):
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
 
     def calc_core_group_data(self):
-        if self._group_ids is None or self._group_names is None or self._atom_names is None \
+        if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements:
+            codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
-            self._group_ids = np.empty(self.num_atoms, dtype=np.int32)
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
             self._elements = np.empty(self.num_atoms, dtype=np.object_)
@@ -579,7 +579,12 @@ class MmtfStructure(object):
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
-                self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
+                if len(in_array) == 8:
+                    # default length when there are no insertion codes
+                    self._group_numbers[start:end] = str(self.group_id_list[i])
+                else:
+                    self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
+
                 index = self.group_type_list[i]
                 group = self.group_list[index]
                 #self._group_ids[start:end] = self.group_id_list[i]
