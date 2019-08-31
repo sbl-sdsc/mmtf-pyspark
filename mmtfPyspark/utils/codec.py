@@ -160,7 +160,7 @@ def ri_encode(int_array, max=32767, min=-32768):
 #     minimum = -32768
 #     return y[(x != maximum) & (x != minimum)]
 
-@jit(float32(int16, int32))
+@jit(float32[:](int16[:], int32))
 def ri_decode(x, divisor):
     """Unpack an array of integers using recursive indexing.
 
