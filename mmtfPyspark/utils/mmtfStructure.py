@@ -598,14 +598,16 @@ class MmtfStructure(object):
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
             self._elements = np.empty(self.num_atoms, dtype=np.object_)
 
-            print(self.structure_id)
             start = 0
             i = 0
             for index in self.group_type_list:
                 group = self.group_list[index]
                 gl = group['elementList']
                 end = start + len(gl)
-                #print(start, "-", end)
+                s = self.groupToAtomIndices[i]
+                e = self.groupToAtomIndices[i + 1]
+                if start != s or end != e:
+                    print(self.structure_id, ":", start, "-", end, "  ", s, "-", e)
                 self._elements[start:end] = gl
                 self._group_names[start:end] = group['groupName']
                 self._atom_names[start:end] = group['atomNameList']
