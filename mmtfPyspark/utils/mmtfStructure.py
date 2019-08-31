@@ -600,17 +600,20 @@ class MmtfStructure(object):
 
             if len(self.group_type_list) != self.num_groups:
                 print(self.structure_id, ":", len(self.group_type_list), self.num_groups)
-                
+
             start = 0
             i = 0
             for index in self.group_type_list:
                 group = self.group_list[index]
                 gl = group['elementList']
                 end = start + len(gl)
-                s = self.groupToAtomIndices[i]
-                e = self.groupToAtomIndices[i + 1]
-                if start != s or end != e:
-                    print(self.structure_id, ":", start, "-", end, "  ", s, "-", e)
+                if start >= end:
+                    print(self.structure_id, ":", start, end)
+                #s = self.groupToAtomIndices[i]
+                #e = self.groupToAtomIndices[i + 1]
+                #if start != s or end != e:
+                #    print(self.structure_id, ":", start, "-", end, "  ", s, "-", e)
+
                 self._elements[start:end] = gl
                 self._group_names[start:end] = group['groupName']
                 self._atom_names[start:end] = group['atomNameList']
