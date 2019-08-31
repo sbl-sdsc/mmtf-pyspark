@@ -12,6 +12,7 @@ __status__ = "Done"
 
 import numpy as np
 import pandas as pd
+from numba import jit
 from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec
 
 
@@ -353,11 +354,11 @@ class MmtfStructure(object):
             codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
             if len(in_array) == 8:
                 # default length when there are no insertion codes
-                self._group_numbers = self.group_ids.astype(str)
-                # for i in range(self.num_groups):
-                #     start = self.groupToAtomIndices[i]
-                #     end = self.groupToAtomIndices[i + 1]
-                #     self._group_numbers[start:end] = str(self.group_id_list[i])
+                # self._group_numbers = self.group_ids.astype(str)
+                for i in range(self.num_groups):
+                    start = self.groupToAtomIndices[i]
+                    end = self.groupToAtomIndices[i + 1]
+                    self._group_numbers[start:end] = str(self.group_id_list[i])
             else:
                 for i in range(self.num_groups):
                     start = self.groupToAtomIndices[i]
@@ -567,6 +568,7 @@ class MmtfStructure(object):
 
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
 
+    @jit
     def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements:
