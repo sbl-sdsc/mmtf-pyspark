@@ -585,7 +585,9 @@ class MmtfStructure(object):
                     # default length when there are no insertion codes
                     self._group_numbers[start:end] = str(self.group_id_list[i])
                 else:
-                    self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
+                    # numba cannot handle the following line
+                    #self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
+                    self._group_numbers[start:end] = str(self.group_id_list[i]) + self.ins_code_list[i]
 
                 index = self.group_type_list[i]
                 group = self.group_list[index]
