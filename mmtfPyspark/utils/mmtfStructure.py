@@ -590,7 +590,7 @@ class MmtfStructure(object):
 
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
 
-    def calc_core_group_data(self):
+    def calc_core_group_data_new(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements is None:
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
@@ -622,7 +622,7 @@ class MmtfStructure(object):
                 i = i + 1
 
  #   @jit
-    def calc_core_group_data_old(self):
+    def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements in None:
             codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
