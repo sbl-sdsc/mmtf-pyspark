@@ -627,6 +627,8 @@ class MmtfStructure(object):
                 or self._elements in None:
             codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
             no_ins_code = len(in_array) == 8
+            if self.num_atoms == 0:
+                print(self.structure_id, "num atom = 0")
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
