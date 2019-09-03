@@ -388,7 +388,7 @@ class MmtfStructure(object):
             for index in self.group_type_list:
                 gl = self.group_list[index]['groupName']
                 end = start + len(gl)
-                self._atom_names[start:end] = gl
+                self._group_names[start:end] = gl
                 start = end
 
         return self._group_names
