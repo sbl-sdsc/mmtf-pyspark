@@ -367,7 +367,7 @@ class MmtfStructure(object):
         return self._group_numbers
 
     @property
-    def group_names(self):
+    def group_names_old(self):
         if self._group_names is None:
             self._group_names = np.empty(self.num_atoms, dtype=np.object)
 
@@ -380,7 +380,21 @@ class MmtfStructure(object):
         return self._group_names
 
     @property
-    def atom_names(self):
+    def group_names(self):
+        if self._group_names is None:
+            self._group_names = np.empty(self.num_atoms, dtype=np.object)
+
+            start = 0
+            for index in self.group_type_list:
+                gl = self.group_list[index]['groupName']
+                end = start + len(gl)
+                self._atom_names[start:end] = gl
+                start = end
+
+        return self._group_names
+
+    @property
+    def atom_names_old(self):
         if self._atom_names is None:
             self._atom_names = np.empty(self.num_atoms, dtype=np.object)
 
@@ -393,7 +407,21 @@ class MmtfStructure(object):
         return self._atom_names
 
     @property
-    def elements(self):
+    def atom_names(self):
+        if self._atom_names is None:
+            self._atom_names = np.empty(self.num_atoms, dtype=np.object)
+
+            start = 0
+            for index in self.group_type_list:
+                gl = self.group_list[index]['atomNameList']
+                end = start + len(gl)
+                self._atom_names[start:end] = gl
+                start = end
+
+        return self._atom_names
+
+    @property
+    def elements_old(self):
         if self._elements is None:
             self._elements = np.empty(self.num_atoms, dtype=np.object)
 
@@ -414,7 +442,7 @@ class MmtfStructure(object):
         return self._elements
 
     @property
-    def elements_len(self):
+    def elements(self):
         if self._elements is None:
             self._elements = np.empty(self.num_atoms, dtype=np.object)
 
