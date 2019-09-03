@@ -231,7 +231,11 @@ class MmtfStructure(object):
         elif 'groupTypeList' in self.input_data:
             self._group_type_list = self.decoder.decode_array(self.input_data['groupTypeList'])
             if self.truncated:
+                print("1-group_type_list", len(self._group_type_list))
                 self._group_type_list = self._group_type_list[:self.num_groups]
+
+            print("2-group_type_list", len(self._group_type_list))
+                
             return self._group_type_list
         else:
             return None
