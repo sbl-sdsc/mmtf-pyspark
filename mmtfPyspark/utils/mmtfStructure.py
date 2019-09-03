@@ -579,18 +579,15 @@ class MmtfStructure(object):
 
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
 
-    def calc_core_group_data_new(self):
+    def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements is None:
-            if self.num_atoms == 0:
-                print(self.structure_id, "num atom = 0")
+            codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
+            no_ins_code = len(in_array) == 8
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
             self._elements = np.empty(self.num_atoms, dtype=np.object_)
-
-            if len(self.group_type_list) != self.num_groups:
-                print(self.structure_id, ":", len(self.group_type_list), self.num_groups)
 
             start = 0
             i = 0
@@ -598,28 +595,27 @@ class MmtfStructure(object):
                 group = self.group_list[index]
                 gl = group['elementList']
                 end = start + len(gl)
-                if start >= end:
-                    print(self.structure_id, ":", start, end)
-                #s = self.groupToAtomIndices[i]
-                #e = self.groupToAtomIndices[i + 1]
-                #if start != s or end != e:
-                #    print(self.structure_id, ":", start, "-", end, "  ", s, "-", e)
 
                 self._elements[start:end] = gl
                 self._group_names[start:end] = group['groupName']
                 self._atom_names[start:end] = group['atomNameList']
-                self._group_numbers[start:end] = str(self.group_id_list[i]) + self.ins_code_list[i]
+                if no_ins_code:
+                    # default length when there are no insertion codes
+                    self._group_numbers[start:end] = str(self.group_id_list[i])
+                else:
+                    # numba cannot handle the following line
+                    # self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
+                    self._group_numbers[start:end] = str(self.group_id_list[i]) + self.ins_code_list[i]
+
                 start = end
                 i = i + 1
 
  #   @jit
-    def calc_core_group_data(self):
+    def calc_core_group_data_old(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements in None:
             codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
             no_ins_code = len(in_array) == 8
-            if self.num_atoms == 0:
-                print(self.structure_id, "num atom = 0")
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
