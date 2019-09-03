@@ -558,7 +558,7 @@ class MmtfStructure(object):
     def to_pandas(self, add_cols=None, use_categories=False, multi_index=False):
         if self.df is None:
             # pre-calculate required group-level data for efficiency
-            #self.calc_core_group_data_old()
+            self.calc_core_group_data()
 
             # default columns
             cols = {'chain_name': self.chain_names,
@@ -622,10 +622,14 @@ class MmtfStructure(object):
                 or self._elements is None:
             codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
             no_ins_code = len(in_array) == 8
-            self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
-            self._group_names = np.empty(self.num_atoms, dtype=np.object_)
-            self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
-            self._elements = np.empty(self.num_atoms, dtype=np.object_)
+            # self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
+            # self._group_names = np.empty(self.num_atoms, dtype=np.object_)
+            # self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
+            # self._elements = np.empty(self.num_atoms, dtype=np.object_)
+            self._group_numbers = np.empty(self.num_atoms, dtype=np.object)
+            self._group_names = np.empty(self.num_atoms, dtype='<U3')
+            self._atom_names = np.empty(self.num_atoms, dtype='<U4')
+            self._elements = np.empty(self.num_atoms, dtype='<U2')
 
             start = 0
             i = 0
