@@ -304,7 +304,7 @@ class MmtfStructure(object):
             self._chain_name_list = self.decoder.decode_array(self.input_data['chainNameList'])
             if self.truncated:
                 self._chain_name_list = self._chain_name_list[:self.num_chains]
-                
+
             return self._chain_name_list
         else:
             return None
@@ -530,7 +530,7 @@ class MmtfStructure(object):
     def to_pandas(self, add_cols=None, use_categories=False, multi_index=False):
         if self.df is None:
             # pre-calculate required group-level data for efficiency
-            self.calc_core_group_data_old()
+            #self.calc_core_group_data_old()
 
             # default columns
             cols = {'chain_name': self.chain_names,
