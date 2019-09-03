@@ -136,9 +136,8 @@ class MmtfStructure(object):
         elif 'occupancyList' in self.input_data:
             self._occupancy_list = self.decoder.decode_array(self.input_data['occupancyList'])
             if self.truncated:
-                return self._occupancy_list[:self.num_atoms]
-            else:
-                return self._occupancy_list
+                self._occupancy_list = self._occupancy_list[:self.num_atoms]
+            return self._occupancy_list
         else:
             return None
     @property
@@ -148,9 +147,8 @@ class MmtfStructure(object):
         elif 'xCoordList' in self.input_data:
             self._x_coord_list = self.decoder.decode_array(self.input_data['xCoordList'])
             if self.truncated:
-                return self._x_coord_list[:self.num_atoms]
-            else:
-                return self._x_coord_list
+                self._x_coord_list = self._x_coord_list[:self.num_atoms]
+            return self._x_coord_list
         else:
             return None
 
@@ -161,9 +159,8 @@ class MmtfStructure(object):
         elif 'yCoordList' in self.input_data:
             self._y_coord_list = self.decoder.decode_array(self.input_data['yCoordList'])
             if self.truncated:
-                return self._y_coord_list[:self.num_atoms]
-            else:
-                return self._y_coord_list
+                self._y_coord_list = self._y_coord_list[:self.num_atoms]
+            return self._y_coord_list
         else:
             return None
 
@@ -174,9 +171,8 @@ class MmtfStructure(object):
         elif 'zCoordList' in self.input_data:
             self._z_coord_list = self.decoder.decode_array(self.input_data['zCoordList'])
             if self.truncated:
-                return self._z_coord_list[:self.num_atoms]
-            else:
-                return self._z_coord_list
+                self._z_coord_list = self._z_coord_list[:self.num_atoms]
+            return self._z_coord_list
         else:
             return None
 
@@ -187,9 +183,8 @@ class MmtfStructure(object):
         elif 'bFactorList' in self.input_data:
             self._b_factor_list = self.decoder.decode_array(self.input_data['bFactorList'])
             if self.truncated:
-                return self._b_factor_list[:self.num_atoms]
-            else:
-                return self._b_factor_list
+                self._b_factor_list = self._b_factor_list[:self.num_atoms]
+            return self._b_factor_list
         else:
             return None
 
@@ -200,9 +195,8 @@ class MmtfStructure(object):
         elif 'atomIdList' in self.input_data:
             self._atom_id_list = self.decoder.decode_array(self.input_data['atomIdList'])
             if self.truncated:
-                return self._atom_id_list[:self.num_atoms]
-            else:
-                return self._atom_id_list
+                self._atom_id_list = self._atom_id_list[:self.num_atoms]
+            return self._atom_id_list
         else:
             return None
 
@@ -213,9 +207,8 @@ class MmtfStructure(object):
         elif 'altLocList' in self.input_data:
             self._alt_loc_list = self.decoder.decode_array(self.input_data['altLocList'])
             if self.truncated:
-                return self._alt_loc_list[:self.num_atoms]
-            else:
-                return self._alt_loc_list
+                self._alt_loc_list = self._alt_loc_list[:self.num_atoms]
+            return self._alt_loc_list
         else:
             return None
 
@@ -226,9 +219,8 @@ class MmtfStructure(object):
         elif 'groupIdList' in self.input_data:
             self._group_id_list = self.decoder.decode_array(self.input_data['groupIdList'])
             if self.truncated:
-                return self._group_id_list[:self.num_groups]
-            else:
-                return self._group_id_list
+                self._group_id_list = self._group_id_list[:self.num_groups]
+            return self._group_id_list
         else:
             return None
 
@@ -240,9 +232,7 @@ class MmtfStructure(object):
             self._group_type_list = self.decoder.decode_array(self.input_data['groupTypeList'])
             if self.truncated:
                 self._group_type_list = self._group_type_list[:self.num_groups]
-                return self._group_type_list
-            else:
-                return self._group_type_list
+            return self._group_type_list
         else:
             return None
 
@@ -253,9 +243,8 @@ class MmtfStructure(object):
         elif 'secStructList' in self.input_data:
             self._sec_struct_list = self.decoder.decode_array(self.input_data['secStructList'])
             if self.truncated:
-                return self._sec_struct_list[:self.num_groups]
-            else:
-                return self._sec_struct_list
+                self._sec_struct_list = self._sec_struct_list[:self.num_groups]
+            return self._sec_struct_list
         else:
             return None
 
@@ -266,9 +255,8 @@ class MmtfStructure(object):
         elif 'insCodeList' in self.input_data:
             self._ins_code_list = self.decoder.decode_array(self.input_data['insCodeList'])
             if self.truncated:
-                return self._ins_code_list[:self.num_groups]
-            else:
-                return self._ins_code_list
+                self._ins_code_list = self._ins_code_list[:self.num_groups]
+            return self._ins_code_list
         else:
             return None
 
@@ -279,9 +267,8 @@ class MmtfStructure(object):
         elif 'sequenceIndexList' in self.input_data:
             self._sequence_index_list = self.decoder.decode_array(self.input_data['sequenceIndexList'])
             if self.truncated:
-                return self._sequence_index_list[:self.num_groups]
-            else:
-                return self._sequence_index_list
+                self._sequence_index_list = self._sequence_index_list[:self.num_groups]
+            return self._sequence_index_list
         else:
             return None
 
@@ -292,9 +279,8 @@ class MmtfStructure(object):
         elif 'chainIdList' in self.input_data:
             self._chain_id_list = self.decoder.decode_array(self.input_data['chainIdList'])
             if self.truncated:
-                return self._chain_id_list[:self.num_chains]
-            else:
-                return self._chain_id_list
+                self._chain_id_list = self._chain_id_list[:self.num_chains]
+            return self._chain_id_list
         else:
             return None
 
@@ -305,9 +291,8 @@ class MmtfStructure(object):
         elif 'chainNameList' in self.input_data:
             self._chain_name_list = self.decoder.decode_array(self.input_data['chainNameList'])
             if self.truncated:
-                return self._chain_name_list[:self.num_chains]
-            else:
-                return self._chain_name_list
+                self._chain_name_list = self._chain_name_list[:self.num_chains]
+            return self._chain_name_list
         else:
             return None
 
