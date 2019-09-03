@@ -231,9 +231,9 @@ class MmtfStructure(object):
         elif 'groupTypeList' in self.input_data:
             self._group_type_list = self.decoder.decode_array(self.input_data['groupTypeList'])
             if self.truncated:
-                print("1-group_type_list", len(self._group_type_list))
+                print("1-group_type_list", len(self._group_type_list), self.num_groups)
                 self._group_type_list = self._group_type_list[:self.num_groups]
-                print("2-group_type_list", len(self._group_type_list))
+                print("2-group_type_list", len(self._group_type_list), self.num_groups)
 
             return self._group_type_list
         else:
@@ -646,6 +646,7 @@ class MmtfStructure(object):
 
         if self.groupToAtomIndices is None:
 
+            self._group_type_list = self.decoder.decode_array(self.input_data['groupTypeList'])
             self.groupToAtomIndices = np.empty(self.num_groups + 1, dtype=np.int32)
             self.chainToAtomIndices = np.empty(self.num_chains + 1, dtype=np.int32)
             self.chainToGroupIndices = np.empty(self.num_chains + 1, dtype=np.int32)
@@ -683,6 +684,7 @@ class MmtfStructure(object):
             self.modelToChainIndices[self.num_models] = chainCount
 
             if self.truncated:
+                self._group_type_list = self._group_type_list[:groupCount]
                 self.groupToAtomIndices = self.groupToAtomIndices[:groupCount + 1]
                 self.chainToAtomIndices = self.chainToAtomIndices[:chainCount + 1]
                 self.chainToGroupIndices = self.chainToGroupIndices[:chainCount + 1]
