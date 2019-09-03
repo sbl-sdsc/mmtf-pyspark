@@ -239,7 +239,8 @@ class MmtfStructure(object):
         elif 'groupTypeList' in self.input_data:
             self._group_type_list = self.decoder.decode_array(self.input_data['groupTypeList'])
             if self.truncated:
-                return self._group_type_list[:self.num_groups]
+                self._group_type_list = self._group_type_list[:self.num_groups]
+                return self._group_type_list
             else:
                 return self._group_type_list
         else:
@@ -593,6 +594,8 @@ class MmtfStructure(object):
     def calc_core_group_data_new(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements is None:
+            if self.num_atoms == 0:
+                print(self.structure_id, "num atom = 0")
             self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
