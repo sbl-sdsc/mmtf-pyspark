@@ -12,7 +12,6 @@ __status__ = "Done"
 
 import numpy as np
 import pandas as pd
-from numba import jit
 from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec
 
 
@@ -137,6 +136,7 @@ class MmtfStructure(object):
             self._occupancy_list = self.decoder.decode_array(self.input_data['occupancyList'])
             if self.truncated:
                 self._occupancy_list = self._occupancy_list[:self.num_atoms]
+
             return self._occupancy_list
         else:
             return None
@@ -148,6 +148,7 @@ class MmtfStructure(object):
             self._x_coord_list = self.decoder.decode_array(self.input_data['xCoordList'])
             if self.truncated:
                 self._x_coord_list = self._x_coord_list[:self.num_atoms]
+
             return self._x_coord_list
         else:
             return None
@@ -160,6 +161,7 @@ class MmtfStructure(object):
             self._y_coord_list = self.decoder.decode_array(self.input_data['yCoordList'])
             if self.truncated:
                 self._y_coord_list = self._y_coord_list[:self.num_atoms]
+
             return self._y_coord_list
         else:
             return None
@@ -172,6 +174,7 @@ class MmtfStructure(object):
             self._z_coord_list = self.decoder.decode_array(self.input_data['zCoordList'])
             if self.truncated:
                 self._z_coord_list = self._z_coord_list[:self.num_atoms]
+
             return self._z_coord_list
         else:
             return None
@@ -184,6 +187,7 @@ class MmtfStructure(object):
             self._b_factor_list = self.decoder.decode_array(self.input_data['bFactorList'])
             if self.truncated:
                 self._b_factor_list = self._b_factor_list[:self.num_atoms]
+
             return self._b_factor_list
         else:
             return None
@@ -196,6 +200,7 @@ class MmtfStructure(object):
             self._atom_id_list = self.decoder.decode_array(self.input_data['atomIdList'])
             if self.truncated:
                 self._atom_id_list = self._atom_id_list[:self.num_atoms]
+
             return self._atom_id_list
         else:
             return None
@@ -208,6 +213,7 @@ class MmtfStructure(object):
             self._alt_loc_list = self.decoder.decode_array(self.input_data['altLocList'])
             if self.truncated:
                 self._alt_loc_list = self._alt_loc_list[:self.num_atoms]
+
             return self._alt_loc_list
         else:
             return None
@@ -220,6 +226,7 @@ class MmtfStructure(object):
             self._group_id_list = self.decoder.decode_array(self.input_data['groupIdList'])
             if self.truncated:
                 self._group_id_list = self._group_id_list[:self.num_groups]
+
             return self._group_id_list
         else:
             return None
@@ -231,9 +238,7 @@ class MmtfStructure(object):
         elif 'groupTypeList' in self.input_data:
             self._group_type_list = self.decoder.decode_array(self.input_data['groupTypeList'])
             if self.truncated:
-                print("1-group_type_list", len(self._group_type_list), self.num_groups)
                 self._group_type_list = self._group_type_list[:self.num_groups]
-                print("2-group_type_list", len(self._group_type_list), self.num_groups)
 
             return self._group_type_list
         else:
@@ -247,6 +252,7 @@ class MmtfStructure(object):
             self._sec_struct_list = self.decoder.decode_array(self.input_data['secStructList'])
             if self.truncated:
                 self._sec_struct_list = self._sec_struct_list[:self.num_groups]
+
             return self._sec_struct_list
         else:
             return None
@@ -259,6 +265,7 @@ class MmtfStructure(object):
             self._ins_code_list = self.decoder.decode_array(self.input_data['insCodeList'])
             if self.truncated:
                 self._ins_code_list = self._ins_code_list[:self.num_groups]
+
             return self._ins_code_list
         else:
             return None
@@ -271,6 +278,7 @@ class MmtfStructure(object):
             self._sequence_index_list = self.decoder.decode_array(self.input_data['sequenceIndexList'])
             if self.truncated:
                 self._sequence_index_list = self._sequence_index_list[:self.num_groups]
+
             return self._sequence_index_list
         else:
             return None
@@ -283,6 +291,7 @@ class MmtfStructure(object):
             self._chain_id_list = self.decoder.decode_array(self.input_data['chainIdList'])
             if self.truncated:
                 self._chain_id_list = self._chain_id_list[:self.num_chains]
+
             return self._chain_id_list
         else:
             return None
@@ -295,6 +304,7 @@ class MmtfStructure(object):
             self._chain_name_list = self.decoder.decode_array(self.input_data['chainNameList'])
             if self.truncated:
                 self._chain_name_list = self._chain_name_list[:self.num_chains]
+                
             return self._chain_name_list
         else:
             return None
@@ -520,7 +530,7 @@ class MmtfStructure(object):
     def to_pandas(self, add_cols=None, use_categories=False, multi_index=False):
         if self.df is None:
             # pre-calculate required group-level data for efficiency
-            self.calc_core_group_data()
+            self.calc_core_group_data_old()
 
             # default columns
             cols = {'chain_name': self.chain_names,
@@ -579,7 +589,6 @@ class MmtfStructure(object):
 
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
 
-    @jit
     def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements is None:
@@ -611,7 +620,6 @@ class MmtfStructure(object):
                 start = end
                 i = i + 1
 
- #   @jit
     def calc_core_group_data_old(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
                 or self._elements in None:
