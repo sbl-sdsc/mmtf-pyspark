@@ -233,9 +233,8 @@ class MmtfStructure(object):
             if self.truncated:
                 print("1-group_type_list", len(self._group_type_list))
                 self._group_type_list = self._group_type_list[:self.num_groups]
+                print("2-group_type_list", len(self._group_type_list))
 
-            print("2-group_type_list", len(self._group_type_list))
-                
             return self._group_type_list
         else:
             return None
