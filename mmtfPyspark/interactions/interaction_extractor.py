@@ -223,9 +223,10 @@ class LigandInteractionFingerprint:
         # Apply ligand mask to ligand data
         c_ligand = c[lig]
 
-        print("group numbers:", group_numbers)
+        print("group numbers:", group_numbers.tolist())
+        print("lig flags:", lig.tolist())
         lg = group_names[lig]
-        print("ligand group numbers", lg)
+        print("ligand group numbers", lg.tolist())
         ln = group_numbers[lig]
         la = atom_names[lig]
         lc = chain_names[lig]
