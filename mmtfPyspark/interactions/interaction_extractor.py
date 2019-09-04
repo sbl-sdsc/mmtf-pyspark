@@ -220,7 +220,10 @@ class LigandInteractionFingerprint:
         c = np.stack((structure.x_coord_list, structure.y_coord_list, structure.z_coord_list), axis=-1)
         # Apply ligand mask to ligand data
         c_ligand = c[lig]
+
+        print("group numbers:", group_numbers)
         lg = group_names[lig]
+        print("ligand group numbers", lg)
         ln = group_numbers[lig]
         la = atom_names[lig]
         lc = chain_names[lig]
