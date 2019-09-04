@@ -554,6 +554,11 @@ class MmtfStructure(object):
 
         return self.df
 
+    def to_custom_pandas(self, cols=None):
+        columns = {c: getattr(self, c + 's') for c in cols}
+
+        return pd.DataFrame(columns)
+
     def entities_to_pandas(self):
         data = []
         for entity_id, entity in enumerate(self.entity_list):
