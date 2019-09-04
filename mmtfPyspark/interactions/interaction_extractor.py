@@ -162,20 +162,23 @@ class LigandInteractionFingerprint:
         structure_id = t[0]
         structure = t[1]
 
-        arrays = ColumnarStructure(structure, True)
+        #arrays = ColumnarStructure(structure, True)
 
         # Apply query (ligand) filter
-        group_names = arrays.get_group_names()
+        #group_names = arrays.get_group_names()
+        group_names = structure.group_names
         qg = self.filter.is_query_group_np(group_names)
         if np.count_nonzero(qg) == 0:
             return []
 
-        elements = arrays.get_elements()
+        #elements = arrays.get_elements()
+        elements = structure.elements
         qe = self.filter.is_query_element_np(elements)
         if np.count_nonzero(qe) == 0:
             return []
 
-        atom_names = arrays.get_atom_names()
+        #atom_names = arrays.get_atom_names()
+        atom_names = structure.atom_names
         qa = self.filter.is_query_atom_name_np(atom_names)
         if np.count_nonzero(qa) == 0:
             return []
@@ -183,7 +186,8 @@ class LigandInteractionFingerprint:
         ### filter prohibited groups??
 
         # Create mask for polymer atoms
-        polymer = arrays.is_polymer()
+        #polymer = arrays.is_polymer()
+        polymer = structure.polymer
 
         # Create mask for ligand atoms
         lig = ~polymer & qg & qe & qa
@@ -200,15 +204,19 @@ class LigandInteractionFingerprint:
         if np.count_nonzero(poly) == 0:
             return []
 
-        chain_names = arrays.get_chain_names()
-        group_numbers = arrays.get_group_numbers()
-        entity_indices = arrays.get_entity_indices()
-        sequence_positions = arrays.get_sequence_positions()
+        #chain_names = arrays.get_chain_names()
+        #group_numbers = arrays.get_group_numbers()
+        #entity_indices = arrays.get_entity_indices()
+        #sequence_positions = arrays.get_sequence_positions()
+        chain_names = structure.chain_names
+        group_numbers = structure.group_numbers
+        entity_indices = structure.entity_indices
+        sequence_positions = structure.sequence_positions
 
         # Stack coordinates into an nx3 array
         # TODO add this to ColumnarStructure
-        c = np.stack((arrays.get_x_coords(), arrays.get_y_coords(), arrays.get_z_coords()), axis=-1)
-
+        #c = np.stack((arrays.get_x_coords(), arrays.get_y_coords(), arrays.get_z_coords()), axis=-1)
+        c = np.stack((structure.get_x_coord_list, structure.get_y_coord_list, structure.get_z_coords_list), axis=-1)
         # Apply ligand mask to ligand data
         c_ligand = c[lig]
         lg = group_names[lig]
