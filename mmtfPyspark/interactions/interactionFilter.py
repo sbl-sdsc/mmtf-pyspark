@@ -553,7 +553,7 @@ class InteractionFilter(object):
         '''
 
         if self._queryElements is None:
-            return np.full(elements.shape, True)
+            return np.full(elements.shape, True, dtype=bool)
         else:
             inv = not self._includeQueryElements
             return np.in1d(elements, list(self._queryElements), invert=inv).reshape(elements.shape)
@@ -573,7 +573,7 @@ class InteractionFilter(object):
         '''
 
         if self._targetElements is None:
-            return np.full(elements.shape, True)
+            return np.full(elements.shape, True, dtype=bool)
         else:
             inv = not self._includeTargetElements
             return np.in1d(elements, list(self._targetElements), invert=inv).reshape(elements.shape)
@@ -593,7 +593,7 @@ class InteractionFilter(object):
 
         '''
         if self._queryGroups is None:
-            return np.full(groups.shape, True)
+            return np.full(groups.shape, True, dtype=bool)
         else:
             inv = not self._includeQueryGroups
             return np.in1d(groups, list(self._queryGroups), invert=inv).reshape(groups.shape)
@@ -613,7 +613,7 @@ class InteractionFilter(object):
         '''
 
         if self._targetGroups is None:
-            return np.full(groups.shape, True)
+            return np.full(groups.shape, True, dtype=bool)
         else:
             inv = not self._includeTargetGroups
             return np.in1d(groups, list(self._targetGroups), invert=inv).reshape(groups.shape)
@@ -633,7 +633,7 @@ class InteractionFilter(object):
         '''
 
         if self._queryAtomNames is None:
-            return np.full(atomNames.shape, True)
+            return np.full(atomNames.shape, True, dtype=bool)
         else:
             inv = not self._includeQueryAtomNames
             return np.in1d(atomNames, list(self._queryAtomNames), invert=inv).reshape(atomNames.shape)
@@ -654,7 +654,7 @@ class InteractionFilter(object):
         '''
 
         if self._targetAtomNames is None:
-            return np.full(atomNames.shape, True)
+            return np.full(atomNames.shape, True, dtype=bool)
         else:
             inv = not self._includeTargetAtomNames
             return np.in1d(atomNames, list(self._targetAtomNames), invert=inv).reshape(atomNames.shape)

@@ -162,17 +162,17 @@ class LigandInteractionFingerprint:
         structure_id = t[0]
         structure = t[1]
 
-        print(structure_id)
+        #print(structure_id)
         #arrays = ColumnarStructure(structure, True)
 
         # Apply query (ligand) filter
         #group_names = arrays.get_group_names()
         group_names = structure.group_names
-        print("group_names:", group_names.shape, group_names.dtype.name)
+        #print("group_names:", group_names.shape, group_names.dtype.name)
         qg = self.filter.is_query_group_np(group_names)
         if np.count_nonzero(qg) == 0:
             return []
-        print("qg:", qg.shape, qg.dtype.name)
+        #print("qg:", qg.shape, qg.dtype.name)
 
         #elements = arrays.get_elements()
         elements = structure.elements
@@ -197,7 +197,7 @@ class LigandInteractionFingerprint:
         if np.count_nonzero(lig) == 0:
             return []
 
-        print("lig:", lig.shape, lig.dtype.name)
+        #print("lig:", lig.shape, lig.dtype.name)
 
         # Apply target (polymer) filter
         tg = self.filter.is_target_group_np(group_names)
@@ -225,10 +225,10 @@ class LigandInteractionFingerprint:
         # Apply ligand mask to ligand data
         c_ligand = c[lig]
 
-        print("group numbers:", group_numbers.shape[0], group_numbers.tolist())
-        print("lig flags:", lig.shape[0], lig.tolist())
+        #print("group numbers:", group_numbers.shape[0], group_numbers.tolist())
+        #print("lig flags:", lig.shape[0], lig.tolist())
         lg = group_names[lig]
-        print("ligand group numbers", lg.tolist())
+        #print("ligand group numbers", lg.tolist())
         ln = group_numbers[lig]
         la = atom_names[lig]
         lc = chain_names[lig]
