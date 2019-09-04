@@ -168,11 +168,11 @@ class LigandInteractionFingerprint:
         # Apply query (ligand) filter
         #group_names = arrays.get_group_names()
         group_names = structure.group_names
-        print("length group_names:", len(group_names))
+        print("group_names:", group_names.shape, group_names.dtype.name)
         qg = self.filter.is_query_group_np(group_names)
         if np.count_nonzero(qg) == 0:
             return []
-        print("length qg:", len(qg))
+        print("qg:", qg.shape, qg.dtype.name)
 
         #elements = arrays.get_elements()
         elements = structure.elements
@@ -196,6 +196,8 @@ class LigandInteractionFingerprint:
         lig = ~polymer & qg & qe & qa
         if np.count_nonzero(lig) == 0:
             return []
+
+        print("lig:", lig.shape, lig.dtype.name)
 
         # Apply target (polymer) filter
         tg = self.filter.is_target_group_np(group_names)
@@ -223,8 +225,8 @@ class LigandInteractionFingerprint:
         # Apply ligand mask to ligand data
         c_ligand = c[lig]
 
-        print("group numbers:", group_numbers.tolist())
-        print("lig flags:", lig.tolist())
+        print("group numbers:", group_numbers.shape[0], group_numbers.tolist())
+        print("lig flags:", lig.shape[0], lig.tolist())
         lg = group_names[lig]
         print("ligand group numbers", lg.tolist())
         ln = group_numbers[lig]
