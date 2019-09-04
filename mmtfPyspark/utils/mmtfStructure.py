@@ -367,19 +367,6 @@ class MmtfStructure(object):
         return self._group_numbers
 
     @property
-    def group_names_old(self):
-        if self._group_names is None:
-            self._group_names = np.empty(self.num_atoms, dtype=np.object)
-
-            for i in range(self.num_groups):
-                start = self.groupToAtomIndices[i]
-                end = self.groupToAtomIndices[i + 1]
-                index = self.group_type_list[i]
-                self._group_names[start:end] = self.group_list[index]['groupName']
-
-        return self._group_names
-
-    @property
     def group_names(self):
         if self._group_names is None:
             self._group_names = np.empty(self.num_atoms, dtype=np.object)
@@ -392,19 +379,6 @@ class MmtfStructure(object):
                 start = end
 
         return self._group_names
-
-    @property
-    def atom_names_old(self):
-        if self._atom_names is None:
-            self._atom_names = np.empty(self.num_atoms, dtype=np.object)
-
-            for i in range(self.num_groups):
-                start = self.groupToAtomIndices[i]
-                end = self.groupToAtomIndices[i + 1]
-                index = self.group_type_list[i]
-                self._atom_names[start:end] = self.group_list[index]['atomNameList']
-
-        return self._atom_names
 
     @property
     def atom_names(self):
@@ -421,27 +395,6 @@ class MmtfStructure(object):
         return self._atom_names
 
     @property
-    def elements_old(self):
-        if self._elements is None:
-            self._elements = np.empty(self.num_atoms, dtype=np.object)
-
-            for i in range(self.num_groups):
-                start = self.groupToAtomIndices[i]
-                end = self.groupToAtomIndices[i + 1]
-                index = self.group_type_list[i]
-                self._elements[start:end] = self.group_list[index]['elementList']
-
-        return self._elements
-
-    @property
-    def elements_hstack(self):
-        if self._elements is None:
-            # this method is slower
-            self._elements = np.hstack(self.group_list[index]['elementList'] for index in self.group_type_list)
-
-        return self._elements
-
-    @property
     def elements(self):
         if self._elements is None:
             self._elements = np.empty(self.num_atoms, dtype=np.object)
@@ -453,12 +406,12 @@ class MmtfStructure(object):
                 self._elements[start:end] = gl
                 start = end
 
-
+        return self._elements
 
     @property
     def chem_comp_types(self):
         if self._chem_comp_types is None:
-            self._chem_comp_types = np.empty(self.num_atoms, dtype=np.object)
+            self._chem_comp_types = np.empty(self.num_atoms, dtype=np.object_)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -471,7 +424,7 @@ class MmtfStructure(object):
     @property
     def code(self):
         if self._code is None:
-            self._code = np.empty(self.num_atoms, dtype=np.object)
+            self._code = np.empty(self.num_atoms, dtype=np.object_)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
@@ -509,7 +462,7 @@ class MmtfStructure(object):
     @property
     def entity_types(self):
         if self._entity_type is None:
-            self._entity_type = np.empty(self.num_atoms, dtype=np.object)
+            self._entity_type = np.empty(self.num_atoms, dtype=np.object_)
 
             for i in range(self.num_chains):
                 start = self.chainToAtomIndices[i]
@@ -626,10 +579,6 @@ class MmtfStructure(object):
             self._group_names = np.empty(self.num_atoms, dtype=np.object_)
             self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
             self._elements = np.empty(self.num_atoms, dtype=np.object_)
-            # self._group_numbers = np.empty(self.num_atoms, dtype=np.object)
-            # self._group_names = np.empty(self.num_atoms, dtype='<U3')
-            # self._atom_names = np.empty(self.num_atoms, dtype='<U4')
-            # self._elements = np.empty(self.num_atoms, dtype='<U2')
 
             start = 0
             i = 0
@@ -651,33 +600,6 @@ class MmtfStructure(object):
 
                 start = end
                 i = i + 1
-
-    def calc_core_group_data_old(self):
-        if self._group_numbers is None or self._group_names is None or self._atom_names is None \
-                or self._elements in None:
-            codec, length, param, in_array = self.decoder.parse_header(self.input_data['insCodeList'])
-            no_ins_code = len(in_array) == 8
-            self._group_numbers = np.empty(self.num_atoms, dtype=np.object_)
-            self._group_names = np.empty(self.num_atoms, dtype=np.object_)
-            self._atom_names = np.empty(self.num_atoms, dtype=np.object_)
-            self._elements = np.empty(self.num_atoms, dtype=np.object_)
-
-            for i in range(self.num_groups):
-                start = self.groupToAtomIndices[i]
-                end = self.groupToAtomIndices[i + 1]
-                if no_ins_code:
-                     # default length when there are no insertion codes
-                     self._group_numbers[start:end] = str(self.group_id_list[i])
-                else:
-                    # numba cannot handle the following line
-                    #self._group_numbers[start:end] = f'{self.group_id_list[i]}{self.ins_code_list[i]}'
-                    self._group_numbers[start:end] = str(self.group_id_list[i]) + self.ins_code_list[i]
-
-                index = self.group_type_list[i]
-                group = self.group_list[index]
-                self._group_names[start:end] = group['groupName']
-                self._atom_names[start:end] = group['atomNameList']
-                self._elements[start:end] = group['elementList']
 
     def calc_indices(self):
 
