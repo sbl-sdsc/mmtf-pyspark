@@ -216,7 +216,7 @@ class LigandInteractionFingerprint:
         # Stack coordinates into an nx3 array
         # TODO add this to ColumnarStructure
         #c = np.stack((arrays.get_x_coords(), arrays.get_y_coords(), arrays.get_z_coords()), axis=-1)
-        c = np.stack((structure.get_x_coord_list, structure.get_y_coord_list, structure.get_z_coords_list), axis=-1)
+        c = np.stack((structure.x_coord_list, structure.y_coord_list, structure.z_coords_list), axis=-1)
         # Apply ligand mask to ligand data
         c_ligand = c[lig]
         lg = group_names[lig]
