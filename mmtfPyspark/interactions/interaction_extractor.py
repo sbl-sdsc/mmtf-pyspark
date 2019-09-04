@@ -168,9 +168,11 @@ class LigandInteractionFingerprint:
         # Apply query (ligand) filter
         #group_names = arrays.get_group_names()
         group_names = structure.group_names
+        print("length group_names:", len(group_names))
         qg = self.filter.is_query_group_np(group_names)
         if np.count_nonzero(qg) == 0:
             return []
+        print("length qg:", len(qg))
 
         #elements = arrays.get_elements()
         elements = structure.elements
