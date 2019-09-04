@@ -371,12 +371,11 @@ class MmtfStructure(object):
         if self._group_names is None:
             self._group_names = np.empty(self.num_atoms, dtype=np.object)
 
-            start = 0
-            for index in self.group_type_list:
-                gl = self.group_list[index]['groupName']
-                end = start + len(gl)
-                self._group_names[start:end] = gl
-                start = end
+            for i in range(self.num_groups):
+                start = self.groupToAtomIndices[i]
+                end = self.groupToAtomIndices[i + 1]
+                index = self.group_type_list[i]
+                self._group_names[start:end] = self.group_list[index]['groupName']
 
         return self._group_names
 
