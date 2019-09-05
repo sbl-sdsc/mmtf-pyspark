@@ -115,6 +115,10 @@ class InteractionExtractorPd(object):
         schema = StructType(fields)
         return schema
 
+    @staticmethod
+    def get_columns(structure, query):
+        atom_cols = [*structure.atom_cols]
+
 
 class AsymmetricUnitInteractions:
 
@@ -214,6 +218,29 @@ class BioAssemblyInteractions:
 
         #structure = ColumnarStructure(t[1])
         structure = t[1]
+
+        # pre-screening
+        col_names = set()
+        if self.query is not None:
+            col_names.add(structure.atom_column_names_from_string(self.query))
+        if self.target is not None:
+            col_names.add(structure.atom_column_names_from_string(self.target))
+
+        tmp_df = structure.to_atom_pandas(list(col_names))
+
+        # Apply query filter
+        if self.query is not None:
+            q = tmp_df.query(self.query)
+
+        if q is None or q.shape[0] == 0:
+            return []
+
+        if self.target is not None:
+            t = tmp_df.query(self.target)
+
+        if t is None or t.shape[0] == 0:
+            return []
+
 
         # Get a pandas dataframe representation of the structure
         df = structure.to_pandas()

@@ -12,6 +12,7 @@ __status__ = "Done"
 
 import numpy as np
 import pandas as pd
+import re
 from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec
 
 
@@ -128,6 +129,15 @@ class MmtfStructure(object):
     def atom_column_names(self):
         """ Return names of atom columns for pandas """
         return [*self.atom_cols]
+
+    def atom_column_names_from_string(self, string):
+        """ Returns atom column names in string"""
+        cols = set()
+        for col_name in self.atom_column_names():
+            for item in re.split('[^a-zA-Z_]', string):
+                if col_name == item:
+                    cols.add(col_name)
+        return cols
 
     @property
     def bond_atom_list(self):
