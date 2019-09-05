@@ -562,17 +562,17 @@ class MmtfStructure(object):
                     'element': self.elements,
                     'polymer': self.polymer}
 
-            if add_cols is not None:
-                if 'code' in add_cols:
-                    cols.update({'code': self.code})
-                if 'sequence_position' in add_cols:
-                    cols.update({'sequence_position': self.sequence_positions})
-                if 'chem_comp_type' in add_cols:
-                    cols.update({'chem_comp_type': self.chem_comp_types})
-                if 'entity_index' in add_cols:
-                    cols.update({'entity_index': self.entity_indices})
-                if 'entity_type' in add_cols:
-                    cols.update({'entity_type': self.entity_types})
+            # if add_cols is not None:
+            #     if 'code' in add_cols:
+            #         cols.update({'code': self.code})
+            #     if 'sequence_position' in add_cols:
+            #         cols.update({'sequence_position': self.sequence_positions})
+            #     if 'chem_comp_type' in add_cols:
+            #         cols.update({'chem_comp_type': self.chem_comp_types})
+            #     if 'entity_index' in add_cols:
+            #         cols.update({'entity_index': self.entity_indices})
+            #     if 'entity_type' in add_cols:
+            #         cols.update({'entity_type': self.entity_types})
 
             self.df = pd.DataFrame(cols)
 
@@ -591,7 +591,6 @@ class MmtfStructure(object):
 
     def to_atom_pandas(self, cols):
         """ Return a pandas dataframe with the specified atom column names"""
-        print("to_atom_pandas", cols)
         columns = {c: getattr(self, self.atom_cols.get(c)) for c in cols}
 
         return pd.DataFrame(columns)
