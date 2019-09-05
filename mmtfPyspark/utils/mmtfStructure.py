@@ -546,21 +546,24 @@ class MmtfStructure(object):
         if self.df is None:
             # pre-calculate required group-level data for efficiency
             self.calc_core_group_data()
+            cols = self.atom_column_names()[:13]
+            if add_cols is not None:
+                cols += add_cols
 
             # default columns
-            cols = {'chain_name': self.chain_names,
-                    'chain_id': self.chain_ids,
-                    'group_number': self.group_numbers,
-                    'group_name': self.group_names,
-                    'atom_name': self.atom_names,
-                    'altloc': self.alt_loc_list,
-                    'x': self.x_coord_list,
-                    'y': self.y_coord_list,
-                    'z': self.z_coord_list,
-                    'o': self.occupancy_list,
-                    'b': self.b_factor_list,
-                    'element': self.elements,
-                    'polymer': self.polymer}
+            # cols = {'chain_name': self.chain_names,
+            #         'chain_id': self.chain_ids,
+            #         'group_number': self.group_numbers,
+            #         'group_name': self.group_names,
+            #         'atom_name': self.atom_names,
+            #         'altloc': self.alt_loc_list,
+            #         'x': self.x_coord_list,
+            #         'y': self.y_coord_list,
+            #         'z': self.z_coord_list,
+            #         'o': self.occupancy_list,
+            #         'b': self.b_factor_list,
+            #         'element': self.elements,
+            #         'polymer': self.polymer}
 
             # if add_cols is not None:
             #     if 'code' in add_cols:
@@ -574,7 +577,8 @@ class MmtfStructure(object):
             #     if 'entity_type' in add_cols:
             #         cols.update({'entity_type': self.entity_types})
 
-            self.df = pd.DataFrame(cols)
+            #self.df = pd.DataFrame(cols)
+            self.df = self.to_atom_pandas(cols)
 
             if use_categories:
                 self.df['chain_name'] = self.df['chain_name'].astype('category')
@@ -589,7 +593,7 @@ class MmtfStructure(object):
 
         return self.df
 
-    def to_atom_pandas(self, cols):
+    def to_atom_pandas(self, cols=None):
         """ Return a pandas dataframe with the specified atom column names"""
         columns = {c: getattr(self, self.atom_cols.get(c)) for c in cols}
 
