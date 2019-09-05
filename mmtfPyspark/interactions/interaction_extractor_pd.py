@@ -141,9 +141,9 @@ class AsymmetricUnitInteractions:
         # pre-screening
         col_names = set()
         if self.query is not None:
-            col_names.add(structure.atom_column_names_from_string(self.query))
+            col_names.union(structure.atom_column_names_from_string(self.query))
         if self.target is not None:
-            col_names.add(structure.atom_column_names_from_string(self.target))
+            col_names.union(structure.atom_column_names_from_string(self.target))
 
         tmp_df = structure.to_atom_pandas(list(col_names))
 
