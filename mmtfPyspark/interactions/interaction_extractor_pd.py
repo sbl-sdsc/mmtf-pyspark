@@ -141,10 +141,10 @@ class AsymmetricUnitInteractions:
         # pre-screening
         col_names = set()
         if self.query is not None:
-            col_names.union(structure.atom_column_names_from_string(self.query))
+            col_names.update(structure.atom_column_names_from_string(self.query))
             print("query:", structure.atom_column_names_from_string(self.query))
         if self.target is not None:
-            col_names.union(structure.atom_column_names_from_string(self.target))
+            col_names.update(structure.atom_column_names_from_string(self.target))
             print("target:", structure.atom_column_names_from_string(self.target))
 
         print("all:", list(col_names))
