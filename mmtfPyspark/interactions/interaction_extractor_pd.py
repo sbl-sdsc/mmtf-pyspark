@@ -142,9 +142,12 @@ class AsymmetricUnitInteractions:
         col_names = set()
         if self.query is not None:
             col_names.union(structure.atom_column_names_from_string(self.query))
+            print("query:", structure.atom_column_names_from_string(self.query))
         if self.target is not None:
             col_names.union(structure.atom_column_names_from_string(self.target))
+            print("target:", structure.atom_column_names_from_string(self.target))
 
+        print("all:", list(col_names))
         tmp_df = structure.to_atom_pandas(list(col_names))
 
         # Apply query filter
