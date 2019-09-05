@@ -591,6 +591,7 @@ class MmtfStructure(object):
 
     def to_atom_pandas(self, cols):
         """ Return a pandas dataframe with the specified atom column names"""
+        print("to_atom_pandas", cols)
         columns = {c: getattr(self, self.atom_cols.get(c)) for c in cols}
 
         return pd.DataFrame(columns)
