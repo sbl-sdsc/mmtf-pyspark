@@ -70,7 +70,7 @@ class MmtfStructure(object):
         self._atom_names = None
         self._elements = None
         self._chem_comp_types = None
-        self._code = None
+        self._codes = None
         self._polymer = None
         self._entity_type = None
         self._entity_indices = None
@@ -103,6 +103,31 @@ class MmtfStructure(object):
         # dataframes
         self.df = None
 
+        self.atom_cols = {'chain_name': 'chain_names',
+                          'chain_id': 'chain_ids',
+                          'group_number': 'group_numbers',
+                          'group_name': 'group_names',
+                          'atom_name': 'atom_names',
+                          'altloc': 'alt_loc_list',
+                          'x': 'x_coord_list',
+                          'y': 'y_coord_list',
+                          'z': 'z_coord_list',
+                          'o': 'occupancy_list',
+                          'b': 'b_factor_list',
+                          'element': 'elements',
+                          'polymer': 'polymer',
+                          'atom_id': 'atom_id_list',
+                          'group_id:': 'group_ids',
+                          'chem_comp_type': 'chem_comp_type',
+                          'code': 'codes',
+                          'group_serial': 'group_serials',
+                          'entity_type': 'entity_type',
+                          'entity_index': 'entity_indices',
+                          'sequence_position': 'sequence_positions'}
+
+    def atom_column_names(self):
+        """ Return names of atom columns for pandas """
+        return [*self.atom_cols]
 
     @property
     def bond_atom_list(self):
@@ -421,17 +446,17 @@ class MmtfStructure(object):
         return self._chem_comp_types
 
     @property
-    def code(self):
-        if self._code is None:
-            self._code = np.empty(self.num_atoms, dtype=np.object_)
+    def codes(self):
+        if self._codes is None:
+            self._codes = np.empty(self.num_atoms, dtype=np.object_)
 
             for i in range(self.num_groups):
                 start = self.groupToAtomIndices[i]
                 end = self.groupToAtomIndices[i + 1]
                 index = self.group_type_list[i]
-                self._code[start:end] = self.group_list[index]['singleLetterCode']
+                self._codes[start:end] = self.group_list[index]['singleLetterCode']
 
-        return self._chem_comp_types
+        return self._codes
 
     @property
     def group_serial(self):
@@ -554,8 +579,9 @@ class MmtfStructure(object):
 
         return self.df
 
-    def to_custom_pandas(self, cols=None):
-        columns = {c: getattr(self, c + 's') for c in cols}
+    def to_atom_pandas(self, cols):
+        """ Return a pandas dataframe with the specified atom column names"""
+        columns = {c: getattr(self, self.atom_cols.get(c)) for c in cols}
 
         return pd.DataFrame(columns)
 
