@@ -13,10 +13,10 @@ __status__ = "Done"
 import numpy as np
 import pandas as pd
 import re
-from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec
+from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec, AbstractStructure
 
 
-class MmtfStructure(object):
+class MmtfStructure(AbstractStructure):
 
     def __init__(self, input_data, first_model=False):
         """Decodes a msgpack unpacked data to mmtf structure"""
@@ -599,7 +599,7 @@ class MmtfStructure(object):
 
         return pd.DataFrame(columns)
 
-    def entities_to_pandas(self):
+    def to_entity_pandas(self):
         data = []
         for entity_id, entity in enumerate(self.entity_list):
             chain_ids = set()
@@ -613,6 +613,27 @@ class MmtfStructure(object):
                 data.append([entity_id, entity['description'], entity['type'], chain_ids, entity['sequence']])
 
         return pd.DataFrame(data, columns=['entity_id', 'description', 'type', 'chain_ids', 'sequence'])
+
+    def to_structure_pandas(self):
+        cols = {'structure_id': self.structure_id,
+                'title': self.title,
+                'experimental_methods': self.experimental_methods,
+                'resolution': self.resolution,
+                'r_free': self.r_free,
+                'r_work': self.r_work,
+                'unit_cell': self.unit_cell,
+                'space_group': self.space_group,
+                'deposition_date': self.deposition_date,
+                'release_date': self.release_date,
+                'num_atoms': self.num_atoms,
+                'num_bonds': self.num_bonds,
+                'num_groups':  self.num_groups,
+                'num_chains': self.num_chains,
+                'num_models': self._num_models,
+                'mmtf_version': self.mmtf_version,
+                'mmtf_producer':  self.mmtf_producer}
+
+        return pd.DataFrame(cols)
 
     def calc_core_group_data(self):
         if self._group_numbers is None or self._group_names is None or self._atom_names is None \
