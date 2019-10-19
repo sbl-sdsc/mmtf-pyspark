@@ -16,7 +16,8 @@ import re
 from mmtfPyspark.utils import mmtfDecoder, MmtfChain, MmtfModel, Codec, AbstractStructure
 
 
-class MmtfStructure(AbstractStructure):
+#class MmtfStructure(AbstractStructure):
+class MmtfStructure:
 
     def __init__(self, input_data, first_model=False):
         """Decodes a msgpack unpacked data to mmtf structure"""
