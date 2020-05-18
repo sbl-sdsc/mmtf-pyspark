@@ -486,7 +486,7 @@ class MmtfStructure(object):
                                     'o': self.occupancy_list,
                                     'b': self.b_factor_list,
                                     'element': self.elements,
-                                    'polymer:': self.polymer
+                                    'polymer': self.polymer
                                     })
             if add_cols is not None:
                 if 'sequence_position' in add_cols:
