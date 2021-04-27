@@ -1,5 +1,10 @@
 name: mmtf-pyspark 
 
+channels:
+  - conda-forge
+  - anaconda
+  - bioconda 
+
 dependencies:
   - python=3.6
   - openjdk=8.0.152
