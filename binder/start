@@ -1,5 +1,7 @@
 #!/bin/bash
-export MASTER=local[1]
-export SPARK_DRIVER_MEMORY=2G
+export MASTER=local[3]
+export SPARK_DRIVER_MEMORY=16G
+export SPARK_DRIVER_MAXRESULTSIZE=4G
+export SPARK_WORKER_MEMORY=4G
 exec "$@"
 
