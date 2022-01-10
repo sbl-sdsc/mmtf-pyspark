@@ -30,8 +30,10 @@ Binder
 
 `Binder <https://mybinder.org/>`_ is an experimental platform for reproducible research developed by `Project Jupyter <https://jupyter.org/>`_. Learn more about `Binder <https://blog.jupyter.org/mybinder-org-serves-two-million-launches-7543ae498a2a>`_. There are specific links for each notebook below, however, once Jupyter Lab is launched, navigate to any of the other notebooks using the Jupyter Lab file panel.
 
-.. image:: https://binder.pangeo.io/badge_logo.svg 
-   :target: https://binder.pangeo.io/v2/gh/sbl-sdsc/mmtf-pyspark/master?urlpath=lab 
+**NOTE:** Authentication is now required to launch binder! Sign into GitHub from your browser, then click on the `launch binder` badge below to launch Jupyter Lab.
+
+.. image:: https://aws-uswest2-binder.pangeo.io/badge_logo.svg 
+   :target: https://aws-uswest2-binder.pangeo.io/v2/gh/sbl-sdsc/mmtf-pyspark/master?urlpath=lab 
 
 CyVerse (experimental version)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -117,8 +119,8 @@ as environmental variables by running the following command:
    :target: https://mmtf.rcsb.org/v1.0/hadoopfiles/full.tar
 .. |Download MMTF Reduced| image:: http://img.shields.io/badge/download-MMTF_reduced-orange.svg?style=flat
    :target: https://mmtf.rcsb.org/v1.0/hadoopfiles/reduced.tar
-.. |Binder| image:: https://binder.pangeo.io/badge_logo.svg 
-   :target: https://binder.pangeo.io/v2/gh/sbl-sdsc/mmtf-pyspark/master?urlpath=lab
+.. |Binder| image:: https://aws-uswest2-binder.pangeo.io/badge_logo.svg 
+   :target: https://aws-uswest2-binder.pangeo.io/v2/gh/sbl-sdsc/mmtf-pyspark/master?urlpath=lab
 .. |Twitter URL| image:: https://img.shields.io/twitter/url/http/shields.io.svg?style=social
    :target: https://twitter.com/mmtf_spec
 
