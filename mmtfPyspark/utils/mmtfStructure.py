@@ -547,38 +547,11 @@ class MmtfStructure:
         if self.df is None:
             # pre-calculate required group-level data for efficiency
             self.calc_core_group_data()
+            
             cols = self.atom_column_names()[:13]
             if add_cols is not None:
                 cols += add_cols
-
-            # default columns
-            # cols = {'chain_name': self.chain_names,
-            #         'chain_id': self.chain_ids,
-            #         'group_number': self.group_numbers,
-            #         'group_name': self.group_names,
-            #         'atom_name': self.atom_names,
-            #         'altloc': self.alt_loc_list,
-            #         'x': self.x_coord_list,
-            #         'y': self.y_coord_list,
-            #         'z': self.z_coord_list,
-            #         'o': self.occupancy_list,
-            #         'b': self.b_factor_list,
-            #         'element': self.elements,
-            #         'polymer': self.polymer}
-
-            # if add_cols is not None:
-            #     if 'code' in add_cols:
-            #         cols.update({'code': self.code})
-            #     if 'sequence_position' in add_cols:
-            #         cols.update({'sequence_position': self.sequence_positions})
-            #     if 'chem_comp_type' in add_cols:
-            #         cols.update({'chem_comp_type': self.chem_comp_types})
-            #     if 'entity_index' in add_cols:
-            #         cols.update({'entity_index': self.entity_indices})
-            #     if 'entity_type' in add_cols:
-            #         cols.update({'entity_type': self.entity_types})
-
-            #self.df = pd.DataFrame(cols)
+                
             self.df = self.to_atom_pandas(cols)
 
             if use_categories:
@@ -728,7 +701,6 @@ class MmtfStructure:
 
         if self.entityChainIndex is None:
             self.entityChainIndex = np.empty(self.num_chains, dtype=np.int32)
-            # print("chain_to_entity_index: num_chains", self.num_chains)
 
             for i, entity in enumerate(self.entity_list):
 
