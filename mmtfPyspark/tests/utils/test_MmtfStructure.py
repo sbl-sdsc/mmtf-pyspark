@@ -142,6 +142,7 @@ class TestMmtfStructure(unittest.TestCase):
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
         df = structure.to_pandas()
+        print('columns', df.columns)
         self.assertEqual((4779, 13), df.shape)
 
     def test_4HHB_pandas_add_cols(self):
@@ -151,6 +152,7 @@ class TestMmtfStructure(unittest.TestCase):
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
         df = structure.to_pandas(add_cols=['sequence_position', 'chem_comp_type'])
+        print('columns', df.columns)
         self.assertEqual((4779, 15), df.shape)
 
     def test_1J6T_structure_first_model(self):

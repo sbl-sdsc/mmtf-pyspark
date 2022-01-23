@@ -4,10 +4,27 @@
 import msgpack
 import struct
 import numpy as np
-from numba import njit
+from numba import njit, jit, float32, int32, int16
 
 
 class Codec(object):
+
+    @staticmethod
+    def get_value(input_data, field_name, required=False):
+        """
+        Return an unencoded value from an MMTF data structure.
+
+        :param input_data:
+        :param field_name:
+        :param required:
+        :return:
+        """
+        if field_name in input_data:
+            return input_data[field_name]
+        elif required:
+            raise Exception('ERROR: Invalid MMTF File, field: {} is missing!'.format(field_name))
+        else:
+            return None
 
     def decode_array(self, input_array):
         """Parse the header of an input byte array and then decode using the input array,
@@ -15,9 +32,21 @@ class Codec(object):
     :param input_array: the array to be decoded
     :return the decoded array"""
 
-        codec, length, param, in_array = parse_header(input_array)
+        codec, length, param, in_array = self.parse_header(input_array)
         decode_func = getattr(self, "decode" + str(codec))
         return decode_func(in_array, length, param)
+
+    @staticmethod
+    def parse_header(input_array):
+        """Parse the header and return it along with the input array minus the header.
+        :param input_array the array to parse
+        :return the codec, the length of the decoded array, the parameter and the remainder
+        of the array"""
+        codec = struct.unpack(">i", input_array[0:4])[0]
+        length = struct.unpack(">i", input_array[4:8])[0]
+        param = struct.unpack(">i", input_array[8:12])[0]
+        # print("parse_header", codec, length, param)
+        return codec, length, param, input_array[12:]
 
     def decode2(self, in_array, length, param):
         return np.frombuffer(in_array, '>i1')
@@ -39,15 +68,7 @@ class Codec(object):
 
     def decode6(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
-        return run_length_decoder_ascii(int_array, length)
-
-    def encode6(self, in_array, param):
-        y = run_length_encode_ascii(in_array)
-        return y.byteswap().newbyteorder().tobytes()
-
-    def decode6(self, in_array, length, param):
-        int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
-        return run_length_decoder_ascii(int_array, length)
+        return run_length_decode_ascii(int_array, length)
 
     def encode6(self, in_array, param):
         y = run_length_encode_ascii(in_array)
@@ -56,6 +77,7 @@ class Codec(object):
     def decode8(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i4').byteswap().newbyteorder()
         return np.cumsum(run_length_decode(int_array, length))
+        #return run_length_decode_cumsum(int_array, length)
 
     def encode8(self, in_array, param):
         y = run_length_encode(delta(in_array))
@@ -71,7 +93,9 @@ class Codec(object):
 
     def decode10(self, in_array, length, param):
         int_array = np.frombuffer(in_array, '>i2').byteswap().newbyteorder()
-        return ri_decode(int_array, param).astype(np.float32)
+        #return ri_decode(int_array, param).astype(np.float32)
+        return ri_decode(int_array, param)
+        #return reverse_index_decode(int_array, param)
 
     def encode10(self, in_array, param):
         y = ri_encode(f2id_numba(in_array, param))
@@ -116,17 +140,28 @@ def ri_encode(int_array, max=32767, min=-32768):
     return out_arr[:i]
 
 
-@njit
-def cum_sum(x):
-    y = np.empty(x.shape[0], dtype=np.int32)
-    y[0] = x[0]
-    for i in range(1, x.shape[0]):
-        y[i] = x[i - 1] + x[i]
+# @njit
+# def cum_sum(x):
+#     y = np.empty(x.shape[0], dtype=np.float32)
+#     y[0] = x[0]
+#     for i in range(1, x.shape[0]):
+#         y[i] = x[i - 1] + x[i]
+#
+#     return y
 
-    return y
+# @njit
+# def reverse_index_decode(x, divisor):
+#     y = np.empty(x.shape[0], dtype=np.float32)
+#     y[0] = x[0]
+#     for i in range(1, x.shape[0]-1):
+#         y[i] = x[i - 1] + x[i]
+#
+#     y = y / divisor
+#     maximum = 32767
+#     minimum = -32768
+#     return y[(x != maximum) & (x != minimum)]
 
-
-@njit
+#@jit(float32[:](int16[:], int32))
 def ri_decode(x, divisor):
     """Unpack an array of integers using recursive indexing.
 
@@ -144,12 +179,17 @@ def ri_decode(x, divisor):
     """
     maximum = 32767
     minimum = -32768
-    y = np.cumsum(x) / divisor
-    #    y = cum_sum(x) / divisor
+    #y = np.cumsum(x) / divisor
+    y = np.cumsum(x, dtype=np.float32) / divisor
     return y[(x != maximum) & (x != minimum)]
 
 
-@njit
+# @jit(float32[:](int16[:]))
+# def numba_cumsum(x):
+#     return np.cumsum(x, dtype=np.float32)
+
+
+#@njit(float32[:](int32[:], int32, int32))
 def run_length_div_decode(x, n, divisor):
     """Decodes a run length encoded array and scales/converts integer values to float
 
@@ -193,6 +233,7 @@ def run_length_div_encode(x, divisor):
 
 @njit
 def delta(x):
+    # see np.ediff1d
     y = np.empty(x.shape[0], dtype=np.int32)
     y[0] = x[0]
     for i in range(1, x.shape[0]):
@@ -201,7 +242,7 @@ def delta(x):
     return y
 
 
-@njit
+#@njit(int32[:](int32[:], int32))
 def run_length_decode(x, n):
     """Decodes a run length encoded array
 
@@ -216,6 +257,44 @@ def run_length_decode(x, n):
         end = x[i + 1] + start
         y[start:end] = x[i]
         start = end
+    return y
+
+
+def run_length_decoder_np(in_array, n):
+    """Decodes a run length encoded array
+    Parameters
+    ----------
+    in_array : list
+       the input list to apply run length decoder on
+    """
+    lengths = np.array(in_array[1::2])
+    values = np.array(in_array[0::2])
+    starts = np.insert(np.array([0]), 1, np.cumsum(lengths))[:-1]
+    ends = starts + lengths
+    x = np.full(n, np.nan)
+    for l, h, v in zip(starts, ends, values):
+        x[l:h] = v
+    return x
+
+
+@njit
+def run_length_decode_cumsum(x, n):
+    """Decodes a run length encoded array
+
+    Parameters
+    ----------
+    x : encoded array of integers (value, repeat pairs)
+    n : number of element in decoded array
+    """
+    y = np.empty(n, dtype=np.int32)
+    start = 0
+    csum = 0
+    for i in range(0, x.shape[0] - 1, 2):
+        end = x[i + 1] + start
+        csum = csum + x[i]
+        y[start:end] = csum
+        start = end
+
     return y
 
 
@@ -242,8 +321,8 @@ def run_length_encode(x):
 
     return y[:count + 1]
 
-
-def run_length_decoder_ascii(x, n):
+#@jit
+def run_length_decode_ascii(x, n):
     """Decodes a run length encoded array
 
     Parameters
@@ -301,15 +380,16 @@ def encode_chain_list(in_strings):
     return out_bytes
 
 
-def parse_header(input_array):
-    """Parse the header and return it along with the input array minus the header.
-    :param input_array the array to parse
-    :return the codec, the length of the decoded array, the parameter and the remainder
-    of the array"""
-    codec = struct.unpack(">i", input_array[0:4])[0]
-    length = struct.unpack(">i", input_array[4:8])[0]
-    param = struct.unpack(">i", input_array[8:12])[0]
-    return codec, length, param, input_array[12:]
+# def parse_header(input_array):
+#     """Parse the header and return it along with the input array minus the header.
+#     :param input_array the array to parse
+#     :return the codec, the length of the decoded array, the parameter and the remainder
+#     of the array"""
+#     codec = struct.unpack(">i", input_array[0:4])[0]
+#     length = struct.unpack(">i", input_array[4:8])[0]
+#     param = struct.unpack(">i", input_array[8:12])[0]
+#     #print("parse_header", codec, length, param)
+#     return codec, length, param, input_array[12:]
 
 
 def add_header(input_array, codec, length, param):

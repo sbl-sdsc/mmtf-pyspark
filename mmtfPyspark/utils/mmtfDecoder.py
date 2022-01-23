@@ -12,7 +12,7 @@ import numpy as np
 from numba import jit
 from mmtfPyspark.utils import mmtfCodec
 
-USE_NUMBA = True
+USE_NUMBA = False
 
 #
 # Byte arrays in message pack are in big endian format, e.g. >i4.
@@ -113,15 +113,17 @@ def _decode_type_9(input_data, field_name):
 
 
 def _decode_type_10(input_data, field_name):
-    return mmtfCodec.decode_array(input_data[field_name])
-    # buffer = input_data[field_name]
-    # #int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
-    # int_array = np.frombuffer(buffer, '>i2', offset=12).byteswap().newbyteorder()
-    # divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
-    # if USE_NUMBA:
-    #     return (recursive_index_decode_jit(int_array, divisor)).astype(np.float32)
-    # else:
-    #    return (recursive_index_decode(int_array, divisor)).astype(np.float32)
+    # TODO debugging decoding error
+    return np.empty(1000, np.float32)
+    #return mmtfCodec.decode_array(input_data[field_name])
+    buffer = input_data[field_name]
+    #int_array = np.frombuffer(buffer[12:], '>i2').byteswap().newbyteorder()
+    int_array = np.frombuffer(buffer, '>i2', offset=12).byteswap().newbyteorder()
+    divisor = np.frombuffer(buffer[8:12], '>i').byteswap().newbyteorder()
+    if USE_NUMBA:
+        return (recursive_index_decode_jit(int_array, divisor)).astype(np.float32)
+    else:
+        return (recursive_index_decode(int_array, divisor)).astype(np.float32)
 
 
 def run_length_decoder(in_array, n):

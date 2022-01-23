@@ -18,18 +18,7 @@ def decode_array(input_array):
 #    return codec_dict[codec].decode(in_array, length, param)
 
 
-class Type2(object):
-    """Covert an array of floats to integers, perform delta
-    encoding and then use recursive indexing to store as 2
-    byte integers in a byte array."""
 
-    @staticmethod
-    def decode(in_array, length, param):
-        return np.frombuffer(in_array, '>i1')
-
-    @staticmethod
-    def encode(in_array, param):
-        return in_array.astype(np.int8).tobytes()
 
 @njit
 def f2id_numba(x, multiplier):
@@ -106,8 +95,9 @@ def ri_decode(x, divisor):
     """
     maximum = 32767
     minimum = -32768
-    y = np.cumsum(x) / divisor
-    #    y = cum_sum(x) / divisor
+    #y = np.cumsum(x) / divisor
+    print("ri_decode", divisor)
+    y = cum_sum(x) / divisor
     return y[(x != maximum) & (x != minimum)]
 
 
@@ -296,10 +286,7 @@ def encode_chain_list(in_strings):
     return out_bytes
 
 
-# In[14]:
-
-
-class Type10(object):
+class Type10:
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
@@ -317,7 +304,7 @@ class Type10(object):
 # In[16]:
 
 
-class Type9():
+class Type9:
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
@@ -336,7 +323,7 @@ class Type9():
 # In[17]:
 
 
-class Type8():
+class Type8:
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
@@ -355,7 +342,7 @@ class Type8():
 # In[18]:
 
 
-class Type6():
+class Type6:
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
@@ -375,7 +362,7 @@ class Type6():
 # In[19]:
 
 
-class Type5():
+class Type5:
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
@@ -392,7 +379,7 @@ class Type5():
 # In[20]:
 
 
-class Type4():
+class Type4:
     """Covert an array of floats to integers, perform delta
     encoding and then use recursive indexing to store as 2
     byte integers in a byte array."""
@@ -408,26 +395,27 @@ class Type4():
 
 # In[21]:
 
+class Type2:
+    """Covert an array of floats to integers, perform delta
+    encoding and then use recursive indexing to store as 2
+    byte integers in a byte array."""
+
+    @staticmethod
+    def decode(in_array, length, param):
+        return np.frombuffer(in_array, '>i1')
+
+    @staticmethod
+    def encode(in_array, param):
+        return in_array.astype(np.int8).tobytes()
 
 
-
-
-# In[22]:
-
-
-codec_dict = {10: Type10,
+codec_dict = {2: Type2,
+              10: Type10,
               9: Type9,
               8: Type8,
               6: Type6,
               5: Type5,
-              4: Type4,
-              2: Type2}
-
-
-#               4: FourByteToInt}
-
-
-# In[23]:
+              4: Type4}
 
 
 def parse_header(input_array):

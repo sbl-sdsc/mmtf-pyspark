@@ -115,6 +115,10 @@ class InteractionExtractorPd(object):
         schema = StructType(fields)
         return schema
 
+    @staticmethod
+    def get_columns(structure, query):
+        atom_cols = [*structure.atom_cols]
+
 
 class AsymmetricUnitInteractions:
 
@@ -131,9 +135,11 @@ class AsymmetricUnitInteractions:
         structure_id = t[0]
 
         # Get a pandas dataframe representation of the structure
-        structure = ColumnarStructure(t[1])
+        #structure = ColumnarStructure(t[1])
+        structure = t[1]
 
         df = structure.to_pandas()
+
         if df is None:
             return []
 
@@ -210,7 +216,8 @@ class BioAssemblyInteractions:
         if len(t[1].bio_assembly) < self.bio:
             return []
 
-        structure = ColumnarStructure(t[1])
+        #structure = ColumnarStructure(t[1])
+        structure = t[1]
 
         # Get a pandas dataframe representation of the structure
         df = structure.to_pandas()
@@ -302,8 +309,8 @@ class BioAssemblyInteractions:
     def get_transforms(self, col):
         """Return a dictionary of transformation index, chain indices/transformation matrices for given bio assembly"""
         trans = list()
-        chain_ids = col.structure.chain_id_list
-        assembly = col.structure.bio_assembly[self.bio - 1]  # bio assembly id are one-based
+        chain_ids = col.chain_id_list
+        assembly = col.bio_assembly[self.bio - 1]  # bio assembly id are one-based
         for id, transforms in enumerate(assembly['transformList']):
             for index in transforms['chainIndexList']:
                 trans.append((id, chain_ids[index], transforms['matrix']))
