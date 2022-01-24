@@ -26,7 +26,7 @@ __email__ = "marshuang80@gmail.com"
 __version__ = "0.2.0"
 __status__ = "Done"
 
-from mmtfPyspark.webservices.advancedQueryService import post_query
+from mmtfPyspark.webservices.advancedQueryService import post_query, post_query_new
 
 
 class AdvancedQuery(object):
