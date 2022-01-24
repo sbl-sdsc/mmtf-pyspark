@@ -53,7 +53,7 @@ def post_query_new(query):
 
     ids = []
     
-    with urllib.request.urlopen(url, data=encodedJSON) as f:
+    with urllib.request.urlopen(url, data=encodedJSON, headers={'Content-Type':'application/json'}) as f:
         for line in f.readlines():
             line = line.strip()
             if line.startswith('"identifier"'):
