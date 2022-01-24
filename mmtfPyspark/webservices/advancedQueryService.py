@@ -13,6 +13,7 @@ __status__ = "Done"
 import urllib
 
 SERVICELOCATION = "http://www.rcsb.org/pdb/rest/search"
+NEW_SERVICELOCATION = "http://www.rcsb.org/pdb/rest/search"
 
 
 def post_query(xml):
@@ -34,3 +35,31 @@ def post_query(xml):
         pdbIds = [str(l)[2:-3] for l in f.readlines()]
 
     return pdbIds
+
+
+def post_query_new(query):
+    '''Post a JSON query (RCSB PDB JSON query format) to the RESTful
+    RCSB web service
+
+    Parameters
+    ----------
+    query : str
+       a string of JSON query
+    '''
+
+    encodedJSON = urllib.parse.quote(query).encode('utf-8')
+
+    url = urllib.request.Request(NEW_SERVICELOCATION)
+
+    ids = []
+    
+    with urllib.request.urlopen(url, data=encodedJSON) as f:
+        for line in f.readlines()
+            line = line.strip()
+            if line.startswith('"identifier"'):
+                identifier = line.split(':')[1]
+                identifier = identifier.strip()
+                identifier = identifier[1:len(ids)-2]
+                ids.append[identifier]
+                
+    return ids
