@@ -52,13 +52,16 @@ class ChemicalStructureQuery(object):
 
             raise Exception("Invalid search type: %s" % queryType)
 
-        query = "<orgPdbQuery>" + \
-            "<queryType>org.pdb.query.simple.ChemSmilesQuery</queryType>" + \
-            "<smiles>" + smiles + "</smiles>" + \
-            "<searchType>" + queryType + "</searchType>" + \
-            "<similarity>" + str(percentSimilarity) + "</similarity>" + \
-            "<polymericType>Any</polymericType>" + \
-            "</orgPdbQuery>"
+        query = f'{"query":{"type":"terminal","service":"chemical","parameters":{"value":"{smiles}","type":"descriptor","descriptor_type":"SMILES","match_type":"sub-struct-graph-relaxed-stereo"}},"return_type":"entry","request_options":{"pager":{"start":0,"rows":1000}}}'
+        print('Chemical structure query:', query)
+
+        # query = "<orgPdbQuery>" + \
+        #    "<queryType>org.pdb.query.simple.ChemSmilesQuery</queryType>" + \
+        #    "<smiles>" + smiles + "</smiles>" + \
+        #    "<searchType>" + queryType + "</searchType>" + \
+        #    "<similarity>" + str(percentSimilarity) + "</similarity>" + \
+        #    "<polymericType>Any</polymericType>" + \
+        #    "</orgPdbQuery>"
 
         self.filter = AdvancedQuery(query)
 
