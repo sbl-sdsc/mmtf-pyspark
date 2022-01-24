@@ -54,12 +54,12 @@ def post_query_new(query):
     ids = []
     
     with urllib.request.urlopen(url, data=encodedJSON) as f:
-        for line in f.readlines()
+        for line in f.readlines():
             line = line.strip()
             if line.startswith('"identifier"'):
                 identifier = line.split(':')[1]
                 identifier = identifier.strip()
-                identifier = identifier[1:len(ids)-2]
+                identifier = identifier[1:len(identifier)-2]
                 ids.append[identifier]
                 
     return ids
