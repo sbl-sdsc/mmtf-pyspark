@@ -13,7 +13,7 @@ __status__ = "Done"
 import urllib
 
 SERVICELOCATION = "http://www.rcsb.org/pdb/rest/search"
-NEW_SERVICELOCATION = "http://www.rcsb.org/pdb/rest/search"
+NEW_SERVICELOCATION = "https://search.rcsb.org/rcsbsearch/v1/query"
 
 
 def post_query(xml):
