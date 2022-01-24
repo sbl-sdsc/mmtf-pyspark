@@ -40,7 +40,7 @@ class AdvancedQuery(object):
 
     def __init__(self, xmlQuery):
 
-        results = post_query(xmlQuery)
+        results = post_query_new(xmlQuery)
 
         self.entityLevel = (len(results) > 0) and (":" in results[0])
         self.structureIds = list(set(results))
