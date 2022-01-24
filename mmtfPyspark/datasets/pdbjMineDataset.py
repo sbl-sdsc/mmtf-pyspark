@@ -43,7 +43,6 @@ def get_dataset(sqlQuery):
     # URL = "https://pdbj.org/rest/mine2_sql"
     URL = "https://pdbj.org/rest/newweb/search/sql"
 
-    print(URL + "?format=csv&q=" + encodedSQL, context=ctx)
     # Download results to file
     infile = urllib.request.urlopen(URL + "?format=csv&q=" + encodedSQL, context=ctx)
     tmp = tempfile.NamedTemporaryFile(delete=False)
