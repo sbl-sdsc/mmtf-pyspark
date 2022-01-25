@@ -77,7 +77,7 @@ class ChemicalStructureQuery(object):
                 '}'
                 )
 
-        result_type, results, scores = post_query(query)
+        result_type, identifiers, scores = post_query(query)
 
         self.structureIds = set()
         for identifier, score in zip(identifiers, scores):
@@ -85,4 +85,11 @@ class ChemicalStructureQuery(object):
                 set.add(identifier)
 
     def __call__(self, t):
-        return t[0] in self.structureIds
+        match = t[0] in self.structureIds
+
+        # If results are PDB IDs, but the keys contains chain names,
+        # then trucate the chain name before matching (eg. 4HHB.A -> 4HHB)
+        if not match and not self.chainLevel and len(t[0]) > 4:
+            match = t[0][:4] in self.structureIds
+
+        return match
