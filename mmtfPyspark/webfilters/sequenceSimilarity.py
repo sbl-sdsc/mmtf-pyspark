@@ -62,7 +62,7 @@ class SequenceSimilarity(object):
             raise ValueError(
                 "ERROR: the query sequence must be at least 20 residues long")
 
-        targets = {'Protein: 'pdb_protein_sequence', 'DNA': 'pdb_dna_sequence', 'RNA': 'pdb_rna_sequence'}
+        targets = {'Protein': 'pdb_protein_sequence', 'DNA': 'pdb_dna_sequence', 'RNA': 'pdb_rna_sequence'}
 
         target_type = targets.get(target)
 
