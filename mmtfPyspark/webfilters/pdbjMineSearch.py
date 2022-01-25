@@ -36,7 +36,8 @@ class PdbjMineSearch(object):
        the sql query [None]
     '''
 
-    URL = "https://pdbj.org/rest/mine2_sql"
+    #URL = "https://pdbj.org/rest/mine2_sql"
+    URL = "https://pdbj.org/rest/newweb/search/sql"
 
     def __init__(self, sqlQuery):
 
