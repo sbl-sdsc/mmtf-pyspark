@@ -38,7 +38,7 @@ __email__ = "marshuang80@gmail.com"
 __version__ = "0.2.0"
 __status__ = "done"
 
-from mmtfPyspark.webfilters import AdvancedQuery
+from mmtfPyspark.webservices.advancedQueryService import post_query
 
 
 class SequenceSimilarity(object):
