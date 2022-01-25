@@ -30,5 +30,6 @@ def post_query(query):
 
     result_type = response['result_type']
     identifiers = [result['identifier'] for result in response['result_set']]
+    scores = [result['score'] for result in response['result_set']]
 
-    return identifiers
+    return result_type, identifiers, scores
