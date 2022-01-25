@@ -43,7 +43,7 @@ class ChemicalStructureQuery(object):
         percentSimilarity : float
            percent similarity for similarity search. This parameter is ignored
            for all other query types [default: 0.0]
-        '''jupyter
+        '''
 
         if not (queryType == self.EXACT
                 or queryType == self.SIMILAR
