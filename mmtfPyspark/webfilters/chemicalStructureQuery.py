@@ -21,12 +21,14 @@ from mmtfPyspark.webfilters import AdvancedQuery
 
 class ChemicalStructureQuery(object):
 
-    EXACT = "Exact"
-    SIMILAR = "Similar"
-    SUBSTRUCTURE = "Substructure"
-    SUPERSTRUCTURE = "Superstructure"
+    SIMILAR_STEREOSPECIFIC = 'graph-relaxed-stereo'
+    SIMILAR_STEREOISOMERS = 'graph-relaxed'
+    SIMILAR = 'fingerprint-similarity'
+    SUBSTRUCTURE_STEREOSPECIFIC = 'sub-struct-graph-relaxed-stereo'
+    SUBSTRUCTURE_STEREOISOMERS = 'sub-struct-graph-relaxed-stereo'
+    EXACT_MATCH = 'graph-exact'
 
-    def __init__(self, smiles, queryType="Substructure", percentSimilarity=0.0):
+    def __init__(self, smiles, match_type=SUBSTRUCTURE_STEREOSPECIFIC, percentSimilarity=0.0):
         '''Constructor to setup filter that matches any entry with at least one
         chemical component that matches the specified SMILES string using the
         specified query type.
@@ -45,12 +47,12 @@ class ChemicalStructureQuery(object):
            for all other query types [default: 0.0]
         '''
 
-        if not (queryType == self.EXACT
-                or queryType == self.SIMILAR
-                or queryType == self.SUBSTRUCTURE
-                or queryType == self.SUPERSTRUCTURE):
-
-            raise Exception("Invalid search type: %s" % queryType)
+        #if not (queryType == self.EXACT
+        #        or queryType == self.SIMILAR
+        #        or queryType == self.SUBSTRUCTURE
+        #        or queryType == self.SUPERSTRUCTURE):
+        #
+        #    raise Exception("Invalid search type: %s" % queryType)
 
 
         match_type = 'graph-relaxed-stereo'
@@ -86,7 +88,7 @@ class ChemicalStructureQuery(object):
 
         print('Chemical structure query:', query)
 
-        self.filter = run_query(query)
+        self.filter = self.run_query(query)
 
     def run_query(self, query):
 
