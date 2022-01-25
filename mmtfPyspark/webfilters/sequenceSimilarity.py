@@ -43,41 +43,67 @@ from mmtfPyspark.webfilters import AdvancedQuery
 
 class SequenceSimilarity(object):
 
-    BLAST = 'blast'
-    PSI_BLAST = 'psi-blast'
-
-    def __init__(self, sequence, searchTool=BLAST, eValueCutoff=10.0,
-                 sequenceIdentityCutoff=0, maskLowComplexity=True):
+    def __init__(self, sequence, target="Protein", evalue_cutoff=0.1, identity_cutoff=0):
         '''Filters by squence similarity using all default parameters.
 
         Parameters
         ----------
         sequence : str
            query sequence
-        searchTool : class variable
-           sequenceSimilarity.BLAST or sequenceSimilarity.PSI_BLAST
+        target : str
+           Protein, DNA, or RNA
         eValueCutoff : float
            maximun e-value
         sequenceIdentityCutoff : int
            minimum sequence identity cutoff
-        maskLowComplexity : bool
-           if true, mask (ignore) low complexity regions in sequence
         '''
 
-        if len(sequence) < 12:
+        if len(sequence) < 20:
             raise ValueError(
-                "ERROR: the query sequence must be at least 12 residues long")
+                "ERROR: the query sequence must be at least 20 residues long")
 
-        complexity = 'yes' if maskLowComplexity else 'no'
+        targets = {'Protein: 'pdb_protein_sequence', 'DNA': 'pdb_dna_sequence', 'RNA': 'pdb_rna_sequence'}
 
-        query = "<orgPdbQuery>" + "<queryType>org.pdb.query.simple.SequenceQuery</queryType>" \
-                + "<sequence>" + sequence + "</sequence>" + "<searchTool>" + searchTool \
-                + "</searchTool>" + "<maskLowComplexity>" + complexity\
-                + "</maskLowComplexity>" + "<eValueCutoff>" + str(eValueCutoff) \
-                + "</eValueCutoff>" + "<sequenceIdentityCutoff>" + str(sequenceIdentityCutoff) \
-                + "</sequenceIdentityCutoff>" + "</orgPdbQuery>"
+        target_type = targets.get(target)
 
-        self.filter = AdvancedQuery(query)
+        max_rows = 1000
+
+        query = ('{'
+                   '"query": {'
+                   '"type": "terminal",'
+                   '"service": "sequence",'
+                   '"parameters": {'
+                     f'"evalue_cutoff": "{evalue_cutoff}",'
+                     f'"identity_cutoff": "{identity_cutoff}",'
+                     f'"target": "{target}",'
+                     f'"value": "{sequence}",'
+                   '}'
+                 '},'
+                 '"return_type": "entry",'
+                 '"request_options": {'
+                   '"pager": {'
+                   '"start": 0,'
+                   f'"rows": {max_rows}'
+                  '},'
+                   '"scoring_strategy": "combined",'
+                  '"sort": ['
+                     '{'
+                       '"sort_by": "score",'
+                       '"direction": "desc"'
+                     '}'
+                   ']'
+                  '}'
+                '}'
+                )
+
+        result_type, identifiers, scores = post_query(query)
+
+        self.structureIds = set(identifiers)
 
     def __call__(self, t):
-        return self.filter(t)
+        match = t[0] in self.structureIds
+
+        # If results are PDB IDs, but the keys contains chain names,
+        # then trucate the chain name before matching (eg. 4HHB.A -> 4HHB)
+        if not match and not self.chainLevel and len(t[0]) > 4:
+            match = t[0][:4] in self.structureIds
