@@ -16,7 +16,7 @@ __email__ = "marshuang80@gmail.com"
 __version__ = "0.2.0"
 __status__ = "Done"
 
-from mmtfPyspark.webfilters import AdvancedQuery
+from mmtfPyspark.webservices.advancedQueryService import post_query
 
 
 class ChemicalStructureQuery(object):
@@ -40,22 +40,13 @@ class ChemicalStructureQuery(object):
         ----------
         smiles : str
            SMILES string representing chemical structure
-        queryType : str
-           One of the 4 supported types
+        match_type : str
+           One of the 5 supported types
         percentSimilarity : float
            percent similarity for similarity search. This parameter is ignored
            for all other query types [default: 0.0]
         '''
 
-        #if not (queryType == self.EXACT
-        #        or queryType == self.SIMILAR
-        #        or queryType == self.SUBSTRUCTURE
-        #        or queryType == self.SUPERSTRUCTURE):
-        #
-        #    raise Exception("Invalid search type: %s" % queryType)
-
-
-        match_type = 'graph-relaxed-stereo'
         max_rows = 1000
 
         query = ('{'
@@ -86,20 +77,12 @@ class ChemicalStructureQuery(object):
                 '}'
                 )
 
-        print('Chemical structure query:', query)
+        result_type, results, scores = post_query(query)
 
-        self.filter = self.run_query(query)
-
-    def run_query(self, query):
-
-        result_type, identifiers, scores = AdvancedQuery(query)
-
-        results = []
+        self.structureIds = set()
         for identifier, score in zip(identifiers, scores):
             if (score*100.0 >= percentSimilarity):
-                results.append(identifier)
+                set.add(identifier)
 
-        return results 
-    
     def __call__(self, t):
-        return self.filter(t)
+        return t[0] in self.structureIds
