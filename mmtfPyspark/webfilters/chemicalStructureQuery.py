@@ -94,7 +94,14 @@ class ChemicalStructureQuery(object):
         #    "<polymericType>Any</polymericType>" + \
         #    "</orgPdbQuery>"
 
-        self.filter = AdvancedQuery(query)
+        result_type, identifiers, scores = AdvancedQuery(query)
+
+        results = []
+        for identifier, score in zip(identifiers, scores):
+            if (score*100.0 >= percentSimilarity):
+               results.append(identifier)
+
+        self.filter = results 
 
     def __call__(self, t):
         return self.filter(t)
