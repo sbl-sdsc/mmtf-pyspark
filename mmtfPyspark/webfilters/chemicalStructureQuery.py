@@ -86,22 +86,18 @@ class ChemicalStructureQuery(object):
 
         print('Chemical structure query:', query)
 
-        # query = "<orgPdbQuery>" + \
-        #    "<queryType>org.pdb.query.simple.ChemSmilesQuery</queryType>" + \
-        #    "<smiles>" + smiles + "</smiles>" + \
-        #    "<searchType>" + queryType + "</searchType>" + \
-        #    "<similarity>" + str(percentSimilarity) + "</similarity>" + \
-        #    "<polymericType>Any</polymericType>" + \
-        #    "</orgPdbQuery>"
+        self.filter = run_query(query)
+
+    def run_query(self, query):
 
         result_type, identifiers, scores = AdvancedQuery(query)
 
         results = []
         for identifier, score in zip(identifiers, scores):
             if (score*100.0 >= percentSimilarity):
-               results.append(identifier)
+                results.append(identifier)
 
-        self.filter = results 
-
+        return results 
+    
     def __call__(self, t):
         return self.filter(t)
