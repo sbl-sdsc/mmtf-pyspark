@@ -24,11 +24,11 @@ class ChemicalStructureQuery(object):
     SIMILAR_STEREOSPECIFIC = 'graph-relaxed-stereo'
     SIMILAR_STEREOISOMERS = 'graph-relaxed'
     SIMILAR = 'fingerprint-similarity'
-    SUBSTRUCTURE_STEREOSPECIFIC = 'Substructure'
+    SUBSTRUCTURE_STEREOSPECIFIC = 'sub-struct-graph-relaxed-stereo'
     SUBSTRUCTURE_STEREOISOMERS = 'sub-struct-graph-relaxed-stereo'
     EXACT_MATCH = 'graph-exact'
 
-    def __init__(self, smiles, queryType="Substructure", percentSimilarity=0.0):
+    def __init__(self, smiles, match_type=SUBSTRUCTURE_STEREOSPECIFIC, percentSimilarity=0.0):
         '''Constructor to setup filter that matches any entry with at least one
         chemical component that matches the specified SMILES string using the
         specified query type.
