@@ -96,6 +96,7 @@ class SequenceSimilarity(object):
                 '}'
                 )
 
+        print(query)
         result_type, identifiers, scores = post_query(query)
 
         self.structureIds = set(identifiers)
