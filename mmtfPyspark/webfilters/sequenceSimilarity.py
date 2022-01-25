@@ -105,5 +105,5 @@ class SequenceSimilarity(object):
 
         # If results are PDB IDs, but the keys contains chain names,
         # then trucate the chain name before matching (eg. 4HHB.A -> 4HHB)
-        if not match and not self.chainLevel and len(t[0]) > 4:
+        if not match and len(t[0]) > 4:
             match = t[0][:4] in self.structureIds
