@@ -43,7 +43,7 @@ class ChemicalStructureQuery(object):
         percentSimilarity : float
            percent similarity for similarity search. This parameter is ignored
            for all other query types [default: 0.0]
-        '''
+        '''jupyter
 
         if not (queryType == self.EXACT
                 or queryType == self.SIMILAR
@@ -52,7 +52,38 @@ class ChemicalStructureQuery(object):
 
             raise Exception("Invalid search type: %s" % queryType)
 
-        query = f'{"query":{"type":"terminal","service":"chemical","parameters":{"value":"{smiles}","type":"descriptor","descriptor_type":"SMILES","match_type":"sub-struct-graph-relaxed-stereo"}},"return_type":"entry","request_options":{"pager":{"start":0,"rows":1000}}}'
+
+        match_type = 'graph-relaxed-stereo'
+        max_rows = 1000
+
+        query = ('{'
+                   '"query": {'
+                   '"type": "terminal",'
+                   '"service": "chemical",'
+                   '"parameters": {'
+                     f'"value": "{smiles}",'
+                     '"type": "descriptor",'
+                     '"descriptor_type": "SMILES",'
+                     f'"match_type": "{match_type}"'
+                   '}'
+                 '},'
+                 '"return_type": "entry",'
+                 '"request_options": {'
+                   '"pager": {'
+                   '"start": 0,'
+                   f'"rows": {max_rows}'
+                  '},'
+                   '"scoring_strategy": "combined",'
+                  '"sort": ['
+                     '{'
+                       '"sort_by": "score",'
+                       '"direction": "desc"'
+                     '}'
+                   ']'
+                  '}'
+                '}'
+                )
+
         print('Chemical structure query:', query)
 
         # query = "<orgPdbQuery>" + \
