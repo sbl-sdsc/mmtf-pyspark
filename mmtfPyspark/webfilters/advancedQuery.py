@@ -107,6 +107,7 @@ class AdvancedQuery(object):
         except:
             # ID = keyStructureId + ":" + str(origEntityId + 1)
             ID = keyStructureId + "_" + str(origEntityId + 1)
+            print("returning ID: ", id)
 
         return ID
 
