@@ -43,7 +43,7 @@ from mmtfPyspark.webservices.advancedQueryService import post_query
 
 class SequenceSimilarity(object):
 
-    def __init__(self, sequence, target="Protein", evalue_cutoff=0.1, identity_cutoff=0):
+    def __init__(self, sequence, target="Protein", evalue_cutoff=0.1, identity_cutoff=0, max_rows=1000000):
         '''Filters by squence similarity using all default parameters.
 
         Parameters
@@ -65,8 +65,6 @@ class SequenceSimilarity(object):
         targets = {'Protein': 'pdb_protein_sequence', 'DNA': 'pdb_dna_sequence', 'RNA': 'pdb_rna_sequence'}
 
         target_type = targets.get(target)
-
-        max_rows = 1000
 
         query = ('{'
                    '"query": {'
@@ -100,20 +98,22 @@ class SequenceSimilarity(object):
 
         # TODO use return_type polymer_entity, match entities to chains
 
-        result_type, identifiers, scores = post_query(query)
-        self.structureIds = set(identifiers)
+#        result_type, identifiers, scores = post_query(query)
+#        self.structureIds = set(identifiers)
+        self.filter = AdvancedQuery(query)
 
 
-    def get_structure_ids(self):
-        return list(self.structureIds)
+    #def get_structure_ids(self):
+    #    return list(self.structureIds)
 
 
     def __call__(self, t):
-        match = t[0] in self.structureIds
+        return self.filter(t)
+        #match = t[0] in self.structureIds
 
         # If results are PDB IDs, but the keys contains chain names,
         # then trucate the chain name before matching (eg. 4HHB.A -> 4HHB)
-        if not match and len(t[0]) > 4:
-            match = t[0][:4] in self.structureIds
+        #if not match and len(t[0]) > 4:
+        #    match = t[0][:4] in self.structureIds
 
-        return match
+        #return match
