@@ -43,7 +43,7 @@ from mmtfPyspark.webfilters import AdvancedQuery
 
 class SequenceSimilarity(object):
 
-    def __init__(self, sequence, target="Protein", evalue_cutoff=0.1, identity_cutoff=0, max_rows=1000000):
+    def __init__(self, sequence, target="Protein", evalue_cutoff=0.1, identity_cutoff=0, max_rows=1000):
         '''Filters by squence similarity using all default parameters.
 
         Parameters
