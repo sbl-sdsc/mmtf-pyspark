@@ -93,6 +93,7 @@ class AdvancedQuery(object):
             pass
 
         try:
+            print("structure.structure_id:", structure.structure_id)
             pos = structure.structure_id.rindex(".")
 
             valueStructureId = structure.structure_id[:structure.structure_id.index(
