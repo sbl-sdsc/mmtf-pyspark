@@ -45,6 +45,7 @@ class AdvancedQuery(object):
         #self.entityLevel = (len(results) > 0) and (":" in results[0])
         self.entityLevel = result_type == 'polymer_entity'
 
+        print('result_type:', result_type, 'entityLevel:', self.entityLevel)
         self.structureIds = list(set(results))
         self.exclusive = False
 
@@ -63,6 +64,7 @@ class AdvancedQuery(object):
             if self.entityLevel:
                 ID = self._get_structure_entity_id(
                     structure, ID, entityChainIndex[i])
+                print("entityLevel ID", ID)
 
             match = ID in self.structureIds
 
