@@ -77,7 +77,7 @@ class SequenceSimilarity(object):
                      f'"value": "{sequence}"'
                    '}'
                  '},'
-                 '"return_type": "entry",'
+                 '"return_type": "polymer_entity",'
                  '"request_options": {'
                    '"pager": {'
                    '"start": 0,'
