@@ -96,10 +96,17 @@ class SequenceSimilarity(object):
                 '}'
                 )
 
-        print(query)
+        # TODO: need custom post query that returns scores, alignments, etc.
+
+        # TODO use return_type polymer_entity, match entities to chains
+
         result_type, identifiers, scores = post_query(query)
-        print(identifiers[:25])
         self.structureIds = set(identifiers)
+
+
+    def get_structure_ids(self):
+        return list(self.structureIds)
+
 
     def __call__(self, t):
         match = t[0] in self.structureIds
@@ -108,3 +115,5 @@ class SequenceSimilarity(object):
         # then trucate the chain name before matching (eg. 4HHB.A -> 4HHB)
         if not match and len(t[0]) > 4:
             match = t[0][:4] in self.structureIds
+
+        return match
