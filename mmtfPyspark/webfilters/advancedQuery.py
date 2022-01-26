@@ -45,9 +45,9 @@ class AdvancedQuery(object):
         #self.entityLevel = (len(results) > 0) and (":" in results[0])
         self.entityLevel = result_type == 'polymer_entity'
 
-        print('result_type:', result_type, 'entityLevel:', self.entityLevel)
+        #print('result_type:', result_type, 'entityLevel:', self.entityLevel)
         self.structureIds = list(set(results))
-        print('structureIds:', self.structureIds)
+        #print('structureIds:', self.structureIds)
         self.exclusive = False
 
     def __call__(self, t):
@@ -67,8 +67,8 @@ class AdvancedQuery(object):
                     structure, ID, entityChainIndex[i])
 
             match = ID in self.structureIds
-            if match:
-                print("matched ID", ID)
+        #    if match:
+        #        print("matched ID", ID)
 
             if match and not self.exclusive:
                 return True
@@ -93,19 +93,19 @@ class AdvancedQuery(object):
             pass
 
         try:
-            print("structure.structure_id:", structure.structure_id)
+        #    print("structure.structure_id:", structure.structure_id)
             pos = structure.structure_id.rindex(".")
 
             valueStructureId = structure.structure_id[:structure.structure_id.index(
                 ".")]
 
-            print("key/valueStructureId:", keyStructureId, valueStructureId)
+        #    print("key/valueStructureId:", keyStructureId, valueStructureId)
             if keyStructureId != valueStructureId:
                 raise Exception("Structure mismatch: key vs value: %s vs. %s"
                                 % (keyStructureId, valueStructureId))
 
             entityId = structure.structure_id[pos + 1:]
-            print("entityId:", entityId)
+        #    print("entityId:", entityId)
             # ID = valueStructureId + ":" + entityId
             ID = valueStructureId + "_" + entityId
 
