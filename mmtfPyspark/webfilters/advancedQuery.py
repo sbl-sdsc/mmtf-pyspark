@@ -99,7 +99,7 @@ class AdvancedQuery(object):
             valueStructureId = structure.structure_id[:structure.structure_id.index(
                 ".")]
 
-            print("valueStructureId:", valueStructureId)
+            print("key/valueStructureId:", keyStructureId, valueStructureId)
             if keyStructureId != valueStructureId:
                 raise Exception("Structure mismatch: key vs value: %s vs. %s"
                                 % (keyStructureId, valueStructureId))
