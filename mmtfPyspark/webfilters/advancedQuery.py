@@ -42,7 +42,9 @@ class AdvancedQuery(object):
 
         result_type, results, scores = post_query(xmlQuery)
 
-        self.entityLevel = (len(results) > 0) and (":" in results[0])
+        #self.entityLevel = (len(results) > 0) and (":" in results[0])
+        self.entityLevel = result_type == 'polymer_entity'
+
         self.structureIds = list(set(results))
         self.exclusive = False
 
@@ -80,7 +82,8 @@ class AdvancedQuery(object):
         keyStructureId = origStructureId
 
         try:
-            index = keyStructureId.index(".")
+            # index = keyStructureId.index(".")
+            index = keyStructureId.index("_")
             keyStructureId = keyStructureId[:index]
         except:
             pass
@@ -96,10 +99,12 @@ class AdvancedQuery(object):
                                 % (keyStructureId, valueStructureId))
 
             entityId = structure.structure_id[pos + 1:]
-            ID = valueStructureId + ":" + entityId
+            # ID = valueStructureId + ":" + entityId
+            ID = valueStructureId + "_" + entityId
 
         except:
-            ID = keyStructureId + ":" + str(origEntityId + 1)
+            # ID = keyStructureId + ":" + str(origEntityId + 1)
+            ID = keyStructureId + "_" + str(origEntityId + 1)
 
         return ID
 
