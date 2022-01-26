@@ -86,8 +86,8 @@ class AdvancedQuery(object):
         keyStructureId = origStructureId
 
         try:
-            # index = keyStructureId.index(".")
-            index = keyStructureId.index("_")
+            index = keyStructureId.index(".")
+            #index = keyStructureId.index("_")
             keyStructureId = keyStructureId[:index]
         except:
             pass
