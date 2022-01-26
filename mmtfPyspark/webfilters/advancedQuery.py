@@ -47,7 +47,7 @@ class AdvancedQuery(object):
 
         print('result_type:', result_type, 'entityLevel:', self.entityLevel)
         self.structureIds = list(set(results))
-        print("structureIds:', self.structureIds)
+        print('structureIds:', self.structureIds)
         self.exclusive = False
 
     def __call__(self, t):
@@ -68,7 +68,7 @@ class AdvancedQuery(object):
 
             match = ID in self.structureIds
             if match:
-                print("matched ID", ID
+                print("matched ID", ID)
 
             if match and not self.exclusive:
                 return True
