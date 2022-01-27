@@ -78,6 +78,7 @@ class ChemicalStructureQuery(object):
                 )
 
         result_type, identifiers, scores = post_query(query)
+        self.result_type = result_type
 
         self.structureIds = set()
         for identifier, score in zip(identifiers, scores):
@@ -86,6 +87,9 @@ class ChemicalStructureQuery(object):
 
     def get_structure_ids(self):
         return list(self.structureIds)
+
+    def get_result_type(self):
+        return self.result_type 
 
     def __call__(self, t):
         match = t[0] in self.structureIds

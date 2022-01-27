@@ -64,6 +64,10 @@ class PdbjMineSearch(object):
     def get_structure_ids(self):
         return self.pdbIds
 
+    # TODO: how to map from chain id to entity id?
+    def get_result_type(self):
+        return 'entry'
+
     def __call__(self, t):
         match = t[0] in self.pdbIds
 
