@@ -84,6 +84,9 @@ class ChemicalStructureQuery(object):
             if (score*100.0 >= percentSimilarity):
                 self.structureIds.add(identifier)
 
+    def get_structure_ids(self):
+        return list(self.structureIds)
+
     def __call__(self, t):
         match = t[0] in self.structureIds
 

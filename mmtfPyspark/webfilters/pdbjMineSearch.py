@@ -61,6 +61,9 @@ class PdbjMineSearch(object):
             ids_sub = [i[:4] for i in ids]
             self.pdbIds = ids + ids_sub
 
+    def get_structure_ids(self):
+        return self.pdbIds
+
     def __call__(self, t):
         match = t[0] in self.pdbIds
 
