@@ -102,7 +102,7 @@ class SequenceSimilarity(object):
 #        self.structureIds = set(identifiers)
         self.filter = AdvancedQuery(query)
         self.structureIds = self.filter.structureIds
-        self.result_type = self.filter.result_type
+#        self.result_type = self.filter.result_type
 
     def get_structure_ids(self):
         return list(self.structureIds)

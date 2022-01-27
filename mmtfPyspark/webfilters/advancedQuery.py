@@ -41,7 +41,8 @@ class AdvancedQuery(object):
     def __init__(self, xmlQuery):
 
         result_type, results, scores = post_query(xmlQuery)
-
+        print('AdvanceQuery:', result_type)
+        self.result_type = result_type
         #self.entityLevel = (len(results) > 0) and (":" in results[0])
         self.entityLevel = result_type == 'polymer_entity'
 
@@ -49,6 +50,12 @@ class AdvancedQuery(object):
         self.structureIds = list(set(results))
         #print('structureIds:', self.structureIds)
         self.exclusive = False
+
+    def get_structure_ids(self):
+        return list(self.structureIds)
+
+    def get_result_type(self):
+        return self.result_type
 
     def __call__(self, t):
 
