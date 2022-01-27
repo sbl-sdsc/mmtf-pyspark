@@ -34,22 +34,22 @@ class BlastCluster(object):
 	sequenceIdentity : int
 	   sequence indentity for blast
 	'''
-	def __init__(self, sequenceIdentity):
+        def __init__(self, sequenceIdentity):
 
-		clusters = self.get_blast_cluster(sequenceIdentity)
+            clusters = self.get_blast_cluster(sequenceIdentity)
 
-		self.pdbIds = set()
+            self.pdbIds = set()
 
-		for protein in clusters:
-			self.pdbIds.add(protein)
-			self.pdbIds.add(protein[:4])
+            for protein in clusters:
+                self.pdbIds.add(protein)
+                self.pdbIds.add(protein[:4])
 
 
         def get_structure_ids(self):
             return list(self.pdbIds)
 
-	def __call__(self, t):
-		return t[0] in self.pdbIds
+        def __call__(self, t):
+            return t[0] in self.pdbIds
 
 
 	def get_blast_cluster(self, sequenceIdentity):
