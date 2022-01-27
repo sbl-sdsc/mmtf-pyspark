@@ -54,15 +54,17 @@ class PdbjMineSearch(object):
         if 'structureId' in dataset.columns:
             self.chainLevel = False
             self.pdbIds = [a[0] for a in dataset.select('structureId').collect()]
+            self.structureIds = self.pdbIds
 
         if 'structureChainId' in dataset.columns:
             self.chainLevel = True
             ids = [a[0] for a in dataset.select('structureChainId').collect()]
             ids_sub = [i[:4] for i in ids]
             self.pdbIds = ids + ids_sub
+            self.structureIds = ids_sub
 
     def get_structure_ids(self):
-        return self.pdbIds
+        return self.structureIds
 
     # TODO: how to map from chain id to entity id?
     def get_result_type(self):
