@@ -1,7 +1,7 @@
 #!/user/bin/env python
 '''advancedQuery.py
 
-This filter runs an RCSB PDB Advanced Search web service using an XML query
+This filter runs an RCSB PDB Advanced Search web service using a JSON query
 description.
 
 References
@@ -34,14 +34,13 @@ class AdvancedQuery(object):
 
     Attributes
     ----------
-    xmlQuery : str
-       query in RCSB PDB XML format
+    query : str
+            query in RCSB PDB JSON format
     '''
 
-    def __init__(self, xmlQuery):
+    def __init__(self, query):
 
-        result_type, results, scores = post_query(xmlQuery)
-        print('AdvanceQuery:', result_type)
+        result_type, results, scores = post_query(query)
         self.result_type = result_type
         #self.entityLevel = (len(results) > 0) and (":" in results[0])
         self.entityLevel = result_type == 'polymer_entity'
