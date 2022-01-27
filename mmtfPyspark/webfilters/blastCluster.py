@@ -45,6 +45,9 @@ class BlastCluster(object):
 			self.pdbIds.add(protein[:4])
 
 
+        def get_structure_ids(self):
+            return list(self.pdbIds)
+
 	def __call__(self, t):
 		return t[0] in self.pdbIds
 
