@@ -13,7 +13,7 @@ mmtfPyspark_packages = ['mmtfPyspark',
                         ]
 
 mmtfPyspark_dependencies = ['msgpack==0.6.1',
-                            'numpy==1.16.1',
+                            'numpy==1.21.0',
                             'ipywidgets==7.6.5',
                             'mmtf-python==1.1.2',
                             'requests==2.20.0',
