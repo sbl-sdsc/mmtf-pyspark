@@ -16,7 +16,7 @@ __version__ = "0.2.0"
 __status__ = "Done"
 
 import os
-# import msgpack
+import msgpack
 import gzip
 from mmtfPyspark.utils import MmtfStructure
 from mmtf.api import default_api
@@ -230,7 +230,7 @@ def _get_structure(pdbId, reduced, first_model):
             data = gzip.decompress(response.read())
         else:
             data = response.read()
-        unpack = pd.read_msgpack(data)
+        unpack = msgpack.loads(data)
         decoder = MmtfStructure(unpack, first_model)
         return (pdbId, decoder)
     except urllib.error.HTTPError:
@@ -240,12 +240,8 @@ def _get_structure(pdbId, reduced, first_model):
 def _call_sequence_file(t, first_model):
     '''Call function for hadoop sequence files'''
     # TODO: check if all sequence files are gzipped
-    # data = default_api.ungzip_data(t[1])
-    # unpack = msgpack.unpackb(data.read(), raw=False)
-    # decoder = MmtfStructure(unpack)
-    # return (str(t[0]), decoder)
     data = gzip.decompress(t[1])
-    unpack = pd.read_msgpack(data)
+    unpack = msgpack.loads(data)
     decoder = MmtfStructure(unpack, first_model)
     return (t[0], decoder)
 
@@ -256,17 +252,13 @@ def _call_mmtf(f, first_model=False):
     if ".mmtf.gz" in f:
         name = f.split('/')[-1].split('.')[0].upper()
         data = gzip.open(f, 'rb')
-        #unpack = msgpack.unpack(data, raw=False)
-        unpack = pd.read_msgpack(data)
+        unpack = msgpack.unpack(data, raw=False)
         decoder = MmtfStructure(unpack, first_model)
         return (name, decoder)
 
     elif ".mmtf" in f:
-        #name = f.split('/')[-1].split('.')[0].upper()
-        #unpack = msgpack.unpack(open(f, "rb"), raw=False)
-        #decoder = MmtfStructure(unpack)
         name = f.split('/')[-1].split('.')[0].upper()
-        unpack = pd.read_msgpack(f)
+        unpack = msgpack.unpack(open(f, "rb"), raw=False)
         decoder = MmtfStructure(unpack, first_model)
         return (name, decoder)
 
