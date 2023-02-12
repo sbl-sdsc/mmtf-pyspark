@@ -6,7 +6,7 @@ channels:
   
 dependencies:
   - python=3.8
-  - openjdk=8.0.152
+  - openjdk>=8.0.152
   - pyspark=3.3.1
   - biopython=1.80
   - numba=0.56.*
@@ -31,3 +31,5 @@ variables:
   SPARK_DRIVER_MEMORY: 16G
   SPARK_DRIVER_MAXRESULTSIZE: 4G
   SPARK_WORKER_MEMORY: 4G
+  # the following is required for MacOS
+  OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
