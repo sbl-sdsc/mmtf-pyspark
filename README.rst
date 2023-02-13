@@ -63,18 +63,12 @@ Python
 
 We strongly recommend that you have
 `anaconda <https://docs.continuum.io/anaconda/install/>`__ and we
-require at least python 3.6 installed. To check your python version:
+require at least python 3.8 installed. To check your python version:
 
 ::
 
     python --version
 
-If **Anaconda** is installed, and if you have python 3.6, the above
-command should return:
-
-::
-
-    Python 3.6.4 :: Anaconda, Inc.
 
 mmtfPyspark and dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

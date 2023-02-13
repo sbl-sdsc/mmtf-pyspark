@@ -3,23 +3,33 @@ name: mmtf-pyspark
 channels:
   - conda-forge
   - anaconda
-  - bioconda 
-
+  
 dependencies:
-  - python=3.7
-  - openjdk=8.0.152
-  - pyspark=2.4.0
-  - biopython=1.72
-  - numba=0.41.0
-  - numpy=1.16.1
-  - jupyterlab=3.2.5
-  - py3Dmol=0.8.0
-  - ipywidgets=7.6.5
+  - python=3.8
+  - openjdk>=8.0.152
+  - pyspark=3.3.1
+  - biopython=1.80
+  - numba=0.56.*
+  - numpy=1.23.*
+  - jupyterlab=3.6.*
+  - py3dmol=2.*
+  - ipywidgets=8.0.*
+  - msgpack-python>=0.6.1
+  - numpy>=1.16.1
+  - mmtf-python>=1.1.2
+  - numba>=0.41.0
+  - scipy>=1.1.0
+  - pyarrow>=0.11.1
+  - xlrd>=1.1.0
+  - nose
+  - Cython
   - pip
   - pip:
-      - git+https://github.com/sbl-sdsc/mmtf-pyspark.git 
+      - git+https://github.com/dkoes/mmtf-pyspark.git 
 
 variables:
   SPARK_DRIVER_MEMORY: 16G
   SPARK_DRIVER_MAXRESULTSIZE: 4G
   SPARK_WORKER_MEMORY: 4G
+  # the following is required for MacOS
+  OBJC_DISABLE_INITIALIZE_FORK_SAFETY: YES
