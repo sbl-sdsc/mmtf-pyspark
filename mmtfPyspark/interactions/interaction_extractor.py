@@ -259,18 +259,18 @@ class LigandInteractionFingerprint:
             if self.level == 'chain':
                 row = Row(structure_id + "." + pc[i],  # structureChainId
                           lg[j],  # queryLigandId
-                          lc[j],  # queryLigandChainId
+                          lc[j].item(),  # queryLigandChainId
                           ln[j],  # queryLigandNumber
-                          pc[i]  # targetChainId
+                          pc[i].item()  # targetChainId
                           )
                 rows.add(row)
             elif self.level == 'group':
                 row = Row(structure_id + "." + pc[i],  # structureChainId
                           lg[j],  # queryLigandId
-                          lc[j],  # queryLigandChainId
+                          lc[j].item(),  # queryLigandChainId
                           ln[j],  # queryLigandNumber
                           pg[i],  # targetGroupId
-                          pc[i],  # targetChainId
+                          pc[i].item(),  # targetChainId
                           pn[i],  # targetGroupNumber
                           ps[i].item(),  # sequenceIndex
                           structure.entity_list[pt[i]]['sequence']  # sequence
@@ -279,11 +279,11 @@ class LigandInteractionFingerprint:
             elif self.level == 'atom':
                 row = Row(structure_id + "." + pc[i],  # structureChainId
                           lg[j],  # queryLigandId
-                          lc[j],  # queryLigandChainId
+                          lc[j].item(),  # queryLigandChainId
                           ln[j],  # queryLigandNumber
                           la[j],  # queryAtomName
                           pg[i],  # targetGroupId
-                          pc[i],  # targetChainId
+                          pc[i].item(),  # targetChainId
                           pn[i],  # targetGroupNumber
                           pa[i],  # targetAtomName
                           dis,  # distance
@@ -411,18 +411,18 @@ class PolymerInteractionFingerprint:
             if self.level == 'chain':
                 row = Row(structure_id + "." + pct[i],  # structureChainId
                           pgq[j],  # queryGroupId
-                          pcq[j],  # queryChainId
+                          pcq[j].item(),  # queryChainId
                           pnq[j],  # queryGroupNumber
-                          pct[i]  # targetChainId
+                          pct[i].item()  # targetChainId
                           )
                 rows.add(row)
             elif self.level == 'group':
                 row = Row(structure_id + "." + pct[i],  # structureChainId
                           pgq[j],  # queryGroupId
-                          pcq[j],  # queryChainId
+                          pcq[j].item(),  # queryChainId
                           pnq[j],  # queryGroupNumber
                           pgt[i],  # targetGroupId
-                          pct[i],  # targetChainId
+                          pct[i].item(),  # targetChainId
                           pnt[i],  # targetGroupNumber
                           pst[i].item(),  # sequenceIndex
                           structure.entity_list[pet[i]]['sequence']  # sequence
@@ -431,11 +431,11 @@ class PolymerInteractionFingerprint:
             elif self.level == 'atom':
                 row = Row(structure_id + "." + pct[i],  # structureChainId
                           pgq[j],  # queryGroupId
-                          pcq[j],  # queryChainId
+                          pcq[j].item(),  # queryChainId
                           pnq[j],  # queryGroupNumber
                           paq[j],  # queryAtomName
                           pgt[i],  # targetGroupId
-                          pct[i],  # targetChainId
+                          pct[i].item(),  # targetChainId
                           pnt[i],  # targetGroupNumber
                           pat[i],  # targetAtomName
                           dis,  # distance
