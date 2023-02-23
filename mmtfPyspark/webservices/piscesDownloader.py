@@ -57,7 +57,6 @@ class PiscesDownloader(object):
 
     def get_structure_chain_ids(self):
         fileURL = self.URL + '/' + self._get_file_name()
-        print(fileURL)
         u = urlopen(fileURL)
         line = str(u.read()).split('\\n')
         # remove header
