@@ -41,7 +41,7 @@ class LigandInteractionFingerprintTest(unittest.TestCase):
         #print(gp.count())
         #t1 = time.time()
         #print("raw:", t1-t0)
-        self.pdb = read_sequence_file("/Users/peter/GitRespositories/mmtf-pyspark/resources/mmtf_full_sample")
+        self.pdb = read_sequence_file("../../../resources/mmtf_full_sample")
         #print("partitions:", self.pdb.getNumPartitions())
         #self.pdb = read_sequence_file("/Users/peter/MMTF_Files/full")
         #self.pdb = self.pdb.filter(lambda s: s[1].num_models == 1)
