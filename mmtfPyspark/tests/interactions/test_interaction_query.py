@@ -6,10 +6,9 @@ from mmtfPyspark.io.mmtfReader import download_mmtf_files, read_sequence_file
 from mmtfPyspark.interactions import InteractionFilter
 from mmtfPyspark.interactions.interaction_extractor import InteractionExtractor
 import time
+import os
 
-
-
-
+FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class LigandInteractionFingerprintTest(unittest.TestCase):
 
@@ -41,7 +40,7 @@ class LigandInteractionFingerprintTest(unittest.TestCase):
         #print(gp.count())
         #t1 = time.time()
         #print("raw:", t1-t0)
-        self.pdb = read_sequence_file("../../../resources/mmtf_full_sample")
+        self.pdb = read_sequence_file(FIXTURE_DIR + "/../../../resources/mmtf_full_sample")
         #print("partitions:", self.pdb.getNumPartitions())
         #self.pdb = read_sequence_file("/Users/peter/MMTF_Files/full")
         #self.pdb = self.pdb.filter(lambda s: s[1].num_models == 1)
@@ -74,8 +73,6 @@ class LigandInteractionFingerprintTest(unittest.TestCase):
     #     print(f"Test-Col: Total number of atoms in PDB: {numAtoms}")
     #     t1 = time.time()
     #     print("ColumnarStructure: ", t1 - t0)
-
-
 
     def test1(self):
         interactionFilter = InteractionFilter()
