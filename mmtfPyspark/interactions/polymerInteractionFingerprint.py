@@ -69,11 +69,11 @@ class PolymerInteractionFingerprint(object):
 
         # loop over all pairwise polymer chain interactions
         for i in range(len(chainBoxes) - 1):
-            chainI = chainBoxes[i][0]
+            chainI = chainBoxes[i][0].item()
             boxI = chainBoxes[i][1]
 
             for j in range(i+1, len(chainBoxes)):
-                chainJ = chainBoxes[j][0]
+                chainJ = chainBoxes[j][0].item()
                 boxJ = chainBoxes[j][1]
 
                 intersectionI = boxI.getIntersection(boxJ)
@@ -134,5 +134,4 @@ class PolymerInteractionFingerprint(object):
                 rows.append(Row(structureId + '.' + chainJ, chainI, chainJ, \
                                 groupNumbersJ, sequenceIndiciesJ, \
                                 structure.entity_list[entityIndexJ]['sequence']))
-
         return rows
