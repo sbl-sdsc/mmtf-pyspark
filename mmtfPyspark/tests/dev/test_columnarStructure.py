@@ -20,7 +20,7 @@ class ColumnarStructureTest(unittest.TestCase):
 
 
     def test_get_x_coords(self):
-        self.assertTrue(self.cs.get_x_coords()[20] == 26.260)
+        self.assertAlmostEqual(self.cs.get_x_coords()[20], 26.260,3)
 
 
     def test_get_elements(self):
