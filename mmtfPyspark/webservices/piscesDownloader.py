@@ -58,7 +58,9 @@ class PiscesDownloader(object):
     def get_structure_chain_ids(self):
         fileURL = self.URL + '/' + self._get_file_name()
         u = urlopen(fileURL)
-        line = str(gzip.GzipFile(fileobj=u).read()).split('\\n')
+        line = str(u.read()).split('\\n')
+        # remove header
+        line = line[1::]
         structureChainId = [l.split()[0][:4] + '.' + l.split()[0][4] for l in line if
                             len(l.split()) > 1]
         return structureChainId
@@ -66,18 +68,20 @@ class PiscesDownloader(object):
     def _get_file_name(self):
         u = urlopen(self.URL)
         fileName = ""
-        cs = "pc" + str(self.sequenceIdentity) + "_res" + str(self.resolution)
-
-        while True:
-
-            line = str(u.readline())
-            line = line.split('\"')[1].split('/')[-1]
-            if line[:3] == 'log':
-                break
-
-            if (cs in line) and ("fasta" not in line):
-                fileName = line
-                break
-
+        cs = "pc" + str(self.sequenceIdentity) + ".0_" + "res0.0-" + str(self.resolution)
+        lines = u.readlines()
+        # range through the page to find file names that fit our criteria
+        for line in lines:
+            if len(str(line).split("\'")[1].split("\"")) > 1:
+                line = str(line).split("\'")[1].split("\"")[1]
+                if (cs in line) and ("fasta" not in line):
+                    fileName = line
+                    break
         u.close()
+        # handle the case when no file name
+        if fileName == "":
+            print("file")
+            print(line)
+            raise Exception("No file name was captured! No file satisfied the criteria.")
+
         return fileName

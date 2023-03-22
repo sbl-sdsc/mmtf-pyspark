@@ -9,11 +9,12 @@ __maintainer__ = "Mars (Shih-Cheng) Huang"
 __email__ = "marshuang80@gmail.com:
 __status__ = "Warning"
 '''
-
+import os
 import unittest
 from pyspark.sql import SparkSession
 from mmtfPyspark.io import mmtfReader
 
+FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class ReadSequenceFileTest(unittest.TestCase):
 
@@ -23,7 +24,7 @@ class ReadSequenceFileTest(unittest.TestCase):
                                  .getOrCreate()
 
     def test_mmtf(self):
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR +  '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         self.assertEqual(4, pdb.count())
 

@@ -7,12 +7,14 @@ __maintainer__ = "Peter Rose"
 __status__ = "Warning"
 '''
 
+import os
 import unittest
 import numpy as np
 from pyspark.sql import SparkSession
 from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.utils import MmtfSubstructure
 
+FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class TestMmtfSubstructure(unittest.TestCase):
 
@@ -23,7 +25,7 @@ class TestMmtfSubstructure(unittest.TestCase):
 
     def test_4HHB_polychain(self):
         print('test_4HHB_polychain')
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
@@ -85,7 +87,7 @@ class TestMmtfSubstructure(unittest.TestCase):
 
     def test_4HHB_polychains(self):
         print('test_4HHB_polychains')
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
@@ -97,7 +99,7 @@ class TestMmtfSubstructure(unittest.TestCase):
 
     def test_4HHB_chain_ids(self):
         print('test_4HHB_chain_ids')
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
@@ -161,7 +163,7 @@ class TestMmtfSubstructure(unittest.TestCase):
 
     def test_4HHB_group_names(self):
         print('test_4HHB_chain_ids')
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
@@ -179,7 +181,7 @@ class TestMmtfSubstructure(unittest.TestCase):
 
     def test_4HHB_group_numbers(self):
         print('test_4HHB_chain_ids')
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()

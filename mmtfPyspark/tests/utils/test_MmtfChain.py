@@ -7,12 +7,14 @@ __maintainer__ = "Peter Rose"
 __status__ = "Warning"
 '''
 
+import os
 import unittest
 import numpy as np
 from pyspark.sql import SparkSession
 from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.utils import MmtfSubstructure
 
+FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class TestMmtfChain(unittest.TestCase):
 
@@ -23,7 +25,7 @@ class TestMmtfChain(unittest.TestCase):
 
     def test_4HHB_chain(self):
         print('test_4HHB_chain')
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
@@ -85,7 +87,7 @@ class TestMmtfChain(unittest.TestCase):
 
     def test_4HHB_chains(self):
         print('test_4HHB_chains')
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
@@ -94,7 +96,7 @@ class TestMmtfChain(unittest.TestCase):
 
     def test_4HHB_chains_first_model(self):
         print('test_4HHB_chains_first_model')
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path, first_model=True)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
@@ -103,7 +105,7 @@ class TestMmtfChain(unittest.TestCase):
 
     def test_1J6T_chains_first_model(self):
         print('test_1J6T_chains_first_model')
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path, first_model=True)
         pdb = pdb.filter(lambda t: t[0] == '1J6T')
         structure = pdb.values().first()

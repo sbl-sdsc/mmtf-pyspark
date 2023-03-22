@@ -11,12 +11,14 @@ __status__ = "Warning"
 '''
 
 import unittest
+import os
 import tempfile
 import numpy as np
 from pyspark.sql import SparkSession
 from mmtfPyspark.io import mmtfReader
 from mmtfPyspark.io import mmtfWriter
 
+FIXTURE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class WriteSequenceFileTest(unittest.TestCase):
 
@@ -24,7 +26,7 @@ class WriteSequenceFileTest(unittest.TestCase):
         self.spark = SparkSession.builder.appName("write_sequence_file").getOrCreate()
 
     def test_mmtf(self):
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         self.assertEqual(4, pdb.count())
         tmp_path = tempfile.mkdtemp()
@@ -34,7 +36,7 @@ class WriteSequenceFileTest(unittest.TestCase):
         self.assertEqual(4, pdb.count())
 
     def test_4hhb(self):
-        path = '../../../resources/files/'
+        path = FIXTURE_DIR + '/../../../resources/files/'
         pdb = mmtfReader.read_mmtf_files(path)
         pdb = pdb.filter(lambda t: t[0] == '4HHB')
         structure = pdb.values().first()
